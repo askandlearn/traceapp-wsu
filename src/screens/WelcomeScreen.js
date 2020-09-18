@@ -4,7 +4,7 @@ import {View, Text, StyleSheet} from 'react-native';
 //Create the Welcome Screen component
 const WelcomeScreen =() =>{
     return  <View>
-        <Text>Welcome Screen</Text>
+        <Text>Welcome Screen Test</Text>
     </View>
 };
 

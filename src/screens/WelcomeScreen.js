@@ -1,16 +1,16 @@
 import React from 'react';
 import {View, Text, StyleSheet, Button, ImageBackground, TouchableOpacity} from 'react-native';
+import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 
-const image = '../images/Trace-3D.png';
 //Create the Welcome Page
-const WelcomeScreen =() =>{
+const WelcomeScreen= (props) =>{
     return ( 
         <View style={styles.container}>
             <ImageBackground blurRadius={3} style={styles.backgroundImage} source={require('../images/Trace-3D.png')}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={()=> props.navigation.navigate('Login')}>
                     <Text style={styles.buttonText}>SIGN IN</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={()=> props.navigation.navigate('SignUp')}>
                     <Text style={styles.buttonText}>SIGN UP</Text>
                 </TouchableOpacity>
             </ImageBackground> 
@@ -29,11 +29,13 @@ const styles= StyleSheet.create({
         justifyContent: "center",                
       },
     button:{
-        alignSelf: 'center',
-        width: '60%',
+        //alignSelf: 'center',
+        //width: '60%',
         alignItems: 'center',
-        margin: 10,
+        marginHorizontal: '10%',
+        marginVertical: 10,
         padding:10,
+        borderRadius:20,
         backgroundColor:'#ff0000',            
     },
     buttonText:{

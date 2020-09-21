@@ -1,10 +1,14 @@
-import React from 'react';
 import {createAppContainer, Image} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import WelcomeScreen from './src/screens/WelcomeScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import SignUpScreen from './src/screens/SignUpScreen';
 
-const navigator= createStackNavigator({
-  Welcome: WelcomeScreen
+const navigator= createStackNavigator(
+{
+  Welcome: WelcomeScreen,
+  Login: LoginScreen,
+  SignUp: SignUpScreen
 },
 {
   //Set the Welcome Page as the first page of the app

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
 
-const NavScreen =() =>{
+const HomeScreen =() =>{
     //fill in with List
 
 };

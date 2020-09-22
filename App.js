@@ -9,6 +9,7 @@ const navigator= createStackNavigator(
   Welcome: WelcomeScreen,
   Login: LoginScreen,
   SignUp: SignUpScreen
+  //Add homescreen
 },
 {
   //Set the Welcome Page as the first page of the app

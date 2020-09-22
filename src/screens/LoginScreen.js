@@ -9,7 +9,8 @@ const LoginScreen =() =>{
             <Text style={styles.title}>LOGIN</Text>
             <TextInput placeholder='Username' style={styles.inputFields}></TextInput> 
             <TextInput placeholder='Password' style={styles.inputFields}></TextInput>        
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={()=> props.navigation.navigate('Home')}>//added onPress to reroute to home screen upon user Login
+            //MUST change later when we establish account validation
                 <Text style={styles.buttonText} >LOGIN</Text>
             </TouchableOpacity>
         </View>

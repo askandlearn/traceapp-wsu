@@ -2,7 +2,18 @@ import React from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
 
 const HomeScreen =() =>{
-    return <Text>Menu</Text>;
+    return (
+        <View style={styles.container}>
+        <ImageBackground blurRadius={3} style={styles.backgroundImage} source={require('../images/Trace-3D.png')}>
+            <TouchableOpacity style={styles.button}> //NEED to add reroute to dashboard
+                <Text style={styles.buttonText}>Health Dashboard</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}> //NEED to add reroute to AST
+                <Text style={styles.buttonText}>Active Stand-up Test (AST)</Text>
+            </TouchableOpacity>
+        </ImageBackground> 
+    </View>
+    );
 
 };
 

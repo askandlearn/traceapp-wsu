@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 
 //Create the Sign Up Page
 const SignUpScreen =() =>{
@@ -11,7 +12,8 @@ const SignUpScreen =() =>{
             <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
             <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
             <TextInput placeholder='Repeat Password' style={styles.inputFields}></TextInput>               
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={()=> props.navigation.navigate('Home')}> //added onPress to reroute to home screen upon account creation
+                //MUST make changes later when DB is created!!
                     <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
                 </TouchableOpacity>
         </View>

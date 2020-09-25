@@ -1,15 +1,57 @@
-import React, { Component }  from 'react';
+import React, { Component, useState }  from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { createStackNavigator } from 'react-navigation-stack';
 
 //Create the Login Page
-const LoginScreen =() =>{
+const LoginScreen =({navigation}) =>{
+    //hard coded user information
+    const userInfo = {
+        username: 'admin',
+        password: 'pass'
+    };
+
+    //states 
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+
+    //User login done using AsyncStorage - not secure, information held locally
+    _login = async () => {
+        console.log(userInfo)
+        console.log('name: '+username);
+        console.log('pass: '+password);
+        if(userInfo.username === username && userInfo.password === password){
+           //alert('Logged in!');
+           await AsyncStorage.setItem('isLoggedIn','1');
+           navigation.navigate('Profile')
+        }
+        else{
+            alert('Username or password is incorrect');
+        }
+    }
+    //Need to add a logout button - logic is that AsyncStorage is cleared
+    //and renavigated to the Welcome page
+    _logout = async () => {
+        await AsyncStorage.clear();
+        navigation.navigate.Auth;
+    } 
+
     return ( 
         <View style={styles.container}>  
             <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>    
             <Text style={styles.title}>LOGIN</Text>
-            <TextInput placeholder='Username' style={styles.inputFields}></TextInput> 
-            <TextInput placeholder='Password' style={styles.inputFields}></TextInput>        
-            <TouchableOpacity style={styles.button}>
+            <TextInput 
+                placeholder='Username' 
+                style={styles.inputFields}
+                onChangeText={(uname) => setUsername(uname)}
+                value={username}></TextInput> 
+            <TextInput 
+                placeholder='Password' 
+                style={styles.inputFields} 
+                secureTextEntry
+                onChangeText={(pass) => setPassword(pass)}
+                value={password}></TextInput>        
+            <TouchableOpacity style={styles.button} onPress={_login}>
                 <Text style={styles.buttonText} >LOGIN</Text>
             </TouchableOpacity>
         </View>

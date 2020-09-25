@@ -2,6 +2,7 @@ import React, { Component }  from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 
+
 //Create the Login Page
 const LoginScreen =(props) =>{
     return ( 

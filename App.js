@@ -6,9 +6,9 @@ import WelcomeScreen from './src/screens/WelcomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import HomeScreen from './src/screens/HomeScreen';
-import ProfileScreen from './src/screen/ProfileScreen';
-import SettingsScreen from './src/screen/SettingsScreen';
-import DrawerMenu from './src/screen/DrawerMenu';
+import ProfileScreen from './src/screens/ProfileScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
+import DrawerMenu from './src/screens/DrawerMenu';
 
 
 
@@ -44,10 +44,10 @@ const NavDrawer= createDrawerNavigator(
 
 const Navigator = createStackNavigator(
   {
-    NavDrawer: NavDrawer,
+    TRACE: NavDrawer,
   },
   {
-    initialRouteName: 'NavDrawer',
+    initialRouteName: 'TRACE',
   });
 
   
@@ -55,5 +55,4 @@ const Navigator = createStackNavigator(
 const Container = createAppContainer(Navigator);
 
 
-export default function App();
-return <Container />;
+export default Container;

@@ -3,21 +3,21 @@ import {Ionicons} from '@expo/vector-icons';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 
-const Header =({name, openDrawer})=>(
-    <view style={styles.header}>
+const Header =({openDrawer})=>(
+    <View style={styles.header}>
         <TouchableOpacity onPress={()=>openDrawer()}>
             <Ionicons name ="ios-menu" size={30} />
         </TouchableOpacity>
-        <Text>{name}</Text>
         <Text style={{width:45}}></Text>
-    </view>
+    </View>
 )
 
 const HomeScreen =({navigation}) =>{
     return (
         <View style={styles.container}>
-            <Header name="Home" openDrawer={navigation.openDrawer}/>
+            <Header openDrawer={navigation.openDrawer}/>
             <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image> 
+            <Text style={styles.title}>HOME</Text>
             <Text>Welcome to your Home page</Text>
         </View>
     );
@@ -27,7 +27,8 @@ const HomeScreen =({navigation}) =>{
 const styles= StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#b7b7b7'
+        backgroundColor:'#b7b7b7',
+        alignItems: 'center'
       },
     backgroundImage:{
         alignSelf:'center',
@@ -52,7 +53,8 @@ const styles= StyleSheet.create({
         marginVertical: 10,
         color:'#202020',
         fontWeight:'bold',
-        fontSize: 30
+        fontSize: 30,
+        paddingBottom: 30
         },
     button:{
         //alignSelf: 'center',
@@ -67,6 +69,14 @@ const styles= StyleSheet.create({
     buttonText:{
         color: '#FFFFFF',
         fontWeight: 'bold'
+    },
+    header:{
+        width:"100%",
+        height:60,
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems:"center",
+        paddingHorizontal:20,
     }
 });
 

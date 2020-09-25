@@ -1,26 +1,27 @@
-import React, {component} from 'react';
+import React, { Component } from 'react';
 import {Ionicons} from '@expo/vector-icons';
-import {View, Text, StyleSheet, TouchableOpacity, Image, FlatList} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image, FlatList, InteractionManager} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import { NavigationEvents } from 'react-navigation';
+
 
 const options = [
     {
         name: "Home",
-        icon: "home",
-        screenName: "Home",
+        icon: "ios-home",
+        screenName: "HomeScreen",
         key: 1
     },
     {
         name: "Profile",
-        icon: "md-contacts",
-        screenName: "Profile",
+        icon: "md-contact",
+        screenName: "ProfileScreen",
         key: 2
     },
     {
         name: "Settings",
-        icon: "settings",
-        screenName: "Settings",
+        icon: "ios-settings",
+        screenName: "SettingsScreen",
         key: 3
     }
 ];
@@ -37,7 +38,7 @@ class DrawerMenu extends Component {
                     name={item.name}
                     icon={item.icon}
                     screenName={item.screenName}
-                    key={item.key}
+                    keyExtractor={(item,index)=>index.key}
                     />
                 )}
                     />
@@ -60,11 +61,16 @@ const styles= StyleSheet.create({
         flex: 1,
       },
    OptionsItem:{
+       height:60,
+       alignItems:"center",
        flexDirection: "row"
    },
    OptionsItemText:{
        fontSize: 20,
-       margin: 20
+       margin: 10,
+       fontWeight: 'bold',
+       paddingHorizontal: 25
+       
    }
 
 });

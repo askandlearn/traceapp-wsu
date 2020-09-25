@@ -1,19 +1,25 @@
 import React from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {Ionicons} from '@expo/vector-icons';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 
-const HomeScreen =() =>{
+const Header =({name, openDrawer})=>(
+    <view style={styles.header}>
+        <TouchableOpacity onPress={()=>openDrawer()}>
+            <Ionicons name ="ios-menu" size={30} />
+        </TouchableOpacity>
+        <Text>{name}</Text>
+        <Text style={{width:45}}></Text>
+    </view>
+)
+
+const HomeScreen =({navigation}) =>{
     return (
         <View style={styles.container}>
-        <ImageBackground blurRadius={3} style={styles.backgroundImage} source={require('../images/Trace-3D.png')}>
-            <TouchableOpacity style={styles.button}> //NEED to add reroute to dashboard
-                <Text style={styles.buttonText}>Health Dashboard</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}> //NEED to add reroute to AST
-                <Text style={styles.buttonText}>Active Stand-up Test (AST)</Text>
-            </TouchableOpacity>
-        </ImageBackground> 
-    </View>
+            <Header name="Home" openDrawer={navigation.openDrawer}/>
+            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image> 
+            <Text>Welcome to your Home page</Text>
+        </View>
     );
 
 };

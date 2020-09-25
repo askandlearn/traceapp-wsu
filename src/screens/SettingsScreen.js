@@ -1,23 +1,29 @@
-import React, { Component }  from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React from 'react';
+import {Ionicons} from '@expo/vector-icons';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 
-//Create the Login Page
-const LoginScreen =(props) =>{
-    return ( 
-        <View style={styles.container}>  
-            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>    
-            <Text style={styles.title}>LOGIN</Text>
-            <TextInput placeholder='Username' style={styles.inputFields}></TextInput> 
-            <TextInput placeholder='Password' style={styles.inputFields}></TextInput>        
-            <TouchableOpacity style={styles.button} onPress={()=> props.navigation.navigate('Home')}>
-                <Text style={styles.buttonText} >LOGIN</Text>
-            </TouchableOpacity>
+const Header =({name, openDrawer})=>(
+    <view style={styles.header}>
+        <TouchableOpacity onPress={()=>openDrawer()}>
+            <Ionicons name ="ios-menu" size={30} />
+        </TouchableOpacity>
+        <Text>{name}</Text>
+        <Text style={{width:45}}></Text>
+    </view>
+)
+
+const SettingsScreen =({navigation}) =>{
+    return (
+        <View style={styles.container}>
+            <Header name="Profile" openDrawer={navigation.openDrawer}/>
+            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image> 
+            <Text>Settings</Text>
         </View>
-    )
+    );
+
 };
 
-//All styling options created below
 const styles= StyleSheet.create({
     container: {
         flex: 1,
@@ -64,4 +70,4 @@ const styles= StyleSheet.create({
     }
 });
 
-export default LoginScreen;
+export default SettingsScreen;

@@ -44,23 +44,25 @@ class DrawerMenu extends Component {
             </View>
         );
     }
-}
+};
 
-const NavItem =({navigation, name, icon, screenName}
-    <TouchableOpacity style={styles.NavItem} onPress={()=>navigation.navigate('${screenName}',{isStatusBarHidden: false})}>
+const NavItem =({navigation, name, icon, screenName})=>{
+    return(
+        <TouchableOpacity style={styles.OptionsItem} onPress={()=>navigation.navigate('${screenName}',{isStatusBarHidden: false})}>
         <Ionicons name={icon} size={32}/>
-        <Text style={styles.NavItemText}>{name}</Text>
+        <Text style={styles.OptionsItemText}>{name}</Text>
     </TouchableOpacity>
-);
+    )
+};
 
 const styles= StyleSheet.create({
     container: {
         flex: 1,
       },
-   NavItem:{
+   OptionsItem:{
        flexDirection: "row"
    },
-   NavItemText:{
+   OptionsItemText:{
        fontSize: 20,
        margin: 20
    }

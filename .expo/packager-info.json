@@ -1,12 +1,11 @@
 {
 
-  "webpackServerPort": null,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 30076,
-  "devToolsPort": 19003,
-  "expoServerNgrokUrl": "https://b9-6sc.anonymous.traceapp-wsu.exp.direct",
-  "packagerNgrokUrl": "https://packager.b9-6sc.anonymous.traceapp-wsu.exp.direct",
-  "ngrokPid": 33980
-
+  "webpackServerPort": 19006,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
+  "devToolsPort": 19003
 }

@@ -1,42 +1,44 @@
 import React, { Component }  from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const logo= '../images/TraceBio-White.png';
 
 //Create the Login Page
 export default class LoginScreen extends Component {
-//const LoginScreen =() =>{
     render(){
         var {navigate} = this.props.navigation;
         return ( 
             <View style={styles.container}>  
-                <View> 
-                    <Image style={styles.backgroundImage} source={require(logo)}></Image>    
-                    <Text style={styles.title}>Welcome back!</Text>
-                </View>
-                <View>
-                {/* <Icon name="ios-person" size={28}  style={styles.icons}> </Icon> */}
-                    <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
-                    <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>SIGN IN</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.flexContainer}>
-                    <View style={styles.horizantalLine} />
-                    <View>
-                        <Text style={styles.orOption}>Or sign in with</Text>
+                <KeyboardAvoidingScrollView >
+                    <View> 
+                        <Image style={styles.backgroundImage} source={require(logo)}></Image>    
+                        <Text style={styles.title}>Welcome back!</Text>
                     </View>
-                    <View style={styles.horizantalLine} />  
-                </View>
-                <View style={[ styles.bottomContainer]}>
+                    <View>
+                    {/* <Icon name="ios-person" size={28}  style={styles.icons}> </Icon> */}
+                        <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
+                        <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.buttonText}>SIGN IN</Text>
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.flexContainer}>
-                    <Text style={styles.otherText}>Not a member?</Text>
-                    <TouchableOpacity>
-                        <Text style={styles.linkButton} onPress={()=>navigate("SignUp")}>SIGN UP</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>       
+                        <View style={styles.horizantalLine} />
+                        <View>
+                            <Text style={styles.orOption}>Or sign in with</Text>
+                        </View>
+                        <View style={styles.horizantalLine} />  
+                    </View>
+                    <View style={[ styles.bottomContainer]}>
+                        <View style={styles.flexContainer}>
+                        <Text style={styles.otherText}>Not a member?</Text>
+                        <TouchableOpacity>
+                            <Text style={styles.linkButton} onPress={()=>navigate("SignUp")}>SIGN UP</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>  
+                </KeyboardAvoidingScrollView>     
             </View>
         )
     }
@@ -58,7 +60,7 @@ const styles= StyleSheet.create({
         flexDirection:'column',
         justifyContent: 'flex-end',
         alignItems:'center',
-        marginBottom: '15%'
+        marginTop: '25%'
       },
     backgroundImage:{
         alignSelf:'center',
@@ -88,7 +90,6 @@ const styles= StyleSheet.create({
         marginHorizontal: '10%',
         marginVertical: '3%',
         color:'#202020',
-       // fontWeight:'bold',
         fontSize: 25
         },
     button:{
@@ -112,7 +113,6 @@ const styles= StyleSheet.create({
         flex: 1, 
         height: 1,
         backgroundColor: 'black',
-        //width: '60%',
         marginHorizontal: '3%',
     },
     orOption:{
@@ -125,10 +125,4 @@ const styles= StyleSheet.create({
        marginLeft: 5
 
     }
-    // icons:{
-    //     color:'rgba(255,255,255,0.7)',
-    //     position:'absolute',
-    // }
 });
-
-//export default LoginScreen;

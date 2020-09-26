@@ -24,6 +24,12 @@ const options = [
     }
 ];
 
+//implement logout functionality - AsyncStorage
+const _logOut = (navigation) => {
+    //console.log("Clicked log out!");
+    alert('Clicked log out!')
+}
+
 class DrawerMenu extends Component {
     render() {
         return(
@@ -45,7 +51,9 @@ class DrawerMenu extends Component {
 
 const NavItem =({navigation, name, icon})=>{
     return(
-        <TouchableOpacity style={styles.OptionsItem} onPress={()=>navigation(name)}>
+        <TouchableOpacity style={styles.OptionsItem} onPress={()=> {
+                name !== 'Log Out' ? navigation(name) : _logOut(navigation)
+            }}>
         <Ionicons name={icon} size={32} style={{padding: 10}}/>
         <Text style={styles.OptionsItemText}>{name}</Text>
     </TouchableOpacity>

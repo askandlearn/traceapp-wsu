@@ -2,15 +2,8 @@ import React from 'react';
 import {Ionicons} from '@expo/vector-icons';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
+import Header from '../components/Header-Component';
 
-const Header =({openDrawer})=>(
-    <View style={styles.header}>
-        <TouchableOpacity onPress={()=>openDrawer()}>
-            <Ionicons name ="ios-menu" size={30} />
-        </TouchableOpacity>
-        <Text style={{width:45}}></Text>
-    </View>
-)
 
 const ProfileScreen =({navigation}) =>{
     return (

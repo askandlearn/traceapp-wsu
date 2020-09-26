@@ -17,6 +17,10 @@ const options = [
     {
         name: "Settings",
         icon: "ios-settings"
+    },
+    {
+        name: "Log Out",
+        icon: "ios-log-out"
     }
 ];
 
@@ -42,7 +46,7 @@ class DrawerMenu extends Component {
 const NavItem =({navigation, name, icon})=>{
     return(
         <TouchableOpacity style={styles.OptionsItem} onPress={()=>navigation(name)}>
-        <Ionicons name={icon} size={32}/>
+        <Ionicons name={icon} size={32} style={{padding: 10}}/>
         <Text style={styles.OptionsItemText}>{name}</Text>
     </TouchableOpacity>
     )

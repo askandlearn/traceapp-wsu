@@ -8,21 +8,15 @@ import { NavigationEvents } from 'react-navigation';
 const options = [
     {
         name: "Home",
-        icon: "ios-home",
-        screenName: "HomeScreen",
-        key: 1
+        icon: "ios-home"
     },
     {
         name: "Profile",
-        icon: "md-contact",
-        screenName: "ProfileScreen",
-        key: 2
+        icon: "md-contact"
     },
     {
         name: "Settings",
-        icon: "ios-settings",
-        screenName: "SettingsScreen",
-        key: 3
+        icon: "ios-settings"
     }
 ];
 
@@ -34,22 +28,21 @@ class DrawerMenu extends Component {
                 data={options}
                 renderItem={({item})=> (
                     <NavItem
-                    navigation={this.props.navigation}
+                    item={item}
+                    navigation={this.props.navigation.navigate}
                     name={item.name}
-                    icon={item.icon}
-                    screenName={item.screenName}
-                    keyExtractor={(item,index)=>index.key}
-                    />
+                    icon={item.icon}/>
                 )}
+                keyExtractor={(item)=>item.name}
                     />
             </View>
         );
     }
 };
 
-const NavItem =({navigation, name, icon, screenName})=>{
+const NavItem =({item, navigation, name, icon})=>{
     return(
-        <TouchableOpacity style={styles.OptionsItem} onPress={()=>navigation.navigate('${screenName}',{isStatusBarHidden: false})}>
+        <TouchableOpacity style={styles.OptionsItem} onPress={()=>navigation(name)}>
         <Ionicons name={icon} size={32}/>
         <Text style={styles.OptionsItemText}>{name}</Text>
     </TouchableOpacity>

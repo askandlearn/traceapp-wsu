@@ -1,5 +1,16 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Button} from 'react-native';
+import React, { useState } from 'react';
+import {
+    View, 
+    Text, 
+    StyleSheet, 
+    TouchableOpacity, 
+    Image, 
+    TextInput, 
+    Button,
+    ScrollView,
+    KeyboardAvoidingView, 
+    Platform,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; //need to run npm install --save react-native-vector-icons
 
 
@@ -11,12 +22,13 @@ const ProfileScreen = (props) => {
     Address:
     Password(?):
 */
-    const name = props.name !== undefined ? props.name:'Mohammed Hamza' //default name value
+    //const name = props.name !== undefined ? props.name:'Mohammed Hamza' //default name value
+    //const address = '123 Main St, Detroit MI'
 
-    //implement edit name function
-    const editName = (name) => {
-        console.log('In editName function...')
-    }
+    const [name, setName] = useState(props.name !== undefined ? props.name:'Mohammed Hamza')
+    const [address, setAddress] = useState('123 Main St, Detroit MI')
+    const [isEditable, setEditable] = useState(false)
+
 
     //implement edit DOB function
     const editDOB = (dob) => {
@@ -29,42 +41,69 @@ const ProfileScreen = (props) => {
     }
 
     return (
-        <View>
+        <View
+        >
             <View style={styles.header}></View>
             <Image 
                 style={styles.avatar} 
                 source={{uri: 'https://f1.pngfuel.com/png/386/684/972/face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette-png-clip-art.png'}}
             />
             <View style={styles.body}>
-                <View style={styles.horizontal}>
-                    <Text style={styles.name}>{name}</Text>
+                <View style={[styles.horizontal, styles.name]}>
+                    <TextInput 
+                        style={styles.name}
+                        editable= {isEditable}
+                        value={name}
+                        onChangeText={name => setName(name)}
+                    />
                     <TouchableOpacity>
                         <Icon
                             name='edit'
-                            size={15}
+                            size={20}
                             style={{marginLeft: 5}}
-                            onPress={() => editName()}  //need to make name editable for user to change
+                            onPress={() => {
+                                setEditable(true)
+                                alert('You can now make changes to your profile')
+                            }}  //need to make name editable for user to change
                         ></Icon>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity>
-                    <Text style={styles.content}>Date of Birth: July 22, 1999</Text>
-                    <View
-                        style={{borderBottomColor: 'black', borderBottomWidth: 1}}
+                <TouchableOpacity style={styles.horizontal}>
+                    <Text style={styles.content}>Date of Birth: </Text>
+                    <TextInput
+                        style={styles.content}
+                        value='July 22, 1999'
+                        editable={isEditable}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity>
-                    <Text style={styles.content}>Address: 123 North, Detroit MI</Text>
-                    <View
-                        style={{borderBottomColor: 'black', borderBottomWidth: 1}}
+                <View
+                    style={{borderBottomColor: 'black', borderBottomWidth: 1}}
+                />
+                <TouchableOpacity style={styles.horizontal}>
+                    <Text style={styles.content}>Address: </Text>
+                    <TextInput
+                        style={styles.content}
+                        value={address}
+                        onChangeText={address => setAddress(address)}
+                        editable={isEditable}
                     />
                 </TouchableOpacity>
+                <View
+                    style={{borderBottomColor: 'black', borderBottomWidth: 1}}
+                />
                 <Button
                     title='Save Changes'
                     color='#ff0000'
-                    onPress={saveChanges}
+                    style={styles.save}
+                    onPress={() => {
+                        //call saveChanges() function
+                        //reset isEditable
+                        setEditable(false)
+                        alert('Changes saved!')
+                    }}
                 />
             </View>
+            <View style={{ flex: 1 }} />
         </View>
     );
 };
@@ -87,23 +126,24 @@ const styles = StyleSheet.create({
       },
       body: {
           marginTop: 100,
-          alignSelf: 'center',
       },
       name: {
         fontSize: 25,
         fontWeight: '600',
-        padding: 20
+        margin: 10,
+        justifyContent: 'center'
       },
       content: {
-          margin: 10,
-          fontSize: 20,
+          margin: 20,
+          fontSize: 20
       },
       horizontal:{
           flexDirection: 'row'
       },
       save: {
           //come back to style the save button
-          backgroundColor: 'black'
+          marginTop: 10,
+          flex: 1
       }
 });
 

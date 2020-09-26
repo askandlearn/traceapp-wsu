@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component, useState }  from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
@@ -42,8 +42,9 @@ export default class LoginScreen extends Component {
             </View>
         )
     }
-};
 
+};
+                        
 //All styling options created below
 const styles= StyleSheet.create({
     flexContainer:{

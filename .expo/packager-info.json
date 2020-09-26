@@ -1,4 +1,5 @@
 {
+
   "webpackServerPort": null,
   "expoServerPort": 19000,
   "packagerPort": 19001,
@@ -7,4 +8,5 @@
   "expoServerNgrokUrl": "https://b9-6sc.anonymous.traceapp-wsu.exp.direct",
   "packagerNgrokUrl": "https://packager.b9-6sc.anonymous.traceapp-wsu.exp.direct",
   "ngrokPid": 33980
+
 }

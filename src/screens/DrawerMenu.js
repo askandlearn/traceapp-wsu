@@ -28,7 +28,6 @@ class DrawerMenu extends Component {
                 data={options}
                 renderItem={({item})=> (
                     <NavItem
-                    item={item}
                     navigation={this.props.navigation.navigate}
                     name={item.name}
                     icon={item.icon}/>
@@ -40,7 +39,7 @@ class DrawerMenu extends Component {
     }
 };
 
-const NavItem =({item, navigation, name, icon})=>{
+const NavItem =({navigation, name, icon})=>{
     return(
         <TouchableOpacity style={styles.OptionsItem} onPress={()=>navigation(name)}>
         <Ionicons name={icon} size={32}/>

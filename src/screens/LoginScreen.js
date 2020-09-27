@@ -18,7 +18,7 @@ export default class LoginScreen extends Component {
                     <View>
                     {/* <Icon name="ios-person" size={28}  style={styles.icons}> </Icon> */}
                         <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
-                        <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
+                        <TextInput placeholder='Password' style={styles.inputFields} secureTextEntry></TextInput> 
                         <TouchableOpacity style={styles.button}>
                             <Text style={styles.buttonText}>SIGN IN</Text>
                         </TouchableOpacity>

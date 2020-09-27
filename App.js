@@ -15,7 +15,7 @@ const navigator= createStackNavigator(
 },
 {
   //Set the Welcome Page as the first page of the app
-  initialRouteName: 'Welcome',
+  initialRouteName: 'HealthDashboard',
   defaultNavigationOptions:{
   //Title shows on the header of the app
   title: 'Trace',

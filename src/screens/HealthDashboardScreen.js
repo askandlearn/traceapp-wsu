@@ -2,7 +2,6 @@ import React, { Component }  from 'react';
 import { render } from 'react-dom';
 import {View, Text, TextInput, StyleSheet, Button, Image} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Plotly from 'react-native-plotly';
 
 const upData = {
     __id: 'up',
@@ -65,7 +64,7 @@ export default class App extends React.Component{
 const styles= StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#00008b'
+        backgroundColor:'#b7b7b7'
       },
     backgroundImage:{
         alignSelf:'center',

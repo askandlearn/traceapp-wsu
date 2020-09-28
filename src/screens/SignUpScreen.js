@@ -2,9 +2,10 @@ import React,  {Component} from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import DatePicker from 'react-native-datepicker';
-//import ModalDropdown from 'react-native-modal-dropdown';
-//import { TextInputMask } from 'react-native-masked-text'
-//import Icon from 'react-native-vector-icons/Ionicons';
+import { Form, TextValidator } from 'react-native-validator-form';
+import { minNumber } from 'react-native-validator-form/lib/ValidationRules';
+
+
 //Create the Sign Up Page
 
 const logo= '../images/TraceBio-White.png';
@@ -13,27 +14,93 @@ export default class SignUpScreen extends Component {
     
     constructor(props){
         super(props)
-        this.state = {date:''}
-      }
+        this.state = {
+        date:'',
+        firstName:'',
+        lastName:'',
+        email: '',
+       // password: '',
+        user: {},}
+    }
+    handleFirstName = (firstName) => {
+        this.setState({ firstName });
+    }
+    handleLastName = (lastName) => {
+        this.setState({ lastName });
+    }
+    handleEmail = (email) => {
+        this.setState({ email });
+    }
+    componentWillMount() {
+        // custom rule will have name 'isPasswordMatch'
+        Form.addValidationRule('isPasswordMatch', (value) => {
+            if (value !== this.state.user.password) {
+                return false;
+            }
+            return true;
+        });
+    }
+    componentWillUnmount() {
+        Form.removeValidationRule('isPasswordMatch');
+    }
+    handlePassword = (event) => {
+        const { user } = this.state;
+        user.password = event.nativeEvent.text;
+        this.setState({ user });
+    }
+    handleRepeatPassword = (event) => {
+        const { user } = this.state;
+        user.repeatPassword = event.nativeEvent.text;
+        this.setState({ user });
+    }
+    submit = () => {
+        console.log('Submitted');
+    }
+    handleSubmit = () => {
+        this.refs.form.submit();
+    }
 // const SignUpScreen =() =>{
     render(){
         var {navigate} = this.props.navigation;
+        const { email} = this.state;      
+        const { password} = this.state;
+        const { firstName} = this.state;      
+        const { lastName} = this.state;  
+        const { user } = this.state;    
+
     return ( 
-
-
         <View style={styles.container}>
             <KeyboardAvoidingScrollView >
                 <View > 
                     <Image style={styles.backgroundImage} source={require(logo)}></Image>    
                     <Text style={styles.title}>Sign up to get started!</Text>
                 </View>
-                <View style={[styles.flexContainer, styles.nameContainer]}>
-                    {/* <Icon name="ios-person" size={28}  style={styles.icons}> </Icon> */}
-                    <TextInput placeholder='First Name' style={styles.firstName}></TextInput>
-                    <TextInput placeholder='Last Name' style={styles.lastName}></TextInput>
-                </View>
-
-                <View>
+                <Form ref="form" onSubmit={this.handleSubmit}>
+                        <TextValidator 
+                        name="firstName"
+                        label="firstName" 
+                        placeholder='First Name'
+                        validators={['required']}
+                        errorMessages={['This field is required']}
+                        errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
+                        type="text"
+                        value={firstName}
+                        onChangeText={this.handleFirstName}
+                        style={styles.inputFields}>
+                        </TextValidator>
+                        <TextValidator
+                        name="lastName"
+                        label="lastName" 
+                        placeholder='Last Name' 
+                        validators={['required']}
+                        errorMessages={['This field is required']}
+                        errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
+                        type="text"
+                        value={lastName}
+                        onChangeText={this.handleLastName}
+                        style={styles.inputFields}>
+                        </TextValidator>
+                 
                     
                     <DatePicker       
                     style={[styles.inputFields]}
@@ -65,17 +132,54 @@ export default class SignUpScreen extends Component {
                         }
                     }}
                     onDateChange={(date) => {this.setState({date: date})}}
-            />
-            </View>
-                
-                <View>
-                    <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
-                    <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
-                    <TextInput placeholder='Confirm Password' style={styles.inputFields}></TextInput>               
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={styles.buttonText} onPress={() => null}>CREATE ACCOUNT</Text>
-                        </TouchableOpacity>
-                </View>
+                     ></DatePicker>
+                    <TextValidator
+                        name="email"
+                        label="email"
+                        validators={['required', 'isEmail']}
+                        errorMessages={['This field is required', 'Email is invalid']}
+                        errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
+                        placeholder="Email"
+                        type="text"
+                        keyboardType="email-address"
+                        value={email}
+                        onChangeText={this.handleEmail}
+                        style={styles.inputFields}
+                    
+                    />
+                    <TextValidator
+                        name="passowrd"
+                        label="password"
+                        validators={['required', 'minStringLength:8', 'maxStringLength:15']}
+                        errorMessages={['This field is required', 'Password must be at least 8 characters', 'Password cannot exceed 15 characters']}
+                        errorStyle={{container: styles.errorMessage}, {text: styles.errorMessage}}
+                        placeholder="Password"
+                        type="text"
+                        value={user.password}
+                        onChange={this.handlePassword}
+                        secureTextEntry={true}
+                        style={styles.inputFields}
+                    />
+                    <TextValidator
+                        name="confirmPassowrd"
+                        label="confirmPassowrd"
+                        validators={['isPasswordMatch','required', 'minStringLength:8', 'maxStringLength:15']}
+                        errorMessages={['Password mismatch','This field is required', 'Password must be at least 8 characters', 'Password cannot exceed 15 characters']}
+                        type="text"
+                        value={user.repeatPassword}
+                        onChange={this.handleRepeatPassword}
+                        
+                        errorStyle={{container: styles.errorMessage}, {text: styles.errorMessage}}
+                        placeholder="Confirm Passowrd"        
+                        secureTextEntry={true}
+                        style={styles.inputFields}
+                    />
+                    <TouchableOpacity title="Submit"
+                        onPress={this.handleSubmit} style={styles.button}>
+                                <Text style={styles.buttonText} onPress={() => null}>CREATE ACCOUNT</Text>
+                    </TouchableOpacity>
+                    
+                </Form>
                 <View style={styles.flexContainer}>
                 <View style={styles.horizantalLine} />
                 <View>
@@ -119,8 +223,11 @@ const styles= StyleSheet.create({
         marginTop: '25%'
       },
       nameContainer:{
-          marginTop:'5%',
-        justifyContent: 'space-between'
+       // marginHorizontal:'10%',
+        marginTop:'5%',
+       justifyContent: 'space-between',
+      // alignContent:'center',
+      // alignSelf:'center'
       },
       dobContainer:{
         flexDirection: 'row',
@@ -136,11 +243,13 @@ const styles= StyleSheet.create({
       },
    
     firstName:{
-        width:'38%',
+        width:'90%',
         height: 50,
-        marginLeft: '10%',
+        //marginLeft: '20%',
        // marginVertical: 5,
         padding: 13,
+        marginLeft:'22%',
+      
         fontWeight: 'bold',
         borderColor:'rgba(0, 0, 0, .4)',
         borderWidth: 1,
@@ -153,21 +262,23 @@ const styles= StyleSheet.create({
         shadowRadius: 1
     },
     lastName:{
-        width:'38%',
-        height: 50,
-        marginRight: '10%',
-        marginVertical: 5,
-        padding: 13,
-        fontWeight: 'bold',
-        borderColor:'rgba(0, 0, 0, .4)',
-        borderWidth: 1,
-        color: 'rgba(0, 0, 0, 1)',
-        backgroundColor:'rgba(255, 255, 255, 1)',
-        borderRadius:20,
-        shadowColor:'#000000',
-        shadowOffset: { width: 1, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 1
+      width:'77%',
+      height: 50,
+      //marginLeft: '20%',
+     // marginVertical: 5,
+      padding: 13,
+      marginRight:'22%',
+    
+      fontWeight: 'bold',
+      borderColor:'rgba(0, 0, 0, .4)',
+      borderWidth: 1,
+      color: 'rgba(0, 0, 0, 1)',
+      backgroundColor:'rgba(255, 255, 255, 1)',
+      borderRadius:20,
+      shadowColor:'#000000',
+      shadowOffset: { width: 1, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 1
     },
     inputFields:{
         width:'80%',
@@ -227,6 +338,11 @@ const styles= StyleSheet.create({
         color: 'blue',
         marginLeft: 5
 
+    },
+    errorMessage:{
+        marginHorizontal:'10%',
+        position:'relative',
+        color:'red'
     },
    
     // icons:{

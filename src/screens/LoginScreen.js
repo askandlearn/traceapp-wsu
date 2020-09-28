@@ -2,23 +2,9 @@ import React, { Component, useState }  from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 
-
 //Create the Login Page
-const LoginScreen =(props) =>{
-    return ( 
-        <View style={styles.container}>  
-            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>    
-            <Text style={styles.title}>LOGIN</Text>
-            <TextInput placeholder='Username' style={styles.inputFields}></TextInput> 
-            <TextInput placeholder='Password' style={styles.inputFields}></TextInput>        
-            <TouchableOpacity style={styles.button} onPress={()=> props.navigation.navigate('Home')}>
-                <Text style={styles.buttonText} >LOGIN</Text>
-            </TouchableOpacity>
-        </View>
-    )
-};
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-/*
+
 
 const logo= '../images/TraceBio-White.png';
 
@@ -59,7 +45,6 @@ export default class LoginScreen extends Component {
             </View>
         )
     }
-*/
 
 };
                         

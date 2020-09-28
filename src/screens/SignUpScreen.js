@@ -1,4 +1,3 @@
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import React,  {Component} from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
@@ -72,6 +71,13 @@ export default class SignUpScreen extends Component {
 // const SignUpScreen =() =>{
     render(){
         var {navigate} = this.props.navigation;
+        const { email} = this.state;      
+        const { password} = this.state;
+        const { firstName} = this.state;      
+        const { lastName} = this.state;  
+        const { user } = this.state;    
+
+
     return ( 
         <View style={styles.container}>
             <KeyboardAvoidingScrollView >
@@ -79,12 +85,33 @@ export default class SignUpScreen extends Component {
                     <Image style={styles.backgroundImage} source={require(logo)}></Image>    
                     <Text style={styles.title}>Sign up to get started!</Text>
                 </View>
-                <View style={[styles.flexContainer, styles.nameContainer]}>
-                    {/* <Icon name="ios-person" size={28}  style={styles.icons}> </Icon> */}
-                    <TextInput placeholder='First Name' style={styles.firstName}></TextInput>
-                    <TextInput placeholder='Last Name' style={styles.lastName}></TextInput>
-                </View>
-                <View>
+
+                <Form ref="form" onSubmit={this.handleSubmit}>
+                  
+                        <TextValidator 
+                        name="firstName"
+                        label="firstName" 
+                        placeholder='First Name'
+                        validators={['required']}
+                        errorMessages={['This field is required']}
+                        errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
+                        type="text"
+                        value={firstName}
+                        onChangeText={this.handleFirstName}
+                        style={styles.inputFields}>
+                        </TextValidator>
+                        <TextValidator
+                        name="lastName"
+                        label="lastName" 
+                        placeholder='Last Name' 
+                        validators={['required']}
+                        errorMessages={['This field is required']}
+                        errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
+                        type="text"
+                        value={lastName}
+                        onChangeText={this.handleLastName}
+                        style={styles.inputFields}>
+                        </TextValidator>
                     
                     <DatePicker       
                     style={[styles.inputFields]}
@@ -116,16 +143,54 @@ export default class SignUpScreen extends Component {
                         }
                     }}
                     onDateChange={(date) => {this.setState({date: date})}}
-            />
-            </View>
-                <View>
-                    <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
-                    <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
-                    <TextInput placeholder='Confirm Password' style={styles.inputFields}></TextInput>               
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={styles.buttonText} onPress={() => null}>CREATE ACCOUNT</Text>
-                        </TouchableOpacity>
-                </View>
+                     ></DatePicker>
+                    <TextValidator
+                        name="email"
+                        label="email"
+                        validators={['required', 'isEmail']}
+                        errorMessages={['This field is required', 'Email is invalid']}
+                        errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
+                        placeholder="Email"
+                        type="text"
+                        keyboardType="email-address"
+                        value={email}
+                        onChangeText={this.handleEmail}
+                        style={styles.inputFields}
+                    
+                    />
+                    <TextValidator
+                        name="passowrd"
+                        label="password"
+                        validators={['required', 'minStringLength:8', 'maxStringLength:15']}
+                        errorMessages={['This field is required', 'Password must be at least 8 characters', 'Password cannot exceed 15 characters']}
+                        errorStyle={{container: styles.errorMessage}, {text: styles.errorMessage}}
+                        placeholder="Password"
+                        type="text"
+                        value={user.password}
+                        onChange={this.handlePassword}
+                        secureTextEntry={true}
+                        style={styles.inputFields}
+                    />
+                    <TextValidator
+                        name="confirmPassowrd"
+                        label="confirmPassowrd"
+                        validators={['isPasswordMatch','required', 'minStringLength:8', 'maxStringLength:15']}
+                        errorMessages={['Password mismatch','This field is required', 'Password must be at least 8 characters', 'Password cannot exceed 15 characters']}
+                        type="text"
+                        value={user.repeatPassword}
+                        onChange={this.handleRepeatPassword}
+                        
+                        errorStyle={{container: styles.errorMessage}, {text: styles.errorMessage}}
+                        placeholder="Confirm Passowrd"        
+                        secureTextEntry={true}
+                        style={styles.inputFields}
+                    />
+                    <TouchableOpacity title="Submit"
+                        onPress={this.handleSubmit} style={styles.button}>
+                                <Text style={styles.buttonText} onPress={() => null}>CREATE ACCOUNT</Text>
+                    </TouchableOpacity>
+                    
+                </Form>
                 <View style={styles.flexContainer}>
                 <View style={styles.horizantalLine} />
                 <View>

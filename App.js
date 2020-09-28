@@ -17,7 +17,6 @@ const NavDrawer= createDrawerNavigator(
     Welcome: WelcomeScreen,
     Login: LoginScreen,
     SignUp: SignUpScreen,
-    HealthDashboard: HealthDashboardScreen,
     Home: HomeScreen,
     Profile: ProfileScreen,
     Settings: SettingsScreen

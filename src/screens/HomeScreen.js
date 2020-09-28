@@ -3,14 +3,13 @@ import {Ionicons} from '@expo/vector-icons';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
+import HealthDashboard from './HealthDashboardScreen';
 
 const HomeScreen =({navigation}) =>{
     return (
         <View style={styles.container}>
             <Header openDrawer={navigation.openDrawer}/>
-            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image> 
-            <Text style={styles.title}>HOME</Text>
-            <Text>Welcome to your Home page</Text>
+            <HealthDashboard/>
         </View>
     );
 

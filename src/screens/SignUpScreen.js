@@ -3,9 +3,10 @@ import React,  {Component} from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import DatePicker from 'react-native-datepicker';
-//import ModalDropdown from 'react-native-modal-dropdown';
-//import { TextInputMask } from 'react-native-masked-text'
-//import Icon from 'react-native-vector-icons/Ionicons';
+import { Form, TextValidator } from 'react-native-validator-form';
+import { minNumber } from 'react-native-validator-form/lib/ValidationRules';
+
+
 //Create the Sign Up Page
 
 const logo= '../images/TraceBio-White.png';
@@ -14,8 +15,60 @@ export default class SignUpScreen extends Component {
     
     constructor(props){
         super(props)
-        this.state = {date:''}
+        this.state = {
+        date:'',
+        firstName:'',
+        lastName:'',
+        email: '',
+       // password: '',
+        user: {},}
       }
+
+    handleFirstName = (firstName) => {
+        this.setState({ firstName });
+    }
+
+    handleLastName = (lastName) => {
+        this.setState({ lastName });
+    }
+    handleEmail = (email) => {
+        this.setState({ email });
+    }
+    // handlePassword = (password) => {
+    //     this.setState({ password });
+    // }
+    componentWillMount() {
+        // custom rule will have name 'isPasswordMatch'
+        Form.addValidationRule('isPasswordMatch', (value) => {
+            if (value !== this.state.user.password) {
+                return false;
+            }
+            return true;
+        });
+    }
+ 
+    componentWillUnmount() {
+        Form.removeValidationRule('isPasswordMatch');
+    }
+
+    handlePassword = (event) => {
+        const { user } = this.state;
+        user.password = event.nativeEvent.text;
+        this.setState({ user });
+    }
+ 
+    handleRepeatPassword = (event) => {
+        const { user } = this.state;
+        user.repeatPassword = event.nativeEvent.text;
+        this.setState({ user });
+    }
+    submit = () => {
+        console.log('Submitted');
+    }
+ 
+    handleSubmit = () => {
+        this.refs.form.submit();
+    }
 // const SignUpScreen =() =>{
     render(){
         var {navigate} = this.props.navigation;
@@ -116,8 +169,11 @@ const styles= StyleSheet.create({
         marginTop: '25%'
       },
       nameContainer:{
-          marginTop:'5%',
-        justifyContent: 'space-between'
+       // marginHorizontal:'10%',
+        marginTop:'5%',
+       justifyContent: 'space-between',
+      // alignContent:'center',
+       alignSelf:'center'
       },
       dobContainer:{
         flexDirection: 'row',
@@ -133,11 +189,13 @@ const styles= StyleSheet.create({
       },
    
     firstName:{
-        width:'38%',
+        //width:'150%',
         height: 50,
-        marginLeft: '10%',
+        //marginLeft: '20%',
        // marginVertical: 5,
         padding: 13,
+        marginLeft:'10%',
+      
         fontWeight: 'bold',
         borderColor:'rgba(0, 0, 0, .4)',
         borderWidth: 1,
@@ -150,11 +208,12 @@ const styles= StyleSheet.create({
         shadowRadius: 1
     },
     lastName:{
-        width:'38%',
-        height: 50,
-        marginRight: '10%',
-        marginVertical: 5,
-        padding: 13,
+       //width:'150%',
+       height: 50,
+      marginHorizontal: '10%',
+       marginVertical: 5,
+       paddingVertical: 13,
+      // paddingHorizontal:'13%',
         fontWeight: 'bold',
         borderColor:'rgba(0, 0, 0, .4)',
         borderWidth: 1,
@@ -224,6 +283,11 @@ const styles= StyleSheet.create({
         color: 'blue',
         marginLeft: 5
 
+    },
+    errorMessage:{
+        marginHorizontal:'10%',
+        position:'relative',
+        color:'red'
     },
    
     // icons:{

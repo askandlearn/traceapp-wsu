@@ -5,6 +5,7 @@ import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import HealthDashboardScreen from './src/screens/HealthDashboardScreen';
 
+
 const navigator= createStackNavigator(
 {
   Welcome: WelcomeScreen,

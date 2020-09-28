@@ -1,22 +1,3 @@
-
-import React from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
-
-//Create the Sign Up Page
-const SignUpScreen =(props) =>{
-    return ( 
-        <View style={styles.container}>  
-            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>    
-            <Text style={styles.title}>SIGN UP</Text>
-            <TextInput placeholder='Username' style={styles.inputFields}></TextInput> 
-            <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
-            <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
-            <TextInput placeholder='Repeat Password' style={styles.inputFields}></TextInput>               
-                <TouchableOpacity style={styles.button} onPress={()=> props.navigation.navigate('Home')}>
-                    <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
-                </TouchableOpacity>
-/*
 import React,  {Component} from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
@@ -38,8 +19,6 @@ export default class SignUpScreen extends Component {
     render(){
         var {navigate} = this.props.navigation;
     return ( 
-
-
         <View style={styles.container}>
             <KeyboardAvoidingScrollView >
                 <View > 
@@ -51,7 +30,6 @@ export default class SignUpScreen extends Component {
                     <TextInput placeholder='First Name' style={styles.firstName}></TextInput>
                     <TextInput placeholder='Last Name' style={styles.lastName}></TextInput>
                 </View>
-
                 <View>
                     
                     <DatePicker       
@@ -86,7 +64,6 @@ export default class SignUpScreen extends Component {
                     onDateChange={(date) => {this.setState({date: date})}}
             />
             </View>
-                
                 <View>
                     <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
                     <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
@@ -111,8 +88,7 @@ export default class SignUpScreen extends Component {
                     </TouchableOpacity>
                     </View>
                 </View> 
-            </KeyboardAvoidingScrollView>      
-*/
+            </KeyboardAvoidingScrollView>
         </View>
     )
     

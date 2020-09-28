@@ -73,13 +73,11 @@ export default class LoginScreen extends  Component  {
                             secureTextEntry={true}
                             style={styles.inputFields}
                         />
-                        <TouchableOpacity title="Submit" onPress={this.handleSubmit} style={styles.button}>
-                    <View>
-                        <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
-                        <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={styles.buttonText}>SIGN IN</Text>
-                        </TouchableOpacity>  
+                        <TouchableOpacity title="Submit"
+                        onPress={this.handleSubmit} style={styles.button}>
+                                <Text style={styles.buttonText}>SIGN IN</Text>
+                            </TouchableOpacity>
+                    
                     </Form>
                     <View style={styles.flexContainer}>
                         <View style={styles.horizantalLine} />

@@ -1,25 +1,5 @@
-
-import React from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
-
-//Create the Sign Up Page
-const SignUpScreen =(props) =>{
-    return ( 
-        <View style={styles.container}>  
-            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>    
-            <Text style={styles.title}>SIGN UP</Text>
-            <TextInput placeholder='Username' style={styles.inputFields}></TextInput> 
-            <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
-            <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
-            <TextInput placeholder='Repeat Password' style={styles.inputFields}></TextInput>               
-                <TouchableOpacity style={styles.button} onPress={()=> props.navigation.navigate('Home')}>
-                    <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
-                </TouchableOpacity>
-/*
 import React,  {Component} from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Platform} from 'react-native';
 import DatePicker from 'react-native-datepicker';
 //import ModalDropdown from 'react-native-modal-dropdown';
 //import { TextInputMask } from 'react-native-masked-text'
@@ -38,84 +18,78 @@ export default class SignUpScreen extends Component {
     render(){
         var {navigate} = this.props.navigation;
     return ( 
-
-
         <View style={styles.container}>
-            <KeyboardAvoidingScrollView >
-                <View > 
-                    <Image style={styles.backgroundImage} source={require(logo)}></Image>    
-                    <Text style={styles.title}>Sign up to get started!</Text>
-                </View>
-                <View style={[styles.flexContainer, styles.nameContainer]}>
-                    {/* <Icon name="ios-person" size={28}  style={styles.icons}> </Icon> */}
-                    <TextInput placeholder='First Name' style={styles.firstName}></TextInput>
-                    <TextInput placeholder='Last Name' style={styles.lastName}></TextInput>
-                </View>
+        <View > 
+            <Image style={styles.backgroundImage} source={require(logo)}></Image>    
+            <Text style={styles.title}>Sign up to get started!</Text>
+        </View>
+        <View style={[styles.flexContainer, styles.nameContainer]}>
+            {/* <Icon name="ios-person" size={28}  style={styles.icons}> </Icon> */}
+            <TextInput placeholder='First Name' style={styles.firstName}></TextInput>
+            <TextInput placeholder='Last Name' style={styles.lastName}></TextInput>
+        </View>
 
-                <View>
-                    
-                    <DatePicker       
-                    style={[styles.inputFields]}
-                    placeholder="Date of Birth"
-                    date={this.state.date}
-                    mode="date"
-                    format="YYYY-MM-DD"
-                    minDate="1920-01-01"
-                    maxDate={new Date()}
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                        width:0,
-                        height:0        
-                        },
-                        dateInput: {
-                            borderWidth:0,                   
-                        },
-                        placeholderText:{
-                            alignSelf:'flex-start',
-                            color: 'rgba(0, 0, 0, .25)',
-                            fontWeight:'bold',
-                            paddingBottom:'5%'
-                        },
-                        dateText:{
-                            color: 'rgba(0, 0, 0, 1)',
-                            fontWeight: 'bold'
-                        }
-                    }}
-                    onDateChange={(date) => {this.setState({date: date})}}
-            />
+        <View>
+            
+            <DatePicker       
+            style={[styles.inputFields]}
+            placeholder="Date of Birth"
+            date={this.state.date}
+            mode="date"
+            format="YYYY-MM-DD"
+            minDate="1920-01-01"
+            maxDate={new Date()}
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+                dateIcon: {
+                width:0,
+                height:0        
+                },
+                dateInput: {
+                    borderWidth:0,                   
+                },
+                placeholderText:{
+                    alignSelf:'flex-start',
+                    color: 'rgba(0, 0, 0, .25)',
+                    fontWeight:'bold',
+                    paddingBottom:'5%'
+                },
+                dateText:{
+                    color: 'rgba(0, 0, 0, 1)',
+                    fontWeight: 'bold'
+                }
+            }}
+            onDateChange={(date) => {this.setState({date: date})}}
+      />
+      </View>
+        
+        <View>
+            <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
+            <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
+            <TextInput placeholder='Repeat Password' style={styles.inputFields}></TextInput>               
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
+                </TouchableOpacity>
+        </View>
+        <View style={styles.flexContainer}>
+        <View style={styles.horizantalLine} />
+        <View>
+            <Text style={styles.orOption}>Or sign up with</Text>
+        </View>
+        <View style={styles.horizantalLine} />  
+        </View>
+        <View style={[ styles.bottomContainer]}>
+            <View style={styles.flexContainer}>
+            <Text style={styles.otherText}>Already a member?</Text>
+            <TouchableOpacity>
+                <Text style={styles.linkButton} onPress={
+                                ()=>navigate("Login")}>SIGN IN</Text>
+            </TouchableOpacity>
             </View>
-                
-                <View>
-                    <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
-                    <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
-                    <TextInput placeholder='Confirm Password' style={styles.inputFields}></TextInput>               
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={styles.buttonText} onPress={() => null}>CREATE ACCOUNT</Text>
-                        </TouchableOpacity>
-                </View>
-                <View style={styles.flexContainer}>
-                <View style={styles.horizantalLine} />
-                <View>
-                    <Text style={styles.orOption}>Or sign up with</Text>
-                </View>
-                <View style={styles.horizantalLine} />  
-                </View>
-                <View style={[ styles.bottomContainer]}>
-                    <View style={styles.flexContainer}>
-                    <Text style={styles.otherText}>Already a member?</Text>
-                    <TouchableOpacity>
-                        <Text style={styles.linkButton} onPress={
-                                        ()=>navigate("Login")}>SIGN IN</Text>
-                    </TouchableOpacity>
-                    </View>
-                </View> 
-            </KeyboardAvoidingScrollView>      
-*/
+        </View>       
         </View>
     )
-    
 };
 
 }
@@ -129,14 +103,14 @@ const styles= StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor:'#b7b7b7'
+        backgroundColor:'#b7b7b7',
       },
     bottomContainer:{
         flex: 1,
         flexDirection:'column',
         justifyContent: 'flex-end',
         alignItems:'center',
-        marginTop: '25%'
+        marginBottom: '15%'
       },
       nameContainer:{
           marginTop:'5%',
@@ -245,7 +219,7 @@ const styles= StyleSheet.create({
     },
     linkButton:{
         color: 'blue',
-        marginLeft: 5
+       marginLeft: 5
 
     },
    

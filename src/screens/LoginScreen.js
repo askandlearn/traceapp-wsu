@@ -18,7 +18,6 @@ const LoginScreen =(props) =>{
     )
 };
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-/*
 
 const logo= '../images/TraceBio-White.png';
 
@@ -59,7 +58,7 @@ export default class LoginScreen extends Component {
             </View>
         )
     }
-*/
+
 
 };
                         

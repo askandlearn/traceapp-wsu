@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; //need to run npm install --save react-native-vector-icons
 
 
@@ -21,6 +21,11 @@ const ProfileScreen = (props) => {
     //implement edit DOB function
     const editDOB = (dob) => {
         console.log('In editDOB function...')
+    }
+
+    //save changes
+    const saveChanges = () => {
+        console.log('In saveChanges functon ...')
     }
 
     return (
@@ -54,6 +59,11 @@ const ProfileScreen = (props) => {
                         style={{borderBottomColor: 'black', borderBottomWidth: 1}}
                     />
                 </TouchableOpacity>
+                <Button
+                    title='Save Changes'
+                    color='#ff0000'
+                    onPress={saveChanges}
+                />
             </View>
         </View>
     );
@@ -82,7 +92,7 @@ const styles = StyleSheet.create({
       name: {
         fontSize: 25,
         fontWeight: '600',
-        paddingLeft: 10
+        padding: 20
       },
       content: {
           margin: 10,
@@ -90,6 +100,10 @@ const styles = StyleSheet.create({
       },
       horizontal:{
           flexDirection: 'row'
+      },
+      save: {
+          //come back to style the save button
+          backgroundColor: 'black'
       }
 });
 

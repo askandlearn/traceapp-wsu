@@ -1,8 +1,10 @@
 import React, { Component, useState }  from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Button} from 'react-native';
+import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import { Form, TextValidator } from 'react-native-validator-form';
 import { minNumber } from 'react-native-validator-form/lib/ValidationRules';
+
 
 const logo= '../images/TraceBio-White.png';
 
@@ -72,6 +74,10 @@ export default class LoginScreen extends  Component  {
                             style={styles.inputFields}
                         />
                         <TouchableOpacity title="Submit" onPress={this.handleSubmit} style={styles.button}>
+                    <View>
+                        <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
+                        <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
+                        <TouchableOpacity style={styles.button}>
                             <Text style={styles.buttonText}>SIGN IN</Text>
                         </TouchableOpacity>  
                     </Form>

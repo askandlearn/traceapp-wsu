@@ -6,41 +6,38 @@ import {Ionicons} from '@expo/vector-icons';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
+import HealthDashboardScreen from './src/screens/HealthDashboardScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import DrawerMenu from './src/screens/DrawerMenu';
 
-
-
 const NavDrawer= createDrawerNavigator(
-{
-  Welcome: WelcomeScreen,
-  Login: LoginScreen,
-  SignUp: SignUpScreen,
-  Home: HomeScreen,
-  Profile: ProfileScreen,
-  Settings: SettingsScreen
-},
-{
-  //Set the Welcome Page as the first page of the app
-  initialRouteName: 'Welcome',
-  unmountInactiveRoutes: true,
-
-  defaultNavigationOptions:{
-  //Title shows on the header of the app
-  title: 'Trace',
-  //(
-//     <Image source={require('./src/images/Trace-3D.png')}/>
-// ),
-    headerStyle: {
-      backgroundColor: '#202020'
-    },
-    headerTintColor: '#fff',
+  {
+    Welcome: WelcomeScreen,
+    Login: LoginScreen,
+    SignUp: SignUpScreen,
+    HealthDashboard: HealthDashboardScreen,
+    Home: HomeScreen,
+    Profile: ProfileScreen,
+    Settings: SettingsScreen
   },
-  contentComponent: DrawerMenu
-}
-
+    {
+    initialRouteName: 'Welcome',
+    unmountInactiveRoutes: true,
+    defaultNavigationOptions:{
+    //Title shows on the header of the app
+    title: 'Trace',
+    //(
+  //     <Image source={require('./src/images/Trace-3D.png')}/>
+  // ),
+      headerStyle: {
+        backgroundColor: '#202020'
+      },
+      headerTintColor: '#fff',
+    },
+    contentComponent: DrawerMenu
+     }
 );
 
 const Navigator = createStackNavigator(

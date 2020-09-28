@@ -108,6 +108,7 @@ const styles= StyleSheet.create({
     flexContainer:{
         flexDirection: 'row',
         alignItems:'center',
+        paddingBottom:'15%',
         //alignSelf:'center'
     },
     container: {

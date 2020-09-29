@@ -3,6 +3,7 @@ import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Platform} fr
 import DatePicker from 'react-native-datepicker';
 import { Form, TextValidator } from 'react-native-validator-form';
 import { minNumber } from 'react-native-validator-form/lib/ValidationRules';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 
 //Create the Sign Up Page
@@ -67,7 +68,7 @@ export default class SignUpScreen extends Component {
     handleSubmit = () => {
         this.refs.form.submit();
     }
-// const SignUpScreen =() =>{
+
     render(){
         var {navigate} = this.props.navigation;
         const { email} = this.state;      
@@ -76,7 +77,7 @@ export default class SignUpScreen extends Component {
         const { lastName} = this.state;  
         const { user } = this.state;    
 
-
+// const SignUpScreen =() =>{
     return ( 
         <View style={styles.container}>
             <KeyboardAvoidingScrollView >
@@ -210,9 +211,10 @@ export default class SignUpScreen extends Component {
             </KeyboardAvoidingScrollView>      
         </View>
     )
+} 
 };
 
-}
+
 
 //All styling options created below
 const styles= StyleSheet.create({

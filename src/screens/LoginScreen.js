@@ -2,12 +2,9 @@ import React, { Component, useState }  from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Button} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-<<<<<<< HEAD
-=======
 import { Form, TextValidator } from 'react-native-validator-form';
 import { minNumber } from 'react-native-validator-form/lib/ValidationRules';
 
->>>>>>> Prototype-1
 
 const logo= '../images/TraceBio-White.png';
 
@@ -102,11 +99,6 @@ export default class LoginScreen extends  Component  {
             </View>
         )
     }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> Prototype-1
 };
                         
 //All styling options created below

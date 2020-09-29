@@ -19,7 +19,7 @@ export default class SignUpScreen extends Component {
         firstName:'',
         lastName:'',
         email: '',
-       // password: '',
+        //password: '',
         user: {},}
       }
 
@@ -69,6 +69,30 @@ export default class SignUpScreen extends Component {
         this.refs.form.submit();
     }
 // const SignUpScreen =() =>{
+
+    registerUser = () => {
+        const url = 'http://192.168.0.43/PHP-API/user_registration.php';
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+          },
+          body: JSON.stringify({
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            date: this.state.date,
+            email: this.state.email,
+            //password:
+          })
+        }).then((response) => response.json()).then((responseJson) => {
+          //Showing response message coming from server after inserting records
+          Alert.alert(responseJson);
+        }).catch((err) => {
+          console.error(err);
+        });
+    } 
+
     render(){
         var {navigate} = this.props.navigation;
         const { email} = this.state;      
@@ -188,7 +212,7 @@ export default class SignUpScreen extends Component {
                     />
                     <TouchableOpacity title="Submit"
                         onPress={this.handleSubmit} style={styles.button}>
-                                <Text style={styles.buttonText} onPress={() => null}>CREATE ACCOUNT</Text>
+                                <Text style={styles.buttonText} onPress={() => {console.log(password)}}>CREATE ACCOUNT</Text>
                     </TouchableOpacity>
                     
                 </Form>

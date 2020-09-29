@@ -1,16 +1,96 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Ionicons} from '@expo/vector-icons';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Button, KeyboardAvoidingView} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 
-const ProfileScreen =({navigation}) =>{
+const ProfileScreen =(props) =>{
+    /*
+    props that should be passed when calling this screen
+    name: 
+    DOB:
+    Address:
+    Password(?):
+    */
+    const [name, editName] = useState('Mohammed Hamza');
+    const [dob, editDOB] = useState('July 12, 1999');
+    const [address, editAddress] = useState('123 New St, Detroit MI');
+    const [isEditable, editEditable] = useState(false);
+
+    const onEdit = () => {
+        alert("You can now edit your profile");
+        editEditable(true);
+    }
+
+
+    //save changes
+    const saveChanges = () => {
+        alert('Changes saved!');
+        editEditable(false);
+    }
+
     return (
-        <View style={styles.container}>
-            <Header openDrawer={navigation.openDrawer}/>
+        <View behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
+            <KeyboardAvoidingScrollView>
+            <Header openDrawer={props.navigation.openDrawer}/>
             <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image> 
-            <Text style={styles.title}>PROFILE</Text>
+            <View style={styles.header}></View>
+            <Image 
+                style={styles.avatar} 
+                source={{uri: 'https://f1.pngfuel.com/png/386/684/972/face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette-png-clip-art.png'}}
+            />
+            <View style={styles.body}>
+                <View style={[styles.horizontal, styles.name]}>
+                    <TextInput 
+                        value={name}
+                        editable={isEditable}
+                        style={styles.name}
+                        onChangeText={(name) => editName(name)}
+                        />
+                    <TouchableOpacity>
+                        <Icon
+                            name='edit'
+                            size={20}
+                            style={{marginLeft: 5}}
+                            onPress={() => onEdit()}  //need to make name editable for user to change
+                        ></Icon>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.horizontal}>
+                    <Text style={styles.content}>Date of Birth: </Text>
+                    <TextInput
+                        value={dob}
+                        editable={isEditable}
+                        style={styles.content}
+                        onChangeText={(dob) => editDOB(dob)}
+                    />
+                </TouchableOpacity>
+                <View
+                    style={{borderBottomColor: 'black', borderBottomWidth: 1}}
+                />
+                <TouchableOpacity style={styles.horizontal}>
+                    <Text style={styles.content}>Address: </Text>
+                    <TextInput
+                        value={address}
+                        editable={isEditable}
+                        style={styles.content}
+                        onChangeText={(address) => editDOB(address)}
+                    />
+                </TouchableOpacity>
+                <View
+                    style={{borderBottomColor: 'black', borderBottomWidth: 1}}
+                />
+                <Button
+                    title='Save Changes'
+                    color='#ff0000'
+                    onPress={saveChanges}
+                />
+            </View>
+            </KeyboardAvoidingScrollView>
+            <View style={{marginTop:20}}/>
         </View>
     );
 
@@ -59,80 +139,10 @@ const styles= StyleSheet.create({
     buttonText:{
         color: '#FFFFFF',
         fontWeight: 'bold'
-    }
-/*
-import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Button} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; //need to run npm install --save react-native-vector-icons
-
-
-const ProfileScreen = (props) => {
-    props that should be passed when calling this screen
-    name: 
-    DOB:
-    Address:
-    Password(?):
-    const name = props.name !== undefined ? props.name:'Mohammed Hamza' //default name value
-
-    //implement edit name function
-    const editName = (name) => {
-        console.log('In editName function...')
-    }
-
-    //implement edit DOB function
-    const editDOB = (dob) => {
-        console.log('In editDOB function...')
-    }
-
-    //save changes
-    const saveChanges = () => {
-        console.log('In saveChanges functon ...')
-    }
-
-    return (
-        <View>
-            <View style={styles.header}></View>
-            <Image 
-                style={styles.avatar} 
-                source={{uri: 'https://f1.pngfuel.com/png/386/684/972/face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette-png-clip-art.png'}}
-            />
-            <View style={styles.body}>
-                <View style={styles.horizontal}>
-                    <Text style={styles.name}>{name}</Text>
-                    <TouchableOpacity>
-                        <Icon
-                            name='edit'
-                            size={15}
-                            style={{marginLeft: 5}}
-                            onPress={() => editName()}  //need to make name editable for user to change
-                        ></Icon>
-                    </TouchableOpacity>
-                </View>
-                <TouchableOpacity>
-                    <Text style={styles.content}>Date of Birth: July 22, 1999</Text>
-                    <View
-                        style={{borderBottomColor: 'black', borderBottomWidth: 1}}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Text style={styles.content}>Address: 123 North, Detroit MI</Text>
-                    <View
-                        style={{borderBottomColor: 'black', borderBottomWidth: 1}}
-                    />
-                </TouchableOpacity>
-                <Button
-                    title='Save Changes'
-                    color='#ff0000'
-                    onPress={saveChanges}
-                />
-            </View>
-        </View>
-    );
-};
-
-const styles = StyleSheet.create({
+    },
     header:{
-        backgroundColor: '#ff0000',
-        height: 200
+        //backgroundColor: '#ff0000',
+        //height: 200
     },
     avatar: {
         width: 150,
@@ -143,7 +153,7 @@ const styles = StyleSheet.create({
         marginBottom:10,
         alignSelf:'center',
         position: 'absolute',
-        marginTop:130
+        marginTop: 200
       },
       body: {
           marginTop: 100,
@@ -152,7 +162,8 @@ const styles = StyleSheet.create({
       name: {
         fontSize: 25,
         fontWeight: '600',
-        padding: 20
+        padding: 20,
+        alignSelf: 'center'
       },
       content: {
           margin: 10,
@@ -165,7 +176,6 @@ const styles = StyleSheet.create({
           //come back to style the save button
           backgroundColor: 'black'
       }
-*/
-});
+    });
 
 export default ProfileScreen;

@@ -1,44 +1,88 @@
 import React, { Component, useState }  from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Button} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
-
-
-//Create the Login Page
-const LoginScreen =(props) =>{
-    return ( 
-        <View style={styles.container}>  
-            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>    
-            <Text style={styles.title}>LOGIN</Text>
-            <TextInput placeholder='Username' style={styles.inputFields}></TextInput> 
-            <TextInput placeholder='Password' style={styles.inputFields}></TextInput>        
-            <TouchableOpacity style={styles.button} onPress={()=> props.navigation.navigate('Home')}>
-                <Text style={styles.buttonText} >LOGIN</Text>
-            </TouchableOpacity>
-        </View>
-    )
-};
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+<<<<<<< HEAD
+=======
+import { Form, TextValidator } from 'react-native-validator-form';
+import { minNumber } from 'react-native-validator-form/lib/ValidationRules';
+
+>>>>>>> Prototype-1
 
 const logo= '../images/TraceBio-White.png';
 
 //Create the Login Page
-export default class LoginScreen extends Component {
+export default class LoginScreen extends  Component  {
+    
+    constructor () {
+        super();
+        this.state = {
+          email: '',
+          password: ''
+        };
+      }
+    handlePassword = (password) => {
+        this.setState({ password });
+    }
+ 
+    handleEmail = (email) => {
+        this.setState({ email });
+    }
+ 
+    submit = () => {
+        console.log('Submitted');
+    }
+ 
+    handleSubmit = () => {
+        this.refs.form.submit();
+        this.props.navigation.navigate('Home');
+    }
+
     render(){
-        var {navigate} = this.props.navigation;
+        var {navigate} = this.props.navigation;      
+        const { email} = this.state;      
+        const { password} = this.state;
+
         return ( 
             <View style={styles.container}>  
-                <KeyboardAvoidingScrollView >
+                <KeyboardAvoidingScrollView>
                     <View> 
                         <Image style={styles.backgroundImage} source={require(logo)}></Image>    
                         <Text style={styles.title}>Welcome back!</Text>
                     </View>
-                    <View>
-                        <TextInput placeholder='Email' style={styles.inputFields}></TextInput>
-                        <TextInput placeholder='Password' style={styles.inputFields}></TextInput> 
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={styles.buttonText}>SIGN IN</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Form ref="form" onSubmit={this.handleSubmit}>
+                        <TextValidator
+                            name="email"
+                            label="email"
+                            validators={['required', 'isEmail']}
+                            errorMessages={['This field is required', 'Email is invalid']}
+                            errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
+                            placeholder="Email"
+                            type="text"
+                            keyboardType="email-address"
+                            value={email}
+                            onChangeText={this.handleEmail}
+                            style={styles.inputFields}
+                        />
+                        <TextValidator
+                            name="passowrd"
+                            label="password"
+                            validators={['required']}
+                            errorMessages={['This field is required']}
+                            errorStyle={{container: styles.errorMessage}, {text: styles.errorMessage}}
+                            placeholder="Password"
+                            type="text"
+                            value={password}
+                            onChangeText={this.handlePassword}
+                            secureTextEntry={true}
+                            style={styles.inputFields}
+                        />
+                        <TouchableOpacity title="Submit"
+                        onPress={this.handleSubmit} style={styles.button}>
+                                <Text style={styles.buttonText}>SIGN IN</Text>
+                            </TouchableOpacity>
+                    
+                    </Form>
                     <View style={styles.flexContainer}>
                         <View style={styles.horizantalLine} />
                         <View>
@@ -52,14 +96,17 @@ export default class LoginScreen extends Component {
                         <TouchableOpacity>
                             <Text style={styles.linkButton} onPress={()=>navigate("SignUp")}>SIGN UP</Text>
                         </TouchableOpacity>
+                        </View>
                     </View>
-                </View>  
                 </KeyboardAvoidingScrollView>     
             </View>
         )
     }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> Prototype-1
 };
                         
 //All styling options created below
@@ -102,6 +149,11 @@ const styles= StyleSheet.create({
         shadowOffset: { width: 1, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 1
+    },
+    errorMessage:{
+        marginHorizontal:'10%',
+        position:'relative',
+        color:'red'
     },
     title:{
         alignSelf:'center',

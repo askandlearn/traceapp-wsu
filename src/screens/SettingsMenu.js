@@ -1,17 +1,24 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
 import SettingsList from 'react-native-settings-list';
+import Header from '../components/Header-Component';
+
+
 
 export default class SettingsMenu extends Component{
     constructor(){
         super();
         this.onValueChange = this.onValueChange.bind(this);
         this.state = {switchValue: false};
-      }
+      }  
+
       render() {
         var bgColor = '#DCE3F4';
+        var {navigate} = this.props.navigation;     
         return (
+          
           <View style={{backgroundColor:'#f1f1f2',flex:1}}>
+            <Header openDrawer={navigate.openDrawer}/>
             <View style={{borderBottomWidth:1, backgroundColor:'#f1f1f2',borderColor:'#f1f1f2'}}>
            {/* <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>     */}
         <Text style={styles.title}>Health Dashboard</Text>
@@ -30,13 +37,13 @@ export default class SettingsMenu extends Component{
                   title='My Health Information'
                   //titleInfo='Bill Wi The Science Fi'
                   titleInfoStyle={styles.titleInfoStyle}
-                  onPress={() => null}
+                  onPress={()=>navigate('HealthInformation')}
                 />
                 <SettingsList.Item
                   title='Connect TRACE Sensor'
-                  titleInfo='Off'
+                  titleInfo='Disconnected'
                   titleInfoStyle={styles.titleInfoStyle}
-                  onPress={() => null}
+                  onPress={()=>navigate('TraceConnect')}
                 />
                 <SettingsList.Item
                   title='Sync My Data'

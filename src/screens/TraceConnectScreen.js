@@ -3,13 +3,20 @@ import {Ionicons} from '@expo/vector-icons';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
-import SettingsMenu from '../components/SettingsMenu';
+import HealthDashboard from './HealthDashboardScreen';
 
-const SettingsScreen =({navigation}) =>{
+const TraceConnectScreen =({navigation}) =>{
     return (
-        <View style={{flex:1}}>
+        <View style={styles.container}>
             <Header openDrawer={navigation.openDrawer}/>
-            <SettingsMenu/>
+            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>    
+            <Text style={styles.title}>Connect Your TRACE Device</Text>
+            <Image style={styles.deviceImage} source={require('../images/Trace-3D.png')}></Image>
+            <TouchableOpacity title="Connect"
+                onPress={null} style={styles.button}>
+                <Text style={styles.buttonText}>CONNECT</Text>
+            </TouchableOpacity>
+                    
         </View>
     );
 
@@ -27,6 +34,14 @@ const styles= StyleSheet.create({
         marginBottom:70,
         width: '60%',
         height: 100,
+        resizeMode: "stretch"              
+      },
+      deviceImage:{
+        alignSelf:'center',
+        marginTop:30,
+        marginBottom:70,
+        width: '60%',
+        height: '20%',
         resizeMode: "stretch"              
       },
     inputFields:{
@@ -71,4 +86,4 @@ const styles= StyleSheet.create({
     }
 });
 
-export default SettingsScreen;
+export default TraceConnectScreen;

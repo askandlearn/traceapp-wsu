@@ -13,8 +13,9 @@ import HomeScreen from './src/screens/HomeScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import DrawerMenu from './src/screens/DrawerMenu';
 import ASTScreen from './src/screens/ASTScreen';
-
-
+import HealthInformation from './src/screens/HealthInformationScreen';
+import SettingsMenu from './src/screens/SettingsMenu';
+import TraceConnect from './src/screens/TraceConnectScreen';
 
 const NavDrawer= createDrawerNavigator(
 {
@@ -23,8 +24,10 @@ const NavDrawer= createDrawerNavigator(
   SignUp: SignUpScreen,
   Home: HomeScreen,
   Profile: ProfileScreen,
-  Settings: SettingsScreen,
-  AST: ASTScreen
+  Settings: SettingsMenu,
+  AST: ASTScreen,
+  HealthInformation: HealthInformation,
+  TraceConnect: TraceConnect
 },
 {
   //Set the Welcome Page as the first page of the app

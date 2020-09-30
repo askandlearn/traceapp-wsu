@@ -4,7 +4,7 @@
 $hostname = "localhost";
 
 //Define database name
-$databasename = "api";
+$databasename = "trace";
 
 //Define database username - leave blank
 $hostuser = "root";

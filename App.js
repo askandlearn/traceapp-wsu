@@ -10,7 +10,6 @@ import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import HomeScreen from './src/screens/HomeScreen';
-//import SettingsScreen from './src/screens/SettingsScreen';
 import DrawerMenu from './src/screens/DrawerMenu';
 import ASTScreen from './src/screens/ASTScreen';
 import HealthInformation from './src/screens/HealthInformationScreen';

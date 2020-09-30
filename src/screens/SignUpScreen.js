@@ -4,6 +4,7 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 import DatePicker from 'react-native-datepicker';
 import { Form, TextValidator } from 'react-native-validator-form';
 import { minNumber } from 'react-native-validator-form/lib/ValidationRules';
+import * as Animatable from 'react-native-animatable';
 
 
 //Create the Sign Up Page
@@ -17,6 +18,18 @@ const SignUpScreen = (props) =>{
     const [date,setDate] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('');
+    const [confirmPass, setConfirmPass] = useState('');
+
+    //Validation flags
+    const[validation_flags, setValidationFlags] = useState({
+        isValidFirst: true,
+        isValidLast: true,
+        isValidEmail: true,
+        isValidDate: true,
+        isValidPassword: true,
+        isSamePassword: true
+
+    })
 
     const registerUser = () => {
         const SUCCESS_MESSAGE = 'User Registered Successfully!';
@@ -54,6 +67,102 @@ const SignUpScreen = (props) =>{
         console.log(password);
     }
 
+    //Validation handling functions start here
+    const handleFirst = (val) => {
+        if(val.trim().length > 0){
+            setValidationFlags({
+                ...validation_flags,
+                isValidFirst: true
+            });
+        }
+        else{
+            setValidationFlags({
+                ...validation_flags,
+                isValidFirst: false
+            }); 
+        }
+    }
+
+    const handleLast = (val) => {
+        if(val.trim().length > 0){
+            setValidationFlags({
+                ...validation_flags,
+                isValidLast: true
+            });
+        }
+        else{
+            setValidationFlags({
+                ...validation_flags,
+                isValidLast: false
+            }); 
+        }
+    }
+
+    const handleEmail = (val) => {
+        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+        if(!pattern.test(val)){
+            setValidationFlags({
+                ...validation_flags,
+                isValidEmail: false
+            })
+        }
+        else{
+            setValidationFlags({
+                ...validation_flags,
+                isValidEmail: true
+            })
+        }
+    }
+
+    const handleDate = (val) => {
+        const [year,month,day] = val.split('-');
+
+        if(year.length < 4 || year.length > 4 || month.length !== 2 || day.length !== 2){
+            setValidationFlags({
+                ...validation_flags,
+                isValidDate: false
+            })
+        }
+        else{
+            setValidationFlags({
+                ...validation_flags,
+                isValidDate: true
+            })
+        }
+
+    }
+
+    const handlePassword = (val) => {
+        if(val.length < 8){
+            setValidationFlags({
+                ...validation_flags,
+                isValidPassword: false
+            })
+        }
+        else{
+            setValidationFlags({
+                ...validation_flags,
+                isValidPassword: true
+            })
+        }
+    }
+
+    const handleConfirmPassword = (val) => {
+        setConfirmPass(val);
+        if(password === val){
+            setValidationFlags({
+                ...validation_flags,
+                isSamePassword: true
+            })
+        }
+        else{
+            setValidationFlags({
+                ...validation_flags,
+                isSamePassword: false
+            })
+        }
+    }
+
     return ( 
         <View style={styles.container}>
             <KeyboardAvoidingScrollView >
@@ -66,32 +175,85 @@ const SignUpScreen = (props) =>{
                     placeholder='Firstname'
                     value={first}
                     onChangeText={(val) => setFirst(val)}
+                    onEndEditing={(e) => handleFirst(e.nativeEvent.text)}
                 />
+                {/* Insert validation prompt */}
+                {validation_flags.isValidFirst ? null :
+                <Animatable.View animation='fadeInLeft' duration={500}>
+                    <Text style={styles.errorMessage}>Field cannot be empty</Text>
+                </Animatable.View>
+                }
+                {/* End of validation prompt */}
                 <TextInput
                     style={styles.inputFields}
                     placeholder='Lastname'
                     value={last}
                     onChangeText={(val) => setLast(val)}
+                    onEndEditing={(e) => handleLast(e.nativeEvent.text)}
                 />
+                {/* Insert validation prompt */}
+                {validation_flags.isValidLast ? null :
+                <Animatable.View animation='fadeInLeft' duration={500}>
+                    <Text style={styles.errorMessage}>Field cannot be empty</Text>
+                </Animatable.View>
+                }
+                {/* End of validation prompt */}
                 <TextInput
                     style={styles.inputFields}
                     placeholder='Email'
                     value={email}
                     onChangeText={(val) => setEmail(val)}
+                    onEndEditing={(e) => handleEmail(e.nativeEvent.text)}
                 />
+                {/* Insert validation prompt */}
+                {validation_flags.isValidEmail ? null :
+                <Animatable.View animation='fadeInLeft' duration={500}>
+                    <Text style={styles.errorMessage}>Not in valid email format (name@example.com)</Text>
+                </Animatable.View>
+                }
+                {/* End of validation prompt */}
                 <TextInput
                     style={styles.inputFields}
                     placeholder='Birthdate (yyyy-mm-dd)'
                     value={date}
                     onChangeText={(val) => setDate(val)}
                 />
+                {/* Insert validation prompt */}
+                {validation_flags.isValidDate ? null :
+                <Animatable.View animation='fadeInLeft' duration={500}>
+                    <Text style={styles.errorMessage}>Format incorrect (yyyy-mm-dd) </Text>
+                </Animatable.View>
+                }
+                {/* End of validation prompt */}
                 <TextInput
                     style={styles.inputFields}
                     placeholder='Password'
                     value={password}
                     secureTextEntry
                     onChangeText={(val) => setPassword(val)}
+                    onEndEditing={(e) => handlePassword(e.nativeEvent.text)}
                 />
+                {/* Insert validation prompt */}
+                {validation_flags.isValidPassword ? null :
+                <Animatable.View animation='fadeInLeft' duration={500}>
+                    <Text style={styles.errorMessage}>Passsword must be at least 8 characters long</Text>
+                </Animatable.View>
+                }
+                {/* End of validation prompt */}
+                <TextInput
+                    style={styles.inputFields}
+                    placeholder='Confirm Password'
+                    value={confirmPass}
+                    secureTextEntry
+                    onChangeText={(val) => handleConfirmPassword(val)}
+                />
+                {/* Insert validation prompt */}
+                {validation_flags.isSamePassword ? null :
+                <Animatable.View animation='fadeInLeft' duration={500}>
+                    <Text style={styles.errorMessage}>Passswords do not match</Text>
+                </Animatable.View>
+                }
+                {/* End of validation prompt */}
                 <TouchableOpacity title="Submit"style={styles.button}>
                         <Text style={styles.buttonText} onPress={registerUser}>CREATE ACCOUNT</Text>
                 </TouchableOpacity>

@@ -38,10 +38,11 @@ const HealthInfoScreen =({navigation}) =>{
 const [height, setHeight]= useState('');
 const [weight, setWeight]= useState('');
 const [activity, setActivity]= useState('');
-  const handleHeight=(value)=>{
-     
-    console.log(value);
-  }      
+const saveChanges = () => {
+  alert('Changes saved!');
+ 
+}
+
         return (
            <View style = {styles.container}>
                 <Header openDrawer={navigation.openDrawer}/>
@@ -66,7 +67,7 @@ const [activity, setActivity]= useState('');
                     <Text style={styles.result}  >
                     Current Activity Level: {activity}
                     </Text>
-                    <TouchableOpacity title="Save" style={styles.button} onPress={null}>
+                    <TouchableOpacity title="Save" style={styles.button} onPress={saveChanges}>
                     <Text style={styles.buttonText} >SAVE</Text>
                 </TouchableOpacity>
                 </KeyboardAvoidingScrollView>

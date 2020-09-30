@@ -8,7 +8,7 @@ import { minNumber } from 'react-native-validator-form/lib/ValidationRules';
 
 //Create the Sign Up Page
 
-const logo= '../images/TraceBio-White.png';
+const logo = '../images/TraceBio-White.png';
 
 const SignUpScreen = (props) =>{
 

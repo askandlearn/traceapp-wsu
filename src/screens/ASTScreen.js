@@ -21,6 +21,8 @@ const ASTScreen =({navigation}) =>{
 
 };
 
+export default ASTScreen;
+
 const styles= StyleSheet.create({
     container: {
         flex: 1,

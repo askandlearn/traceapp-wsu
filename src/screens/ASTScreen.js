@@ -10,15 +10,20 @@ const ASTScreen =({navigation}) =>{
     return (
         <View style={styles.container}>
             <Header openDrawer={navigation.openDrawer}/>
-            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image> 
+            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>
             <ScrollView style={styles.container}>
-                <Image style={styles.ASTfigure} source={require('../images/Humanfigure_CirculatorySystem.png')}></Image>
-                 <Text style={{padding:20}}>
+                {/*<Image style={styles.ASTfigure} source={require('../images/HumanSilhouette_t.png.png')}></Image>*/}
+                <View style={styles.NavBarDivider}/>
+                 <Text style={{paddingHorizontal: 30, fontSize: 16, paddingVertical: 15 }}>
                       Welcome to the Active Standup Test. This test will provide TRACE with important data regarding your blood flow dynamics.</Text>
-                 <Text style={{padding:25}}>Instructions:</Text>
-                 <Text style={{padding:25}}>1. Lay flat on your back</Text>
-                 <Text style={{padding:25}}>2. Wait 3 minutes</Text>
-                 <Text style={{padding:25}}>3. After 3 minutes pass, stand back up</Text>
+                      <View style={styles.NavBarDivider}/>
+                      <Text style={{paddingHorizontal:30, paddingVertical: 15, fontSize: 16}}>To begin, lay flat on your back. Wait 3 minutes. After 3 minutes pass, stand back up.</Text>
+                    <View style={styles.NavBarDivider}/>
+                    <Text style={{paddingHorizontal: 30, fontSize: 16, paddingVertical: 15 }}>NOTE: While the test is being conducted, your TRACE device will continue to run analytics. After the 3 minute mark, please make sure to stand still to ensure your TRACE device performs accurate diagnostics.</Text>
+                    <View style={styles.NavBarDivider}/>
+                 {/*<Text style={{paddingHorizontal:50, fontStyle: 'italic'}}>1. Lay flat on your back</Text>
+                 <Text style={{paddingHorizontal:50, fontStyle: 'italic'}}>2. Wait 3 minutes</Text>
+    <Text style={{paddingHorizontal:50}}>3. After 3 minutes pass, stand back up</Text>*/}
             </ScrollView>
         </View>
     );
@@ -34,7 +39,7 @@ const styles= StyleSheet.create({
       },
     backgroundImage:{
         alignSelf:'center',
-        marginTop:30,
+        marginTop:10,
         marginBottom:70,
         width: '60%',
         height: 100,
@@ -85,5 +90,11 @@ const styles= StyleSheet.create({
         height:214,
         alignSelf: 'center',
         marginBottom: 20
+    },
+    NavBarDivider:{
+        height: 1,
+        width: "100%",
+        backgroundColor: "lightgray",
+        marginVertical: 10
     }
 });

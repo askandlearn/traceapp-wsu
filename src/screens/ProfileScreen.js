@@ -15,9 +15,10 @@ const ProfileScreen =(props) =>{
     Address:
     Password(?):
     */
-    const [name, editName] = useState('Mohammed Hamza');
-    const [dob, editDOB] = useState('July 12, 1999');
-    const [address, editAddress] = useState('123 New St, Detroit MI');
+    const [name, editName] = useState('John Doe');
+    const [email, setEmail] = useState('example@email.com');
+    const [dob, editDOB] = useState('July 22, 1999');
+    const [address, editAddress] = useState('');
     const [isEditable, editEditable] = useState(false);
 
     const onEdit = () => {
@@ -60,6 +61,18 @@ const ProfileScreen =(props) =>{
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.horizontal}>
+                    <Text style={styles.content}>Email: </Text>
+                    <TextInput
+                        value={email}
+                        editable={isEditable}
+                        style={styles.content}
+                        onChangeText={(email) => setEmail(email)}
+                    />
+                </TouchableOpacity>
+                <View
+                    style={{borderBottomColor: 'black', borderBottomWidth: 1}}
+                />
+                <TouchableOpacity style={styles.horizontal}>
                     <Text style={styles.content}>Date of Birth: </Text>
                     <TextInput
                         value={dob}
@@ -74,10 +87,12 @@ const ProfileScreen =(props) =>{
                 <TouchableOpacity style={styles.horizontal}>
                     <Text style={styles.content}>Address: </Text>
                     <TextInput
+                        placeholder='No address entered yet'
+                        placeholderTextColor='#fff'
                         value={address}
                         editable={isEditable}
                         style={styles.content}
-                        onChangeText={(address) => editDOB(address)}
+                        onChangeText={(address) => editAddress(address)}
                     />
                 </TouchableOpacity>
                 <View
@@ -86,6 +101,7 @@ const ProfileScreen =(props) =>{
                 <Button
                     title='Save Changes'
                     color='#ff0000'
+                    style={styles.save}
                     onPress={saveChanges}
                 />
             </View>
@@ -145,15 +161,15 @@ const styles= StyleSheet.create({
         //height: 200
     },
     avatar: {
-        width: 150,
-        height: 150,
-        borderRadius: 150 / 2,
+        width: 100,
+        height: 100,
+        borderRadius: 100 / 2,
         borderWidth: 4,
         borderColor: "white",
         marginBottom:10,
         alignSelf:'center',
         position: 'absolute',
-        marginTop: 200
+        marginTop: 275
       },
       body: {
           marginTop: 100,
@@ -167,14 +183,14 @@ const styles= StyleSheet.create({
       },
       content: {
           margin: 10,
-          fontSize: 20,
+          fontSize: 20
       },
       horizontal:{
           flexDirection: 'row'
       },
       save: {
           //come back to style the save button
-          backgroundColor: 'black'
+          marginTop: 10
       }
     });
 

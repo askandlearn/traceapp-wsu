@@ -15,6 +15,10 @@ const options = [
         icon: "md-contact"
     },
     {
+        name: "Active Standup Test",
+        icon: "heartbeat"
+    },
+    {
         name: "Settings",
         icon: "ios-settings"
     },

@@ -38,6 +38,13 @@ class DrawerMenu extends Component {
     render() {
         return(
             <View style={StyleSheet.container}>
+                <Image 
+                style={styles.avatar} 
+                source={{uri: 'https://f1.pngfuel.com/png/386/684/972/face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette-png-clip-art.png'}}
+            />
+            <Text style={styles.profileText}>Mohammad Hamza</Text>
+            <Text style={{color:"gray", marginBottom: 10, paddingHorizontal: 50}}>mohammad@hamza.com</Text>
+            <View style={styles.NavBarDivider}/>
                 <FlatList
                 data={options}
                 renderItem={({item})=> (
@@ -79,7 +86,29 @@ const styles= StyleSheet.create({
        fontWeight: 'bold',
        paddingHorizontal: 25
        
-   }
+   },
+   avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 4,
+    borderColor: "white",
+    marginBottom:10,
+    alignSelf:'center',
+    marginTop: 20
+  },
+  profileText: {
+      fontWeight: 'bold',
+      fontSize: 12,
+      marginTop: 10,
+      paddingHorizontal: 80
+  },
+  NavBarDivider:{
+      height: 1,
+      width: "100%",
+      backgroundColor: "lightgray",
+      marginVertical: 10
+  }
 
 });
 

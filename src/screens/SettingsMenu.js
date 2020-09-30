@@ -3,22 +3,17 @@ import {View, Text, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react
 import SettingsList from 'react-native-settings-list';
 import Header from '../components/Header-Component';
 
+  
+const SettingsMenu =(props) =>{ 
 
-
-export default class SettingsMenu extends Component{
-    constructor(){
-        super();
-        this.onValueChange = this.onValueChange.bind(this);
-        this.state = {switchValue: false};
-      }  
-
-      render() {
         var bgColor = '#DCE3F4';
-        var {navigate} = this.props.navigation;     
+       // var {navigate} = this.props.navigation;  
+        // this.onValueChange.bind(this);
+        //this.state = {switchValue: false};   
         return (
           
           <View style={{backgroundColor:'#f1f1f2',flex:1}}>
-            <Header openDrawer={navigate.openDrawer}/>
+            <Header openDrawer={props.navigation.navigate.openDrawer}/>
             <View style={{borderBottomWidth:1, backgroundColor:'#f1f1f2',borderColor:'#f1f1f2'}}>
            {/* <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>     */}
         <Text style={styles.title}>Health Dashboard</Text>
@@ -37,13 +32,13 @@ export default class SettingsMenu extends Component{
                   title='My Health Information'
                   //titleInfo='Bill Wi The Science Fi'
                   titleInfoStyle={styles.titleInfoStyle}
-                  onPress={()=>navigate('HealthInformation')}
+                  onPress={()=>props.navigation.navigate('HealthInformation')}
                 />
                 <SettingsList.Item
                   title='Connect TRACE Sensor'
                   titleInfo='Disconnected'
                   titleInfoStyle={styles.titleInfoStyle}
-                  onPress={()=>navigate('TraceConnect')}
+                  onPress={()=>props.navigation.navigate('TraceConnect')}
                 />
                 <SettingsList.Item
                   title='Sync My Data'
@@ -54,11 +49,10 @@ export default class SettingsMenu extends Component{
             </View>
           </View>
         );
-      }
-      onValueChange(value){
+      
+   
         this.setState({switchValue: value});
-      }
-    
+      
 };
 
 const styles= StyleSheet.create({
@@ -107,3 +101,4 @@ const styles= StyleSheet.create({
     }
 });
 
+export default SettingsMenu;

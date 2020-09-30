@@ -40,7 +40,7 @@ const styles= StyleSheet.create({
         alignSelf:'center',
         marginTop:30,
         marginBottom:70,
-        width: '60%',
+        width: '55%',
         height: '20%',
         resizeMode: "stretch"              
       },

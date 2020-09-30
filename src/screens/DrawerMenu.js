@@ -16,7 +16,7 @@ const options = [
     },
     {
         name: "Active Standup Test",
-        icon: "heartbeat"
+        icon: "ios-heart"
     },
     {
         name: "Settings",

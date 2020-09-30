@@ -15,7 +15,7 @@ const options = [
         icon: "md-contact"
     },
     {
-        name: "Active Standup Test",
+        name: "AST",
         icon: "ios-heart"
     },
     {

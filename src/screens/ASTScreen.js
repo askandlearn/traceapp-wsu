@@ -15,7 +15,11 @@ const ASTScreen =({navigation}) =>{
             <Image source={require('../images/Humanfigure_CirculatorySystem.png')}></Image>
             <Text style={{padding:20}}>
                 Welcome to the Active Standup Test. This test will provide TRACE with important data regarding your blood flow dynamics.
+                Instructions:
             </Text>
+            <Text style={{padding:20}}>1. Lay flat on your back</Text>
+            <Text style={{padding:20}}>2. Wait 3 minutes</Text>
+            <Text style={{padding:20}}>3. After 3 minutes pass, stand back up</Text>
         </View>
     );
 

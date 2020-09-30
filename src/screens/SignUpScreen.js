@@ -27,36 +27,44 @@ const SignUpScreen = (props) =>{
         isValidEmail: true,
         isValidDate: true,
         isValidPassword: true,
-        isSamePassword: true
+        isSamePassword: true,
+        isFilled: false
 
     })
 
     const registerUser = () => {
-        const SUCCESS_MESSAGE = 'User Registered Successfully!';
-        const url = 'http://192.168.7.97/PHP-API/user_registration.php';
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'Accept':'application/json',
-            'Content-Type':'application/json',
-          },
-          body: JSON.stringify({
-            type: 'signup',
-            firstName: first,
-            lastName: last,
-            date: date,
-            email: email,
-            password: password
-          })
-        }).then((response) => response.json()).then((responseJson) => {
-          //Showing response message coming from server after inserting records
-          Alert.alert(responseJson);
-          if(responseJson === SUCCESS_MESSAGE){
-              props.navigation.navigate('Login');
-          }
-        }).catch((err) => {
-          console.error(err);
-        });
+        checkIsFilled();
+        if(!validation_flags.isFilled)
+        {
+            Alert.alert('One or more fields are done empty or incorrect!')
+        }
+        else{
+            const SUCCESS_MESSAGE = 'User Registered Successfully!';
+            const url = 'http://192.168.7.97/PHP-API/user_registration.php';
+            fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept':'application/json',
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({
+                type: 'signup',
+                firstName: first,
+                lastName: last,
+                date: date,
+                email: email,
+                password: password
+            })
+            }).then((response) => response.json()).then((responseJson) => {
+            //Showing response message coming from server after inserting records
+            Alert.alert(responseJson);
+            if(responseJson === SUCCESS_MESSAGE){
+                props.navigation.navigate('Login');
+            }
+            }).catch((err) => {
+            console.error(err);
+            });
+        }
     } 
 
     const display = () => {
@@ -159,6 +167,15 @@ const SignUpScreen = (props) =>{
             setValidationFlags({
                 ...validation_flags,
                 isSamePassword: false
+            })
+        }
+    }
+
+    const checkIsFilled = () => {
+        if(first && last && date && email && password && confirmPass){
+            setValidationFlags({
+                ...validation_flags,
+                isFilled: true
             })
         }
     }

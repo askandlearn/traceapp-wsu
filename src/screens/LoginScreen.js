@@ -23,24 +23,24 @@ const LoginScreen = (props) => {
         const SUCCESS_MESSAGE = 'Login successful!';
         const url = 'http://192.168.7.97/PHP-API/user_registration.php';
         fetch(url, {
-          method: 'POST',
-          headers: {
+        method: 'POST',
+        headers: {
             'Accept':'application/json',
             'Content-Type':'application/json',
-          },
-          body: JSON.stringify({
+        },
+        body: JSON.stringify({
             type: 'signin',
             email: email,
             password: password
-          })
+        })
         }).then((response) => response.json()).then((responseJson) => {
-          //Showing response message coming from server after inserting records
-          Alert.alert(responseJson);
-          if(responseJson == SUCCESS_MESSAGE){
-              props.navigation.navigate('Home');
-          }
+        //Showing response message coming from server after inserting records
+        Alert.alert(responseJson);
+        if(responseJson == SUCCESS_MESSAGE){
+            props.navigation.navigate('Home');
+        }
         }).catch((err) => {
-          console.error(err);
+        console.error(err);
         });
     }
 

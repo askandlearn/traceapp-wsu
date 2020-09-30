@@ -135,7 +135,7 @@ const styles= StyleSheet.create({
       alignSelf:'center',
       marginHorizontal: '10%',
       marginVertical: 10,
-      color:'#ffffff',
+      color:'#202020',
       fontWeight:'bold',
       fontSize: 30
     },

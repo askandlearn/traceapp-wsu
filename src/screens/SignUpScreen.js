@@ -1,5 +1,5 @@
-import React,  {Component} from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React,  {Component, useState} from 'react';
+import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert} from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import DatePicker from 'react-native-datepicker';
 import { Form, TextValidator } from 'react-native-validator-form';
@@ -10,68 +10,17 @@ import { minNumber } from 'react-native-validator-form/lib/ValidationRules';
 
 const logo= '../images/TraceBio-White.png';
 
-export default class SignUpScreen extends Component {
-    
-    constructor(props){
-        super(props)
-        this.state = {
-        date:'',
-        firstName:'',
-        lastName:'',
-        email: '',
-        //password: '',
-        user: {},}
-      }
+const SignUpScreen = (props) =>{
 
-    handleFirstName = (firstName) => {
-        this.setState({ firstName });
-    }
+    const [first,setFirst] = useState('')
+    const [last,setLast] = useState('')
+    const [date,setDate] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('');
 
-    handleLastName = (lastName) => {
-        this.setState({ lastName });
-    }
-    handleEmail = (email) => {
-        this.setState({ email });
-    }
-    // handlePassword = (password) => {
-    //     this.setState({ password });
-    // }
-    componentWillMount() {
-        // custom rule will have name 'isPasswordMatch'
-        Form.addValidationRule('isPasswordMatch', (value) => {
-            if (value !== this.state.user.password) {
-                return false;
-            }
-            return true;
-        });
-    }
- 
-    componentWillUnmount() {
-        Form.removeValidationRule('isPasswordMatch');
-    }
-
-    handlePassword = (event) => {
-        const { user } = this.state;
-        user.password = event.nativeEvent.text;
-        this.setState({ user });
-    }
- 
-    handleRepeatPassword = (event) => {
-        const { user } = this.state;
-        user.repeatPassword = event.nativeEvent.text;
-        this.setState({ user });
-    }
-    submit = () => {
-        console.log('Submitted');
-    }
- 
-    handleSubmit = () => {
-        this.refs.form.submit();
-    }
-// const SignUpScreen =() =>{
-
-    registerUser = () => {
-        const url = 'http://192.168.0.43/PHP-API/user_registration.php';
+    const registerUser = () => {
+        const SUCCESS_MESSAGE = 'User Registered Successfully!';
+        const url = 'http://192.168.7.97/PHP-API/user_registration.php';
         fetch(url, {
           method: 'POST',
           headers: {
@@ -79,28 +28,31 @@ export default class SignUpScreen extends Component {
             'Content-Type':'application/json',
           },
           body: JSON.stringify({
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            date: this.state.date,
-            email: this.state.email,
-            //password:
+            type: 'signup',
+            firstName: first,
+            lastName: last,
+            date: date,
+            email: email,
+            password: password
           })
         }).then((response) => response.json()).then((responseJson) => {
           //Showing response message coming from server after inserting records
           Alert.alert(responseJson);
+          if(responseJson === SUCCESS_MESSAGE){
+              props.navigation.navigate('Login');
+          }
         }).catch((err) => {
           console.error(err);
         });
     } 
 
-    render(){
-        var {navigate} = this.props.navigation;
-        const { email} = this.state;      
-        const { password} = this.state;
-        const { firstName} = this.state;      
-        const { lastName} = this.state;  
-        const { user } = this.state;    
-
+    const display = () => {
+        console.log(first);
+        console.log(last);
+        console.log(date);
+        console.log(email);
+        console.log(password);
+    }
 
     return ( 
         <View style={styles.container}>
@@ -109,113 +61,40 @@ export default class SignUpScreen extends Component {
                     <Image style={styles.backgroundImage} source={require(logo)}></Image>    
                     <Text style={styles.title}>Sign up to get started!</Text>
                 </View>
-
-                <Form ref="form" onSubmit={this.handleSubmit}>
-                   
-                        <TextValidator 
-                        name="firstName"
-                        label="firstName" 
-                        placeholder='First Name'
-                        validators={['required']}
-                        errorMessages={['This field is required']}
-                        errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
-                        type="text"
-                        value={firstName}
-                        onChangeText={this.handleFirstName}
-                        style={styles.inputFields}>
-                        </TextValidator>
-                        <TextValidator
-                        name="lastName"
-                        label="lastName" 
-                        placeholder='Last Name' 
-                        validators={['required']}
-                        errorMessages={['This field is required']}
-                        errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
-                        type="text"
-                        value={lastName}
-                        onChangeText={this.handleLastName}
-                        style={styles.inputFields}>
-                        </TextValidator>
-
-                    
-                    <DatePicker       
-                    style={[styles.inputFields]}
-                    placeholder="Date of Birth"
-                    date={this.state.date}
-                    mode="date"
-                    format="YYYY-MM-DD"
-                    minDate="1920-01-01"
-                    maxDate={new Date()}
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                        width:0,
-                        height:0        
-                        },
-                        dateInput: {
-                            borderWidth:0,                   
-                        },
-                        placeholderText:{
-                            alignSelf:'flex-start',
-                            color: 'rgba(0, 0, 0, .25)',
-                            fontWeight:'bold',
-                            paddingBottom:'5%'
-                        },
-                        dateText:{
-                            color: 'rgba(0, 0, 0, 1)',
-                            fontWeight: 'bold'
-                        }
-                    }}
-                    onDateChange={(date) => {this.setState({date: date})}}
-                     ></DatePicker>
-                    <TextValidator
-                        name="email"
-                        label="email"
-                        validators={['required', 'isEmail']}
-                        errorMessages={['This field is required', 'Email is invalid']}
-                        errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
-                        placeholder="Email"
-                        type="text"
-                        keyboardType="email-address"
-                        value={email}
-                        onChangeText={this.handleEmail}
-                        style={styles.inputFields}
-                    
-                    />
-                    <TextValidator
-                        name="passowrd"
-                        label="password"
-                        validators={['required', 'minStringLength:8', 'maxStringLength:15']}
-                        errorMessages={['This field is required', 'Password must be at least 8 characters', 'Password cannot exceed 15 characters']}
-                        errorStyle={{container: styles.errorMessage}, {text: styles.errorMessage}}
-                        placeholder="Password"
-                        type="text"
-                        value={user.password}
-                        onChange={this.handlePassword}
-                        secureTextEntry={true}
-                        style={styles.inputFields}
-                    />
-                    <TextValidator
-                        name="confirmPassowrd"
-                        label="confirmPassowrd"
-                        validators={['isPasswordMatch','required', 'minStringLength:8', 'maxStringLength:15']}
-                        errorMessages={['Password mismatch','This field is required', 'Password must be at least 8 characters', 'Password cannot exceed 15 characters']}
-                        type="text"
-                        value={user.repeatPassword}
-                        onChange={this.handleRepeatPassword}
-                        
-                        errorStyle={{container: styles.errorMessage}, {text: styles.errorMessage}}
-                        placeholder="Confirm Passowrd"        
-                        secureTextEntry={true}
-                        style={styles.inputFields}
-                    />
-                    <TouchableOpacity title="Submit"
-                        onPress={this.handleSubmit} style={styles.button}>
-                                <Text style={styles.buttonText} onPress={() => {console.log(password)}}>CREATE ACCOUNT</Text>
-                    </TouchableOpacity>
-                    
-                </Form>
+                <TextInput
+                    style={styles.inputFields}
+                    placeholder='Firstname'
+                    value={first}
+                    onChangeText={(val) => setFirst(val)}
+                />
+                <TextInput
+                    style={styles.inputFields}
+                    placeholder='Lastname'
+                    value={last}
+                    onChangeText={(val) => setLast(val)}
+                />
+                <TextInput
+                    style={styles.inputFields}
+                    placeholder='Email'
+                    value={email}
+                    onChangeText={(val) => setEmail(val)}
+                />
+                <TextInput
+                    style={styles.inputFields}
+                    placeholder='Birthdate (yyyy-mm-dd)'
+                    value={date}
+                    onChangeText={(val) => setDate(val)}
+                />
+                <TextInput
+                    style={styles.inputFields}
+                    placeholder='Password'
+                    value={password}
+                    secureTextEntry
+                    onChangeText={(val) => setPassword(val)}
+                />
+                <TouchableOpacity title="Submit"style={styles.button}>
+                        <Text style={styles.buttonText} onPress={registerUser}>CREATE ACCOUNT</Text>
+                </TouchableOpacity>
                 <View style={styles.flexContainer}>
                 <View style={styles.horizantalLine} />
                 <View>
@@ -228,7 +107,7 @@ export default class SignUpScreen extends Component {
                     <Text style={styles.otherText}>Already a member?</Text>
                     <TouchableOpacity>
                         <Text style={styles.linkButton} onPress={
-                                        ()=>navigate("Login")}>SIGN IN</Text>
+                                        ()=>props.navigation.navigate("Login")}>SIGN IN</Text>
                     </TouchableOpacity>
                     </View>
                 </View> 
@@ -237,8 +116,6 @@ export default class SignUpScreen extends Component {
     )
     
 };
-
-}
 
 //All styling options created below
 const styles= StyleSheet.create({
@@ -386,4 +263,4 @@ const styles= StyleSheet.create({
     // }
 });
 
-//export default SignUpScreen;
+export default SignUpScreen;

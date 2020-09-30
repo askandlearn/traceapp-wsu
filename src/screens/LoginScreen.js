@@ -1,5 +1,5 @@
 import React, { Component, useState }  from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Button} from 'react-native';
+import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Button, Alert} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import { Form, TextValidator } from 'react-native-validator-form';
@@ -9,96 +9,84 @@ import { minNumber } from 'react-native-validator-form/lib/ValidationRules';
 const logo= '../images/TraceBio-White.png';
 
 //Create the Login Page
-export default class LoginScreen extends  Component  {
-    
-    constructor () {
-        super();
-        this.state = {
-          email: '',
-          password: ''
-        };
-      }
-    handlePassword = (password) => {
-        this.setState({ password });
-    }
- 
-    handleEmail = (email) => {
-        this.setState({ email });
-    }
- 
-    submit = () => {
-        console.log('Submitted');
-    }
- 
-    handleSubmit = () => {
-        this.refs.form.submit();
-        this.props.navigation.navigate('Home');
+const LoginScreen = (props) => {
+
+    /*
+        Its important that the default values for email and password are ''(empty strings) or else if users trys 
+        to login without inputting anything, null values will passed onto the php script and then the database. The script
+        does not know how to handle null values.
+    */
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const loginUser = () => {
+        const SUCCESS_MESSAGE = 'Login successful!';
+        const url = 'http://192.168.7.97/PHP-API/user_registration.php';
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+          },
+          body: JSON.stringify({
+            type: 'signin',
+            email: email,
+            password: password
+          })
+        }).then((response) => response.json()).then((responseJson) => {
+          //Showing response message coming from server after inserting records
+          Alert.alert(responseJson);
+          if(responseJson == SUCCESS_MESSAGE){
+              props.navigation.navigate('Home');
+          }
+        }).catch((err) => {
+          console.error(err);
+        });
     }
 
-    render(){
-        var {navigate} = this.props.navigation;      
-        const { email} = this.state;      
-        const { password} = this.state;
-
-        return ( 
-            <View style={styles.container}>  
-                <KeyboardAvoidingScrollView>
-                    <View> 
-                        <Image style={styles.backgroundImage} source={require(logo)}></Image>    
-                        <Text style={styles.title}>Welcome back!</Text>
+    return ( 
+        <View style={styles.container}>  
+            <KeyboardAvoidingScrollView>
+                <View> 
+                    <Image style={styles.backgroundImage} source={require(logo)}></Image>    
+                    <Text style={styles.title}>Welcome back!</Text>
+                </View>
+                <TextInput
+                    style={styles.inputFields}
+                    label='Email'
+                    placeholder='Email'
+                    value={email}
+                    onChangeText={(val) => setEmail(val)}
+                />
+                 <TextInput
+                    style={styles.inputFields}
+                    label='Password'
+                    placeholder='Password'
+                    value={password}
+                    secureTextEntry
+                    onChangeText={(val) => setPassword(val)}
+                />
+                <TouchableOpacity title="Submit" style={styles.button} onPress={loginUser}>
+                    <Text style={styles.buttonText} onPress={loginUser}>SIGN IN</Text>
+                </TouchableOpacity>
+                <View style={styles.flexContainer}>
+                    <View style={styles.horizantalLine} />
+                    <View>
+                        <Text style={styles.orOption}>Or sign in with</Text>
                     </View>
-                    <Form ref="form" onSubmit={this.handleSubmit}>
-                        <TextValidator
-                            name="email"
-                            label="email"
-                            validators={['required', 'isEmail']}
-                            errorMessages={['This field is required', 'Email is invalid']}
-                            errorStyle={{ container: { top: 0, left: '10%', position: 'relative' }, text: { color: 'red' }, underlineValidColor: 'gray', underlineInvalidColor: 'red' } }
-                            placeholder="Email"
-                            type="text"
-                            keyboardType="email-address"
-                            value={email}
-                            onChangeText={this.handleEmail}
-                            style={styles.inputFields}
-                        />
-                        <TextValidator
-                            name="passowrd"
-                            label="password"
-                            validators={['required']}
-                            errorMessages={['This field is required']}
-                            errorStyle={{container: styles.errorMessage}, {text: styles.errorMessage}}
-                            placeholder="Password"
-                            type="text"
-                            value={password}
-                            onChangeText={this.handlePassword}
-                            secureTextEntry={true}
-                            style={styles.inputFields}
-                        />
-                        <TouchableOpacity title="Submit"
-                        onPress={this.handleSubmit} style={styles.button}>
-                                <Text style={styles.buttonText}>SIGN IN</Text>
-                            </TouchableOpacity>
-                    
-                    </Form>
+                    <View style={styles.horizantalLine} />  
+                </View>
+                <View style={[ styles.bottomContainer]}>
                     <View style={styles.flexContainer}>
-                        <View style={styles.horizantalLine} />
-                        <View>
-                            <Text style={styles.orOption}>Or sign in with</Text>
-                        </View>
-                        <View style={styles.horizantalLine} />  
+                    <Text style={styles.otherText}>Not a member?</Text>
+                    <TouchableOpacity>
+                        <Text style={styles.linkButton} onPress={()=>props.navigation.navigate("SignUp")}>SIGN UP</Text>
+                    </TouchableOpacity>
                     </View>
-                    <View style={[ styles.bottomContainer]}>
-                        <View style={styles.flexContainer}>
-                        <Text style={styles.otherText}>Not a member?</Text>
-                        <TouchableOpacity>
-                            <Text style={styles.linkButton} onPress={()=>navigate("SignUp")}>SIGN UP</Text>
-                        </TouchableOpacity>
-                        </View>
-                    </View>
-                </KeyboardAvoidingScrollView>     
-            </View>
-        )
-    }
+                </View>
+            </KeyboardAvoidingScrollView>     
+        </View>
+    )
 };
                         
 //All styling options created below
@@ -188,3 +176,5 @@ const styles= StyleSheet.create({
 
     }
 });
+
+export default LoginScreen;

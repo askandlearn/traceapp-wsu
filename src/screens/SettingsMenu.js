@@ -4,16 +4,16 @@ import SettingsList from 'react-native-settings-list';
 import Header from '../components/Header-Component';
 
   
-const SettingsMenu =(props) =>{ 
+const SettingsMenu =({navigation}, props) =>{ 
 
         var bgColor = '#DCE3F4';
-       // var {navigate} = this.props.navigation;  
+       // var navigate= props.navigation.navigate;
         // this.onValueChange.bind(this);
         //this.state = {switchValue: false};   
         return (
           
           <View style={{backgroundColor:'#f1f1f2',flex:1}}>
-            <Header openDrawer={props.navigation.navigate.openDrawer}/>
+            <Header openDrawer={navigation.openDrawer}/>
             <View style={{borderBottomWidth:1, backgroundColor:'#f1f1f2',borderColor:'#f1f1f2'}}>
            {/* <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>     */}
         <Text style={styles.title}>Health Dashboard</Text>
@@ -30,15 +30,14 @@ const SettingsMenu =(props) =>{
                 /> */}
                 <SettingsList.Item
                   title='My Health Information'
-                  //titleInfo='Bill Wi The Science Fi'
                   titleInfoStyle={styles.titleInfoStyle}
-                  onPress={()=>props.navigation.navigate('HealthInformation')}
+                  onPress={()=>navigation.navigate('HealthInformation')}
                 />
                 <SettingsList.Item
                   title='Connect TRACE Sensor'
                   titleInfo='Disconnected'
                   titleInfoStyle={styles.titleInfoStyle}
-                  onPress={()=>props.navigation.navigate('TraceConnect')}
+                  onPress={()=>navigation.navigate('TraceConnect')}
                 />
                 <SettingsList.Item
                   title='Sync My Data'

@@ -1,10 +1,11 @@
 import React, {Component, useState} from 'react';
 import {Ionicons} from '@expo/vector-icons';
-import {View, Text, StyleSheet,  AsyncStorage,StatusBar, TouchableOpacity, Image, TextInput, Button} from 'react-native';
+import {View, Text, StyleSheet,  AsyncStorage,StatusBar, TouchableOpacity, Image, TextInput, Button, Alert} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import HealthDashboard from './HealthDashboardScreen';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 
 //export default class HealthInfoScreen extends Component{
@@ -35,33 +36,38 @@ const HealthInfoScreen =({navigation}) =>{
 //              this.setState({'height': value});
 //          }
 const [height, setHeight]= useState('');
+const [weight, setWeight]= useState('');
+const [activity, setActivity]= useState('');
+  const handleHeight=(value)=>{
+     
+    console.log(value);
+  }      
         return (
            <View style = {styles.container}>
                 <Header openDrawer={navigation.openDrawer}/>
                 <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>    
                 <Text style={styles.title}>Health Information</Text>
                 <KeyboardAvoidingScrollView>
-                    <TextInput placeholder='Height' style = {styles.textInput} autoCapitalize = 'none'
-                    //   onChangeText = {this.setName}
+                    <TextInput placeholder='Height' style = {styles.textInput} autoCapitalize = 'none'  
                     onChangeText = {height=>setHeight(height)}
                     />
                     <Text style={styles.result}>
-                     Current Height: {height}
+                     Current Height: {height} ft
                     </Text>
                     <TextInput placeholder='Weight' style = {styles.textInput} autoCapitalize = 'none'
-                    //   onChangeText = {this.setHeight}
+                       onChangeText = {weight=>setWeight(weight)}
                     />
                     <Text style={styles.result}>
-                    Current Weight: 
+                    Current Weight: {weight} lbs
                     </Text>
                     <TextInput placeholder='Activity Level' style = {styles.textInput} autoCapitalize = 'none'
-                      
+                      onChangeText = {activity=>setActivity(activity)}
                     />
                     <Text style={styles.result}  >
-                    Current Activity Level: 
+                    Current Activity Level: {activity}
                     </Text>
-                    <TouchableOpacity title="Save" style={styles.button}>
-                    <Text style={styles.buttonText} onPress={null}>SAVE</Text>
+                    <TouchableOpacity title="Save" style={styles.button} onPress={null}>
+                    <Text style={styles.buttonText} >SAVE</Text>
                 </TouchableOpacity>
                 </KeyboardAvoidingScrollView>
            </View>

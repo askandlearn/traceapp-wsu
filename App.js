@@ -12,6 +12,7 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import DrawerMenu from './src/screens/DrawerMenu';
+import ASTScreen from './src/screens/ASTScreen';
 
 
 
@@ -22,7 +23,8 @@ const NavDrawer= createDrawerNavigator(
   SignUp: SignUpScreen,
   Home: HomeScreen,
   Profile: ProfileScreen,
-  Settings: SettingsScreen
+  Settings: SettingsScreen,
+  AST: ASTScreen
 },
 {
   //Set the Welcome Page as the first page of the app

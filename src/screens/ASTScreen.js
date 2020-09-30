@@ -12,7 +12,7 @@ const ASTScreen =({navigation}) =>{
             <Header openDrawer={navigation.openDrawer}/>
             <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>
             <ScrollView style={styles.container}>
-                {/*<Image style={styles.ASTfigure} source={require('../images/HumanSilhouette_t.png.png')}></Image>*/}
+                <Image style={styles.ASTfigure} source={require('../images/Humanfigure_CirculatorySystem.png')}></Image>
                 <View style={styles.NavBarDivider}/>
                  <Text style={{paddingHorizontal: 30, fontSize: 16, paddingVertical: 15 }}>
                       Welcome to the Active Standup Test. This test will provide TRACE with important data regarding your blood flow dynamics.</Text>

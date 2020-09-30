@@ -24,6 +24,17 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 //          this.setState({'height': value});
 //      }
 const HealthInfoScreen =({navigation}) =>{ 
+//  this.setState = {
+//             'height': ''
+//          }
+         
+//          componentDidMount = () => AsyncStorage.getItem('height').then((value) => this.setState({ 'height': value }))
+
+//          setHeight=(value)=>{
+//              AsyncStorage.setItem('height', value);
+//              this.setState({'height': value});
+//          }
+const [height, setHeight]= useState('');
         return (
            <View style = {styles.container}>
                 <Header openDrawer={navigation.openDrawer}/>
@@ -32,9 +43,10 @@ const HealthInfoScreen =({navigation}) =>{
                 <KeyboardAvoidingScrollView>
                     <TextInput placeholder='Height' style = {styles.textInput} autoCapitalize = 'none'
                     //   onChangeText = {this.setName}
+                    onChangeText = {height=>setHeight(height)}
                     />
                     <Text style={styles.result}>
-                    Current Height: 
+                     Current Height: {height}
                     </Text>
                     <TextInput placeholder='Weight' style = {styles.textInput} autoCapitalize = 'none'
                     //   onChangeText = {this.setHeight}
@@ -43,11 +55,14 @@ const HealthInfoScreen =({navigation}) =>{
                     Current Weight: 
                     </Text>
                     <TextInput placeholder='Activity Level' style = {styles.textInput} autoCapitalize = 'none'
-                    //   onChangeText = {this.setHeight}
+                      
                     />
-                    <Text style={styles.result}>
+                    <Text style={styles.result}  >
                     Current Activity Level: 
                     </Text>
+                    <TouchableOpacity title="Save" style={styles.button}>
+                    <Text style={styles.buttonText} onPress={null}>SAVE</Text>
+                </TouchableOpacity>
                 </KeyboardAvoidingScrollView>
            </View>
         )
@@ -79,8 +94,8 @@ const styles = StyleSheet.create ({
         shadowColor:'#000000',
         shadowOffset: { width: 1, height: 2 },
         shadowOpacity: 0.2,
-        shadowRadius: 1
-       
+        shadowRadius: 1,
+        borderRadius:20,             
     },
     result:{
         marginHorizontal: '10%',

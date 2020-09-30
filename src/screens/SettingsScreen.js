@@ -3,13 +3,13 @@ import {Ionicons} from '@expo/vector-icons';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
+import SettingsMenu from '../components/SettingsMenu';
 
 const SettingsScreen =({navigation}) =>{
     return (
-        <View style={styles.container}>
+        <View style={{flex:1}}>
             <Header openDrawer={navigation.openDrawer}/>
-            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image> 
-            <Text style={styles.title}>SETTINGS</Text>
+            <SettingsMenu/>
         </View>
     );
 
@@ -18,7 +18,8 @@ const SettingsScreen =({navigation}) =>{
 const styles= StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#b7b7b7'
+        backgroundColor:'#b7b7b7',
+        alignItems: 'center'
       },
     backgroundImage:{
         alignSelf:'center',
@@ -43,7 +44,8 @@ const styles= StyleSheet.create({
         marginVertical: 10,
         color:'#202020',
         fontWeight:'bold',
-        fontSize: 30
+        fontSize: 30,
+        paddingBottom: 30
         },
     button:{
         //alignSelf: 'center',
@@ -58,6 +60,14 @@ const styles= StyleSheet.create({
     buttonText:{
         color: '#FFFFFF',
         fontWeight: 'bold'
+    },
+    header:{
+        width:"100%",
+        height:60,
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems:"center",
+        paddingHorizontal:20,
     }
 });
 

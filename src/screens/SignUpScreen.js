@@ -36,7 +36,7 @@ const SignUpScreen = (props) =>{
         checkIsFilled();
         if(!validation_flags.isFilled)
         {
-            Alert.alert('One or more fields are done empty or incorrect!')
+            Alert.alert('One or more fields are empty or done incorrectly!')
         }
         else{
             const SUCCESS_MESSAGE = 'User Registered Successfully!';
@@ -125,7 +125,7 @@ const SignUpScreen = (props) =>{
     const handleDate = (val) => {
         const [year,month,day] = val.split('-');
 
-        if(year.length < 4 || year.length > 4 || month.length !== 2 || day.length !== 2){
+        if(year === undefined || month === undefined || day === undefined || year.length < 4 || year.length > 4 || month.length != 2 || day.length !== 2){
             setValidationFlags({
                 ...validation_flags,
                 isValidDate: false
@@ -234,6 +234,7 @@ const SignUpScreen = (props) =>{
                     placeholder='Birthdate (yyyy-mm-dd)'
                     value={date}
                     onChangeText={(val) => setDate(val)}
+                    onEndEditing={(e) => handleDate(e.nativeEvent.text)}
                 />
                 {/* Insert validation prompt */}
                 {validation_flags.isValidDate ? null :
@@ -271,7 +272,7 @@ const SignUpScreen = (props) =>{
                 </Animatable.View>
                 }
                 {/* End of validation prompt */}
-                <TouchableOpacity title="Submit"style={styles.button}>
+                <TouchableOpacity title="Submit"style={styles.button} onPress={registerUser}>
                         <Text style={styles.buttonText} onPress={registerUser}>CREATE ACCOUNT</Text>
                 </TouchableOpacity>
                 <View style={styles.flexContainer}>

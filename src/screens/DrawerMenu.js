@@ -42,8 +42,8 @@ class DrawerMenu extends Component {
                 style={styles.avatar} 
                 source={{uri: 'https://f1.pngfuel.com/png/386/684/972/face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette-png-clip-art.png'}}
             />
-            <Text style={styles.profileText}>Mohammad Hamza</Text>
-            <Text style={{color:"gray", marginBottom: 10, paddingHorizontal: 50}}>mohammad@hamza.com</Text>
+            <Text style={styles.profileText}>John Doe</Text>
+            <Text style={styles.emailText}>example@email.com</Text>
             <View style={styles.NavBarDivider}/>
                 <FlatList
                 data={options}
@@ -99,15 +99,23 @@ const styles= StyleSheet.create({
   },
   profileText: {
       fontWeight: 'bold',
-      fontSize: 12,
+      fontSize: 13,
       marginTop: 10,
-      paddingHorizontal: 80
+      paddingHorizontal: 80,
+      alignSelf: 'center'
   },
   NavBarDivider:{
       height: 1,
       width: "100%",
       backgroundColor: "lightgray",
       marginVertical: 10
+  },
+  emailText:{
+    color:"gray", 
+    marginBottom: 10, 
+    paddingHorizontal: 50,
+    fontSize: 12,
+    alignSelf: 'center'
   }
 
 });

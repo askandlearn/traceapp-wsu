@@ -61,7 +61,7 @@ const ProfileScreen =(props) =>{
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.horizontal}>
-                    <Text style={styles.content}>Email: </Text>
+                    <Text style={styles.contentTitle}>Email: </Text>
                     <TextInput
                         value={email}
                         editable={isEditable}
@@ -73,7 +73,7 @@ const ProfileScreen =(props) =>{
                     style={{borderBottomColor: 'black', borderBottomWidth: 1}}
                 />
                 <TouchableOpacity style={styles.horizontal}>
-                    <Text style={styles.content}>Date of Birth: </Text>
+                    <Text style={styles.contentTitle}>Date of Birth: </Text>
                     <TextInput
                         value={dob}
                         editable={isEditable}
@@ -85,7 +85,7 @@ const ProfileScreen =(props) =>{
                     style={{borderBottomColor: 'black', borderBottomWidth: 1}}
                 />
                 <TouchableOpacity style={styles.horizontal}>
-                    <Text style={styles.content}>Address: </Text>
+                    <Text style={styles.contentTitle}>Address: </Text>
                     <TextInput
                         placeholder='No address entered yet'
                         placeholderTextColor='#fff'
@@ -185,6 +185,11 @@ const styles= StyleSheet.create({
           margin: 10,
           fontSize: 20
       },
+      contentTitle: {
+        margin: 10,
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
       horizontal:{
           flexDirection: 'row'
       },

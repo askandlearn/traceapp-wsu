@@ -1,6 +1,6 @@
 import React from 'react';
 import {Ionicons} from '@expo/vector-icons';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import HealthDashboard from './HealthDashboardScreen';
@@ -11,15 +11,15 @@ const ASTScreen =({navigation}) =>{
         <View style={styles.container}>
             <Header openDrawer={navigation.openDrawer}/>
             <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image> 
-            <Text style={styles.title}>ACTIVE STANDUP TEST</Text>
-            <Image source={require('../images/Humanfigure_CirculatorySystem.png')}></Image>
-            <Text style={{padding:20}}>
-                Welcome to the Active Standup Test. This test will provide TRACE with important data regarding your blood flow dynamics.
-                Instructions:
-            </Text>
-            <Text style={{padding:20}}>1. Lay flat on your back</Text>
-            <Text style={{padding:20}}>2. Wait 3 minutes</Text>
-            <Text style={{padding:20}}>3. After 3 minutes pass, stand back up</Text>
+            <ScrollView style={styles.container}>
+                <Image style={styles.ASTfigure} source={require('../images/Humanfigure_CirculatorySystem.png')}></Image>
+                 <Text style={{padding:20}}>
+                      Welcome to the Active Standup Test. This test will provide TRACE with important data regarding your blood flow dynamics.</Text>
+                 <Text style={{padding:25}}>Instructions:</Text>
+                 <Text style={{padding:25}}>1. Lay flat on your back</Text>
+                 <Text style={{padding:25}}>2. Wait 3 minutes</Text>
+                 <Text style={{padding:25}}>3. After 3 minutes pass, stand back up</Text>
+            </ScrollView>
         </View>
     );
 
@@ -30,8 +30,7 @@ export default ASTScreen;
 const styles= StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#b7b7b7',
-        alignItems: 'center'
+        backgroundColor:'#b7b7b7'
       },
     backgroundImage:{
         alignSelf:'center',
@@ -80,5 +79,11 @@ const styles= StyleSheet.create({
         justifyContent:"space-between",
         alignItems:"center",
         paddingHorizontal:20,
+    },
+    ASTfigure:{
+        width: 210,
+        height:214,
+        alignSelf: 'center',
+        marginBottom: 20
     }
 });

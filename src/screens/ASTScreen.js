@@ -1,5 +1,4 @@
 import React from 'react';
-import {Ionicons} from '@expo/vector-icons';
 import {View, Text, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';

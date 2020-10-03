@@ -29,7 +29,7 @@ const NavDrawer= createDrawerNavigator(
 },
 {
   //Set the Welcome Page as the first page of the app
-  initialRouteName: 'Welcome',
+  initialRouteName: 'Home',
   unmountInactiveRoutes: true,
 
   defaultNavigationOptions:{

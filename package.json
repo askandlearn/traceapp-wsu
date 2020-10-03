@@ -28,6 +28,7 @@
     "react-native-dropdown-picker": "^3.6.8",
     "react-native-form-validation": "^1.0.5",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-ionicons": "^4.6.5",
     "react-native-keyboard-avoiding-scroll-view": "^1.0.1",
     "react-native-masked-text": "^1.13.0",
     "react-native-modal-dropdown": "^0.7.0",

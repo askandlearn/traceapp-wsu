@@ -1,11 +1,11 @@
 import React from 'react';
-import {Ionicons} from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 
 const Header =({openDrawer})=>(
     <View style={styles.header}>
         <TouchableOpacity onPress={()=>openDrawer()}>
-            <Ionicons name ="ios-menu" size={30} />
+            <Icon name ="bars" size={30} />
         </TouchableOpacity>
         <Text style={{width:45}}></Text>
     </View>

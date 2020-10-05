@@ -4,7 +4,6 @@ import React, {useEffect} from 'react';
 import {createAppContainer, Image} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
-import {Ionicons} from '@expo/vector-icons';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';

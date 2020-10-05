@@ -16,7 +16,7 @@ const SettingsMenu =({navigation}, props) =>{
             <Header openDrawer={navigation.openDrawer}/>
             <View style={{borderBottomWidth:1, backgroundColor:'#f1f1f2',borderColor:'#f1f1f2'}}>
            {/* <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>     */}
-        <Text style={styles.title}>Health Dashboard</Text>
+        <Text style={styles.title}>Settings</Text>
             </View>
             <View style={{backgroundColor:'#f1f1f2',flex:1}}>
               <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>

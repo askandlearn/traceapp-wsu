@@ -1,11 +1,16 @@
 import React from 'react';
-import {Ionicons} from '@expo/vector-icons';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import HealthDashboard from './HealthDashboardScreen';
 
 const TraceConnectScreen =({navigation}) =>{
+
+    const saveChanges = () => {
+        alert('Device Connected!');
+       
+      }
+
     return (
         <View style={styles.container}>
             <Header openDrawer={navigation.openDrawer}/>
@@ -14,7 +19,7 @@ const TraceConnectScreen =({navigation}) =>{
             <Image style={styles.deviceImage} source={require('../images/Trace-3D.png')}></Image>
             <TouchableOpacity title="Connect"
                 onPress={null} style={styles.button}>
-                <Text style={styles.buttonText}>CONNECT</Text>
+                <Text style={styles.buttonText} onPress={saveChanges}>CONNECT</Text>
             </TouchableOpacity>
                     
         </View>

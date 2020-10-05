@@ -87,7 +87,7 @@ const ProfileScreen =(props) =>{
                 <TouchableOpacity style={styles.horizontal}>
                     <Text style={styles.contentTitle}>Address: </Text>
                     <TextInput
-                        placeholder='No address entered yet'
+                        placeholder='No address provided'
                         placeholderTextColor='#fff'
                         value={address}
                         editable={isEditable}

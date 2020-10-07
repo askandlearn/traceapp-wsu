@@ -7,7 +7,7 @@
  */
 
 import {createAppContainer, Image} from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import {createStackNavigator} from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 
 //Import screens
@@ -22,9 +22,7 @@ import SettingsMenu from './src/screens/SettingsMenu';
 import TraceConnect from './src/screens/TraceConnectScreen';
 import HealthInformation from './src/screens/HealthInformationScreen';
 
-
-
-const NavDrawer= createDrawerNavigator(
+const NavDrawer = createDrawerNavigator(
   {
     Welcome: WelcomeScreen,
     Login: LoginScreen,
@@ -34,38 +32,36 @@ const NavDrawer= createDrawerNavigator(
     Settings: SettingsMenu,
     AST: ASTScreen,
     HealthInformation: HealthInformation,
-    TraceConnect: TraceConnect
+    TraceConnect: TraceConnect,
   },
   {
     //Set the Welcome Page as the first page of the app
     initialRouteName: 'Welcome',
     unmountInactiveRoutes: true,
-  
-    defaultNavigationOptions:{
-    //Title shows on the header of the app
-    title: 'Trace',
-    //(
-  //     <Image source={require('./src/images/Trace-3D.png')}/>
-  // ),
+
+    defaultNavigationOptions: {
+      //Title shows on the header of the app
+      title: 'Trace',
+      //(
+      //     <Image source={require('./src/images/Trace-3D.png')}/>
+      // ),
       headerStyle: {
-        backgroundColor: '#202020'
+        backgroundColor: '#202020',
       },
       headerTintColor: '#fff',
     },
-    contentComponent: DrawerMenu
-  }
-  
-  );
-  
-  const Navigator = createStackNavigator(
-    {
-      TRACE: NavDrawer,
-    },
-    {
-      initialRouteName: 'TRACE',
-    });
-  
-    
-  
-  const Container = createAppContainer(Navigator);
-  export default Container;
+    contentComponent: DrawerMenu,
+  },
+);
+
+const Navigator = createStackNavigator(
+  {
+    TRACE: NavDrawer,
+  },
+  {
+    initialRouteName: 'TRACE',
+  },
+);
+
+const Container = createAppContainer(Navigator);
+export default Container;

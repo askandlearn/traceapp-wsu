@@ -107,7 +107,7 @@ const LoginScreen = (props) => {
     </View>
   );
 };
-
+                        
 //All styling options created below
 const styles = StyleSheet.create({
   flexContainer: {

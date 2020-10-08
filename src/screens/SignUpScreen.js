@@ -319,6 +319,8 @@ const SignUpScreen = (props) => {
   );
 };
 
+
+
 //All styling options created below
 const styles = StyleSheet.create({
   flexContainer: {

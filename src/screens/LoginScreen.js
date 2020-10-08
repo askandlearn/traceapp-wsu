@@ -28,7 +28,7 @@ const LoginScreen = (props) => {
 
   const loginUser = () => {
     const SUCCESS_MESSAGE = 'Login successful!';
-    const url = 'http://192.168.7.97/PHP-API/user_registration.php';
+    const url = 'http://localhost:8080/PHP-API/user_registration.php';
     fetch(url, {
       method: 'POST',
       headers: {

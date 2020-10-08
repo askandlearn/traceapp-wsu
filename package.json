@@ -10,7 +10,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-<<<<<<< HEAD
     "@expo/vector-icons": "^10.2.1",
     "@react-native-community/async-storage": "^1.12.0",
     "@react-native-community/masked-view": "^0.1.10",
@@ -33,20 +32,6 @@
     "react-native-form-validation": "^1.0.5",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-ionicons": "^4.6.5",
-=======
-    "@react-native-community/async-storage": "^1.12.0",
-    "@react-native-community/datetimepicker": "^3.0.2",
-    "@react-native-community/masked-view": "^0.1.10",
-    "@react-native-community/picker": "^1.8.0",
-    "expo": "~38.0.8",
-    "expo-status-bar": "^1.0.2",
-    "react": "~16.11.0",
-    "react-dom": "~16.11.0",
-    "react-form-validator-core": "^1.0.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
-    "react-native-datepicker": "^1.7.2",
-    "react-native-gesture-handler": "~1.6.0",
->>>>>>> 4a50d5f044dfbc3b9908b414b47e82d3dc11e486
     "react-native-keyboard-avoiding-scroll-view": "^1.0.1",
     "react-native-masked-text": "^1.13.0",
     "react-native-modal-dropdown": "^0.7.0",
@@ -54,28 +39,19 @@
     "react-native-reanimated": "~1.9.0",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
-<<<<<<< HEAD
     "react-native-settings-list": "^1.8.0",
     "react-native-stack": "^1.0.0-alpha11",
     "react-native-svg": "^12.1.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-unimodules": "~0.10.1",
-=======
->>>>>>> 4a50d5f044dfbc3b9908b414b47e82d3dc11e486
     "react-native-validator-form": "^1.0.0",
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.4.0",
-<<<<<<< HEAD
     "react-navigation-drawer": "^2.5.1",
     "react-navigation-stack": "^2.8.2",
     "victory-native": "^35.0.1",
     "watchman": "^1.0.0"
-=======
-    "react-navigation-stack": "^2.8.2",
-    "redux-form": "^8.3.6",
-    "redux-form-validators": "^3.3.2"
->>>>>>> 4a50d5f044dfbc3b9908b414b47e82d3dc11e486
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

@@ -136,7 +136,7 @@ const SignUpScreen = (props) => {
       day === undefined ||
       year.length < 4 ||
       year.length > 4 ||
-      month.length != 2 ||
+      month.length !== 2 ||
       day.length !== 2
     ) {
       setValidationFlags({
@@ -318,8 +318,6 @@ const SignUpScreen = (props) => {
     </View>
   );
 };
-
-
 
 //All styling options created below
 const styles = StyleSheet.create({

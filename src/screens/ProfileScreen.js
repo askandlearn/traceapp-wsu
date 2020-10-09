@@ -48,7 +48,7 @@ const ProfileScreen = (props) => {
         <Header openDrawer={props.navigation.openDrawer} />
         <Image
           style={styles.backgroundImage}
-          source={require('../images/TraceBio-White.png')}
+          source={require('../images/TraceBio-Black.png')}
         />
         <View style={styles.header} />
         <Image
@@ -123,7 +123,7 @@ const ProfileScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: '#ffffff',
   },
   backgroundImage: {
     alignSelf: 'center',

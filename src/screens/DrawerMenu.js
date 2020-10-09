@@ -21,7 +21,12 @@ const options = [
   },
   {
     name: 'AST',
+    icon: 'bolt',
+  },
+  {
+    name:'HRV',
     icon: 'heartbeat',
+
   },
   {
     name: 'Settings',

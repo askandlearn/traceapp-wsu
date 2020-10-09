@@ -19,7 +19,7 @@ const HRVScreen = ({navigation}) => {
           style={styles.backgroundImage}
           source={require('../images/TraceBio-Black.png')}
         />
-         <Text style={{paddingBottom: 70}}>Welcome to the Heart Rate Variability Screen</Text>
+         <Text style={{paddingHorizontal: 30, fontSize: 16, paddingVertical: 15}}>Welcome to the Heart Rate Variability Screen</Text>
          <TouchableOpacity style={styles.button}>
              <Text style={styles.buttonText}>Start</Text>
          </TouchableOpacity>

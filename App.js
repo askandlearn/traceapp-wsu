@@ -5,6 +5,8 @@
  * @format
  * @flow strict-local
  */
+// Tracebio background color hex:#242852
+
 
 import {createAppContainer, Image} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';

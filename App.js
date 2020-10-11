@@ -21,6 +21,7 @@ import ASTScreen from './src/screens/ASTScreen';
 import SettingsMenu from './src/screens/SettingsMenu';
 import TraceConnect from './src/screens/TraceConnectScreen';
 import HealthInformation from './src/screens/HealthInformationScreen';
+import SensorsComponent from './src/components/SensorsComponent';
 
 const NavDrawer = createDrawerNavigator(
   {
@@ -33,10 +34,11 @@ const NavDrawer = createDrawerNavigator(
     AST: ASTScreen,
     HealthInformation: HealthInformation,
     TraceConnect: TraceConnect,
+    Sensor: SensorsComponent,
   },
   {
     //Set the Welcome Page as the first page of the app
-    initialRouteName: 'Welcome',
+    initialRouteName: 'Home',
     unmountInactiveRoutes: true,
 
     defaultNavigationOptions: {

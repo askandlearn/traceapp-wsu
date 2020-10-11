@@ -1,7 +1,15 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
+import SensorsComponent from '../components/SensorsComponent';
 import HealthDashboard from './HealthDashboardScreen';
 
 const TraceConnectScreen = ({navigation}) => {
@@ -16,16 +24,18 @@ const TraceConnectScreen = ({navigation}) => {
         style={styles.backgroundImage}
         source={require('../images/TraceBio-White.png')}
       />
-      <Text style={styles.title}>Connect Your TRACE Device</Text>
-      <Image
-        style={styles.deviceImage}
-        source={require('../images/Trace-3D.png')}
-      />
-      <TouchableOpacity title="Connect" onPress={null} style={styles.button}>
-        <Text style={styles.buttonText} onPress={saveChanges}>
-          CONNECT
-        </Text>
-      </TouchableOpacity>
+      <ScrollView>
+        <Text style={styles.title}>Connect Your TRACE Device</Text>
+        <Image
+          style={styles.deviceImage}
+          source={require('../images/Trace-3D.png')}
+        />
+        <TouchableOpacity title="Connect" style={styles.button}>
+          <Text style={styles.buttonText} onPress={SensorsComponent}>
+            CONNECT
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };

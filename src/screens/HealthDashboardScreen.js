@@ -48,7 +48,6 @@ export default class HealthDashboardScreen extends Component {
   }
 
   render() {
-    let results;
     return (
       <ScrollView style={styles.container}>
         <Image

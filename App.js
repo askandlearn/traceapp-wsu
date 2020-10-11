@@ -1,31 +1,67 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow strict-local
+ */
+
 import {createAppContainer, Image} from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import {createStackNavigator} from 'react-navigation-stack';
+import {createDrawerNavigator} from 'react-navigation-drawer';
+
+//Import screens
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
+import DrawerMenu from './src/screens/DrawerMenu';
+import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import ASTScreen from './src/screens/ASTScreen';
+import SettingsMenu from './src/screens/SettingsMenu';
+import TraceConnect from './src/screens/TraceConnectScreen';
+import HealthInformation from './src/screens/HealthInformationScreen';
 
-const navigator= createStackNavigator(
-{
-  Welcome: WelcomeScreen,
-  Login: LoginScreen,
-  SignUp: SignUpScreen,
-  Profile: ProfileScreen
-},
-{
-  //Set the Welcome Page as the first page of the app
-  initialRouteName: 'Welcome',
-  defaultNavigationOptions:{
-  //Title shows on the header of the app
-  title: 'Trace',
-  //(
-//     <Image source={require('./src/images/Trace-3D.png')}/>
-// ),
-    headerStyle: {
-      backgroundColor: '#202020'
+const NavDrawer = createDrawerNavigator(
+  {
+    Welcome: WelcomeScreen,
+    Login: LoginScreen,
+    SignUp: SignUpScreen,
+    Home: HomeScreen,
+    Profile: ProfileScreen,
+    Settings: SettingsMenu,
+    AST: ASTScreen,
+    HealthInformation: HealthInformation,
+    TraceConnect: TraceConnect,
+  },
+  {
+    //Set the Welcome Page as the first page of the app
+    initialRouteName: 'Welcome',
+    unmountInactiveRoutes: true,
+
+    defaultNavigationOptions: {
+      //Title shows on the header of the app
+      title: 'Trace',
+      //(
+      //     <Image source={require('./src/images/Trace-3D.png')}/>
+      // ),
+      headerStyle: {
+        backgroundColor: '#202020',
+      },
+      headerTintColor: '#fff',
     },
-    headerTintColor: '#fff'
-  }
-});
+    contentComponent: DrawerMenu,
+  },
+);
 
-export default createAppContainer(navigator);
+const Navigator = createStackNavigator(
+  {
+    TRACE: NavDrawer,
+  },
+  {
+    initialRouteName: 'TRACE',
+  },
+);
+
+const Container = createAppContainer(Navigator);
+export default Container;

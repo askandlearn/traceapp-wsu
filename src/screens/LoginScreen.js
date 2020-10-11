@@ -1,108 +1,197 @@
-import React, { Component, useState }  from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import { createStackNavigator } from 'react-navigation-stack';
+import React, {Component, useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Button,
+  Alert,
+} from 'react-native';
+import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import {Form, TextValidator} from 'react-native-validator-form';
+import {minNumber} from 'react-native-validator-form/lib/ValidationRules';
+
+const logo = '../images/TraceBio-White.png';
 
 //Create the Login Page
-const LoginScreen =({navigation}) =>{
-    //hard coded user information
-    const userInfo = {
-        username: 'admin',
-        password: 'pass'
-    };
+const LoginScreen = (props) => {
+  /*
+        Its important that the default values for email and password are ''(empty strings) or else if users trys
+        to login without inputting anything, null values will passed onto the php script and then the database. The script
+        does not know how to handle null values.
+    */
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    //states 
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-
-    //User login done using AsyncStorage - not secure, information held locally
-    _login = async () => {
-        console.log(userInfo)
-        console.log('name: '+username);
-        console.log('pass: '+password);
-        if(userInfo.username === username && userInfo.password === password){
-           //alert('Logged in!');
-           await AsyncStorage.setItem('isLoggedIn','1');
-           navigation.navigate('Profile')
+  const loginUser = () => {
+    const SUCCESS_MESSAGE = 'Login successful!';
+    const url = 'http://localhost:8080/PHP-API/user_registration.php';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: 'signin',
+        email: email,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        //Showing response message coming from server after inserting records
+        Alert.alert(responseJson);
+        if (responseJson == SUCCESS_MESSAGE) {
+          props.navigation.navigate('Home');
         }
-        else{
-            alert('Username or password is incorrect');
-        }
-    }
-    //Need to add a logout button - logic is that AsyncStorage is cleared
-    //and renavigated to the Welcome page
-    _logout = async () => {
-        await AsyncStorage.clear();
-        navigation.navigate.Auth;
-    } 
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
-    return ( 
-        <View style={styles.container}>  
-            <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>    
-            <Text style={styles.title}>LOGIN</Text>
-            <TextInput 
-                placeholder='Username' 
-                style={styles.inputFields}
-                onChangeText={(uname) => setUsername(uname)}
-                value={username}></TextInput> 
-            <TextInput 
-                placeholder='Password' 
-                style={styles.inputFields} 
-                secureTextEntry
-                onChangeText={(pass) => setPassword(pass)}
-                value={password}></TextInput>        
-            <TouchableOpacity style={styles.button} onPress={_login}>
-                <Text style={styles.buttonText} >LOGIN</Text>
-            </TouchableOpacity>
+  return (
+    <View style={styles.container}>
+      <KeyboardAvoidingScrollView>
+        <View>
+          <Image style={styles.backgroundImage} source={require(logo)} />
+          <Text style={styles.title}>Welcome back!</Text>
         </View>
-    )
+        <TextInput
+          style={styles.inputFields}
+          label="Email"
+          placeholder="Email"
+          value={email}
+          onChangeText={(val) => setEmail(val)}
+        />
+        <TextInput
+          style={styles.inputFields}
+          label="Password"
+          placeholder="Password"
+          value={password}
+          secureTextEntry
+          onChangeText={(val) => setPassword(val)}
+        />
+        <TouchableOpacity
+          title="Submit"
+          style={styles.button}
+          onPress={loginUser}>
+          <Text style={styles.buttonText} onPress={loginUser}>
+            SIGN IN
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.flexContainer}>
+          <View style={styles.horizantalLine} />
+          <View>
+            <Text style={styles.orOption}>Or sign in with</Text>
+          </View>
+          <View style={styles.horizantalLine} />
+        </View>
+        <View style={[styles.bottomContainer]}>
+          <View style={styles.flexContainer}>
+            <Text style={styles.otherText}>Not a member?</Text>
+            <TouchableOpacity>
+              <Text
+                style={styles.linkButton}
+                onPress={() => props.navigation.navigate('SignUp')}>
+                SIGN UP
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAvoidingScrollView>
+    </View>
+  );
 };
-
 //All styling options created below
-const styles= StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor:'#b7b7b7'
-      },
-    backgroundImage:{
-        alignSelf:'center',
-        marginTop:30,
-        marginBottom:70,
-        width: '60%',
-        height: 100,
-        resizeMode: "stretch"              
-      },
-    inputFields:{
-        backgroundColor: '#FFFFFF',
-        marginHorizontal: '10%',
-        marginVertical: 10,
-        padding:10,
-        fontWeight: 'bold',
-        opacity: .4,
-        borderRadius:3
-    },
-    title:{
-        alignSelf:'center',
-        marginHorizontal: '10%',
-        marginVertical: 10,
-        color:'#202020',
-        fontWeight:'bold',
-        fontSize: 30
-        },
-    button:{
-        //alignSelf: 'center',
-        //width: '60%',
-        alignItems: 'center',
-        marginHorizontal: '10%',
-        marginVertical: 10,
-        padding:10,
-        borderRadius:20,
-        backgroundColor:'#ff0000',            
-    },
-    buttonText:{
-        color: '#FFFFFF',
-        fontWeight: 'bold'
-    }
+const styles = StyleSheet.create({
+  flexContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: '5%',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#b7b7b7',
+  },
+  bottomContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: '25%',
+  },
+  backgroundImage: {
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 15,
+    width: '60%',
+    height: 100,
+    resizeMode: 'stretch',
+  },
+  inputFields: {
+    marginHorizontal: '10%',
+    marginVertical: 10,
+    padding: 13,
+    fontWeight: 'bold',
+    borderColor: 'rgba(0, 0, 0, .4)',
+    borderWidth: 1,
+    color: 'rgba(0, 0, 0, 1)',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    borderRadius: 20,
+    shadowColor: '#000000',
+    shadowOffset: {width: 1, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+  },
+  errorMessage: {
+    marginHorizontal: '10%',
+    position: 'relative',
+    color: 'red',
+  },
+  title: {
+    alignSelf: 'center',
+    marginHorizontal: '10%',
+    marginVertical: '3%',
+    color: '#202020',
+    fontSize: 25,
+  },
+  button: {
+    alignItems: 'center',
+    marginHorizontal: '10%',
+    marginVertical: '3%',
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: '#ff0000',
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  horizantalLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'black',
+    marginHorizontal: '3%',
+  },
+  orOption: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  linkButton: {
+    color: 'blue',
+    marginLeft: 5,
+  },
 });
 
 export default LoginScreen;

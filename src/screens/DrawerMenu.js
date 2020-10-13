@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+Icon.loadFont();
 import {
   View,
   Text,
@@ -22,6 +23,10 @@ const options = [
   {
     name: 'AST',
     icon: 'heartbeat',
+  },
+  {
+    name: 'RealTime',
+
   },
   {
     name: 'Settings',

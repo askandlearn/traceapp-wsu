@@ -1,42 +1,27 @@
 import React, {Component} from 'react';
-import {render} from 'react-dom';
-import {
-  ScrollView,
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Button,
-  Image,
-  AppRegistry,
-} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {
-  VictoryBar,
-  VictoryChart,
-  VictoryTheme,
-  VictoryAxis,
-} from 'victory-native';
+import {ScrollView, View, Text, StyleSheet, Image} from 'react-native';
+import {VictoryAxis, VictoryBar, VictoryChart} from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Icon from 'react-native-vector-icons/Feather';
 import Svg from 'react-native-svg';
-import {
-  LocaleConfig,
-  Calendar,
-  CalendarList,
-  Agenda,
-  Arrow,
-} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 
 const data = [
-  {day: 'Mon', score: 100},
-  {day: 'Tues', score: 80},
+  {day: 'Mon', score: 50},
+  {day: 'Tues', score: 69},
   {day: 'Wed', score: 90},
   {day: 'Thurs', score: 70},
-  {day: 'Fri', score: 40},
+  {day: 'Fri', score: 50},
   {day: 'Sat', score: 20},
   {day: 'Sun', score: 69},
 ];
+
+const sharedAxisStyles = {
+  axisLabel: {
+    padding: 30,
+    fontSize: 15,
+    fontStyle: 'italic',
+  },
+};
 
 export default class HealthDashboardScreen extends Component {
   constructor() {
@@ -70,8 +55,11 @@ export default class HealthDashboardScreen extends Component {
           dropDownStyle={{backgroundColor: '#fafafa'}}
           onChangeItem={(item) =>
             this.setState({
+              status:
+                this.value === item.value
+                  ? this.state.status
+                  : !this.state.status,
               stats: item.value,
-              status: !this.state.status,
             })
           }
         />
@@ -81,7 +69,23 @@ export default class HealthDashboardScreen extends Component {
           viewBox={'0 0 140 350'}
           preserveAspectRatio="none">
           <VictoryChart domainPadding={15} height={300} width={385}>
-            <VictoryBar data={data} x="day" y="score" />
+            <VictoryBar
+              data={data}
+              x="day"
+              y="score"
+              style={{
+                data: {
+                  fill: ({datum}) =>
+                    datum.score < 40
+                      ? 'red'
+                      : datum.score < 70
+                      ? 'yellow'
+                      : 'green',
+                },
+              }}
+            />
+            <VictoryAxis />
+            <VictoryAxis dependentAxis label="Score" style={sharedAxisStyles} />
           </VictoryChart>
         </Svg>
 
@@ -136,7 +140,34 @@ export default class HealthDashboardScreen extends Component {
           //renderHeader={(date) => {/*Return JSX*/}}
           // Enable the option to swipe between months. Default = false
           enableSwipeMonths={true}
+          markedDates={{
+            '2020-09-01': {selected: true, color: 'green'},
+            '2020-09-03': {selected: true, color: 'red'},
+            '2020-09-08': {selected: true, color: 'yellow', textColor: 'black'},
+            '2020-09-12': {selected: true, color: 'green'},
+            '2020-09-14': {selected: true, color: 'yellow', textColor: 'black'},
+            '2020-09-15': {selected: true, color: 'yellow', textColor: 'black'},
+            '2020-09-20': {selected: true, color: 'red'},
+            '2020-09-21': {selected: true, color: 'green'},
+            '2020-09-22': {selected: true, color: 'green'},
+          }}
+          markingType={'period'}
         />
+
+        <View style={styles.colorKey}>
+          <View style={styles.colorKeyRow}>
+            <View style={{height: 10, width: 10, backgroundColor: 'green'}} />
+            <Text> {'  '}Great Health Score </Text>
+          </View>
+          <View style={styles.colorKeyRow}>
+            <View style={{height: 10, width: 10, backgroundColor: 'yellow'}} />
+            <Text> {'  '}Fair Health Score </Text>
+          </View>
+          <View style={styles.colorKeyRow}>
+            <View style={{height: 10, width: 10, backgroundColor: 'red'}} />
+            <Text> {'  '}Bad Health Score </Text>
+          </View>
+        </View>
       </ScrollView>
     );
   }
@@ -195,7 +226,7 @@ const styles = StyleSheet.create({
   },
   chart: {
     flex: 1,
-    height: 400,
+    height: 300,
     width: '80%',
   },
   hidden: {
@@ -203,5 +234,18 @@ const styles = StyleSheet.create({
   },
   calendar: {
     flex: 1,
+  },
+  colorKey: {
+    flex: 1,
+    alignSelf: 'center',
+    margin: 0,
+    paddingTop: 20,
+  },
+  colorKeyRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    //alignItems: 'left',
   },
 });

@@ -38,7 +38,7 @@ const NavDrawer = createDrawerNavigator(
   },
   {
     //Set the Welcome Page as the first page of the app
-    initialRouteName: 'Home',
+    initialRouteName: 'TraceConnect',
     unmountInactiveRoutes: true,
 
     defaultNavigationOptions: {

@@ -13,33 +13,20 @@ import SensorsComponent from '../components/SensorsComponent';
 import HealthDashboard from './HealthDashboardScreen';
 
 const TraceConnectScreen = ({navigation}) => {
-  const saveChanges = () => {
-    alert('Device Connected!');
-  };
-
   return (
     <View style={styles.container}>
       <Header openDrawer={navigation.openDrawer} />
-      <Image
-        style={styles.backgroundImage}
-        source={require('../images/TraceBio-White.png')}
-      />
       <ScrollView>
         <Text style={styles.title}>Connect Your TRACE Device</Text>
         <Image
           style={styles.deviceImage}
           source={require('../images/Trace-3D.png')}
         />
-        <TouchableOpacity title="Connect" style={styles.button}>
-          <Text style={styles.buttonText} onPress={SensorsComponent}>
-            CONNECT
-          </Text>
-        </TouchableOpacity>
+        <SensorsComponent />
       </ScrollView>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -57,9 +44,9 @@ const styles = StyleSheet.create({
   deviceImage: {
     alignSelf: 'center',
     marginTop: 30,
-    marginBottom: 70,
+    marginBottom: 50,
     width: '55%',
-    height: '20%',
+    height: '50%',
     resizeMode: 'stretch',
   },
   inputFields: {

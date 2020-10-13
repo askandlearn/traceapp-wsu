@@ -12,8 +12,8 @@ export default class SensorsComponent extends Component {
     super();
     this.manager = new BleManager();
     this.state = {info: '', values: {}};
-    this.prefixUUID = '30DFE0D6';
-    this.suffixUUID = '-BEEE-1520-21B4-FC6CA2817252';
+    //this.prefixUUID = '30DFE0D6';
+    //this.suffixUUID = '-BEEE-1520-21B4-FC6CA2817252';
     this.sensors = {};
   }
 
@@ -131,45 +131,3 @@ export default class SensorsComponent extends Component {
     );
   }
 }
-
-/*
-class bleManger extends Component {
-  constructor() {
-    super();
-    this.manager = new BleManager();
-  }
-
-  componentWillMount() {
-    const subscription = this.manager.onStateChange((state) => {
-      if (state === 'PoweredOn') {
-        this.scanAndConnect();
-        subscription.remove();
-      }
-    }, true);
-  }
-
-  scanAndConnect() {
-    this.manager.startDeviceSacn(null, null, (error, device) => {
-      if (error) {
-        return;
-      }
-
-      if (device.name === 'TRACE') {
-        this.manager.stopDeviceScan();
-      }
-
-      device
-        .connect()
-        .then((device) => {
-          return device.discoverAllServicesAndCharacteristics();
-        })
-        .then((device) => {
-          // Do work on device with services and characteristics
-        })
-        .catch((error) => {
-          // Handle errors
-        });
-    });
-  }
-}
-*/

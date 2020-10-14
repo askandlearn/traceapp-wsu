@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,25 +6,92 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Modal,
+  Alert,
 } from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
+import modal from 'react-native-modal';
+import Timer from '../components/HRVTimer';
+import Animate from '../components/HRVSurvey';
+import SensorAlert from '../components/ConnectToSensorAlert';
+import Swiper from 'react-native-swiper';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import Plot from '../components/Plot';
 
-const HRVScreen = ({navigation}) => {
+var check =false;
+
+
+const HRVScreen = ({navigation}, props) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  handleCheck = (checkId) => {
+    this.setState({checkedId})
+  }
+
     return (
       <View style={styles.container}>
         <Header openDrawer={navigation.openDrawer} />
+        <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
         <ScrollView style={styles.container}>
-        <Image
-          style={styles.backgroundImage}
-          source={require('../images/TraceBio-Black.png')}
-        />
-         <Text style={{paddingHorizontal: 30, fontSize: 16, paddingVertical: 15}}>Welcome to the Heart Rate Variability Screen</Text>
-         <TouchableOpacity style={styles.button}>
-             <Text style={styles.buttonText}>Start</Text>
-         </TouchableOpacity>
+          <View style={styles.container}>{check && <SensorAlert></SensorAlert>}</View>
+          <Timer></Timer>
+          <View style={styles.NavBarDivider}/>
+          <Swiper style={styles.wrapper} showButtons loop={false} autoplay={false}>
+            <View testID="Hello" style={styles.slide1}>
+              <Text style={styles.slide1Text}>Welcome to the Heart Rate Variability screen.
+               This helps Trace analyze important data regarding your heart rate dynamics.{"\n"} </Text>
+
+               <Text style={styles.note}>NOTE: Before begining a recording session, make sure 
+               you are comfortably sitting up straight. Once the session begins, relax and 
+               breathe deeply. You may begin and end the test whenever you are ready, but make sure you
+               run the rest for at least a few minutes!</Text>
+            </View>
+            <View testID="Beautiful" style={styles.slide2}>
+              <Text style={styles.steps}>1. Situate yourself into a comfortable sitting position. 
+    Make sure your back is straight.{"\n"}{"\n"}2. When you are ready, press the 'Start' button on 
+              the timer above.
+              </Text>
+            </View>
+
+            <View testID="Simple" style={styles.slide3}>
+              <Text style={styles.steps}>3.Try to stay still and breate deeply.{"\n"}{"\n"}
+              4.When you are ready to conclude the session, press 'Stop'.</Text>
+            </View>
+            <View testID="Slide4" style={styles.slide3}>
+              <Text style={styles.steps}>5. Now, fill out the survey. {"\n"}</Text>
+              <View style={styles.centeredView}>
+                <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClode={() => {
+                  Alert.alert("Modal has been closed.");
+                }}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <Animate></Animate>
+                      <TouchableOpacity style={styles.button} onPress={()=>{
+                        setModalVisible(!modalVisible);
+                      }}>
+                        <Text style={styles.buttonText}>SUBMIT</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
+                <TouchableOpacity style={styles.button} onPress={()=>{
+                  setModalVisible(true);
+                }}>
+                  <Text style={styles.buttonText}>Take Survey</Text>
+                </TouchableOpacity>
+              </View>
+
+            </View>
+
+          </Swiper>
+          <View style={styles.NavBarDivider}/>
+          <Plot></Plot>
         </ScrollView>
-        
       </View>
     );
   };
@@ -63,14 +130,17 @@ const HRVScreen = ({navigation}) => {
       paddingBottom: 30,
     },
     button: {
-      //alignSelf: 'center',
-      //width: '60%',
       alignItems: 'center',
       marginHorizontal: '10%',
-      marginVertical: 10,
+      marginVertical: '3%',
       padding: 10,
       borderRadius: 20,
-      backgroundColor: '#ff0000',
+      backgroundColor: '#ff2222',
+      shadowColor: '#000000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.8,
+      shadowRadius: 2,
+      elevation: 1,
     },
     buttonText: {
       color: '#FFFFFF',
@@ -96,5 +166,97 @@ const HRVScreen = ({navigation}) => {
       backgroundColor: 'lightgray',
       marginVertical: 10,
     },
+    wrapper: {
+      // flex:1,
+       height:300,
+       //backgroundColor: '#9DD6EB'
+       
+       //opacity:0.4,
+       backgroundColor:'#ffffff',
+       
+     },
+     slide1: {
+       //flex: 1,
+       height:'80%',
+       //paddingVertical:'10%',
+       paddingHorizontal:'10%',
+       justifyContent: 'center',
+       alignItems: 'center',
+       color: '#000000',
+       fontSize: 20,
+     
+       
+       //textAlign:'center',
+     },
+     slide2: {
+      // flex: 1,
+       height:'80%',
+       //justifyContent: 'center',
+       paddingVertical:'10%',
+       paddingHorizontal:'10%',
+       alignItems: 'center',
+      
+       //backgroundColor: '#97CAE5'
+     },
+     slide3: {
+      // flex: 1,
+       height:'80%',
+       //justifyContent: 'center',
+       paddingVertical:'10%',
+       paddingHorizontal:'5%',
+       alignItems: 'center',
+      
+       //backgroundColor: '#92BBD9'
+     },
+     slide1Text:{
+       color: '#000000',
+       fontSize: 20,
+       fontWeight: 'bold',
+     },
+     note:{
+       color: '#000000',
+       fontSize: 10,
+      // marginVertical:50,
+     },
+     steps:{
+       color: '#000000',
+       fontSize: 15,
+     },
+     centeredView: {
+       height:'90%',
+       justifyContent: "center",
+       alignItems: "center",
+       marginVertical:'10%',
+     },
+     modalView: {
+       margin: 20,
+       backgroundColor: "white",
+       borderRadius: 20,
+       padding: 35,
+       alignItems: "center",
+       shadowColor: "#000",
+       shadowOffset: {
+         width: 0,
+         height: 2
+       },
+       shadowOpacity: 0.25,
+       shadowRadius: 3.84,
+       elevation: 5
+     },
+     openButton: {
+       backgroundColor: "#F194FF",
+       borderRadius: 20,
+       padding: 10,
+       elevation: 2
+     },
+     textStyle: {
+       color: "white",
+       fontWeight: "bold",
+       textAlign: "center"
+     },
+     modalText: {
+       marginBottom: 15,
+       textAlign: "center"
+     }
   });
   

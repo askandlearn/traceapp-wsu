@@ -26,6 +26,7 @@ const ProfileScreen = (props) => {
   const [name, editName] = useState('John Doe');
   const [email, setEmail] = useState('example@email.com');
   const [dob, editDOB] = useState('July 22, 1999');
+  const [buttonText, setButtonText] = useState('Edit');
   const [address, editAddress] = useState('');
   const [isEditable, editEditable] = useState(false);
 
@@ -36,9 +37,22 @@ const ProfileScreen = (props) => {
 
   //save changes
   const saveChanges = () => {
+
     alert('Changes saved!');
     editEditable(false);
   };
+
+  const chooseButtonAction = () => {
+    console.log('In choose action...')
+    if(buttonText === 'Edit'){
+      setButtonText('Save')
+      onEdit();
+    }
+    else{
+      setButtonText('Edit')
+      saveChanges();
+    }
+  }
 
   return (
     <View
@@ -46,34 +60,16 @@ const ProfileScreen = (props) => {
       style={styles.container}>
       <KeyboardAvoidingScrollView>
         <Header openDrawer={props.navigation.openDrawer} />
-        <Image
-          style={styles.backgroundImage}
-          source={require('../images/TraceBio-White.png')}
-        />
         <View style={styles.header} />
-        <Image
-          style={styles.avatar}
-          source={{
-            uri:
-              'https://f1.pngfuel.com/png/386/684/972/face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette-png-clip-art.png',
-          }}
-        />
+        <Text style={styles.title}>Profile</Text>
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
-            <TextInput
+            <TextInput    
               value={name}
               editable={isEditable}
               style={styles.name}
               onChangeText={(name) => editName(name)}
             />
-            <TouchableOpacity>
-              <Icon
-                name="edit"
-                size={20}
-                style={{marginLeft: 5}}
-                onPress={() => onEdit()} //need to make name editable for user to change
-              />
-            </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
@@ -98,22 +94,23 @@ const ProfileScreen = (props) => {
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Address: </Text>
             <TextInput
-              placeholder="No address provided"
-              placeholderTextColor="#fff"
+              placeholder="Add address"
+              placeholderTextColor="transparent"
               value={address}
               editable={isEditable}
               style={styles.content}
               onChangeText={(address) => editAddress(address)}
             />
           </TouchableOpacity>
-          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
-          <Button
-            title="Save Changes"
-            color="#ff0000"
-            style={styles.save}
-            onPress={saveChanges}
-          />
-        </View>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1, marginTop: 20}} />
+            <Button
+              title={buttonText}
+              color="#ff0000"
+              // onPress={buttonText => chooseButtonAction(buttonText)}
+              onPress={() => chooseButtonAction()}
+              
+            />
+          </View>
       </KeyboardAvoidingScrollView>
       <View style={{marginTop: 20}} />
     </View>
@@ -180,7 +177,7 @@ const styles = StyleSheet.create({
     marginTop: 275,
   },
   body: {
-    marginTop: 100,
+    marginTop: 10,
     alignSelf: 'center',
   },
   name: {
@@ -188,10 +185,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     padding: 20,
     alignSelf: 'center',
+    color: 'black'
   },
   content: {
-    margin: 10,
+    // margin: 10,
     fontSize: 20,
+    color: 'black'
   },
   contentTitle: {
     margin: 10,
@@ -200,10 +199,6 @@ const styles = StyleSheet.create({
   },
   horizontal: {
     flexDirection: 'row',
-  },
-  save: {
-    //come back to style the save button
-    marginTop: 10,
   },
 });
 

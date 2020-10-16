@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {ScrollView, Text, StyleSheet, Image} from 'react-native';
-import {VictoryBar, VictoryChart} from 'victory-native';
+import {VictoryBar, VictoryChart, VictoryAxis} from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';
 import {Calendar} from 'react-native-calendars';
@@ -15,6 +15,14 @@ const data = [
   {day: 'Sat', score: 20},
   {day: 'Sun', score: 69},
 ];
+
+const sharedAxisStyles = {
+  axisLabel: {
+    padding: 30,
+    fontSize: 15,
+    fontStyle: 'italic',
+  },
+};
 
 const HealthDashboardScreen = () => {
   const [stats, setStats] = useState('week');
@@ -47,7 +55,23 @@ const HealthDashboardScreen = () => {
         viewBox={'0 0 140 350'}
         preserveAspectRatio="none">
         <VictoryChart domainPadding={15} height={300} width={385}>
-          <VictoryBar data={data} x="day" y="score" />
+          <VictoryBar
+            data={data}
+            x="day"
+            y="score"
+            style={{
+              data: {
+                fill: ({datum}) =>
+                  datum.score < 40
+                    ? 'red'
+                    : datum.score < 70
+                    ? 'yellow'
+                    : 'green',
+              },
+            }}
+          />
+          <VictoryAxis />
+          <VictoryAxis dependentAxis label="Score" style={sharedAxisStyles} />
         </VictoryChart>
       </Svg>
 

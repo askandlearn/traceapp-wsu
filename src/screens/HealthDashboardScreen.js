@@ -1,32 +1,10 @@
-import React, {Component, useState} from 'react';
-import {render} from 'react-dom';
-import {
-  ScrollView,
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Button,
-  Image,
-  AppRegistry,
-} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {
-  VictoryBar,
-  VictoryChart,
-  VictoryTheme,
-  VictoryAxis,
-} from 'victory-native';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
+import {ScrollView, Text, StyleSheet, Image} from 'react-native';
+import {VictoryBar, VictoryChart} from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Icon from 'react-native-vector-icons/Feather';
 import Svg from 'react-native-svg';
-import {
-  LocaleConfig,
-  Calendar,
-  CalendarList,
-  Agenda,
-  Arrow,
-} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 
 const data = [
   {day: 'Mon', score: 100},
@@ -38,18 +16,9 @@ const data = [
   {day: 'Sun', score: 69},
 ];
 
-export default HealthDashboardScreen = () => {
-  /*constructor() {
-    super();
-    this.state = {
-      stats: 'week',
-      status: true,
-    };
-  }*/
+const HealthDashboardScreen = () => {
   const [stats, setStats] = useState('week');
   const [status, setStatus] = useState('true');
-
-  let results;
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -70,13 +39,7 @@ export default HealthDashboardScreen = () => {
           justifyContent: 'flex-start',
         }}
         dropDownStyle={{backgroundColor: '#fafafa'}}
-        onChangeItem={(item) => (
-          //this.setState({
-          //  stats: item.value,
-          //  status: !this.state.status,
-          //})
-          setStats(item.value), setStatus(!status)
-        )}
+        onChangeItem={(item) => (setStats(item.value), setStatus(!status))}
       />
 
       <Svg
@@ -207,3 +170,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export default HealthDashboardScreen;

@@ -24,6 +24,7 @@ import SettingsMenu from './src/screens/SettingsMenu';
 import TraceConnect from './src/screens/TraceConnectScreen';
 import HealthInformation from './src/screens/HealthInformationScreen';
 import HRVScreen from './src/screens/HRVScreen';
+import ChangePassword from './src/screens/ChangePassword';
 
 const NavDrawer = createDrawerNavigator(
   {
@@ -37,6 +38,7 @@ const NavDrawer = createDrawerNavigator(
     HealthInformation: HealthInformation,
     TraceConnect: TraceConnect,
     HRV:HRVScreen,
+    ChangePassword: ChangePassword,
   },
   {
     //Set the Welcome Page as the first page of the app

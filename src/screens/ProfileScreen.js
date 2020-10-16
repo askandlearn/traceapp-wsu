@@ -113,7 +113,7 @@ const ProfileScreen = (props) => {
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>Height: </Text>
+            <Text style={styles.contentTitle}>Height (ft): </Text>
             <TextInput
               placeholder="0"
               placeholderTextColor="#fff"
@@ -122,11 +122,10 @@ const ProfileScreen = (props) => {
               style={styles.content}
               onChangeText={(height) => editHeight(height)}
             />
-            <Text style={styles.content}> ft</Text>
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>Weight: </Text>
+            <Text style={styles.contentTitle}>Weight (lbs): </Text>
             <TextInput
               placeholder="0 lbs"
               placeholderTextColor="#fff"
@@ -135,7 +134,6 @@ const ProfileScreen = (props) => {
               style={styles.content}
               onChangeText={(weight) => editWeight(weight)}
             />
-            <Text style={styles.content}> lbs</Text>
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>

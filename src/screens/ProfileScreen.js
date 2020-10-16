@@ -27,17 +27,20 @@ const ProfileScreen = (props) => {
   const [email, setEmail] = useState('example@email.com');
   const [dob, editDOB] = useState('July 22, 1999');
   const [address, editAddress] = useState('');
-  const [isEditable, editEditable] = useState(false);
+  const [height, editHeight] = useState('');
+  const [weight, editWeight] = useState('');
+  const [active, editActive] = useState('');
+  const [isEditable, editEditable] = useState(true);
 
-  const onEdit = () => {
+  /*const onEdit = () => {
     alert('You can now edit your profile');
     editEditable(true);
-  };
+  };*/
 
   //save changes
   const saveChanges = () => {
     alert('Changes saved!');
-    editEditable(false);
+    editEditable(true);
   };
 
   return (
@@ -106,6 +109,44 @@ const ProfileScreen = (props) => {
               editable={isEditable}
               style={styles.content}
               onChangeText={(address) => editAddress(address)}
+            />
+          </TouchableOpacity>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Height: </Text>
+            <TextInput
+              placeholder="0"
+              placeholderTextColor="#fff"
+              value={height}
+              editable={isEditable}
+              style={styles.content}
+              onChangeText={(height) => editHeight(height)}
+            />
+            <Text style={styles.content}> ft</Text>
+          </TouchableOpacity>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Weight: </Text>
+            <TextInput
+              placeholder="0 lbs"
+              placeholderTextColor="#fff"
+              value={weight}
+              editable={isEditable}
+              style={styles.content}
+              onChangeText={(weight) => editWeight(weight)}
+            />
+            <Text style={styles.content}> lbs</Text>
+          </TouchableOpacity>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Activity level: </Text>
+            <TextInput
+              placeholder="0 ft"
+              placeholderTextColor="#fff"
+              value={active}
+              editable={isEditable}
+              style={styles.content}
+              onChangeText={(active) => editActive(active)}
             />
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
@@ -192,11 +233,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   content: {
-    margin: 10,
+    margin: 20,
     fontSize: 20,
   },
   contentTitle: {
-    margin: 10,
+    margin: 20,
     fontSize: 20,
     fontWeight: 'bold',
   },

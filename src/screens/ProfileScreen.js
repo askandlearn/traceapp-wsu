@@ -46,10 +46,11 @@ const ProfileScreen = (props) => {
       style={styles.container}>
       <KeyboardAvoidingScrollView>
         <Header openDrawer={props.navigation.openDrawer} />
-        <Image
+        {/*<Image
           style={styles.backgroundImage}
           source={require('../images/TraceBio-Black.png')}
         />
+        */}
         <View style={styles.header} />
         <Image
           style={styles.avatar}
@@ -66,6 +67,7 @@ const ProfileScreen = (props) => {
               style={styles.name}
               onChangeText={(name) => editName(name)}
             />
+            {/*}
             <TouchableOpacity>
               <Icon
                 name="edit"
@@ -73,7 +75,7 @@ const ProfileScreen = (props) => {
                 style={{marginLeft: 5}}
                 onPress={() => onEdit()} //need to make name editable for user to change
               />
-            </TouchableOpacity>
+        </TouchableOpacity>*/}
           </View>
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
@@ -176,11 +178,11 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     marginBottom: 10,
     alignSelf: 'center',
-    position: 'absolute',
-    marginTop: 275,
+    //position: 'absolute',
+    marginTop: 25,
   },
   body: {
-    marginTop: 100,
+    //marginTop: 100,
     alignSelf: 'center',
   },
   name: {

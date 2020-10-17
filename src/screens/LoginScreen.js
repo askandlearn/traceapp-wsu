@@ -9,10 +9,9 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import {Form, TextValidator} from 'react-native-validator-form';
-import {minNumber} from 'react-native-validator-form/lib/ValidationRules';
+import Google from '../components/Google-Component'
+
 
 const logo = '../images/TraceBio-White.png';
 
@@ -90,6 +89,7 @@ const LoginScreen = (props) => {
             <Text style={styles.orOption}>Or sign in with</Text>
           </View>
           <View style={styles.horizantalLine} />
+          <Google />
         </View>
         <View style={[styles.bottomContainer]}>
           <View style={styles.flexContainer}>

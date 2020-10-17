@@ -9,10 +9,7 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import {Form, TextValidator} from 'react-native-validator-form';
-import {minNumber} from 'react-native-validator-form/lib/ValidationRules';
 
 const logo = '../images/TraceBio-White.png';
 
@@ -28,7 +25,7 @@ const LoginScreen = (props) => {
 
   const loginUser = () => {
     const SUCCESS_MESSAGE = 'Login successful!';
-    const url = 'http://localhost:8080/PHP-API/user_registration.php';
+    const url = 'http://192.168.7.97/PHP-API/user_registration.php';
     fetch(url, {
       method: 'POST',
       headers: {

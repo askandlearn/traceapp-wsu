@@ -43,7 +43,7 @@ const SignUpScreen = (props) => {
       Alert.alert('One or more fields are empty or done incorrectly!');
     } else {
       const SUCCESS_MESSAGE = 'User Registered Successfully!';
-      const url = 'http://localhost:8080/PHP-API/user_registration.php';
+      const url = 'http://192.168.7.97/PHP-API/user_registration.php';
       fetch(url, {
         method: 'POST',
         headers: {

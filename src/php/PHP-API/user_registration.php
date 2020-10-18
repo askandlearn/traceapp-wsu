@@ -1,5 +1,6 @@
 <?php
 //To DO
+//put API folder into xampp/htdocs
 //Edit lines 47 and 64 and change users to whatever you called the table
 
 //import config files
@@ -89,18 +90,25 @@ if($method == 'POST'){
         $CheckSQL = "SELECT * FROM users WHERE email='$email' AND password='$password'";
 
         $result = mysqli_query($con,$CheckSQL);
-
-        $row = mysqli_num_rows($result);
-
-        if($row != 1){
-            $err = 'Login failed!';
-            $json = json_encode($err);
-            echo $json;
+        
+        //final return
+        $row = array();
+        
+        //if a row is not 1 then query unsuccessful, else query is successful
+        if(mysqli_num_rows($result) != 1){
+            $err = '204';
+            array_push($row, $err);
+            $row = json_encode($row);
+            echo $row;
         }
         else{
-            $success = 'Login successful!';
-            $json = json_encode($success);
-            echo $json;
+            //success code 200 OK
+            $success = '200';
+            $row = mysqli_fetch_row($result);
+            //replace [0] with status code of 200 OK
+            $row[0] = '200';
+            $row = json_encode($row);
+            echo $row;
         }
     }
 }

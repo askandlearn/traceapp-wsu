@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {ScrollView, Text, StyleSheet, Image} from 'react-native';
+import {View, ScrollView, Text, StyleSheet, Image} from 'react-native';
 import {VictoryBar, VictoryChart, VictoryAxis} from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';
@@ -127,6 +127,20 @@ const HealthDashboardScreen = () => {
         // Enable the option to swipe between months. Default = false
         enableSwipeMonths={true}
       />
+      <View style={styles.colorKey}>
+        <View style={styles.colorKeyRow}>
+          <View style={{height: 10, width: 10, backgroundColor: 'green'}} />
+          <Text> {'  '}Great Health Score </Text>
+        </View>
+        <View style={styles.colorKeyRow}>
+          <View style={{height: 10, width: 10, backgroundColor: 'yellow'}} />
+          <Text> {'  '}Fair Health Score </Text>
+        </View>
+        <View style={styles.colorKeyRow}>
+          <View style={{height: 10, width: 10, backgroundColor: 'red'}} />
+          <Text> {'  '}Bad Health Score </Text>
+        </View>
+      </View>
     </ScrollView>
   );
 };
@@ -192,6 +206,19 @@ const styles = StyleSheet.create({
   },
   calendar: {
     flex: 1,
+  },
+  colorKey: {
+    flex: 1,
+    alignSelf: 'center',
+    margin: 0,
+    paddingTop: 20,
+  },
+  colorKeyRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    //alignItems: 'left',
   },
 });
 

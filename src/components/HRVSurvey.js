@@ -33,7 +33,7 @@ export default class RadioButtonExample extends Component {
     render () {
     return (
       <View style={styles.container}>
-        {/* <ScrollView> */}
+      <ScrollView>
             <Text style={styles.welcome}>HRV Survey</Text>
             <View style={styles.NavBarDivider} />
            
@@ -101,7 +101,7 @@ export default class RadioButtonExample extends Component {
                 />
             </View>  
           </View>
-        {/* </ScrollView> */}
+        </ScrollView>
       </View>
     );
   }

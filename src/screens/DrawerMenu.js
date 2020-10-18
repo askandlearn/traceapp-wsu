@@ -10,77 +10,76 @@ import {
   InteractionManager,
 } from 'react-native';
 
-const options = [
-  {
-    name: 'Home',
-    icon: 'home',
-  },
-  {
-    name: 'Profile',
-    icon: 'user',
-  },
-  {
-    name: 'AST',
-    icon: 'heartbeat',
-  },
-  {
-    name: 'Settings',
-    icon: 'cog',
-  },
-  {
-    name: 'Log Out',
-    icon: 'sign-out',
-  },
-];
+const DrawerMenu = (props) => {
+  const options = [
+    {
+      name: 'Home',
+      icon: 'home',
+    },
+    {
+      name: 'Profile',
+      icon: 'user',
+    },
+    {
+      name: 'AST',
+      icon: 'heartbeat',
+    },
+    {
+      name: 'Settings',
+      icon: 'cog',
+    },
+    {
+      name: 'Log Out',
+      icon: 'sign-out',
+    },
+  ];
+  
+  //implement logout functionality - AsyncStorage
+  const _logOut = (navigation) => {
+    //console.log("Clicked log out!");
+    alert('Clicked log out!');
+  };
+  
 
-//implement logout functionality - AsyncStorage
-const _logOut = (navigation) => {
-  //console.log("Clicked log out!");
-  alert('Clicked log out!');
-};
-
-class DrawerMenu extends Component {
-  render() {
+  const NavItem = ({navigation, name, icon}) => {
     return (
-      <View style={StyleSheet.container}>
-        <Image
-          style={styles.avatar}
-          source={{
-            uri:
-              'https://f1.pngfuel.com/png/386/684/972/face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette-png-clip-art.png',
-          }}
-        />
-        <Text style={styles.profileText}>John Doe</Text>
-        <Text style={styles.emailText}>example@email.com</Text>
-        <View style={styles.NavBarDivider} />
-        <FlatList
-          data={options}
-          renderItem={({item}) => (
-            <NavItem
-              navigation={this.props.navigation.navigate}
-              name={item.name}
-              icon={item.icon}
-            />
-          )}
-          keyExtractor={(item) => item.name}
-        />
-      </View>
+      <TouchableOpacity
+        style={styles.OptionsItem}
+        onPress={() => {
+          name !== 'Log Out' ? navigation(name) : _logOut(navigation);
+        }}>
+        <Icon name={icon} size={32} style={{padding: 10}} />
+        <Text style={styles.OptionsItemText}>{name}</Text>
+      </TouchableOpacity>
     );
-  }
-}
+  };
 
-const NavItem = ({navigation, name, icon}) => {
   return (
-    <TouchableOpacity
-      style={styles.OptionsItem}
-      onPress={() => {
-        name !== 'Log Out' ? navigation(name) : _logOut(navigation);
-      }}>
-      <Icon name={icon} size={32} style={{padding: 10}} />
-      <Text style={styles.OptionsItemText}>{name}</Text>
-    </TouchableOpacity>
+    <View style={StyleSheet.container}>
+      <Image
+        style={styles.avatar}
+        source={{
+          uri:
+            'https://f1.pngfuel.com/png/386/684/972/face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette-png-clip-art.png',
+        }}
+      />
+      <Text style={styles.profileText}>John Doe</Text>
+      <Text style={styles.emailText}>example@email.com</Text>
+      <View style={styles.NavBarDivider} />
+      <FlatList
+        data={options}
+        renderItem={({item}) => (
+          <NavItem
+            navigation={props.navigation.navigate}
+            name={item.name}
+            icon={item.icon}
+          />
+        )}
+        keyExtractor={(item) => item.name}
+      />
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

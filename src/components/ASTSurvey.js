@@ -11,7 +11,6 @@ Button
 
 //import Button from 'react-native-button';
 
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Slider from "react-native-slider";
 
 export default class RadioButtonExample extends Component {

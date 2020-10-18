@@ -12,7 +12,6 @@ import {
     ContributionGraph,
     StackedBarChart
   } from "react-native-chart-kit";
-  import PinchZoomView from 'react-native-pinch-zoom-view';
   //const screenWidth = Dimensions.get("window").width;
   export default plot=()=>{
    return( 

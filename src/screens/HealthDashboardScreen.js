@@ -18,6 +18,7 @@ const data = [
 
 const sharedAxisStyles = {
   axisLabel: {
+    margin: 30,
     padding: 30,
     fontSize: 15,
     fontStyle: 'italic',
@@ -31,7 +32,7 @@ const HealthDashboardScreen = () => {
     <ScrollView style={styles.container}>
       <Image
         style={styles.backgroundImage}
-        source={require('../images/TraceBio-White.png')}
+        source={require('../images/TraceBio-Black.png')}
       />
       <Text style={styles.title}>Health Dashboard</Text>
 
@@ -149,7 +150,7 @@ const HealthDashboardScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: '#ffffff',
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
   },
   chart: {
     flex: 1,
-    height: 400,
+    height: 300,
     width: '80%',
   },
   hidden: {
@@ -212,6 +213,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: 0,
     paddingTop: 20,
+    paddingBottom: 40,
   },
   colorKeyRow: {
     flex: 1,

@@ -23,6 +23,9 @@ import ASTScreen from './src/screens/ASTScreen';
 import SettingsMenu from './src/screens/SettingsMenu';
 import TraceConnect from './src/screens/TraceConnectScreen';
 import HealthInformation from './src/screens/HealthInformationScreen';
+import SensorAlert from './src/components/ConnectToSensorAlert';
+import Timer from './src/components/Timer';
+import ASTPlot from './src/components/ASTPlot'
 import HRVScreen from './src/screens/HRVScreen';
 import ChangePassword from './src/screens/ChangePassword';
 import RealTimeScreen from './src/screens/RealTimeScreen';
@@ -38,9 +41,13 @@ const NavDrawer = createDrawerNavigator(
     AST: ASTScreen,
     HealthInformation: HealthInformation,
     TraceConnect: TraceConnect,
+    SensorAlert: SensorAlert,
+    Timer: Timer,
+    ASTPlot: ASTPlot
     HRV:HRVScreen,
     ChangePassword: ChangePassword,
     Live: RealTimeScreen,
+
   },
   {
     //Set the Welcome Page as the first page of the app
@@ -65,6 +72,8 @@ const NavDrawer = createDrawerNavigator(
 const Navigator = createStackNavigator(
   {
     TRACE: NavDrawer,
+    SensorAlert: SensorAlert,
+    TraceConnect: TraceConnect,
   },
   {
     initialRouteName: 'TRACE',

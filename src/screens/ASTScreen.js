@@ -15,14 +15,14 @@ const ASTScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Header openDrawer={navigation.openDrawer} />
+      <ScrollView style={styles.container}>
       <Image
         style={styles.backgroundImage}
-        source={require('../images/TraceBio-White.png')}
+        source={require('../images/TraceBio-Black.png')}
       />
-      <ScrollView style={styles.container}>
         <Image
           style={styles.ASTfigure}
-          source={require('../images/Humanfigure_CirculatorySystem.png')}
+          source={require('../images/web_5.jpg')}
         />
         <View style={styles.NavBarDivider} />
         <Text
@@ -58,7 +58,7 @@ export default ASTScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: '#ffffff',
   },
   backgroundImage: {
     alignSelf: 'center',

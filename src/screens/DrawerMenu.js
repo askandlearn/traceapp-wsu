@@ -34,6 +34,10 @@ const options = [
     icon: 'rocket',
   },
   {
+    name: 'RealTime',
+
+  },
+  {
     name: 'Settings',
     icon: 'cog',
   },

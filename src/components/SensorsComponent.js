@@ -12,9 +12,22 @@ export default class SensorsComponent extends Component {
     super();
     this.manager = new BleManager();
     this.state = {info: '', values: {}};
-    //this.prefixUUID = '30DFE0D6';
-    //this.suffixUUID = '-BEEE-1520-21B4-FC6CA2817252';
-    this.sensors = {};
+    this.prefixUUID = '30DFE0D6';
+    this.suffixUUID = '-BEEE-1520-21B4-FC6CA2817252';
+    this.sensors = {
+      0: 'vcnlCurrent',
+      1: 'bpm',
+      2: 'skinTemp',
+      3: 'accelX',
+      4: 'ibi',
+      5: 'damp',
+      6: 'ppg',
+      7: 'dif',
+      8: 'digOut',
+      9: 'curTime',
+      10: 'deltaT',
+    };
+    this.id = '';
   }
 
   serviceUUID(num) {
@@ -55,7 +68,7 @@ export default class SensorsComponent extends Component {
 
   scanAndConnect() {
     this.manager.startDeviceScan(null, null, (error, device) => {
-      this.info('Scanning...');
+      this.info('Scanning for TRACE Device');
       console.log(device);
 
       if (error) {
@@ -63,7 +76,7 @@ export default class SensorsComponent extends Component {
         return;
       }
 
-      if (device.name === 'TRACE') {
+      if (device.name === 'Apple TV') {
         this.info('Connecting to TRACE Sensor');
         this.manager.stopDeviceScan();
         // eslint-disable-next-line prettier/prettier
@@ -78,7 +91,7 @@ export default class SensorsComponent extends Component {
           })
           .then(
             () => {
-              this.info('Listening...');
+              this.info(this.id);
             },
             (error) => {
               this.error(error.message);
@@ -89,6 +102,8 @@ export default class SensorsComponent extends Component {
   }
 
   async setupNotifications(device) {
+    this.id = device.id;
+
     for (const id in this.sensors) {
       const service = this.serviceUUID(id);
       const characteristicW = this.writeUUID(id);

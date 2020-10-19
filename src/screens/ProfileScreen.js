@@ -27,17 +27,20 @@ const ProfileScreen = (props) => {
   const [email, setEmail] = useState('example@email.com');
   const [dob, editDOB] = useState('July 22, 1999');
   const [address, editAddress] = useState('');
-  const [isEditable, editEditable] = useState(false);
+  const [height, editHeight] = useState('');
+  const [weight, editWeight] = useState('');
+  const [active, editActive] = useState('');
+  const [isEditable, editEditable] = useState(true);
 
-  const onEdit = () => {
+  /*const onEdit = () => {
     alert('You can now edit your profile');
     editEditable(true);
-  };
+  };*/
 
   //save changes
   const saveChanges = () => {
     alert('Changes saved!');
-    editEditable(false);
+    editEditable(true);
   };
 
   return (
@@ -46,10 +49,11 @@ const ProfileScreen = (props) => {
       style={styles.container}>
       <KeyboardAvoidingScrollView>
         <Header openDrawer={props.navigation.openDrawer} />
-        <Image
+        {/*<Image
           style={styles.backgroundImage}
-          source={require('../images/TraceBio-White.png')}
+          source={require('../images/TraceBio-Black.png')}
         />
+        */}
         <View style={styles.header} />
         <Image
           style={styles.avatar}
@@ -66,6 +70,7 @@ const ProfileScreen = (props) => {
               style={styles.name}
               onChangeText={(name) => editName(name)}
             />
+            {/*}
             <TouchableOpacity>
               <Icon
                 name="edit"
@@ -73,7 +78,7 @@ const ProfileScreen = (props) => {
                 style={{marginLeft: 5}}
                 onPress={() => onEdit()} //need to make name editable for user to change
               />
-            </TouchableOpacity>
+        </TouchableOpacity>*/}
           </View>
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
@@ -107,6 +112,42 @@ const ProfileScreen = (props) => {
             />
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Height (ft): </Text>
+            <TextInput
+              placeholder="0"
+              placeholderTextColor="#fff"
+              value={height}
+              editable={isEditable}
+              style={styles.content}
+              onChangeText={(height) => editHeight(height)}
+            />
+          </TouchableOpacity>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Weight (lbs): </Text>
+            <TextInput
+              placeholder="0 lbs"
+              placeholderTextColor="#fff"
+              value={weight}
+              editable={isEditable}
+              style={styles.content}
+              onChangeText={(weight) => editWeight(weight)}
+            />
+          </TouchableOpacity>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Activity level: </Text>
+            <TextInput
+              placeholder="0 ft"
+              placeholderTextColor="#fff"
+              value={active}
+              editable={isEditable}
+              style={styles.content}
+              onChangeText={(active) => editActive(active)}
+            />
+          </TouchableOpacity>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <Button
             title="Save Changes"
             color="#ff0000"
@@ -123,7 +164,7 @@ const ProfileScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: '#ffffff',
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -176,11 +217,11 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     marginBottom: 10,
     alignSelf: 'center',
-    position: 'absolute',
-    marginTop: 275,
+    //position: 'absolute',
+    marginTop: 25,
   },
   body: {
-    marginTop: 100,
+    //marginTop: 100,
     alignSelf: 'center',
   },
   name: {
@@ -190,11 +231,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   content: {
-    margin: 10,
+    margin: 20,
     fontSize: 20,
   },
   contentTitle: {
-    margin: 10,
+    margin: 20,
     fontSize: 20,
     fontWeight: 'bold',
   },

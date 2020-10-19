@@ -5,6 +5,8 @@
  * @format
  * @flow strict-local
  */
+// Tracebio background color hex:#242852
+
 
 import {createAppContainer, Image} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -21,7 +23,12 @@ import ASTScreen from './src/screens/ASTScreen';
 import SettingsMenu from './src/screens/SettingsMenu';
 import TraceConnect from './src/screens/TraceConnectScreen';
 import HealthInformation from './src/screens/HealthInformationScreen';
-import RealTime from './src/screens/RealTimeScreen';
+import SensorAlert from './src/components/ConnectToSensorAlert';
+import Timer from './src/components/Timer';
+import ASTPlot from './src/components/ASTPlot'
+import HRVScreen from './src/screens/HRVScreen';
+import ChangePassword from './src/screens/ChangePassword';
+import RealTimeScreen from './src/screens/RealTimeScreen';
 
 const NavDrawer = createDrawerNavigator(
   {
@@ -34,11 +41,17 @@ const NavDrawer = createDrawerNavigator(
     AST: ASTScreen,
     HealthInformation: HealthInformation,
     TraceConnect: TraceConnect,
-    RealTime: RealTime,
+    SensorAlert: SensorAlert,
+    Timer: Timer,
+    ASTPlot: ASTPlot
+    HRV:HRVScreen,
+    ChangePassword: ChangePassword,
+    Live: RealTimeScreen,
+
   },
   {
     //Set the Welcome Page as the first page of the app
-    initialRouteName: 'Welcome',
+    initialRouteName: 'Home',
     unmountInactiveRoutes: true,
 
     defaultNavigationOptions: {
@@ -59,6 +72,8 @@ const NavDrawer = createDrawerNavigator(
 const Navigator = createStackNavigator(
   {
     TRACE: NavDrawer,
+    SensorAlert: SensorAlert,
+    TraceConnect: TraceConnect,
   },
   {
     initialRouteName: 'TRACE',

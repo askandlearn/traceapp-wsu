@@ -22,7 +22,16 @@ const options = [
   },
   {
     name: 'AST',
+    icon: 'bolt',
+  },
+  {
+    name:'HRV',
     icon: 'heartbeat',
+
+  },
+  {
+    name:"Live",
+    icon: 'rocket',
   },
   {
     name: 'RealTime',
@@ -36,6 +45,7 @@ const options = [
     name: 'Log Out',
     icon: 'sign-out',
   },
+  
 ];
 
 //implement logout functionality - AsyncStorage

@@ -53,9 +53,8 @@ export default class HealthDashboardScreen extends Component {
       <ScrollView style={styles.container}>
         <Image
           style={styles.backgroundImage}
-          source={require('../images/TraceBio-White.png')}
-        />
-        <Text style={styles.title}>Health Dashboard</Text>
+          source={require('../images/TraceBio-Black.png')}/>
+    <Text style={styles.title}>Health Dashboard</Text>
 
         <DropDownPicker
           items={[
@@ -147,7 +146,7 @@ export default class HealthDashboardScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: '#ffffff',
   },
   backgroundImage: {
     alignSelf: 'center',

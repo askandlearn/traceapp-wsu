@@ -90,6 +90,7 @@ const ASTScreen = ({navigation}) => {
             </View>
           </View>
         </Swiper>
+
         <View style={styles.NavBarDivider} />
         <Plot></Plot>
       </ScrollView>
@@ -104,6 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignContent:'center',
+
   },
   backgroundImage: {
     alignSelf: 'center',

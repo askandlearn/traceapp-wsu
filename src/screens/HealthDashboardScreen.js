@@ -35,7 +35,6 @@ const HealthDashboardScreen = () => {
         source={require('../images/TraceBio-Black.png')}
       />
       <Text style={styles.title}>Health Dashboard</Text>
-
       <DropDownPicker
         items={[
           {label: 'Results by Week', value: 'week'},

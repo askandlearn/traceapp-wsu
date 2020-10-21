@@ -278,8 +278,13 @@ const SignUpScreen = (props) => {
         <TouchableOpacity
           title="Submit"
           style={styles.button}
-          onPress={() => {
-            register(first,last,date,email,password,props.navigation.navigate)
+          onPress={async () => {
+            try{
+              await register(first,last,date,email,password,props.navigation.navigate)
+            }
+            catch(error){
+              console.log('Error: ' + error.message)
+            }
             }}>
           <Text style={styles.buttonText}>
             CREATE ACCOUNT

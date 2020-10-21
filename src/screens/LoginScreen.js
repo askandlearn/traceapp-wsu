@@ -89,6 +89,8 @@ const LoginScreen = (props) => {
                 setLoading(false)
               }
               catch(e){
+                setLoading(false)
+                Alert.alert('Error: Couldn\'t sign in')
                 console.log('Error: ' + e.message);
               }
             }}>

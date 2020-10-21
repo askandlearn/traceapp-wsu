@@ -1,6 +1,7 @@
 import React from 'react';
 import {Alert} from 'react-native';
 import { createAction } from '../utils/createAction';
+import axios from 'axios';
 
 export function useAuth(){
     
@@ -32,50 +33,18 @@ export function useAuth(){
     login: async (email,password) => {
         const STATUS_CODES = [200,204];
         const url = 'http://192.168.7.97/PHP-API/user_registration.php';
-        // fetch(url, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         type: 'signin',
-        //         email: email,
-        //         password: password,
-        //     }),
-        // })
-        // .then((response) => response.json())
-        // .then((responseJson) => {
-        //     //Showing response message coming from server after inserting records
-        //     // Alert.alert(responseJson);
-        //     console.log(responseJson)
-        //     switch(parseInt(responseJson[0])){
-        //         case STATUS_CODES[0]: {
-        //             console.log('SUCCESS: '+STATUS_CODES[0]);
-        //             break;
-        //         }
-        //         case STATUS_CODES[1]: {
-        //             console.log('NOT FOUND: '+STATUS_CODES[1]);
-        //             break;
-        //         }
-        //     }
-        // })
-        // .catch((err) => {
-        //     console.error(err);
-        // });
-        const results = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                type: 'signin',
-                email: email,
-                password: password,
-            }),
-        }).then((response) => response.json())
-        
+        //there is a timout parameter set for 2 sec
+        //reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
+        const results = await axios.post(url, {
+            type: 'signin',
+            email: email,
+            password: password,
+        }, {
+            timeout: 2000
+        }).then(res => res.data).catch(err => {
+            console.log(err.code)
+            console.log(err.message)
+        })
         //make user js structure
         const user = {
             email: results[4],
@@ -97,40 +66,59 @@ export function useAuth(){
         console.log('Logout')
         dispatch(createAction('REMOVE_USER'));
     },
-    register: (first,last,date,email,password,navigate) => {
+    register: async (first,last,date,email,password,navigate) => {
         console.log('Register')
         const SUCCESS_MESSAGE = 'User Registered Successfully!';
         const url = 'http://192.168.7.97/PHP-API/user_registration.php';
-        fetch(url, {
-            method: 'POST',
-            headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+        const result = await axios.post(url, {
             type: 'signup',
             firstName: first,
             lastName: last,
             date: date,
             email: email,
             password: password,
-            }),
+        }).then(res => res.data).catch(err => {
+            console.log('Error: ' + err.message)
         })
-            .then((response) => response.json())
-            .then((responseJson) => {
-            //Showing response message coming from server after inserting records
-            Alert.alert(responseJson);
-            if (responseJson === SUCCESS_MESSAGE) {
-                // props.navigation.navigate('Login');
-                console.log('Navigate to login')
-                navigate('Login')
-            }
-            })
-            .catch((err) => {
-            console.error(err);
-            });
+
+        Alert.alert(result);
+        if (result === SUCCESS_MESSAGE) {
+            // props.navigation.navigate('Login');
+            console.log('Navigate to login')
+            navigate('Login')
         }
-    }), []);
+
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //     Accept: 'application/json',
+        //     'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //     type: 'signup',
+        //     firstName: first,
+        //     lastName: last,
+        //     date: date,
+        //     email: email,
+        //     password: password,
+        //     }),
+        // })
+        //     .then((response) => response.json())
+        //     .then((responseJson) => {
+        //     //Showing response message coming from server after inserting records
+        //     Alert.alert(responseJson);
+        //     if (responseJson === SUCCESS_MESSAGE) {
+        //         // props.navigation.navigate('Login');
+        //         console.log('Navigate to login')
+        //         navigate('Login')
+        //     }
+        //     })
+        //     .catch((err) => {
+        //     console.error(err);
+        //     });
+        // }
+    }
+}), []);
 
     // console.log(state.user);
 

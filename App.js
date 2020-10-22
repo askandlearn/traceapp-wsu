@@ -43,7 +43,7 @@ const NavDrawer = createDrawerNavigator(
     TraceConnect: TraceConnect,
     SensorAlert: SensorAlert,
     Timer: Timer,
-    ASTPlot: ASTPlot
+    ASTPlot: ASTPlot,
     HRV:HRVScreen,
     ChangePassword: ChangePassword,
     Live: RealTimeScreen,

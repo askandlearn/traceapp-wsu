@@ -37,10 +37,15 @@ const SettingsMenu = ({navigation}, props) => {
                   hasNavArrow={false}
                   title='Airplane Mode'
                 /> */}
-          <SettingsList.Item
+          {/*<SettingsList.Item
             title="My Health Information"
             titleInfoStyle={styles.titleInfoStyle}
             onPress={() => navigation.navigate('HealthInformation')}
+          />*/}
+          <SettingsList.Item
+          title="Change Password"
+          titleInfoStyle={styles.titleInfoStyle}
+          onPress={()=> navigation.navigate('ChangePassword')}
           />
           <SettingsList.Item
             title="Connect TRACE Sensor"

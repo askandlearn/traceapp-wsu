@@ -5,6 +5,8 @@
  * @format
  * @flow strict-local
  */
+// Tracebio background color hex:#242852
+
 
 import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack';
@@ -18,10 +20,13 @@ import {lightTheme} from './src/themes/light'
 import { AuthContext } from './src/contexts/AuthContext';
 import { useAuth } from './src/hooks/useAuth';
 
+
 const RootStack = createStackNavigator();
 // const AuthStack = createStackNavigator();  //not needed
 
+
 export default function() {
+
 
   const {auth, state} = useAuth();
   //For debuggin purpose

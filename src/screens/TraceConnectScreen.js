@@ -14,12 +14,12 @@ const TraceConnectScreen = ({navigation}) => {
       <Header openDrawer={navigation.openDrawer} />
       <Image
         style={styles.backgroundImage}
-        source={require('../images/TraceBio-White.png')}
+        source={require('../images/TraceBio-Black.png')}
       />
       <Text style={styles.title}>Connect Your TRACE Device</Text>
       <Image
         style={styles.deviceImage}
-        source={require('../images/Trace-3D.png')}
+        source={require('../images/Trace-3DTransparent.png')}
       />
       <TouchableOpacity title="Connect" onPress={null} style={styles.button}>
         <Text style={styles.buttonText} onPress={saveChanges}>
@@ -33,7 +33,7 @@ const TraceConnectScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
   },
   backgroundImage: {

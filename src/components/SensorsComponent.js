@@ -5,15 +5,16 @@
 //PNP ID (2A50)
 import React, {Component} from 'react';
 import {Platform, View, Text} from 'react-native';
-import {BleManager} from 'react-native-ble-plx';
+import {BleManager, Characteristic} from 'react-native-ble-plx';
+import {FlatList} from 'react-native-gesture-handler';
 
 export default class SensorsComponent extends Component {
   constructor() {
     super();
     this.manager = new BleManager();
     this.state = {info: '', values: {}};
-    this.prefixUUID = '30DFE0D6';
-    this.suffixUUID = '-BEEE-1520-21B4-FC6CA2817252';
+    this.prefixUUID = '';
+    this.suffixUUID = '';
     this.sensors = {
       0: 'vcnlCurrent',
       1: 'bpm',
@@ -76,7 +77,7 @@ export default class SensorsComponent extends Component {
         return;
       }
 
-      if (device.name === 'Apple TV') {
+      if (device.name === 'TRACE') {
         this.info('Connecting to TRACE Sensor');
         this.manager.stopDeviceScan();
         // eslint-disable-next-line prettier/prettier
@@ -86,12 +87,31 @@ export default class SensorsComponent extends Component {
             return device.discoverAllServicesAndCharacteristics();
           })
           .then((device) => {
-            this.info('Setting notifications');
-            return this.setupNotifications(device);
+            this.info('Reterning services');
+            var thing = this.manager.servicesForDevice(device.id);
+            return thing;
           })
+          .then((thing) => {
+            this.info('Returning characteristics');
+            var thing2 = this.manager.chacteristicsForDevice(
+              device.id,
+              thing[0],
+            );
+            return thing2;
+          })
+          /*.then((thing2) => {
+            this.info('Subscribing to heartrate');
+            var thing3 = this.manager.monitorCharacteristicForService(
+              device.id,
+              thing[0].uuid,
+              thing2[0].uuid,
+              listener(error, thing2[0]),
+            );
+            return thing3;
+          })*/
           .then(
-            () => {
-              this.info(this.id);
+            (thing2) => {
+              this.info(thing2[0].uuid);
             },
             (error) => {
               this.error(error.message);
@@ -102,31 +122,9 @@ export default class SensorsComponent extends Component {
   }
 
   async setupNotifications(device) {
-    this.id = device.id;
-
-    for (const id in this.sensors) {
-      const service = this.serviceUUID(id);
-      const characteristicW = this.writeUUID(id);
-      const characteristicN = this.notifyUUID(id);
-
-      const characteristic = await device.writeCharacteristicWithResponseForService(
-        service,
-        characteristicW,
-        'AQ==' /* 0x01 in hex */,
-      );
-
-      device.monitorCharacteristicForService(
-        service,
-        characteristicN,
-        (error, characteristic) => {
-          if (error) {
-            this.error(error.message);
-            return;
-          }
-          this.updateValue(characteristic.uuid, characteristic.value);
-        },
-      );
-    }
+    var serviceUUID = '30DFE0D6-BEEE-1520-21B4-FC6CA2817252';
+    var characteristicUUID = '2A37';
+    device.monitorCharacteristicForService(serviceUUID);
   }
 
   render() {

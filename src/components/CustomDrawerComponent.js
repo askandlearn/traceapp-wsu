@@ -1,10 +1,13 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { AuthContext } from '../contexts/AuthContext';
 
 
 export function CusomDrawerComponent({...props}){
+    const {logout} = useContext(AuthContext);
+
     return(
         <View style={{flex: 1}}>
             <DrawerContentScrollView {...props}>
@@ -26,9 +29,30 @@ export function CusomDrawerComponent({...props}){
                         <DrawerItem
                             label='AST'
                             icon={({color,size}) => (
-                                <Icon name='heartbeat' color={color} size={size}/>
+                                <Icon name='bolt' color={color} size={size}/>
                             )}
                             onPress={() => {props.navigation.navigate('AST')}}
+                        />
+                        <DrawerItem
+                            label='HRV'
+                            icon={({color,size}) => (
+                                <Icon name='heartbeat' color={color} size={size}/>
+                            )}
+                            onPress={() => {props.navigation.navigate('HRV')}}
+                        />
+                        <DrawerItem
+                            label='Live'
+                            icon={({color,size}) => (
+                                <Icon name='rocket' color={color} size={size}/>
+                            )}
+                            onPress={() => {props.navigation.navigate('Live')}}
+                        />
+                        <DrawerItem
+                            label='Realtime'
+                            icon={({color,size}) => (
+                                <Icon name='line-chart' color={color} size={size}/>
+                            )}
+                            onPress={() => {props.navigation.navigate('Realtime')}}
                         />
                         <DrawerItem
                             label='Settings'
@@ -45,7 +69,7 @@ export function CusomDrawerComponent({...props}){
                     icon={({color,size}) => (
                         <Icon name='sign-out' color={color} size={size}/>
                     )}
-                    onPress={() => {}}
+                    onPress={() => logout()}
                 />
             </View>
         </View>

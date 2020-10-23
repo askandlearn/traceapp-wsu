@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -9,22 +9,23 @@ import {
   Alert,
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import DatePicker from 'react-native-datepicker';
-import {Form, TextValidator} from 'react-native-validator-form';
-import {minNumber} from 'react-native-validator-form/lib/ValidationRules';
 import * as Animatable from 'react-native-animatable';
+import { AuthContext } from '../contexts/AuthContext';
 
 //Create the Sign Up Page
 
 const logo = '../images/TraceBio-White.png';
 
 const SignUpScreen = (props) => {
-  const [first, setFirst] = useState('');
-  const [last, setLast] = useState('');
-  const [date, setDate] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPass, setConfirmPass] = useState('');
+  const [first, setFirst] = useState('Mo');
+  const [last, setLast] = useState('Ha');
+  const [date, setDate] = useState('1999-12-10');
+  const [email, setEmail] = useState('abcdef@email.com');
+  const [password, setPassword] = useState('password');
+  const [confirmPass, setConfirmPass] = useState('password');
+
+  //export context
+  const {register} = useContext(AuthContext);
 
   //Validation flags
   const [validation_flags, setValidationFlags] = useState({
@@ -38,39 +39,34 @@ const SignUpScreen = (props) => {
   });
 
   const registerUser = () => {
-    checkIsFilled();
-    if (!validation_flags.isFilled) {
-      Alert.alert('One or more fields are empty or done incorrectly!');
-    } else {
-      const SUCCESS_MESSAGE = 'User Registered Successfully!';
-      const url = 'http://localhost:8080/PHP-API/user_registration.php';
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'signup',
-          firstName: first,
-          lastName: last,
-          date: date,
-          email: email,
-          password: password,
-        }),
+    const SUCCESS_MESSAGE = 'User Registered Successfully!';
+    const url = 'http://192.168.7.97/PHP-API/user_registration.php';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: 'signup',
+        firstName: first,
+        lastName: last,
+        date: date,
+        email: email,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        //Showing response message coming from server after inserting records
+        Alert.alert(responseJson);
+        if (responseJson === SUCCESS_MESSAGE) {
+          props.navigation.navigate('Login');
+        }
       })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          //Showing response message coming from server after inserting records
-          Alert.alert(responseJson);
-          if (responseJson === SUCCESS_MESSAGE) {
-            props.navigation.navigate('Login');
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const display = () => {
@@ -180,14 +176,6 @@ const SignUpScreen = (props) => {
     }
   };
 
-  const checkIsFilled = () => {
-    if (first && last && date && email && password && confirmPass) {
-      setValidationFlags({
-        ...validation_flags,
-        isFilled: true,
-      });
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -290,8 +278,15 @@ const SignUpScreen = (props) => {
         <TouchableOpacity
           title="Submit"
           style={styles.button}
-          onPress={registerUser}>
-          <Text style={styles.buttonText} onPress={registerUser}>
+          onPress={async () => {
+            try{
+              await register(first,last,date,email,password,props.navigation.navigate)
+            }
+            catch(error){
+              console.log('Error: ' + error.message)
+            }
+            }}>
+          <Text style={styles.buttonText}>
             CREATE ACCOUNT
           </Text>
         </TouchableOpacity>

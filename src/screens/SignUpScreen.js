@@ -51,7 +51,7 @@ const SignUpScreen = (props) => {
         type: 'signup',
         firstName: firstName,
         lastName: lastName,
-        date: birthdate,
+        birthdate: birthdate,
         email: email,
         password: password,
       }),

@@ -72,7 +72,7 @@ const SignUpScreen = (props) => {
   const display = () => {
     console.log(firstName);
     console.log(lastName);
-    console.log(date);
+    console.log(birthdate);
     console.log(email);
     console.log(password);
   };
@@ -188,7 +188,7 @@ const SignUpScreen = (props) => {
           style={styles.inputFields}
           placeholder="Firstname"
           value={firstName}
-          onChangeText={(val) => setFirst(val)}
+          onChangeText={(val) => setFirstName(val)}
           onEndEditing={(e) => handleFirst(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}
@@ -202,7 +202,7 @@ const SignUpScreen = (props) => {
           style={styles.inputFields}
           placeholder="Lastname"
           value={lastName}
-          onChangeText={(val) => setLast(val)}
+          onChangeText={(val) => setLastName(val)}
           onEndEditing={(e) => handleLast(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}
@@ -232,7 +232,7 @@ const SignUpScreen = (props) => {
           style={styles.inputFields}
           placeholder="Birthdate (yyyy-mm-dd)"
           value={birthdate}
-          onChangeText={(val) => setDate(val)}
+          onChangeText={(val) => setBirthate(val)}
           onEndEditing={(e) => handleDate(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}

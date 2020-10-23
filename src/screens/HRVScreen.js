@@ -9,14 +9,12 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
+
 import Header from '../components/Header-Component';
-import modal from 'react-native-modal';
 import Timer from '../components/HRVTimer';
 import Animate from '../components/HRVSurvey';
 import SensorAlert from '../components/ConnectToSensorAlert';
 import Swiper from 'react-native-swiper';
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Plot from '../components/Plot';
 
 var check =false;

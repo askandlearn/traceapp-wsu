@@ -43,7 +43,7 @@ const NavDrawer = createDrawerNavigator(
     TraceConnect: TraceConnect,
     SensorAlert: SensorAlert,
     Timer: Timer,
-    ASTPlot: ASTPlot
+    ASTPlot: ASTPlot,
     HRV:HRVScreen,
     ChangePassword: ChangePassword,
     Live: RealTimeScreen,
@@ -51,7 +51,7 @@ const NavDrawer = createDrawerNavigator(
   },
   {
     //Set the Welcome Page as the first page of the app
-    initialRouteName: 'Home',
+    initialRouteName: 'AST',
     unmountInactiveRoutes: true,
 
     defaultNavigationOptions: {

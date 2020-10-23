@@ -14,11 +14,47 @@ import {
   } from "react-native-chart-kit";
   //const screenWidth = Dimensions.get("window").width;
   export default plot=()=>{
+
+    // const HR= {
+    //   labels: ["BPM", "BPM", "BPM", "BPM", "BPM", "BPM"],
+    //   datasets: [
+    //     {
+    //       data: [
+    //         Math.random() * 100,
+    //         Math.random() * 100,
+    //         Math.random() * 100,
+    //         Math.random() * 100,
+    //         Math.random() * 100,
+    //         Math.random() * 100
+    //       ]
+          
+    //     }
+    //   ]
+    // }
+    // const HRV= {
+    //   labels: ["BPM", "BPM", "BPM", "BPM", "BPM", "BPM"],
+    //   datasets: [
+    //     {
+    //       data: [
+    //         Math.random() * 100,
+    //         Math.random() * 100,
+    //         Math.random() * 100,
+    //         Math.random() * 100,
+    //         Math.random() * 100,
+    //         Math.random() * 100
+    //       ]
+          
+    //     }
+    //   ]
+    // }
    return( 
     // <PinchZoomView>
   
   <LineChart
-    data={{
+  // data = { datasets: [ { data: [3, 5, 6], color: () => '#C7EBFF', strokeWidth: 4 }, 
+  // { data: [2, 5, 7], color: () => '#ED7C33' }, ] }
+     data={
+      {
       labels: ["BPM", "BPM", "BPM", "BPM", "BPM", "BPM"],
       datasets: [
         {
@@ -29,10 +65,24 @@ import {
             Math.random() * 100,
             Math.random() * 100,
             Math.random() * 100
-          ]
+          ],
+          color: () => '#C7EBFF'
+        },
+        {
+          data: [
+            Math.random() * 100,
+            Math.random() * 100,
+            Math.random() * 100,
+            Math.random() * 100,
+            Math.random() * 100,
+            Math.random() * 100
+          ],
+          color: () => '#ED7C33'
+          
         }
       ]
-    }}
+    }
+  }
    // width={Dimensions.get("window").width} // from react-native
     height={180}
     width={400}

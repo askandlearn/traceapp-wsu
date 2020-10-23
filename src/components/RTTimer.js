@@ -48,9 +48,6 @@ export default class RTStopwatch extends Component {
             {!this.state.stopwatchStart ? "Start" : "Stop"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress= {this.resetStopwatch }style={styles.button}>             
-            <Text style={styles.buttonText}>RESET</Text>
-          </TouchableOpacity>
           </View>
         </View> 
     );

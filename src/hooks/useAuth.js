@@ -66,15 +66,15 @@ export function useAuth(){
         console.log('Logout')
         dispatch(createAction('REMOVE_USER'));
     },
-    register: async (first,last,date,email,password,navigate) => {
+    register: async (firstName,lastName,birthdate,email,password,navigate) => {
         console.log('Register')
         const SUCCESS_MESSAGE = 'User Registered Successfully!';
-        const url = 'http://192.168.192.22/PHP-API/user_registration.php';
+        const url = 'http://192.168.1.189/PHP-API/user_registration.php';
         const result = await axios.post(url, {
             type: 'signup',
-            firstName: first,
-            lastName: last,
-            date: date,
+            firstName: firstName,
+            lastName: lastName,
+            birthdate: birthdate,
             email: email,
             password: password,
         }).then(res => res.data).catch(err => {

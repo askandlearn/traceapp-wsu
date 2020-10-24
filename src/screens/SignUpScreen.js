@@ -40,7 +40,7 @@ const SignUpScreen = (props) => {
 
   const registerUser = () => {
     const SUCCESS_MESSAGE = 'User Registered Successfully!';
-    const url = 'http://192.168.7.97/PHP-API/user_registration.php';
+    const url = 'http://192.168.1.189/PHP-API/user_registration.php';
     fetch(url, {
       method: 'POST',
       headers: {
@@ -232,7 +232,7 @@ const SignUpScreen = (props) => {
           style={styles.inputFields}
           placeholder="Birthdate (yyyy-mm-dd)"
           value={birthdate}
-          onChangeText={(val) => setBirthate(val)}
+          onChangeText={(val) => setBirthdate(val)}
           onEndEditing={(e) => handleDate(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}

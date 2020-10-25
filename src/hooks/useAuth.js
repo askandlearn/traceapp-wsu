@@ -49,7 +49,7 @@ export function useAuth(){
         const user = {
             email: results[4],
             name: results[1] +' ' + results[2],
-            dob: results[3]
+            birthdate: results[3]
         }
         // console.log(user);
         //if anything other than success code
@@ -66,7 +66,8 @@ export function useAuth(){
         console.log('Logout')
         dispatch(createAction('REMOVE_USER'));
     },
-    register: async (firstName,lastName,birthdate,email,password,navigate) => {
+    /*register: async (firstName,lastName,birthdate,email,password,navigate) => {*/
+    register: async (email, password, firstName, lastName, birthdate, navigate) => {
         console.log('Register')
         const SUCCESS_MESSAGE = 'User Registered Successfully!';
         const url = 'http://192.168.1.189/PHP-API/user_registration.php';

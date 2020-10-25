@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -10,10 +10,11 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import { useAuth } from '../hooks/useAuth';
+import { UserContext } from '../contexts/UserContext';
 
 const ProfileScreen = (props) => {
   /*
@@ -33,6 +34,8 @@ const ProfileScreen = (props) => {
   const [changeText, setChangeText] = useState('Edit')
   const [isEditable, editEditable] = useState(false);
 
+  const user = useContext(UserContext);
+
   /*const onEdit = () => {
     alert('You can now edit your profile');
     editEditable(true);
@@ -40,6 +43,7 @@ const ProfileScreen = (props) => {
 
   //save changes
   const saveChanges = () => {
+    // console.log('User: ' + user.email);
     if(isEditable){
       setChangeText('Edit')
       editEditable(false)

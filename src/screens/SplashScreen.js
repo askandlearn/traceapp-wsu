@@ -4,7 +4,7 @@ import {View, Image, StyleSheet, Animated, Easing, Text} from 'react-native';
 export function SplashScreen() {
     const startValue = new Animated.Value(0)
     const endValue = 100
-    const duration = 5000;
+    const duration = 4500;
 
     useEffect(() => {
         Animated.timing(startValue, {
@@ -22,22 +22,24 @@ export function SplashScreen() {
             <Animated.View style={[styles.row, {transform: [{translateX: startValue}]}]}>
                 <Image 
                     style={styles.image}
-                    source={require('../images/Pulse.png')}/>
+                    source={require('../images/Pulse-Red.png')}/>
                 <Image 
                     style={styles.image}
-                    source={require('../images/Pulse.png')}/>
+                    source={require('../images/Pulse-Red.png')}/>
                 <Image 
                     style={styles.image}
-                    source={require('../images/Pulse.png')}/>
+                    source={require('../images/Pulse-Red.png')}/>
                 <Image 
                     style={styles.image}
-                    source={require('../images/Pulse.png')}/>
+                    source={require('../images/Pulse-Red.png')}/>
                 <Image 
                     style={styles.image}
-                    source={require('../images/Pulse.png')}/>
+                    source={require('../images/Pulse-Red.png')}/>
                 <Image 
                     style={styles.image}
-                    source={require('../images/Pulse.png')}/>
+                    source={require('../images/Pulse-Red.png')}/>
+                
+                
             </Animated.View>
         </View>
     )
@@ -46,7 +48,7 @@ export function SplashScreen() {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#ff0000',
+        backgroundColor: '#000000',
         alignItems: 'center',
         justifyContent: 'center',
     },

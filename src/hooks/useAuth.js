@@ -1,7 +1,9 @@
 import React from 'react';
 import {Alert} from 'react-native';
 import { createAction } from '../utils/createAction';
+import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
+import { sleep } from '../utils/sleep';
 
 export function useAuth(){
     
@@ -10,6 +12,7 @@ export function useAuth(){
             case 'SET_USER':
                 return{
                     ...state,
+                    loading: false,
                     user: {...action.payload}
                 }
                 break;
@@ -19,6 +22,11 @@ export function useAuth(){
                     user: undefined
                 }
                 break;
+            case 'SET_LOADING':
+                return{
+                    ...state,
+                    loading: action.payload
+                }
             default:
                 return{
                     ...state,
@@ -26,13 +34,14 @@ export function useAuth(){
                 }
         }
     }, {
-        user: undefined
+        user: undefined,
+        loading: true
     });
     
     const auth = React.useMemo(() => ({
     login: async (email,password) => {
         const STATUS_CODES = [200,204];
-        const url = 'http://192.168.192.22/PHP-API/user_registration.php';
+        const url = 'http://192.168.7.97/PHP-API/user_registration.php';
         //there is a timout parameter set for 2 sec
         //reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
         const results = await axios.post(url, {
@@ -51,6 +60,7 @@ export function useAuth(){
             name: results[1] +' ' + results[2],
             dob: results[3]
         }
+        await AsyncStorage.setItem('@user', JSON.stringify(user));
         // console.log(user);
         //if anything other than success code
         if(parseInt(results[0]) != STATUS_CODES[0]){
@@ -62,14 +72,15 @@ export function useAuth(){
             dispatch(createAction('SET_USER', user));
         }
     },
-    logout: () => {
+    logout: async () => {
         console.log('Logout')
+        await AsyncStorage.removeItem('@user');
         dispatch(createAction('REMOVE_USER'));
     },
     register: async (first,last,date,email,password,navigate) => {
         console.log('Register')
         const SUCCESS_MESSAGE = 'User Registered Successfully!';
-        const url = 'http://192.168.192.22/PHP-API/user_registration.php';
+        const url = 'http://192.168.7.97/PHP-API/user_registration.php';
         const result = await axios.post(url, {
             type: 'signup',
             firstName: first,
@@ -121,6 +132,19 @@ export function useAuth(){
 }), []);
 
     // console.log(state.user);
-
+    // get the @user from async storage. for session purposes
+    React.useEffect(() => {
+        sleep(1000).then(() => {
+            AsyncStorage.getItem('@user').then(user => {
+                //console.log('user', user);
+                if(user){
+                    dispatch(createAction('SET_USER', JSON.parse(user)))
+                }
+                else{
+                    dispatch(createAction('SET_LOADING', false))
+                }
+            })
+        })
+    })
     return {auth, state};
 }

@@ -69,7 +69,7 @@ export function CusomDrawerComponent({...props}){
                     icon={({color,size}) => (
                         <Icon name='sign-out' color={color} size={size}/>
                     )}
-                    onPress={() => logout()}
+                    onPress={async () => logout()}
                 />
             </View>
         </View>

@@ -18,19 +18,44 @@ import { MainStackNavigator } from './src/navigators/MainStackNavigator';
 //Theme
 import {lightTheme} from './src/themes/light'
 import { AuthContext } from './src/contexts/AuthContext';
+import { UserContext } from './src/contexts/UserContext';
 import { useAuth } from './src/hooks/useAuth';
+import { SplashScreen } from './src/screens/SplashScreen';
 
 
 const RootStack = createStackNavigator();
 // const AuthStack = createStackNavigator();  //not needed
 
-
 export default function() {
-
-
   const {auth, state} = useAuth();
+
+  function renderScreens(){
+    //return splash loading is true
+    if(state.loading){
+      return <RootStack.Screen name={'Splash'} component={SplashScreen}/>;
+    }
+
+
+    return state.user ? (
+      <RootStack.Screen name={'MainStack'}>
+        {() => (
+          <UserContext.Provider value={state.user}>
+            <MainStackNavigator/>
+          </UserContext.Provider>
+        )}
+      </RootStack.Screen> ): (
+      <RootStack.Screen 
+        name={'AuthStack'} 
+        component={AuthStackNavigator}
+      />
+      )
+  }
+
+
+
+
   //For debuggin purpose
-  console.log(state.user);
+  //console.log(state.user);
 
   return(
     <AuthContext.Provider value={auth}>
@@ -38,20 +63,7 @@ export default function() {
         <RootStack.Navigator screenOptions={{
           headerShown: false,
         }}>
-          {state.user ? (
-            <RootStack.Screen
-              name={'MainStack'}
-              component={MainStackNavigator}
-            /> ): (
-            <RootStack.Screen 
-              name={'AuthStack'} 
-              component={AuthStackNavigator}
-            />
-            )}
-            {/* <RootStack.Screen 
-              name={'AuthStack'} 
-              component={AuthStackNavigator}
-            /> */}
+          {renderScreens()}
         </RootStack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>

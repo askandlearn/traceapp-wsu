@@ -82,12 +82,12 @@ const SignUpScreen = (props) => {
     if (val.trim().length > 0) {
       setValidationFlags({
         ...validation_flags,
-        isValidFirst: true,
+        isValidFirstName: true,
       });
     } else {
       setValidationFlags({
         ...validation_flags,
-        isValidFirst: false,
+        isValidFirstName: false,
       });
     }
   };
@@ -96,12 +96,12 @@ const SignUpScreen = (props) => {
     if (val.trim().length > 0) {
       setValidationFlags({
         ...validation_flags,
-        isValidLast: true,
+        isValidLastName: true,
       });
     } else {
       setValidationFlags({
         ...validation_flags,
-        isValidLast: false,
+        isValidLastName: false,
       });
     }
   };

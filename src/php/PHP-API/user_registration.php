@@ -29,8 +29,8 @@ if($method == 'POST'){
 	if($type == 'signup'){
 		//Request is coming for sing up page
         //Register user to users table if email is unique
-        $first_name = $obj['firstName'];
-		$last_name = $obj['lastName'];
+        $firstName = $obj['firstName'];
+		$lastName = $obj['lastName'];
 		$birthdate = $obj['birthdate'];
 		$email = $obj['email'];
 		//use hashed password

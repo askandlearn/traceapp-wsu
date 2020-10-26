@@ -12,18 +12,18 @@ export function useAuth(){
                     ...state,
                     user: {...action.payload}
                 }
-                break;
+                //break;
             case 'REMOVE_USER':
                 return{
                     ...state,
                     user: undefined
                 }
-                break;
+               // break;
             default:
                 return{
                     ...state,
                     user: undefined
-                }
+                };
         }
     }, {
         user: undefined
@@ -32,7 +32,7 @@ export function useAuth(){
     const auth = React.useMemo(() => ({
     login: async (email,password) => {
         const STATUS_CODES = [200,204];
-        const url = 'http://192.168.192.22/PHP-API/user_registration.php';
+        const url = 'http://192.168.1.189/PHP-API/user_registration.php';
         //there is a timout parameter set for 2 sec
         //reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
         const results = await axios.post(url, {
@@ -40,16 +40,17 @@ export function useAuth(){
             email: email,
             password: password,
         }, {
-            timeout: 2000
+            timeout: 4000
         }).then(res => res.data).catch(err => {
             console.log(err.code)
             console.log(err.message)
         })
+        //console.log(results)
         //make user js structure
         const user = {
-            email: results[4],
-            name: results[1] +' ' + results[2],
-            birthdate: results[3]
+            email: results[1],
+            name: results[3] +' ' + results[4],
+            birthdate: results[5]
         }
         // console.log(user);
         //if anything other than success code
@@ -73,16 +74,18 @@ export function useAuth(){
         const url = 'http://192.168.1.189/PHP-API/user_registration.php';
         const result = await axios.post(url, {
             type: 'signup',
+            email: email,
+            password: password,
             firstName: firstName,
             lastName: lastName,
             birthdate: birthdate,
-            email: email,
-            password: password,
+
         }).then(res => res.data).catch(err => {
             console.log('Error: ' + err.message)
         })
 
         Alert.alert(result);
+        //console.log(result)
         if (result === SUCCESS_MESSAGE) {
             // props.navigation.navigate('Login');
             console.log('Navigate to login')

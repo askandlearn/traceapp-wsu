@@ -74,8 +74,8 @@ if($method == 'POST'){
 		//Request is coming from login page
 		//Handle user login
 		//Get user login credentials
-		$email = $obj['$email'];
-		$password = $obj ['$password'];
+		$email = $obj['email'];
+		$password = $obj['password'];
 		
 		//Select user from table with matching info
 		$CheckSQL = "SELECT * FROM users WHERE email='$email' AND password='$password'";

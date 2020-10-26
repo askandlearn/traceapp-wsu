@@ -20,9 +20,9 @@ const SignUpScreen = (props) => {
   const [firstName, setFirstName] = useState('Mo');
   const [lastName, setLastName] = useState('Ha');
   const [birthdate, setBirthdate] = useState('1999-12-10');
-  const [email, setEmail] = useState('abcdef@email.com');
-  const [password, setPassword] = useState('password');
-  const [confirmPass, setConfirmPass] = useState('password');
+  const [email, setEmail] = useState('test@email.com');
+  const [password, setPassword] = useState('pass123');
+  const [confirmPass, setConfirmPass] = useState('pass123');
 
   //export context
   const {register} = useContext(AuthContext);
@@ -49,11 +49,11 @@ const SignUpScreen = (props) => {
       },
       body: JSON.stringify({
         type: 'signup',
+        email: email,
+        password: password,
         firstName: firstName,
         lastName: lastName,
         birthdate: birthdate,
-        email: email,
-        password: password,
       }),
     })
       .then((response) => response.json())
@@ -69,13 +69,13 @@ const SignUpScreen = (props) => {
       });
   };
 
-  const display = () => {
+  //const display = () => {
     console.log(firstName);
     console.log(lastName);
     console.log(birthdate);
     console.log(email);
     console.log(password);
-  };
+ // };
 
   //Validation handling functions start here
   const handleFirst = (val) => {

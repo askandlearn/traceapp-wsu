@@ -69,13 +69,13 @@ const SignUpScreen = (props) => {
       });
   };
 
-  //const display = () => {
+  const display = () => {
     console.log(firstName);
     console.log(lastName);
     console.log(birthdate);
     console.log(email);
     console.log(password);
- // };
+  };
 
   //Validation handling functions start here
   const handleFirst = (val) => {

@@ -6,20 +6,27 @@ import { StyleSheet, Animated,Text, View, TouchableOpacity } from 'react-native'
 //import all the required components
 
 import { Timer } from 'react-native-stopwatch-timer';
+var Sound = require('react-native-sound');
 //importing library to use Stopwatch and Timer
 
 
 export default class Time extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       isTimerStart: false,
-      timerDuration: 180000,
+      //Set at 3 seconds for prototype 2 presentation purposes
+      timerDuration: 3000,
+      //180000,
       resetTimer: false,
     };
     this.startStopTimer = this.startStopTimer.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
   }
+
+  //sound = new Sound('../files/sound.mp3');
+
   startStopTimer() {
     this.setState({
       isTimerStart: !this.state.isTimerStart,
@@ -34,9 +41,25 @@ export default class Time extends Component {
     this.currentTime = time;
   }
 
+  playSound=()=>{
+    let sound = new Sound('sound.mp3', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+          console.log('failed to load the sound', error);
+      } 
+      else if(isTimerStart=false){
+        sound.pause();
+      }
+      else {
+        sound.play(); // have to put the call to play() in the onload callback
+    }
+  });
+  }
+   handleTimerComplete = () => {
+     this.playSound();
+     this.setState({ isTimerStart: false, resetTimer: true });
+
+    };
   render() {
-    
-    
     return (
         <View
           style={styles.container}>
@@ -46,7 +69,7 @@ export default class Time extends Component {
             start={this.state.isTimerStart}
             reset={this.state.resetTimer}
             options={options}
-            handleFinish={handleTimerComplete}
+            handleFinish={this.handleTimerComplete}
             getTime={this.getFormattedTime}
             
           />
@@ -56,16 +79,18 @@ export default class Time extends Component {
               {!this.state.isTimerStart ? 'START' : 'STOP'}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress= {this.resetTimer }style={styles.button}>             
+          <TouchableOpacity onPress= {this.resetTimer } style={styles.button}>             
             <Text style={styles.buttonText}>RESET</Text>
           </TouchableOpacity>
+          
           </View>
+          
         </View> 
     );
   }
 }
 
-const handleTimerComplete = () => alert('Custom Completion Function');
+
 
 const styles = {
   

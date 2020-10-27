@@ -11,6 +11,7 @@ import {
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import * as Animatable from 'react-native-animatable';
 import {AuthContext} from '../contexts/AuthContext';
+import { Loading } from '../components/Loading-Component';
 
 //Create the Sign Up Page
 
@@ -27,6 +28,9 @@ const SignUpScreen = (props) => {
   //export context
   const {register} = useContext(AuthContext);
 
+  //loading state
+  const [loading, setLoading] = useState(false);
+
   //Validation flags
   const [validation_flags, setValidationFlags] = useState({
     isValidFirstName: true,
@@ -38,36 +42,6 @@ const SignUpScreen = (props) => {
     isFilled: false,
   });
 
-  const registerUser = () => {
-    const SUCCESS_MESSAGE = 'User Registered Successfully!';
-    const url = 'http://192.168.1.189/PHP-API/user_registration.php';
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        type: 'signup',
-        email: email,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
-        birthdate: birthdate,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        //Showing response message coming from server after inserting records
-        Alert.alert(responseJson);
-        if (responseJson === SUCCESS_MESSAGE) {
-          props.navigation.navigate('Login');
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
 
   const display = () => {
     console.log(firstName);
@@ -279,9 +253,7 @@ const SignUpScreen = (props) => {
           style={styles.button}
           onPress={async () => {
             try {
-              {
-                /*await register(firstName,lastName,birthdate,email,password,props.navigation.navigate)*/
-              }
+              setLoading(true)
               await register(
                 email,
                 password,
@@ -290,6 +262,7 @@ const SignUpScreen = (props) => {
                 birthdate,
                 props.navigation.navigate,
               );
+              setLoading(false)
             } catch (error) {
               console.log('Error: ' + error.message);
             }
@@ -316,6 +289,7 @@ const SignUpScreen = (props) => {
           </View>
         </View>
       </KeyboardAvoidingScrollView>
+      <Loading loading={loading}/>
     </View>
   );
 };

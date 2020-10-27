@@ -33,7 +33,7 @@ export default function () {
       return <RootStack.Screen name={'Splash'} component={SplashScreen} />;
     }
 
-    return true ? (
+    return state.user ? (
       <RootStack.Screen name={'MainStack'}>
         {() => (
           <UserContext.Provider value={state.user}>

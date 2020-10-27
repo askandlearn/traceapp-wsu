@@ -281,7 +281,7 @@ const SignUpScreen = (props) => {
           onPress={async () => {
             try{
               {/*await register(firstName,lastName,birthdate,email,password,props.navigation.navigate)*/}
-              await register(email, password, firstName, lastName, birthdate, props.navigation.nagivate)
+              await register(email, password, firstName, lastName, birthdate, props.navigation.navigate)
             }
             catch(error){
               console.log('Error: ' + error.message)

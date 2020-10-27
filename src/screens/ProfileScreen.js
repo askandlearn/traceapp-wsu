@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -10,10 +10,11 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import { useAuth } from '../hooks/useAuth';
+import { UserContext } from '../contexts/UserContext';
 
 const ProfileScreen = (props) => {
   /*
@@ -30,7 +31,10 @@ const ProfileScreen = (props) => {
   const [height, editHeight] = useState('');
   const [weight, editWeight] = useState('');
   const [active, editActive] = useState('');
-  const [isEditable, editEditable] = useState(true);
+  const [changeText, setChangeText] = useState('Edit')
+  const [isEditable, editEditable] = useState(false);
+
+  const user = useContext(UserContext);
 
   /*const onEdit = () => {
     alert('You can now edit your profile');
@@ -39,8 +43,15 @@ const ProfileScreen = (props) => {
 
   //save changes
   const saveChanges = () => {
-    alert('Changes saved!');
-    editEditable(true);
+    // console.log('User: ' + user.email);
+    if(isEditable){
+      setChangeText('Edit')
+      editEditable(false)
+    }
+    else{
+      setChangeText('Save')
+      editEditable(true)
+    }
   };
 
   return (
@@ -149,7 +160,7 @@ const ProfileScreen = (props) => {
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <Button
-            title="Save Changes"
+            title={changeText}
             color="#ff0000"
             style={styles.save}
             onPress={saveChanges}
@@ -165,6 +176,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -231,16 +244,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   content: {
-    margin: 20,
     fontSize: 20,
+    alignSelf: 'center',
+    textAlign:'center'
   },
   contentTitle: {
-    margin: 20,
+    margin: 10,
     fontSize: 20,
     fontWeight: 'bold',
   },
   horizontal: {
     flexDirection: 'row',
+    alignContent: 'center',
   },
   save: {
     //come back to style the save button

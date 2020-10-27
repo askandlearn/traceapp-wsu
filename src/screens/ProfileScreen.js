@@ -25,9 +25,17 @@ const ProfileScreen = (props) => {
     Address:
     Password(?):
     */
-  const [name, editName] = useState('');
-  const [email, setEmail] = useState('');
-  const [dob, editDOB] = useState('');
+  
+  //avatar text
+  //UserContext only has one value: user
+  const user = useContext(UserContext);
+
+  //Load in logout function from AuthContext
+  const {logout} = useContext(AuthContext)
+
+  const [name, editName] = useState(() => {if(user) return user.name; else return ''});
+  const [email, setEmail] = useState(() => {if(user) return user.email; else return ''});
+  const [dob, editDOB] = useState(() => {if(user) return user.birthdate; else return ''});
   const [address, editAddress] = useState('');
   const [height, editHeight] = useState('');
   const [weight, editWeight] = useState('');
@@ -35,16 +43,20 @@ const ProfileScreen = (props) => {
   const [changeText, setChangeText] = useState('Edit')
   const [isEditable, editEditable] = useState(false);
 
-  //UserContext only has one value: user
-  const user = useContext(UserContext);
+  const initialzeAvatarText = () => {
+    if (user){
+      const[first, last] = user.name.split(' ')
+      return first[0]+last[0]
+    }else{
+      return ''
+    }
+  }
 
-  //Load in logout function from AuthContext
-  const {logout} = useContext(AuthContext)
+  const [initials, setInitials] = useState(initialzeAvatarText())
 
 
   //save changes
   const saveChanges = () => {
-    // console.log('User: ' + user.name);
     if(isEditable){
       setChangeText('Edit')
       editEditable(false)
@@ -62,19 +74,10 @@ const ProfileScreen = (props) => {
       style={styles.container}>
       <KeyboardAvoidingScrollView>
         <Header openDrawer={props.navigation.openDrawer} />
-        {/*<Image
-          style={styles.backgroundImage}
-          source={require('../images/TraceBio-Black.png')}
-        />
-        */}
         <View style={styles.header} />
-        <Image
-          style={styles.avatar}
-          source={{
-            uri:
-              'https://f1.pngfuel.com/png/386/684/972/face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette-png-clip-art.png',
-          }}
-        />
+        <View style={styles.avatar}>
+          <Text style={styles.avatar_text}>{initials}</Text>
+        </View>
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
             <TextInput
@@ -225,15 +228,25 @@ const styles = StyleSheet.create({
     //height: 200
   },
   avatar: {
-    width: 100,
-    height: 100,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 150,
+    height: 150,
     borderRadius: 100 / 2,
     borderWidth: 4,
     borderColor: 'white',
     marginBottom: 10,
     alignSelf: 'center',
-    //position: 'absolute',
+    // position: 'absolute',
     marginTop: 25,
+    alignItems: 'center',
+    backgroundColor: 'black'
+  },
+  avatar_text:{
+    alignSelf: 'center',
+    fontSize: 75,
+    color:'white'
   },
   body: {
     //marginTop: 100,

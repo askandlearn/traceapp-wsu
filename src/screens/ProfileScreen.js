@@ -113,12 +113,13 @@ const ProfileScreen = (props) => {
           </View>
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
-            <TextInput
+      <Text style={styles.content}>{email}</Text>
+            {/*<TextInput
               value={email}
               editable={isEditable}
               style={styles.content}
               onChangeText={(email) => setEmail(email)}
-            />
+            />*/}
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
@@ -179,6 +180,7 @@ const ProfileScreen = (props) => {
             />
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <View style={{paddingVertical: 10}}></View>
           <Button
             title={changeText}
             color="#ff0000"
@@ -278,12 +280,8 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 20,
     alignSelf: 'center',
-<<<<<<< HEAD
     textAlign: 'center',
-=======
-    textAlign:'center',
-    color: 'black'
->>>>>>> 771d5c2fece498047f130c339e656a8ea32bd21c
+    color: 'black',
   },
   contentTitle: {
     margin: 10,

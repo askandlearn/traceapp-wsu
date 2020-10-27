@@ -12,6 +12,10 @@ target 'traceApp' do
 
   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
 
+  pod 'RNSoundPlayer', :path => '../node_modules/react-native-sound-player'
+
+  pod 'RNSound', :path => '../node_modules/react-native-sound'
+
   target 'traceAppTests' do
     inherit! :complete
     # Pods for testing

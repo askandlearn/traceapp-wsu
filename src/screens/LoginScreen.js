@@ -8,11 +8,12 @@ import {
   Image,
   Button,
   Alert,
+  Platform,
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import { set } from 'react-native-reanimated';
-import { Loading } from '../components/Loading-Component';
-import { AuthContext } from '../contexts/AuthContext';
+import {set} from 'react-native-reanimated';
+import {Loading} from '../components/Loading-Component';
+import {AuthContext} from '../contexts/AuthContext';
 
 const logo = '../images/TraceBio-White.png';
 
@@ -27,7 +28,7 @@ const LoginScreen = (props) => {
   const [password, setPassword] = useState('pass123');
   const [loading, setLoading] = useState(false);
 
-  const  { login } = useContext(AuthContext);
+  const {login} = useContext(AuthContext);
 
   // const loginUser = () => {
   //   const SUCCESS_MESSAGE = 'Login successful!';
@@ -83,24 +84,24 @@ const LoginScreen = (props) => {
           title="Submit"
           style={styles.button}
           onPress={async () => {
-              try{
-                setLoading(true)
-                await login(email,password)
-                setLoading(false)
-              }
-              catch(e){
-                setLoading(false)
-                Alert.alert('Error: Couldn\'t sign in')
-                console.log('Error: ' + e.message);
-              }
-            }}>
-          <Text style={styles.buttonText} onPress={ async () => {
-              try{
-                setLoading(true)
-                await login(email,password)
-                setLoading(false)
-              }
-              catch(e){
+            try {
+              setLoading(true);
+              await login(email, password);
+              setLoading(false);
+            } catch (e) {
+              setLoading(false);
+              Alert.alert("Error: Couldn't sign in");
+              console.log('Error: ' + e.message);
+            }
+          }}>
+          <Text
+            style={styles.buttonText}
+            onPress={async () => {
+              try {
+                setLoading(true);
+                await login(email, password);
+                setLoading(false);
+              } catch (e) {
                 console.log('Error: ' + e.message);
               }
             }}>
@@ -127,7 +128,7 @@ const LoginScreen = (props) => {
           </View>
         </View>
       </KeyboardAvoidingScrollView>
-      <Loading loading={loading}/>
+      <Loading loading={loading} />
     </View>
   );
 };

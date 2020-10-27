@@ -9,7 +9,8 @@ import {
   BackgroundImage,
   ScrollView,
   Modal,
-  Dimensions
+  Dimensions,
+  Platform,
 } from 'react-native';
 import Header from '../components/Header-Component';
 import RTTimer from '../components/RTTimer';
@@ -18,22 +19,20 @@ import RTData from '../components/RTData';
 
 import Plot from '../components/RTPlot';
 
-var check= true;
+var check = true;
 
 const RealTimeScreen = ({navigation}, props) => {
-  
   return (
     <View style={styles.container}>
-         <Header openDrawer={navigation.openDrawer} />
-         <Text style={styles.title}>Real-Time Data</Text>
-        <RTTimer></RTTimer>
-        <View style={styles.NavBarDivider}/>
-        <RTData></RTData>
-        {/* <View style={styles.NavBarDivider} /> */}
-        <Plot></Plot>
+      <Header openDrawer={navigation.openDrawer} />
+      <Text style={styles.title}>Real-Time Data</Text>
+      <RTTimer />
+      <View style={styles.NavBarDivider} />
+      <RTData />
+      {/* <View style={styles.NavBarDivider} /> */}
+      <Plot />
     </View>
   );
-
 };
 
 export default RealTimeScreen;
@@ -42,13 +41,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    alignContent:'center',
+    alignContent: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
-//   valueContainer:{
-//     marginVertical:'-2%',
-//     backgroundColor: '#ffffff',
-//     alignContent:'center',
-//   },
+  //   valueContainer:{
+  //     marginVertical:'-2%',
+  //     backgroundColor: '#ffffff',
+  //     alignContent:'center',
+  //   },
   backgroundImage: {
     alignSelf: 'center',
     marginTop: 10,
@@ -74,40 +76,39 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 30,
     paddingBottom: 10,
-    textAlign:'center'
+    textAlign: 'center',
   },
   valueTitle: {
-    fontWeight:'bold',
+    fontWeight: 'bold',
     marginHorizontal: '8.5%',
     marginTop: '3%',
-    width:80,
-    height:25,
-    alignSelf:'center',
-    alignContent:'center',
-    justifyContent:'center',
+    width: 80,
+    height: 25,
+    alignSelf: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
     //resizeMode: 'stretch',
-    paddingHorizontal:8
-    
+    paddingHorizontal: 8,
   },
   valueButton: {
     alignItems: 'center',
-   // alignContent:'center',
-    justifyContent:'center',
+    // alignContent:'center',
+    justifyContent: 'center',
     marginHorizontal: '10%',
-    marginBottom:'1%',
+    marginBottom: '1%',
     borderRadius: 65,
-    borderWidth:1,
-    width:65,
-    height:65,
+    borderWidth: 1,
+    width: 65,
+    height: 65,
     borderColor: 'rgba(0,0,0,0.3)',
-    backgroundColor:'rgba(255,255,255,1)',
+    backgroundColor: 'rgba(255,255,255,1)',
     shadowColor: '#000000',
     shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.4,
     shadowRadius: 2,
     elevation: 1,
   },
-  valueText:{
+  valueText: {
     color: '#000000',
     //fontWeight: 'bold',
   },
@@ -149,61 +150,52 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   wrapper: {
-   // flex:1,
-    height:300,
+    // flex:1,
+    height: 300,
     //backgroundColor: '#9DD6EB'
-    
+
     //opacity:0.4,
-    backgroundColor:'#ffffff',
-    
+    backgroundColor: '#ffffff',
   },
-  
-  steps:{
+
+  steps: {
     color: '#000000',
     fontSize: 15,
   },
   centeredView: {
-    height:'90%',
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical:'10%',
+    height: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: '10%',
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   openButton: {
-    backgroundColor: "#F194FF",
+    backgroundColor: '#F194FF',
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: 'center',
   },
-  NavBarDivider: {
-    height: 1,
-    width: '100%',
-    backgroundColor: 'lightgray',
-    marginVertical: 10,
-  },
-
 });
-

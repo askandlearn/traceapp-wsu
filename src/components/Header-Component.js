@@ -5,7 +5,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 const Header = ({openDrawer}) => (
   <View style={styles.header}>
     <TouchableOpacity onPress={() => openDrawer()}>
-      <Icon name="bars" size={30} />
+      <Icon name="bars" size={30} paddingVertical={50} />
     </TouchableOpacity>
     <Text style={{width: 45}} />
   </View>

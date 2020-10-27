@@ -1,45 +1,51 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  Platform,
+} from 'react-native';
 import Header from '../components/Header-Component';
 
-
 const ChangePassword = ({navigation}) => {
-    const[oldPass, setOldPass]=useState('');
-    const[newPass, setNewPass]=useState('');
-    const[confNewPass, setConfNewPass]=useState('');
-    const submit = () =>{
-        alert('Password Updated');
-    };
-
+  const [oldPass, setOldPass] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [confNewPass, setConfNewPass] = useState('');
+  const submit = () => {
+    alert('Password Updated');
+  };
 
   return (
     <View style={styles.container}>
       <Header openDrawer={navigation.openDrawer} />
       <Text style={styles.title}>Update Password</Text>
       <TextInput
-          placeholder="Current password"
-          style={styles.textInput}
-          autoCapitalize="none"
-          onChangeText={(oldPass) => setOldPass(oldPass)}
-        />
-        <TextInput
-          placeholder="New password"
-          style={styles.textInput}
-          autoCapitalize="none"
-          onChangeText={(newPass) => setNewPass(newPass)}
-        />
-        <TextInput
-          placeholder="Re-type new password"
-          style={styles.textInput}
-          autoCapitalize="none"
-          onChangeText={(confNewPass) => setConfNewPass(confNewPass)}
-        />
-         <TouchableOpacity
-          title="Save Changes"
-          style={styles.button}
-          onPress={submit}>
-          <Text style={styles.buttonText}>Save Changes</Text>
-        </TouchableOpacity>
+        placeholder="Current password"
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(oldPass) => setOldPass(oldPass)}
+      />
+      <TextInput
+        placeholder="New password"
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(newPass) => setNewPass(newPass)}
+      />
+      <TextInput
+        placeholder="Re-type new password"
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(confNewPass) => setConfNewPass(confNewPass)}
+      />
+      <TouchableOpacity
+        title="Save Changes"
+        style={styles.button}
+        onPress={submit}>
+        <Text style={styles.buttonText}>Save Changes</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -49,6 +55,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -115,7 +124,6 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     borderRadius: 20,
   },
-
 });
 
 export default ChangePassword;

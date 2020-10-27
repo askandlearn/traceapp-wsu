@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import * as Animatable from 'react-native-animatable';
-import { AuthContext } from '../contexts/AuthContext';
+import {AuthContext} from '../contexts/AuthContext';
 
 //Create the Sign Up Page
 
@@ -176,7 +176,6 @@ const SignUpScreen = (props) => {
     }
   };
 
-
   return (
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
@@ -279,17 +278,23 @@ const SignUpScreen = (props) => {
           title="Submit"
           style={styles.button}
           onPress={async () => {
-            try{
-              {/*await register(firstName,lastName,birthdate,email,password,props.navigation.navigate)*/}
-              await register(email, password, firstName, lastName, birthdate, props.navigation.navigate)
+            try {
+              {
+                /*await register(firstName,lastName,birthdate,email,password,props.navigation.navigate)*/
+              }
+              await register(
+                email,
+                password,
+                firstName,
+                lastName,
+                birthdate,
+                props.navigation.navigate,
+              );
+            } catch (error) {
+              console.log('Error: ' + error.message);
             }
-            catch(error){
-              console.log('Error: ' + error.message)
-            }
-            }}>
-          <Text style={styles.buttonText}>
-            CREATE ACCOUNT
-          </Text>
+          }}>
+          <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
         <View style={styles.flexContainer}>
           <View style={styles.horizantalLine} />

@@ -10,7 +10,7 @@
 // import Header from '../components/Header-Component';
 
 // export default App = ({navigation}) => {
-    
+
 //     // ... rest of the code remains the same
 //     const [age, setAge] = useState('');
 
@@ -32,7 +32,7 @@
 //     const readData = async () => {
 //     try {
 //       const userAge = await AsyncStorage.getItem(STORAGE_KEY)
-  
+
 //       if (userAge !== null) {
 //         setAge(userAge)
 //       }
@@ -82,7 +82,6 @@
 //     )
 //   }
 
-
 //   const styles = StyleSheet.create({
 //     container: {
 //       flex: 1
@@ -125,44 +124,49 @@
 //       color: '#444'
 //     }
 //   })
-import React from "react";
+import React from 'react';
 
 export default class TextFileReader extends React.Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.state = {
-			text: ""
-		};
-	}
+    this.state = {
+      text: '',
+    };
+  }
 
-	componentDidMount() {
-		this.readTextFile(this.props.txt);
-	}
+  componentDidMount() {
+    this.readTextFile(this.props.txt);
+  }
 
-	readTextFile = file => {
-		var rawFile = new XMLHttpRequest();
-		rawFile.open("GET", file, false);
-		rawFile.onreadystatechange = () => {
-			if (rawFile.readyState === 4) {
-				if (rawFile.status === 200 || rawFile.status == 0) {
-					var allText = rawFile.responseText;
-					this.setState({
-						text: allText
-					});
-				}
-			}
-		};
-		rawFile.send(null);
-	};
+  readTextFile = (file) => {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open('GET', file, false);
+    rawFile.onreadystatechange = () => {
+      if (rawFile.readyState === 4) {
+        if (rawFile.status === 200 || rawFile.status == 0) {
+          var allText = rawFile.responseText;
+          this.setState({
+            text: allText,
+          });
+        }
+      }
+    };
+    rawFile.send(null);
+  };
 
-	render() {
-		return (
-			<div>
-				{this.state.text.split("\n").map((item, key) => {
-					return <span key={key}>{item}<br /></span>;
-				})}
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div>
+        {this.state.text.split('\n').map((item, key) => {
+          return (
+            <span key={key}>
+              {item}
+              <br />
+            </span>
+          );
+        })}
+      </div>
+    );
+  }
 }

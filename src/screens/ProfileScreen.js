@@ -13,9 +13,9 @@ import {
 import Header from '../components/Header-Component';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import { useAuth } from '../hooks/useAuth';
-import { UserContext } from '../contexts/UserContext';
-import { AuthContext } from '../contexts/AuthContext';
+import {useAuth} from '../hooks/useAuth';
+import {UserContext} from '../contexts/UserContext';
+import {AuthContext} from '../contexts/AuthContext';
 
 const ProfileScreen = (props) => {
   /*
@@ -25,48 +25,63 @@ const ProfileScreen = (props) => {
     Address:
     Password(?):
     */
-  
+
   //avatar text
   //UserContext only has one value: user
   const user = useContext(UserContext);
 
   //Load in logout function from AuthContext
-  const {logout} = useContext(AuthContext)
+  const {logout} = useContext(AuthContext);
 
-  const [name, editName] = useState(() => {if(user) return user.name; else return ''});
-  const [email, setEmail] = useState(() => {if(user) return user.email; else return ''});
-  const [dob, editDOB] = useState(() => {if(user) return user.birthdate; else return ''});
+  const [name, editName] = useState(() => {
+    if (user) {
+      return user.name;
+    } else {
+      return '';
+    }
+  });
+  const [email, setEmail] = useState(() => {
+    if (user) {
+      return user.email;
+    } else {
+      return '';
+    }
+  });
+  const [dob, editDOB] = useState(() => {
+    if (user) {
+      return user.birthdate;
+    } else {
+      return '';
+    }
+  });
   const [address, editAddress] = useState('');
   const [height, editHeight] = useState('');
   const [weight, editWeight] = useState('');
   const [active, editActive] = useState('');
-  const [changeText, setChangeText] = useState('Edit')
+  const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
 
   const initialzeAvatarText = () => {
-    if (user){
-      const[first, last] = user.name.split(' ')
-      return first[0]+last[0]
-    }else{
-      return ''
-    }
-  }
-
-  const [initials, setInitials] = useState(initialzeAvatarText())
-
-
-  //save changes
-  const saveChanges = () => {
-    if(isEditable){
-      setChangeText('Edit')
-      editEditable(false)
-    }
-    else{
-      setChangeText('Save')
-      editEditable(true)
+    if (user) {
+      const [first, last] = user.name.split(' ');
+      return first[0] + last[0];
+    } else {
+      return '';
     }
   };
 
+  const [initials, setInitials] = useState(initialzeAvatarText());
+
+  //save changes
+  const saveChanges = () => {
+    if (isEditable) {
+      setChangeText('Edit');
+      editEditable(false);
+    } else {
+      setChangeText('Save');
+      editEditable(true);
+    }
+  };
 
   return (
     <View
@@ -182,7 +197,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -240,13 +258,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     // position: 'absolute',
     marginTop: 25,
-    alignItems: 'center',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
-  avatar_text:{
+  avatar_text: {
     alignSelf: 'center',
     fontSize: 75,
-    color:'white'
+    color: 'white',
   },
   body: {
     //marginTop: 100,
@@ -261,7 +278,7 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 20,
     alignSelf: 'center',
-    textAlign:'center'
+    textAlign: 'center',
   },
   contentTitle: {
     margin: 10,

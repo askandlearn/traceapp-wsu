@@ -147,10 +147,6 @@ const HealthDashboardScreen = () => {
 
 //All styling options created below
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
   backgroundImage: {
     alignSelf: 'center',
     marginTop: 30,

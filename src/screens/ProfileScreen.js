@@ -261,7 +261,8 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 20,
     alignSelf: 'center',
-    textAlign:'center'
+    textAlign:'center',
+    color: 'black'
   },
   contentTitle: {
     margin: 10,

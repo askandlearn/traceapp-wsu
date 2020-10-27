@@ -41,7 +41,7 @@ export function useAuth(){
     const auth = React.useMemo(() => ({
     login: async (email,password) => {
         const STATUS_CODES = [200,204];
-        const url = 'http://192.168.7.97/PHP-API/user_registration.php';
+        const url = 'http://192.168.1.189/PHP-API/user_registration.php';
         //there is a timout parameter set for 2 sec
         //reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
         const results = await axios.post(url, {
@@ -83,7 +83,7 @@ export function useAuth(){
     register: async (email, password, firstName, lastName, birthdate, navigate) => {
         console.log('Register')
         const SUCCESS_MESSAGE = 'User Registered Successfully!';
-        const url = 'http://192.168.7.97/PHP-API/user_registration.php';
+        const url = 'http://192.168.1.189/PHP-API/user_registration.php';
         const result = await axios.post(url, {
             type: 'signup',
             email: email,

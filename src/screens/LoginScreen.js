@@ -23,8 +23,8 @@ const LoginScreen = (props) => {
         to login without inputting anything, null values will passed onto the php script and then the database. The script
         does not know how to handle null values.
     */
-  const [email, setEmail] = useState('mohammza@gmail.com');
-  const [password, setPassword] = useState('password');
+  const [email, setEmail] = useState('test@email.com');
+  const [password, setPassword] = useState('pass123');
   const [loading, setLoading] = useState(false);
 
   const  { login } = useContext(AuthContext);

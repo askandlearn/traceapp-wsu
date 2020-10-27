@@ -17,22 +17,22 @@ import { AuthContext } from '../contexts/AuthContext';
 const logo = '../images/TraceBio-White.png';
 
 const SignUpScreen = (props) => {
-  const [first, setFirst] = useState('Mo');
-  const [last, setLast] = useState('Ha');
-  const [date, setDate] = useState('1999-12-10');
-  const [email, setEmail] = useState('abcdef@email.com');
-  const [password, setPassword] = useState('password');
-  const [confirmPass, setConfirmPass] = useState('password');
+  const [firstName, setFirstName] = useState('Mo');
+  const [lastName, setLastName] = useState('Ha');
+  const [birthdate, setBirthdate] = useState('1999-12-10');
+  const [email, setEmail] = useState('test@email.com');
+  const [password, setPassword] = useState('pass123');
+  const [confirmPass, setConfirmPass] = useState('pass123');
 
   //export context
   const {register} = useContext(AuthContext);
 
   //Validation flags
   const [validation_flags, setValidationFlags] = useState({
-    isValidFirst: true,
-    isValidLast: true,
+    isValidFirstName: true,
+    isValidLastName: true,
     isValidEmail: true,
-    isValidDate: true,
+    isValidBirthdate: true,
     isValidPassword: true,
     isSamePassword: true,
     isFilled: false,
@@ -40,7 +40,7 @@ const SignUpScreen = (props) => {
 
   const registerUser = () => {
     const SUCCESS_MESSAGE = 'User Registered Successfully!';
-    const url = 'http://192.168.7.97/PHP-API/user_registration.php';
+    const url = 'http://192.168.1.189/PHP-API/user_registration.php';
     fetch(url, {
       method: 'POST',
       headers: {
@@ -49,11 +49,11 @@ const SignUpScreen = (props) => {
       },
       body: JSON.stringify({
         type: 'signup',
-        firstName: first,
-        lastName: last,
-        date: date,
         email: email,
         password: password,
+        firstName: firstName,
+        lastName: lastName,
+        birthdate: birthdate,
       }),
     })
       .then((response) => response.json())
@@ -69,25 +69,25 @@ const SignUpScreen = (props) => {
       });
   };
 
-  const display = () => {
-    console.log(first);
-    console.log(last);
-    console.log(date);
+  //const display = () => {
+    console.log(firstName);
+    console.log(lastName);
+    console.log(birthdate);
     console.log(email);
     console.log(password);
-  };
+ // };
 
   //Validation handling functions start here
   const handleFirst = (val) => {
     if (val.trim().length > 0) {
       setValidationFlags({
         ...validation_flags,
-        isValidFirst: true,
+        isValidFirstName: true,
       });
     } else {
       setValidationFlags({
         ...validation_flags,
-        isValidFirst: false,
+        isValidFirstName: false,
       });
     }
   };
@@ -96,12 +96,12 @@ const SignUpScreen = (props) => {
     if (val.trim().length > 0) {
       setValidationFlags({
         ...validation_flags,
-        isValidLast: true,
+        isValidLastName: true,
       });
     } else {
       setValidationFlags({
         ...validation_flags,
-        isValidLast: false,
+        isValidLastName: false,
       });
     }
   };
@@ -137,12 +137,12 @@ const SignUpScreen = (props) => {
     ) {
       setValidationFlags({
         ...validation_flags,
-        isValidDate: false,
+        isValidBirthdate: false,
       });
     } else {
       setValidationFlags({
         ...validation_flags,
-        isValidDate: true,
+        isValidBirthdate: true,
       });
     }
   };
@@ -187,12 +187,12 @@ const SignUpScreen = (props) => {
         <TextInput
           style={styles.inputFields}
           placeholder="Firstname"
-          value={first}
-          onChangeText={(val) => setFirst(val)}
+          value={firstName}
+          onChangeText={(val) => setFirstName(val)}
           onEndEditing={(e) => handleFirst(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}
-        {validation_flags.isValidFirst ? null : (
+        {validation_flags.isValidFirstName ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMessage}>Field cannot be empty</Text>
           </Animatable.View>
@@ -201,12 +201,12 @@ const SignUpScreen = (props) => {
         <TextInput
           style={styles.inputFields}
           placeholder="Lastname"
-          value={last}
-          onChangeText={(val) => setLast(val)}
+          value={lastName}
+          onChangeText={(val) => setLastName(val)}
           onEndEditing={(e) => handleLast(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}
-        {validation_flags.isValidLast ? null : (
+        {validation_flags.isValidLastName ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMessage}>Field cannot be empty</Text>
           </Animatable.View>
@@ -231,12 +231,12 @@ const SignUpScreen = (props) => {
         <TextInput
           style={styles.inputFields}
           placeholder="Birthdate (yyyy-mm-dd)"
-          value={date}
-          onChangeText={(val) => setDate(val)}
+          value={birthdate}
+          onChangeText={(val) => setBirthdate(val)}
           onEndEditing={(e) => handleDate(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}
-        {validation_flags.isValidDate ? null : (
+        {validation_flags.isValidBirthdate ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMessage}>
               Format incorrect (yyyy-mm-dd){' '}
@@ -280,7 +280,8 @@ const SignUpScreen = (props) => {
           style={styles.button}
           onPress={async () => {
             try{
-              await register(first,last,date,email,password,props.navigation.navigate)
+              {/*await register(firstName,lastName,birthdate,email,password,props.navigation.navigate)*/}
+              await register(email, password, firstName, lastName, birthdate, props.navigation.nagivate)
             }
             catch(error){
               console.log('Error: ' + error.message)

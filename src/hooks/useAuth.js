@@ -15,7 +15,7 @@ export function useAuth(){
                     loading: false,
                     user: {...action.payload}
                 }
-                break;
+                //break;
             case 'REMOVE_USER':
                 return{
                     ...state,
@@ -31,7 +31,7 @@ export function useAuth(){
                 return{
                     ...state,
                     user: undefined
-                }
+                };
         }
     }, {
         user: undefined,
@@ -49,16 +49,17 @@ export function useAuth(){
             email: email,
             password: password,
         }, {
-            timeout: 2000
+            timeout: 4000
         }).then(res => res.data).catch(err => {
             console.log(err.code)
             console.log(err.message)
         })
+        //console.log(results)
         //make user js structure
         const user = {
-            email: results[4],
-            name: results[1] +' ' + results[2],
-            dob: results[3]
+            email: results[1],
+            name: results[3] +' ' + results[4],
+            birthdate: results[5]
         }
         await AsyncStorage.setItem('@user', JSON.stringify(user));
         // console.log(user);
@@ -77,22 +78,25 @@ export function useAuth(){
         await AsyncStorage.removeItem('@user');
         dispatch(createAction('REMOVE_USER'));
     },
-    register: async (first,last,date,email,password,navigate) => {
+    /*register: async (firstName,lastName,birthdate,email,password,navigate) => {*/
+    register: async (email, password, firstName, lastName, birthdate, navigate) => {
         console.log('Register')
         const SUCCESS_MESSAGE = 'User Registered Successfully!';
         const url = 'http://192.168.7.97/PHP-API/user_registration.php';
         const result = await axios.post(url, {
             type: 'signup',
-            firstName: first,
-            lastName: last,
-            date: date,
             email: email,
             password: password,
+            firstName: firstName,
+            lastName: lastName,
+            birthdate: birthdate,
+
         }).then(res => res.data).catch(err => {
             console.log('Error: ' + err.message)
         })
 
         Alert.alert(result);
+        //console.log(result)
         if (result === SUCCESS_MESSAGE) {
             // props.navigation.navigate('Login');
             console.log('Navigate to login')

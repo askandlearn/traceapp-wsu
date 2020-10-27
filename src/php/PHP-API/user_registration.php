@@ -1,7 +1,8 @@
 <?php
-//To DO
-//put API folder into xampp/htdocs
-//Edit lines 47 and 64 and change users to whatever you called the table
+//************************
+// FILE FOR UPDATED TABLE
+//************************
+
 
 //import config files
 include 'dbconfig.php';
@@ -23,47 +24,37 @@ $json = file_get_contents('php://input');
 $obj = json_decode($json,true);
 
 if($method == 'POST'){
-
-    $type = $obj['type'];
-
-    if($type == 'signup'){
-        //Request is coming for sing up page
+	$type = $obj['type'];
+	
+	if($type == 'signup'){
+		//Request is coming for sing up page
         //Register user to users table if email is unique
-        //Populate User name from JSON $obj array and store into $name
-        $first_name = $obj['firstName'];
-        $last_name = $obj['lastName'];
-        // $name = $obj['name'];
-
-        //Store the date of birth
-        $dob = $obj['date'];
-
-        //Populate User email from JSON $obj array and store into $email
-        $email = $obj['email'];
-
-
-        //Populate Password from JSON $obj array and store into $password
-        $password = $obj['password'];
-
-        //Check if email already exists using query
+        $firstName = $obj['firstName'];
+		$lastName = $obj['lastName'];
+		$birthdate = $obj['birthdate'];
+		$email = $obj['email'];
+		//use hashed password
+		$password = $obj['password'];
+		
+		//check if email already exists using query
         $CheckSQL = "SELECT * FROM users WHERE email='$email'";
 
         //Executing SQL query
         $check = mysqli_fetch_array(mysqli_query($con,$CheckSQL));
-
-        if(isset($check)){
-            $EmailExistMSG = 'Email already exists. Please try again!';
+		
+		if(isset($check)){
+			 $EmailExistMSG = 'Email already exists. Please try again!';
 
             //Convert the message into JSON format
             $EmailExistsJson = json_encode($EmailExistMSG);
 
             //Echo the message
             echo $EmailExistsJson;
-        }
-        else{
+		}
+		else{
 
             //Create SQL query and insert the record into MYSQL database table
-            $Sql_Query = "insert into users (first,last,dob,email,password) values ('$first_name','$last_name','$dob','$email','$password')";
-            // $Sql_Query = "insert into user_details (name,email,password) values ('$name','$email','$password')";
+            $Sql_Query = "insert into users (email, password, firstName, lastName, birthdate) values ('$email', '$password', '$firstName', '$lastName', '$birthdate')";
 
             if(mysqli_query($con,$Sql_Query)){
                 //If the record inserted successfully then show success message
@@ -78,22 +69,22 @@ if($method == 'POST'){
                 echo 'Error in registration. Try again.';
             }
         }
-    }
-    else{
-        //Request is coming from login page
-        //Handle user login
-        //Populate User email from JSON $obj array and store into $email
-        $email = $obj['email'];
-        //Populate Password from JSON $obj array and store into $password
-        $password = $obj['password'];
-
-        $CheckSQL = "SELECT * FROM users WHERE email='$email' AND password='$password'";
+	}
+	else{
+		//Request is coming from login page
+		//Handle user login
+		//Get user login credentials
+		$email = $obj['email'];
+		$password = $obj['password'];
+		
+		//Select user from table with matching info
+		$CheckSQL = "SELECT * FROM users WHERE email='$email' AND password='$password'";
 
         $result = mysqli_query($con,$CheckSQL);
         
         //final return
         $row = array();
-        
+		
         //if a row is not 1 then query unsuccessful, else query is successful
         if(mysqli_num_rows($result) != 1){
             $err = '204';
@@ -110,9 +101,10 @@ if($method == 'POST'){
             $row = json_encode($row);
             echo $row;
         }
-    }
+		
+	}
 }
 
 
 mysqli_close($con);
-?>
+?> 

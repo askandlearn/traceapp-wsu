@@ -19,6 +19,7 @@ import SensorAlert from '../components/ConnectToSensorAlert';
 
 import Plot from '../components/ASTPlot';
 
+
 var check= false;
 
 const ASTScreen = ({navigation}) => {

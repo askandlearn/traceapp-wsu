@@ -33,27 +33,9 @@ const ProfileScreen = (props) => {
   //Load in logout function from AuthContext
   const {logout} = useContext(AuthContext);
 
-  const [name, editName] = useState(() => {
-    if (user) {
-      return user.name;
-    } else {
-      return '';
-    }
-  });
-  const [email, setEmail] = useState(() => {
-    if (user) {
-      return user.email;
-    } else {
-      return '';
-    }
-  });
-  const [dob, editDOB] = useState(() => {
-    if (user) {
-      return user.birthdate;
-    } else {
-      return '';
-    }
-  });
+  const [name, editName] = useState(() => {if (user) {return user.name;} else {return '';}});
+  const [email, setEmail] = useState(() => {if (user) {return user.email;} else {return '';}});
+  const [dob, editDOB] = useState(() => {if (user) {return user.birthdate;} else {return '';}});
   const [address, editAddress] = useState('');
   const [height, editHeight] = useState('');
   const [weight, editWeight] = useState('');

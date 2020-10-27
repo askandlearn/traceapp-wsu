@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import { useAuth } from '../hooks/useAuth';
 import { UserContext } from '../contexts/UserContext';
+import { AuthContext } from '../contexts/AuthContext';
 
 const ProfileScreen = (props) => {
   /*
@@ -24,9 +25,9 @@ const ProfileScreen = (props) => {
     Address:
     Password(?):
     */
-  const [name, editName] = useState('John Doe');
-  const [email, setEmail] = useState('example@email.com');
-  const [dob, editDOB] = useState('July 22, 1999');
+  const [name, editName] = useState('');
+  const [email, setEmail] = useState('');
+  const [dob, editDOB] = useState('');
   const [address, editAddress] = useState('');
   const [height, editHeight] = useState('');
   const [weight, editWeight] = useState('');
@@ -34,16 +35,16 @@ const ProfileScreen = (props) => {
   const [changeText, setChangeText] = useState('Edit')
   const [isEditable, editEditable] = useState(false);
 
+  //UserContext only has one value: user
   const user = useContext(UserContext);
 
-  /*const onEdit = () => {
-    alert('You can now edit your profile');
-    editEditable(true);
-  };*/
+  //Load in logout function from AuthContext
+  const {logout} = useContext(AuthContext)
+
 
   //save changes
   const saveChanges = () => {
-    // console.log('User: ' + user.email);
+    // console.log('User: ' + user.name);
     if(isEditable){
       setChangeText('Edit')
       editEditable(false)
@@ -53,6 +54,7 @@ const ProfileScreen = (props) => {
       editEditable(true)
     }
   };
+
 
   return (
     <View

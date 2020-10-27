@@ -21,7 +21,7 @@ export function useAuth(){
                     ...state,
                     user: undefined
                 }
-                break;
+                // break;
             case 'SET_LOADING':
                 return{
                     ...state,
@@ -49,26 +49,27 @@ export function useAuth(){
             email: email,
             password: password,
         }, {
-            timeout: 4000
+            timeout: 2000
         }).then(res => res.data).catch(err => {
             console.log(err.code)
             console.log(err.message)
         })
-        //console.log(results)
+        console.log(results)
         //make user js structure
         const user = {
             email: results[1],
             name: results[3] +' ' + results[4],
             birthdate: results[5]
         }
-        await AsyncStorage.setItem('@user', JSON.stringify(user));
         // console.log(user);
         //if anything other than success code
         if(parseInt(results[0]) != STATUS_CODES[0]){
             console.log('NULL Dispatch')
             dispatch(createAction(null, user));
+            Alert('Unable to sign in')
         }
         else{
+            await AsyncStorage.setItem('@user', JSON.stringify(user));
             console.log('Dispatching')
             dispatch(createAction('SET_USER', user));
         }
@@ -102,36 +103,6 @@ export function useAuth(){
             console.log('Navigate to login')
             navigate('Login')
         }
-
-        // fetch(url, {
-        //     method: 'POST',
-        //     headers: {
-        //     Accept: 'application/json',
-        //     'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //     type: 'signup',
-        //     firstName: first,
-        //     lastName: last,
-        //     date: date,
-        //     email: email,
-        //     password: password,
-        //     }),
-        // })
-        //     .then((response) => response.json())
-        //     .then((responseJson) => {
-        //     //Showing response message coming from server after inserting records
-        //     Alert.alert(responseJson);
-        //     if (responseJson === SUCCESS_MESSAGE) {
-        //         // props.navigation.navigate('Login');
-        //         console.log('Navigate to login')
-        //         navigate('Login')
-        //     }
-        //     })
-        //     .catch((err) => {
-        //     console.error(err);
-        //     });
-        // }
     }
 }), []);
 
@@ -145,6 +116,7 @@ export function useAuth(){
                     dispatch(createAction('SET_USER', JSON.parse(user)))
                 }
                 else{
+                    // console.log('Loading: user is null')
                     dispatch(createAction('SET_LOADING', false))
                 }
             })

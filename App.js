@@ -35,7 +35,6 @@ export default function() {
       return <RootStack.Screen name={'Splash'} component={SplashScreen}/>;
     }
 
-
     return state.user ? (
       <RootStack.Screen name={'MainStack'}>
         {() => (
@@ -55,7 +54,7 @@ export default function() {
 
 
   //For debuggin purpose
-  //console.log(state.user);
+  // console.log('State.user',state.user);
 
   return(
     <AuthContext.Provider value={auth}>

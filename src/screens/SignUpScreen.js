@@ -69,13 +69,13 @@ const SignUpScreen = (props) => {
       });
   };
 
-  //const display = () => {
+  const display = () => {
     console.log(firstName);
     console.log(lastName);
     console.log(birthdate);
     console.log(email);
     console.log(password);
- // };
+  };
 
   //Validation handling functions start here
   const handleFirst = (val) => {
@@ -281,7 +281,7 @@ const SignUpScreen = (props) => {
           onPress={async () => {
             try{
               {/*await register(firstName,lastName,birthdate,email,password,props.navigation.navigate)*/}
-              await register(email, password, firstName, lastName, birthdate, props.navigation.nagivate)
+              await register(email, password, firstName, lastName, birthdate, props.navigation.navigate)
             }
             catch(error){
               console.log('Error: ' + error.message)

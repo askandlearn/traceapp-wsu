@@ -278,7 +278,12 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 20,
     alignSelf: 'center',
+<<<<<<< HEAD
     textAlign: 'center',
+=======
+    textAlign:'center',
+    color: 'black'
+>>>>>>> 771d5c2fece498047f130c339e656a8ea32bd21c
   },
   contentTitle: {
     margin: 10,

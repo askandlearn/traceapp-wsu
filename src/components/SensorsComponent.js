@@ -39,28 +39,12 @@ export default class SensorsComponent extends Component {
     this.id = '';
   }
 
-  serviceUUID(num) {
-    return this.prefixUUID + num + '0' + this.suffixUUID;
-  }
-
-  notifyUUID(num) {
-    return this.prefixUUID + num + '1' + this.suffixUUID;
-  }
-
-  writeUUID(num) {
-    return this.prefixUUID + num + '2' + this.suffixUUID;
-  }
-
   info(message) {
     this.setState({info: message});
   }
 
   error(message) {
     this.setState({info: 'ERROR: ' + message});
-  }
-
-  updateValue(key, value) {
-    this.setState({values: {...this.state.values, [key]: value}});
   }
 
   convertData(base64) {
@@ -199,28 +183,15 @@ export default class SensorsComponent extends Component {
     return (
       <View>
         <Text>{this.state.info}</Text>
-        <Text>Time: {this.state.time}</Text>
-        <Text>Heart Rate: {this.state.bpm}</Text>
-        <Text>Vcnl Current: {this.state.vcnlCurrent}</Text>
-        <Text>Skin Temp: {this.state.skinTemp}C</Text>
-        <Text>IBI: {this.state.ibi}</Text>
-        <Text>Pamp: {this.state.pamp}</Text>
-        <Text>Damp: {this.state.damp}</Text>
-        <Text>HRV: {this.state.hrv}</Text>
-        <Text>CBF: {this.state.cbf}</Text>
-        <Text>HRV PNN 50: {this.state.hrv_pnn50}</Text>
-        <Text>PPG: {this.state.ppg}</Text>
-        <Text>Dig Out: {this.state.digOut}</Text>
-        <Text>Acceleraometer: {this.state.accelX}</Text>
-        <Text>State Diff: {this.state.diff}</Text>
       </View>
     );
   }
 }
 
-const chars =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
 const atob = (input = '') => {
+  const chars =
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
   let str = input.replace(/[=]+$/, '');
   let output = '';
 
@@ -241,3 +212,20 @@ const atob = (input = '') => {
 
   return output;
 };
+
+/*
+<Text>Time: {this.state.time}</Text>
+<Text>Heart Rate: {this.state.bpm}</Text>
+<Text>Vcnl Current: {this.state.vcnlCurrent}</Text>
+<Text>Skin Temp: {this.state.skinTemp}C</Text>
+<Text>IBI: {this.state.ibi}</Text>
+<Text>Pamp: {this.state.pamp}</Text>
+<Text>Damp: {this.state.damp}</Text>
+<Text>HRV: {this.state.hrv}</Text>
+<Text>CBF: {this.state.cbf}</Text>
+<Text>HRV PNN 50: {this.state.hrv_pnn50}</Text>
+<Text>PPG: {this.state.ppg}</Text>
+<Text>Dig Out: {this.state.digOut}</Text>
+<Text>Acceleraometer: {this.state.accelX}</Text>
+<Text>State Diff: {this.state.diff}</Text>
+*/

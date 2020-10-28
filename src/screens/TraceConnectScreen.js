@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {render} from 'react-dom';
 import {
   View,
   ScrollView,
@@ -6,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Platform,
 } from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
@@ -13,6 +15,7 @@ import SensorsComponent from '../components/SensorsComponent';
 import HealthDashboard from './HealthDashboardScreen';
 
 const TraceConnectScreen = ({navigation}) => {
+  const [pushed, setPushed] = useState(false);
   return (
     <View style={styles.container}>
       <Header openDrawer={navigation.openDrawer} />
@@ -25,11 +28,16 @@ const TraceConnectScreen = ({navigation}) => {
         style={styles.deviceImage}
         source={require('../images/Trace-3DTransparent.png')}
       />
-      <TouchableOpacity title="Connect" onPress={null} style={styles.button}>
-        <Text style={styles.buttonText} onPress={saveChanges}>
+      <TouchableOpacity title="Connect" style={styles.button}>
+        <Text
+          style={styles.buttonText}
+          onPress={() => {
+            setPushed(true);
+          }}>
           CONNECT
         </Text>
       </TouchableOpacity>
+      {pushed == true ? <SensorsComponent /> : null}
     </View>
   );
 };
@@ -38,21 +46,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',
     marginTop: 30,
-    marginBottom: 70,
+    marginBottom: 20,
     width: '60%',
     height: 100,
     resizeMode: 'stretch',
   },
   deviceImage: {
     alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 50,
+    marginTop: 10,
+    marginBottom: 20,
     width: '55%',
-    height: '50%',
+    height: '20%',
     resizeMode: 'stretch',
   },
   inputFields: {

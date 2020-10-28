@@ -8,7 +8,10 @@
 // Tracebio background color hex:#242852
 
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  createAppContainer,
+} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 
 import {AuthStackNavigator} from './src/navigators/AuthStackNavigator';
@@ -20,6 +23,7 @@ import {AuthContext} from './src/contexts/AuthContext';
 import {UserContext} from './src/contexts/UserContext';
 import {useAuth} from './src/hooks/useAuth';
 import {SplashScreen} from './src/screens/SplashScreen';
+import SensorsComponent from './src/components/SensorsComponent';
 
 const RootStack = createStackNavigator();
 // const AuthStack = createStackNavigator();  //not needed

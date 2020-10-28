@@ -13,6 +13,9 @@ import {VictoryBar, VictoryChart, VictoryAxis} from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';
 import {Calendar} from 'react-native-calendars';
+import SensorAlert from '../components/ConnectToSensorAlert';
+import SensorsComponent from '../components/SensorsComponent';
+import HealthDashboardScreen from './HealthDashboardScreen';
 
 const data = [
   {day: 'Mon', score: 100},

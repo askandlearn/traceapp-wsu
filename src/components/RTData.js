@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, Component} from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,9 @@ import {
   ScrollView,
   Modal,
   Dimensions,
+  Platform,
 } from 'react-native';
+import {BleManager, Device} from 'react-native-ble-plx';
 import Pulse from 'react-native-pulse';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SensorsComponent from './SensorsComponent';
@@ -26,15 +28,168 @@ export default RTData = () => {
   const [isHR, setHR] = useState(0);
   const [isHRV, setHRV] = useState(0);
   const [isIBI, setIBI] = useState(0);
-  const [isPN, setPN] = useState(0);
+  const [isPPG, setPPG] = useState(0);
   const [isSkinTemp, setSkinTemp] = useState(0);
   const [isPAMP, setPAMP] = useState(0);
   const [isDAMP, setDAMP] = useState(0);
   const [isCBF, setCBF] = useState(0);
   const [isDIF, setDIF] = useState(0);
   const [isACC, setACC] = useState(0);
-  const sensor = new SensorsComponent();
-  sensor.scanAndConnect;
+  const [info, setInfo] = useState('thing');
+  const [isDigOut, setDigOut] = useState(0);
+ 
+
+  const atob = (input = '') => {
+    const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    let str = input.replace(/[=]+$/, '');
+    let output = '';
+
+    if (str.length % 4 == 1) {
+      throw new Error(
+        "'atob' failed: The string to be decoded is not correctly encoded.",
+      );
+    }
+    for (
+      let bc = 0, bs = 0, buffer, i = 0;
+      (buffer = str.charAt(i++));
+      ~buffer && ((bs = bc % 4 ? bs * 64 + buffer : buffer), bc++ % 4)
+        ? (output += String.fromCharCode(255 & (bs >> ((-2 * bc) & 6))))
+        : 0
+    ) {
+      buffer = chars.indexOf(buffer);
+    }
+
+    return output;
+  };
+
+  class Sensor extends Component {
+    constructor() {
+      super();
+      this.manager = new BleManager();
+    }
+
+    inform = (message) => {
+      setInfo(message);
+    };
+
+    error = (message) => {
+      setInfo('ERROR: ' + message);
+    };
+
+    convertData = (base64) => {
+      //Convert from base 64 to byte array
+      var binary_string = atob(base64);
+      var len = binary_string.length;
+      var data = new Uint8Array(len);
+      for (var i = 0; i < len; i++) {
+        data[i] = binary_string.charCodeAt(i);
+      }
+
+      var t_vcnlCurrent = data[0];
+      var t_bpm = data[1];
+      var t_skinTemp = data[2];
+      var t_accelX;
+      data[3] & 0x80
+        ? (t_accelX = data[3])
+        : (t_accelX = -((~data[3] & 0xff) + 1)); //Two's complement
+      var t_ibi = (data[5] << 8) + data[4];
+      var t_pamp = (data[7] << 8) + data[6];
+      var t_damp = (data[9] << 8) + data[8]; // data[8];
+      var t_ppg = (data[11] << 8) + data[10];
+      var t_dif;
+      data[13] & 0x80
+        ? (t_dif = (data[13] << 8) + data[12])
+        : (t_dif = -((~((data[13] << 8) + data[12]) & 0x80) + 1)); //Two's complement
+      var t_digOut = data[14];
+      var t_currTime =
+        ((data[18] << 24) + (data[17] << 16) + (data[16] << 8) + data[15]) *
+        9.846e-6;
+      var deltaT = t_currTime - this.time;
+
+      //Update screen
+      setDIF(t_dif);
+      setACC(t_accelX);
+
+      if (isDigOut == 0 && t_digOut == 1) {
+        var t_hrv = t_ibi - isIBI;
+        setIBI(t_ibi);
+        setHR(t_bpm);
+        setSkinTemp(t_skinTemp);
+        setIBI(t_ibi);
+        setPAMP(t_pamp);
+        setDAMP(t_damp);
+        setHRV(t_hrv);
+        setCBF(t_ppg);
+        setPPG(t_ppg);
+      }
+      setDigOut(t_digOut);
+    };
+    componentWillMount = () => {
+      if (Platform.OS === 'ios') {
+        this.manager.onStateChange((state) => {
+          if (state === 'PoweredOn') {
+            this.scanAndConnect();
+          }
+        });
+      } else {
+        this.scanAndConnect();
+      }
+    };
+
+    scanAndConnect = () => {
+      this.manager.startDeviceScan(null, null, (error, device) => {
+        this.inform('Scanning for TRACE Device');
+        console.log(device);
+        /*if (error) {
+          error("y tho");
+          return;
+        }*/
+        if (device.name === 'TRACE') {
+          this.inform('Connecting to TRACE Sensor');
+          this.manager.stopDeviceScan();
+          // eslint-disable-next-line prettier/prettier
+          device.connect()
+            .then((device) => {
+              this.inform('Discovering services and characteristics');
+              return device.discoverAllServicesAndCharacteristics();
+            })
+            .then((device) => {
+              this.inform('Reterning services');
+              var heartBeatService = this.manager.servicesForDevice(device.id);
+              return heartBeatService;
+            })
+            .then((heartBeatService) => {
+              this.inform('Returning characteristics');
+              var characteristicService = this.manager.characteristicsForDevice(
+                device.id,
+                heartBeatService[0].uuid,
+              );
+              return characteristicService;
+            })
+            .then((characteristicService) => {
+              this.info('returning values');
+              characteristicService[0].monitor((error, characteristic) => {
+                if (error) {
+                  this.error(error.message);
+                  return;
+                }
+                if (characteristic.isNotifying) {
+                  this.convertData(characteristic.value);
+                }
+              });
+            }),
+            (error) => {
+              this.error(error.message);
+            };
+        }
+      });
+    };
+  }
+
+  const DeviceManager = new Sensor();
+  DeviceManager.componentWillMount();
+
   return (
     // <PinchZoomView>
     <View style={styles.valueContainer}>
@@ -51,6 +206,9 @@ export default RTData = () => {
           {' '}
           Click on any of the values below for details
         </Text>
+      </View>
+      <View>
+        <Text>{info}</Text>
       </View>
       {/* FIRST ROW */}
       <View
@@ -115,7 +273,7 @@ export default RTData = () => {
           alignItems: 'center',
           marginHorizontal: '2%',
         }}>
-        <Text style={styles.valueTitle}> pNN50</Text>
+        <Text style={styles.valueTitle}> PPG</Text>
         <Text style={styles.valueTitle}>Skin Temp</Text>
         <Text style={styles.valueTitle}> PAMP</Text>
       </View>
@@ -134,7 +292,7 @@ export default RTData = () => {
             setIsBiometric(4);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{isPN}</Text>
+          <Text style={styles.valueText}>{isPPG}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -274,7 +432,7 @@ export default RTData = () => {
                 : isBiometric == 3
                 ? isHRV
                 : isBiometric == 4
-                ? isPN
+                ? isPPG
                 : isBiometric == 5
                 ? isSkinTemp
                 : isBiometric == 6

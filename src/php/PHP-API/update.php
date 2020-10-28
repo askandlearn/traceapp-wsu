@@ -26,16 +26,18 @@ $obj = json_decode($json,true);
 if($method == 'POST'){
     //Request is coming from profile page
     $email = $obj['email'];
-    $city = $obj['city'];
-    $state = $obj['state'];
-    $zip = $obj['zip'];
+	$address = $bj['address'];
+   // $city = $obj['city'];
+    //$state = $obj['state'];
+   // $zip = $obj['zip'];
     $height = $obj['height'];
     $weight = $obj['weight'];
     
 
 
     //Select user from table with matching info
-    $UpdateQuery = "UPDATE users SET city='$city',state='$state',zip='$zip',height='$height',weight='$weight' WHERE email='$email';";
+    //$UpdateQuery = "UPDATE users SET city='$city',state='$state',zip='$zip',height='$height',weight='$weight' WHERE email='$email';";
+	$UpdateQuery = "UPDATE users SET address='$address',height='$height',weight='$weight' WHERE email='$email';";
 
     if(mysqli_query($con,$UpdateQuery)){
         $MSG = 'Update successful!';

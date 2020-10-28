@@ -56,16 +56,6 @@ export function CusomDrawerComponent({...props}){
                         )}
                         onPress={() => {props.navigation.navigate('HRV')}}
                     />
-<<<<<<< HEAD
-=======
-                   {/*} <DrawerItem
-                        label='Live'
-                        icon={({color,size}) => (
-                            <Icon name='rocket' color={color} size={size} style={styles.drawerItem}/>
-                        )}
-                        onPress={() => {props.navigation.navigate('Live')}}
-                        />*/}
->>>>>>> bc3136f2358fd2e4d6ab41dbf4bf475786b30e2c
                     <DrawerItem
                         label='Realtime'
                         icon={({color,size}) => (

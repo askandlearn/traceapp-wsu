@@ -26,7 +26,7 @@ $obj = json_decode($json,true);
 if($method == 'POST'){
     //Request is coming from profile page
     $email = $obj['email'];
-	$address = $bj['address'];
+	$address = $obj['address'];
    // $city = $obj['city'];
     //$state = $obj['state'];
    // $zip = $obj['zip'];

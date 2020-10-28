@@ -5,7 +5,7 @@
 //Device Info = 180A
 //Model Number String = 2A24
 //PNP ID (2A50)
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {Platform, View, Text} from 'react-native';
 import {BleManager, Characteristic} from 'react-native-ble-plx';
 import {FlatList} from 'react-native-gesture-handler';

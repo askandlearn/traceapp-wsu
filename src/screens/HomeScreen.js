@@ -1,16 +1,14 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
   Image,
   Platform,
 } from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
-import HealthDashboard from './HealthDashboardScreen';
 import {VictoryBar, VictoryChart, VictoryAxis} from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';

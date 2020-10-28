@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Platform,
 } from 'react-native';
 import SettingsList from 'react-native-settings-list';
 import Header from '../components/Header-Component';
@@ -37,10 +38,15 @@ const SettingsMenu = ({navigation}, props) => {
                   hasNavArrow={false}
                   title='Airplane Mode'
                 /> */}
-          <SettingsList.Item
+          {/*<SettingsList.Item
             title="My Health Information"
             titleInfoStyle={styles.titleInfoStyle}
             onPress={() => navigation.navigate('HealthInformation')}
+          />*/}
+          <SettingsList.Item
+            title="Change Password"
+            titleInfoStyle={styles.titleInfoStyle}
+            onPress={() => navigation.navigate('ChangePassword')}
           />
           <SettingsList.Item
             title="Connect TRACE Sensor"
@@ -61,6 +67,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#b7b7b7',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',

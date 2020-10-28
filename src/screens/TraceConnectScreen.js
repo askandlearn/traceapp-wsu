@@ -16,6 +16,7 @@ const TraceConnectScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Header openDrawer={navigation.openDrawer} />
+<<<<<<< HEAD
       <ScrollView>
         <Text style={styles.title}>Connect Your TRACE Device</Text>
         <Image
@@ -24,13 +25,29 @@ const TraceConnectScreen = ({navigation}) => {
         />
         <SensorsComponent />
       </ScrollView>
+=======
+      <Image
+        style={styles.backgroundImage}
+        source={require('../images/TraceBio-Black.png')}
+      />
+      <Text style={styles.title}>Connect Your TRACE Device</Text>
+      <Image
+        style={styles.deviceImage}
+        source={require('../images/Trace-3DTransparent.png')}
+      />
+      <TouchableOpacity title="Connect" onPress={null} style={styles.button}>
+        <Text style={styles.buttonText} onPress={saveChanges}>
+          CONNECT
+        </Text>
+      </TouchableOpacity>
+>>>>>>> prototype-2
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
   },
   backgroundImage: {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,10 +10,12 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import {useAuth} from '../hooks/useAuth';
+import {UserContext} from '../contexts/UserContext';
+import {AuthContext} from '../contexts/AuthContext';
 
 const ProfileScreen = (props) => {
   /*
@@ -23,21 +25,44 @@ const ProfileScreen = (props) => {
     Address:
     Password(?):
     */
-  const [name, editName] = useState('John Doe');
-  const [email, setEmail] = useState('example@email.com');
-  const [dob, editDOB] = useState('July 22, 1999');
+
+  //avatar text
+  //UserContext only has one value: user
+  const user = useContext(UserContext);
+
+  //Load in logout function from AuthContext
+  const {logout} = useContext(AuthContext);
+
+  const [name, editName] = useState(() => {if (user) {return user.name;} else {return '';}});
+  const [email, setEmail] = useState(() => {if (user) {return user.email;} else {return '';}});
+  const [dob, editDOB] = useState(() => {if (user) {return user.birthdate;} else {return '';}});
   const [address, editAddress] = useState('');
+  const [height, editHeight] = useState('');
+  const [weight, editWeight] = useState('');
+  const [active, editActive] = useState('');
+  const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
 
-  const onEdit = () => {
-    alert('You can now edit your profile');
-    editEditable(true);
+  const initialzeAvatarText = () => {
+    if (user) {
+      const [first, last] = user.name.split(' ');
+      return first[0] + last[0];
+    } else {
+      return '';
+    }
   };
+
+  const [initials, setInitials] = useState(initialzeAvatarText());
 
   //save changes
   const saveChanges = () => {
-    alert('Changes saved!');
-    editEditable(false);
+    if (isEditable) {
+      setChangeText('Edit');
+      editEditable(false);
+    } else {
+      setChangeText('Save');
+      editEditable(true);
+    }
   };
 
   return (
@@ -46,18 +71,10 @@ const ProfileScreen = (props) => {
       style={styles.container}>
       <KeyboardAvoidingScrollView>
         <Header openDrawer={props.navigation.openDrawer} />
-        <Image
-          style={styles.backgroundImage}
-          source={require('../images/TraceBio-White.png')}
-        />
         <View style={styles.header} />
-        <Image
-          style={styles.avatar}
-          source={{
-            uri:
-              'https://f1.pngfuel.com/png/386/684/972/face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette-png-clip-art.png',
-          }}
-        />
+        <View style={styles.avatar}>
+          <Text style={styles.avatar_text}>{initials}</Text>
+        </View>
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
             <TextInput
@@ -66,6 +83,7 @@ const ProfileScreen = (props) => {
               style={styles.name}
               onChangeText={(name) => editName(name)}
             />
+            {/*}
             <TouchableOpacity>
               <Icon
                 name="edit"
@@ -73,16 +91,17 @@ const ProfileScreen = (props) => {
                 style={{marginLeft: 5}}
                 onPress={() => onEdit()} //need to make name editable for user to change
               />
-            </TouchableOpacity>
+        </TouchableOpacity>*/}
           </View>
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
-            <TextInput
+      <Text style={styles.content}>{email}</Text>
+            {/*<TextInput
               value={email}
               editable={isEditable}
               style={styles.content}
               onChangeText={(email) => setEmail(email)}
-            />
+            />*/}
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
@@ -107,8 +126,45 @@ const ProfileScreen = (props) => {
             />
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Height (ft): </Text>
+            <TextInput
+              placeholder="0"
+              placeholderTextColor="#fff"
+              value={height}
+              editable={isEditable}
+              style={styles.content}
+              onChangeText={(height) => editHeight(height)}
+            />
+          </TouchableOpacity>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Weight (lbs): </Text>
+            <TextInput
+              placeholder="0 lbs"
+              placeholderTextColor="#fff"
+              value={weight}
+              editable={isEditable}
+              style={styles.content}
+              onChangeText={(weight) => editWeight(weight)}
+            />
+          </TouchableOpacity>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Activity level: </Text>
+            <TextInput
+              placeholder="0 ft"
+              placeholderTextColor="#fff"
+              value={active}
+              editable={isEditable}
+              style={styles.content}
+              onChangeText={(active) => editActive(active)}
+            />
+          </TouchableOpacity>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <View style={{paddingVertical: 10}}></View>
           <Button
-            title="Save Changes"
+            title={changeText}
             color="#ff0000"
             style={styles.save}
             onPress={saveChanges}
@@ -123,7 +179,12 @@ const ProfileScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -169,18 +230,27 @@ const styles = StyleSheet.create({
     //height: 200
   },
   avatar: {
-    width: 100,
-    height: 100,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 150,
+    height: 150,
     borderRadius: 100 / 2,
     borderWidth: 4,
     borderColor: 'white',
     marginBottom: 10,
     alignSelf: 'center',
-    position: 'absolute',
-    marginTop: 275,
+    // position: 'absolute',
+    marginTop: 25,
+    backgroundColor: 'black',
+  },
+  avatar_text: {
+    alignSelf: 'center',
+    fontSize: 75,
+    color: 'white',
   },
   body: {
-    marginTop: 100,
+    //marginTop: 100,
     alignSelf: 'center',
   },
   name: {
@@ -190,8 +260,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   content: {
-    margin: 10,
     fontSize: 20,
+    alignSelf: 'center',
+    textAlign: 'center',
+    color: 'black',
   },
   contentTitle: {
     margin: 10,
@@ -200,6 +272,7 @@ const styles = StyleSheet.create({
   },
   horizontal: {
     flexDirection: 'row',
+    alignContent: 'center',
   },
   save: {
     //come back to style the save button

@@ -12,7 +12,11 @@ const TraceConnectScreen = ({navigation}) => {
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
       <KeyboardAvoidingScrollView>
-      <Header openDrawer={navigation.openDrawer} />
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.pop()}>
+          <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+        </TouchableOpacity>
+      </View>
       <Image
         style={styles.backgroundImage}
         source={require('../images/TraceBio-Black.png')}

@@ -2,7 +2,7 @@
 import React, {useContext} from 'react'
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { View, StyleSheet, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { AuthContext } from '../contexts/AuthContext';
 import UserInfo from '../components/UserInfoNav';
 
@@ -31,28 +31,28 @@ export function CusomDrawerComponent({...props}){
                     <DrawerItem
                         label='Home'
                         icon={({color,size}) => (
-                            <Icon name='home' color={color} size={size} style={styles.drawerItem}/>
+                            <Icon name='home-heart' color={color} size={size} style={styles.drawerItem}/>
                         )}
                         onPress={() => {props.navigation.navigate('Home')}}
                     />
                     <DrawerItem
                         label='Profile'
                         icon={({color,size}) => (
-                            <Icon name='user' color={color} size={size} style={styles.drawerItem}/>
+                            <Icon name='account' color={color} size={size} style={styles.drawerItem}/>
                         )}
                         onPress={() => {props.navigation.navigate('Profile')}}
                     />
                     <DrawerItem
                         label='AST'
                         icon={({color,size}) => (
-                            <Icon name='bolt' color={color} size={size} style={styles.drawerItem}/>
+                            <Icon name='flash' color={color} size={size} style={styles.drawerItem}/>
                         )}
                         onPress={() => {props.navigation.navigate('AST')}}
                     />
                     <DrawerItem
                         label='HRV'
                         icon={({color,size}) => (
-                            <Icon name='heartbeat' color={color} size={size} style={styles.drawerItem}/>
+                            <Icon name='heart-pulse' color={color} size={size} style={styles.drawerItem}/>
                         )}
                         onPress={() => {props.navigation.navigate('HRV')}}
                     />
@@ -66,14 +66,14 @@ export function CusomDrawerComponent({...props}){
                     <DrawerItem
                         label='Realtime'
                         icon={({color,size}) => (
-                            <Icon name='line-chart' color={color} size={size} style={styles.drawerItem}/>
+                            <Icon name='chart-line' color={color} size={size} style={styles.drawerItem}/>
                         )}
                         onPress={() => {props.navigation.navigate('Realtime')}}
                     />
                     <DrawerItem
                         label='Settings'
                         icon={({color,size}) => (
-                            <Icon name='gear' color={color} size={size} style={styles.drawerItem}/>
+                            <Icon name='cog' color={color} size={size} style={styles.drawerItem}/>
                         )}
                         onPress={() => {props.navigation.navigate('Settings')}}
                     /> 
@@ -83,7 +83,7 @@ export function CusomDrawerComponent({...props}){
                 <DrawerItem
                     label='Sign Out'
                     icon={({color,size}) => (
-                        <Icon name='sign-out' color={color} size={size}/>
+                        <Icon name='logout' color={color} size={size}/>
                     )}
                     onPress={async () => logout()}
                 />

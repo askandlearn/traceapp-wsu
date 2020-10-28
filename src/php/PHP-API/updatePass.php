@@ -36,7 +36,9 @@ if($method == 'POST'){
 	$UpdateQuery = "UPDATE users SET password = '$newPassword' WHERE email='$email' AND password = '$oldPass';";
 
     if(mysqli_query($con,$UpdateQuery)){
-       echo 'Update password successful';
+        $MSG = 'Update password successful';
+        $MSG = json_encode($MSG);
+        echo $MSG;
     }
     else{
         echo 'Error updating';

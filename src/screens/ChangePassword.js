@@ -26,8 +26,8 @@ const ChangePassword = ({navigation}) => {
 
   const updatePass = async()=>{
     handleConfNewPass();
-    if(validation_flags.isSamePassword){
-      const url = 'http://192.168.1.189/PHP-API/updatePass.php';
+    if(checkPass){
+      const url = 'http://192.168.7.97/PHP-API/updatePass.php';
       //there is a timout parameter set for 2 sec
       //reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
       const results = await axios.post(url, {
@@ -59,14 +59,16 @@ const ChangePassword = ({navigation}) => {
   };*/
   
    //Validation flags
-   const [validation_flags, setValidationFlags] = useState({
-    isSamePassword: false,
-    isFilled: false,
-  });
+  const [checkPass, setCheckPass] = useState(false);
 
   const handleConfNewPass = () => {
-    if(newPass === confNewPass){
-      setValidationFlags({...validation_flags, isSamePassword: true})
+    if(confNewPass === newPass){
+      console.log('Same pass')
+      setCheckPass(true)
+    }
+    else{
+      console.log('Diff pass')
+      setCheckPass(false)
     }
   };
 
@@ -80,22 +82,26 @@ const ChangePassword = ({navigation}) => {
       </View>
       <Text style={styles.title}>Update Password</Text>
       <TextInput
+        secureTextEntry
         placeholder="Current password"
         style={styles.textInput}
         autoCapitalize="none"
         onChangeText={(oldPass) => setOldPass(oldPass)}
       />
       <TextInput
+        secureTextEntry
         placeholder="New password"
         style={styles.textInput}
         autoCapitalize="none"
         onChangeText={(newPass) => setNewPass(newPass)}
       />
       <TextInput
+        secureTextEntry
         placeholder="Re-type new password"
         style={styles.textInput}
         autoCapitalize="none"
         onChangeText={(confNewPass) => setConfNewPass(confNewPass)}
+        onEndEditing={() => handleConfNewPass()}
       />
       <TouchableOpacity
         title="Save Changes"

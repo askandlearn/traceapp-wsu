@@ -41,7 +41,7 @@ export function useAuth(){
     const auth = React.useMemo(() => ({
     login: async (email,password) => {
         const STATUS_CODES = [200,204];
-        const url = 'http://192.168.0.246/PHP-API/user_registration.php';
+        const url = 'http://192.168.7.97/PHP-API/user_registration.php';
         //there is a timout parameter set for 2 sec
         //reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
         const results = await axios.post(url, {
@@ -59,7 +59,11 @@ export function useAuth(){
         const user = {
             email: results[1],
             name: results[3] +' ' + results[4],
-            birthdate: results[5]
+            birthdate: results[5],
+            address: results[6],
+            gender: results[7],
+            height: results[8],
+            weight: results[9]
         }
         // console.log(user);
         //if anything other than success code
@@ -83,7 +87,7 @@ export function useAuth(){
     register: async (email, password, firstName, lastName, birthdate, navigate) => {
         console.log('Register')
         const SUCCESS_MESSAGE = 'User Registered Successfully!';
-        const url = 'http://192.168.0.246/PHP-API/user_registration.php';
+        const url = 'http://192.168.7.97/PHP-API/user_registration.php';
         const result = await axios.post(url, {
             type: 'signup',
             email: email,
@@ -103,6 +107,44 @@ export function useAuth(){
             console.log('Navigate to login')
             navigate('Login')
         }
+    },
+    update: async (email, address, height, weight ) => {
+        console.log('In update...');
+        const STATUS_CODES = [200,204];
+        const url = 'http://192.168.7.97/PHP-API/update.php';
+        // there is a timout parameter set for 2 sec
+        // reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
+        const results = await axios.post(url, {
+            email: email,
+            address: address,
+            height: height,
+            weight: weight
+        }, {
+            timeout: 2000
+        }).then(res => res.data).catch(err => {
+            console.log(err.code)
+            console.log(err.message)
+        })
+        console.log(results)
+        const user = {
+            email: results[1],
+            name: results[3] +' ' + results[4],
+            birthdate: results[5],
+            address: results[6],
+            gender: results[7],
+            height: results[8],
+            weight: results[9]
+        }
+        // console.log(user);
+        //if anything other than success code
+        if(parseInt(results[0]) != STATUS_CODES[0]){
+            console.log('Unable to retrieve info')
+        }
+        else{
+            //update local storage
+            await AsyncStorage.setItem('@user', JSON.stringify(user));
+        }
+
     }
 }), []);
 

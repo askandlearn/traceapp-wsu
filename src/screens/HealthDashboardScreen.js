@@ -208,10 +208,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: 0,
     paddingTop: 20,
-<<<<<<< HEAD
-=======
     paddingBottom: 40,
->>>>>>> prototype-2
   },
   colorKeyRow: {
     flex: 1,

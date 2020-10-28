@@ -16,16 +16,6 @@ const TraceConnectScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Header openDrawer={navigation.openDrawer} />
-<<<<<<< HEAD
-      <ScrollView>
-        <Text style={styles.title}>Connect Your TRACE Device</Text>
-        <Image
-          style={styles.deviceImage}
-          source={require('../images/Trace-3D.png')}
-        />
-        <SensorsComponent />
-      </ScrollView>
-=======
       <Image
         style={styles.backgroundImage}
         source={require('../images/TraceBio-Black.png')}
@@ -40,7 +30,6 @@ const TraceConnectScreen = ({navigation}) => {
           CONNECT
         </Text>
       </TouchableOpacity>
->>>>>>> prototype-2
     </View>
   );
 };

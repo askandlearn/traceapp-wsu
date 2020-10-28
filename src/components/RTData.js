@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Pulse from 'react-native-pulse';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import SensorsComponent from './SensorsComponent';
 Icon.loadFont();
 
 //const screenWidth = Dimensions.get("window").width;
@@ -32,6 +33,8 @@ export default RTData = () => {
   const [isCBF, setCBF] = useState(0);
   const [isDIF, setDIF] = useState(0);
   const [isACC, setACC] = useState(0);
+  const sensor = new SensorsComponent();
+  sensor.scanAndConnect;
   return (
     // <PinchZoomView>
     <View style={styles.valueContainer}>

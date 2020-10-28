@@ -49,15 +49,12 @@ const HealthDashboardScreen = () => {
         }}
         dropDownStyle={{backgroundColor: '#fafafa'}}
         onChangeItem={(item) => (setStats(item.value), setStatus(!status))}
-      />
-      
+      />   
       <Svg
         style={status ? styles.chart : styles.hidden}
         viewBox={'0 0 140 350'}
         preserveAspectRatio="none">
-        <VictoryChart domainPadding={15} height={300} width={385}>
-        
-          
+        <VictoryChart domainPadding={15} height={300} width={385}>   
           <VictoryBar
             data={data}
             x="day"

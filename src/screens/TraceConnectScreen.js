@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
-import Header from '../components/Header-Component';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HealthDashboard from './HealthDashboardScreen';
 
 const TraceConnectScreen = ({navigation}) => {
@@ -11,7 +10,11 @@ const TraceConnectScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Header openDrawer={navigation.openDrawer} />
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.pop()}>
+          <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+        </TouchableOpacity>
+      </View>
       <Image
         style={styles.backgroundImage}
         source={require('../images/TraceBio-Black.png')}

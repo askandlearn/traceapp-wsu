@@ -8,7 +8,7 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
-import Header from '../components/Header-Component';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ChangePassword = ({navigation}) => {
   const [oldPass, setOldPass] = useState('');
@@ -20,7 +20,11 @@ const ChangePassword = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Header openDrawer={navigation.openDrawer} />
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.pop()}>
+          <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.title}>Update Password</Text>
       <TextInput
         placeholder="Current password"

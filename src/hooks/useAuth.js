@@ -65,7 +65,7 @@ export function useAuth(){
             height: results[8],
             weight: results[9]
         }
-        // console.log(user);
+        console.log(user);
         //if anything other than success code
         if(parseInt(results[0]) != STATUS_CODES[0]){
             console.log('NULL Dispatch')
@@ -118,10 +118,12 @@ export function useAuth(){
             email: email,
             address: address,
             height: height,
-            weight: weight
-        }, {
+            weight: weight,
+        } 
+        /*{
             timeout: 2000
-        }).then(res => res.data).catch(err => {
+        }*/
+    ).then(res => res.data).catch(err => {
             console.log(err.code)
             console.log(err.message)
         })
@@ -135,7 +137,7 @@ export function useAuth(){
             height: results[8],
             weight: results[9]
         }
-        // console.log(user);
+         console.log(user);
         //if anything other than success code
         if(parseInt(results[0]) != STATUS_CODES[0]){
             console.log('Unable to retrieve info')

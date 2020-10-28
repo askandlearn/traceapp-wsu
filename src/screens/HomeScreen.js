@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Header from '../components/Header-Component';
 import HealthDashboard from './HealthDashboardScreen';

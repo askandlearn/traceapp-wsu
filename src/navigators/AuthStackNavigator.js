@@ -26,7 +26,7 @@ export function AuthStackNavigator() {
       }}>
         <AuthStack.Screen name={'WelcomeStack'}>
             {() => (
-                <WelcomeStack.Navigator mode='card'>
+                <WelcomeStack.Navigator mode='card' screenOptions={{headerShown: false}}>
                     <WelcomeStack.Screen name={'Welcome'} component={WelcomeScreen}/>
                 </WelcomeStack.Navigator>
             )}

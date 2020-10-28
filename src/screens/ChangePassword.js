@@ -1,47 +1,55 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput} from 'react-native';
-import Header from '../components/Header-Component';
-import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  Platform,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ChangePassword = ({navigation}) => {
-    const[oldPass, setOldPass]=useState('');
-    const[newPass, setNewPass]=useState('');
-    const[confNewPass, setConfNewPass]=useState('');
-    const submit = () =>{
-        alert('Password Updated');
-    };
-
+  const [oldPass, setOldPass] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [confNewPass, setConfNewPass] = useState('');
+  const submit = () => {
+    alert('Password Updated');
+  };
 
   return (
-    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-      <KeyboardAvoidingScrollView>
-        <Header openDrawer={navigation.openDrawer} />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.pop()}>
+          <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.title}>Update Password</Text>
       <TextInput
-          placeholder="Current password"
-          style={styles.textInput}
-          autoCapitalize="none"
-          onChangeText={(oldPass) => setOldPass(oldPass)}
-        />
-        <TextInput
-          placeholder="New password"
-          style={styles.textInput}
-          autoCapitalize="none"
-          onChangeText={(newPass) => setNewPass(newPass)}
-        />
-        <TextInput
-          placeholder="Re-type new password"
-          style={styles.textInput}
-          autoCapitalize="none"
-          onChangeText={(confNewPass) => setConfNewPass(confNewPass)}
-        />
-         <TouchableOpacity
-          title="Save Changes"
-          style={styles.button}
-          onPress={submit}>
-          <Text style={styles.buttonText}>Save Changes</Text>
-        </TouchableOpacity>
-        </KeyboardAvoidingScrollView>
+        placeholder="Current password"
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(oldPass) => setOldPass(oldPass)}
+      />
+      <TextInput
+        placeholder="New password"
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(newPass) => setNewPass(newPass)}
+      />
+      <TextInput
+        placeholder="Re-type new password"
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(confNewPass) => setConfNewPass(confNewPass)}
+      />
+      <TouchableOpacity
+        title="Save Changes"
+        style={styles.button}
+        onPress={submit}>
+        <Text style={styles.buttonText}>Save Changes</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -51,6 +59,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -117,7 +128,6 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     borderRadius: 20,
   },
-
 });
 
 export default ChangePassword;

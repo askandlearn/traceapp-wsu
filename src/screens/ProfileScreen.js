@@ -13,9 +13,10 @@ import {
 import Header from '../components/Header-Component';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import { useAuth } from '../hooks/useAuth';
-import { UserContext } from '../contexts/UserContext';
-import { AuthContext } from '../contexts/AuthContext';
+import {useAuth} from '../hooks/useAuth';
+import {UserContext} from '../contexts/UserContext';
+import {AuthContext} from '../contexts/AuthContext';
+import { useScreens } from 'react-native-screens';
 
 const ProfileScreen = (props) => {
   /*
@@ -25,48 +26,110 @@ const ProfileScreen = (props) => {
     Address:
     Password(?):
     */
-  
+
   //avatar text
   //UserContext only has one value: user
   const user = useContext(UserContext);
+  const {update} = useContext(AuthContext);
 
   //Load in logout function from AuthContext
-  const {logout} = useContext(AuthContext)
+  const {logout} = useContext(AuthContext);
 
-  const [name, editName] = useState(() => {if(user) return user.name; else return ''});
-  const [email, setEmail] = useState(() => {if(user) return user.email; else return ''});
-  const [dob, editDOB] = useState(() => {if(user) return user.birthdate; else return ''});
-  const [address, editAddress] = useState('');
-  const [height, editHeight] = useState('');
-  const [weight, editWeight] = useState('');
-  const [active, editActive] = useState('');
-  const [changeText, setChangeText] = useState('Edit')
+  const [name, editName] = useState(() => {if (user.name) {return user.name;} else {return '';}});
+  const [email, setEmail] = useState(() => {if (user.email) {return user.email;} else {return '';}});
+  const [dob, editDOB] = useState(() => {if (user.birthdate) {return user.birthdate;} else {return '';}});
+  const [address, editAddress] = useState(() => {if (user.address) {return user.address;} else {return '';}});
+  const [height, editHeight] = useState(() => {if (user.height) {return user.height;} else {return '';}});
+  const [weight, editWeight] = useState(() => {if (user.weight) {return user.weight;} else {return '';}});
+  const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
 
+  const [checkValidations, setCheckValidations] = useState({
+    diffAddress: false,
+    diffHeight: false,
+    diffWeight: false,
+  })
+
   const initialzeAvatarText = () => {
-    if (user){
-      const[first, last] = user.name.split(' ')
-      return first[0]+last[0]
-    }else{
-      return ''
-    }
-  }
-
-  const [initials, setInitials] = useState(initialzeAvatarText())
-
-
-  //save changes
-  const saveChanges = () => {
-    if(isEditable){
-      setChangeText('Edit')
-      editEditable(false)
-    }
-    else{
-      setChangeText('Save')
-      editEditable(true)
+    if (user) {
+      const [first, last] = user.name.split(' ');
+      return first[0] + last[0];
+    } else {
+      return '';
     }
   };
 
+  const [initials, setInitials] = useState(initialzeAvatarText());
+
+  //check if new value is different from old value
+  const checkAddress = (val) =>{
+    if(val === user.address || val === ''){
+      console.log('No changes made')
+    }
+    else{
+      console.log('Different')
+      editAddress(val);
+      setCheckValidations({
+        ...checkValidations,
+        diffAddress: true
+      });
+    }
+  }
+  const checkHeight = (val) =>{
+    if(val === user.height || val === ''){
+      console.log('No changes made')
+    }
+    else{
+      console.log('Different')
+      editHeight(val);
+      setCheckValidations({
+        ...checkValidations,
+        diffHeight: true
+      });
+
+    }
+  }
+  const checkWeight = (val) =>{
+    if(val === user.weight || val===''){
+      console.log('No changes made')
+    }
+    else{
+      console.log('Different')
+      editWeight(val);
+      setCheckValidations({
+        ...checkValidations,
+        diffWeight: true
+      });
+    }
+  }
+
+  //save changes
+  const saveChanges = async () => {
+    if (isEditable) {
+      //POST Request to Update DB
+      if(checkValidations.diffAddress || checkValidations.diffHeight || checkValidations.diffWeight){
+        console.log('Calling update')
+        try{
+          await update(email,address,height,weight);
+          setCheckValidations({
+            ...checkValidations,
+            diffAddress: false,
+            diffHeight: false,
+            diffWeight: false
+          })
+        }
+        catch(err){
+          console.log('Error in saveChanges():',err.message)
+        }
+      }
+      
+      setChangeText('Edit');
+      editEditable(false);
+    } else {
+      setChangeText('Save');
+      editEditable(true);
+    }
+  };
 
   return (
     <View
@@ -82,88 +145,63 @@ const ProfileScreen = (props) => {
           <View style={[styles.horizontal, styles.name]}>
             <TextInput
               value={name}
-              editable={isEditable}
-              style={styles.name}
-              onChangeText={(name) => editName(name)}
-            />
-            {/*}
-            <TouchableOpacity>
-              <Icon
-                name="edit"
-                size={20}
-                style={{marginLeft: 5}}
-                onPress={() => onEdit()} //need to make name editable for user to change
-              />
-        </TouchableOpacity>*/}
+              editable={false}
+              style={styles.name}/>
           </View>
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
             <TextInput
               value={email}
-              editable={isEditable}
-              style={styles.content}
-              onChangeText={(email) => setEmail(email)}
-            />
+              editable={false}
+              style={styles.content}/>
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Date of Birth: </Text>
             <TextInput
               value={dob}
-              editable={isEditable}
-              style={styles.content}
-              onChangeText={(dob) => editDOB(dob)}
-            />
+              editable={false}
+              style={styles.content}/>
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Address: </Text>
             <TextInput
-              placeholder="No address provided"
-              placeholderTextColor="#fff"
+              placeholder='Add address'
+              placeholderTextColor="#a1a2a6"
+              textContentType='addressCityAndState'
               value={address}
               editable={isEditable}
               style={styles.content}
               onChangeText={(address) => editAddress(address)}
-            />
+              onEndEditing={(e) => checkAddress(e.nativeEvent.text)}/>
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>Height (ft): </Text>
+            <Text style={styles.contentTitle}>Height (cm): </Text>
             <TextInput
-              placeholder="0"
-              placeholderTextColor="#fff"
+              placeholder='Add Height'
+              placeholderTextColor="#a1a2a6"
               value={height}
               editable={isEditable}
               style={styles.content}
               onChangeText={(height) => editHeight(height)}
-            />
+              onEndEditing={(e) => checkHeight(e.nativeEvent.text)}/>
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Weight (lbs): </Text>
             <TextInput
-              placeholder="0 lbs"
-              placeholderTextColor="#fff"
+              placeholder='Add Weight'
+              placeholderTextColor="#a1a2a6"  
               value={weight}
               editable={isEditable}
               style={styles.content}
               onChangeText={(weight) => editWeight(weight)}
-            />
+              onEndEditing={(e) => checkWeight(e.nativeEvent.text)}/>
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
-          <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>Activity level: </Text>
-            <TextInput
-              placeholder="0 ft"
-              placeholderTextColor="#fff"
-              value={active}
-              editable={isEditable}
-              style={styles.content}
-              onChangeText={(active) => editActive(active)}
-            />
-          </TouchableOpacity>
-          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <View style={{paddingVertical: 10}}></View>
           <Button
             title={changeText}
             color="#ff0000"
@@ -182,7 +220,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -240,28 +281,29 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     // position: 'absolute',
     marginTop: 25,
-    alignItems: 'center',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
-  avatar_text:{
+  avatar_text: {
     alignSelf: 'center',
     fontSize: 75,
-    color:'white'
+    color: 'white',
   },
   body: {
     //marginTop: 100,
     alignSelf: 'center',
   },
   name: {
-    fontSize: 25,
+    fontSize: 30,
     fontWeight: '600',
     padding: 20,
     alignSelf: 'center',
+    color:'black'
   },
   content: {
     fontSize: 20,
     alignSelf: 'center',
-    textAlign:'center'
+    textAlign: 'center',
+    color: 'black' 
   },
   contentTitle: {
     margin: 10,

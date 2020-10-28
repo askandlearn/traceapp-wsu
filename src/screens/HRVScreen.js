@@ -16,6 +16,7 @@ import Animate from '../components/HRVSurvey';
 import SensorAlert from '../components/ConnectToSensorAlert';
 import Swiper from 'react-native-swiper';
 import Plot from '../components/Plot';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 var check =false;
 
@@ -28,10 +29,10 @@ const HRVScreen = ({navigation}, props) => {
   }
 
     return (
-      <View style={styles.container}>
+      <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+        <KeyboardAvoidingScrollView>
         <Header openDrawer={navigation.openDrawer} />
         <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
-        <ScrollView style={styles.container}>
           <View style={styles.container}>{check && <SensorAlert></SensorAlert>}</View>
           <Timer></Timer>
           <View style={styles.NavBarDivider}/>
@@ -89,7 +90,7 @@ const HRVScreen = ({navigation}, props) => {
           </Swiper>
           <View style={styles.NavBarDivider}/>
           <Plot></Plot>
-        </ScrollView>
+          </KeyboardAvoidingScrollView>
       </View>
     );
   };

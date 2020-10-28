@@ -1,14 +1,16 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import HealthDashboard from './HealthDashboardScreen';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const HomeScreen = ({navigation}) => {
   return (
-    <View style={styles.container}>
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+      <KeyboardAvoidingScrollView>
       <Header openDrawer={navigation.openDrawer} />
       <HealthDashboard />
+      </KeyboardAvoidingScrollView>
     </View>
   );
 };

@@ -14,6 +14,7 @@ import {
 import Header from '../components/Header-Component';
 import RTTimer from '../components/RTTimer';
 import RTData from '../components/RTData';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 //import SensorAlert from '../components/ConnectToSensorAlert';
 
 import Plot from '../components/RTPlot';
@@ -23,7 +24,9 @@ var check= true;
 const RealTimeScreen = ({navigation}, props) => {
   
   return (
-    <View style={styles.container}>
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    style={styles.container}>
+       <KeyboardAvoidingScrollView>
          <Header openDrawer={navigation.openDrawer} />
          <Text style={styles.title}>Real-Time Data</Text>
         <RTTimer></RTTimer>
@@ -31,6 +34,7 @@ const RealTimeScreen = ({navigation}, props) => {
         <RTData></RTData>
         {/* <View style={styles.NavBarDivider} /> */}
         <Plot></Plot>
+        </KeyboardAvoidingScrollView>
     </View>
   );
 

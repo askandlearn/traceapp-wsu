@@ -16,7 +16,7 @@ import Timer from '../components/Timer';
 import Animate from '../components/ASTSurvey';
 import Swiper from 'react-native-swiper';
 import SensorAlert from '../components/ConnectToSensorAlert';
-
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Plot from '../components/ASTPlot';
 
 
@@ -31,10 +31,11 @@ const ASTScreen = ({navigation}) => {
   }
  
   return (
-    <View style={styles.container}>
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    style={styles.container}>
+      <KeyboardAvoidingScrollView>
       <Header openDrawer={navigation.openDrawer} />
       <Text style={styles.title}>Active StandUp Test (AST)</Text>
-      <ScrollView >
         <View style={styles.container}>{check && <SensorAlert></SensorAlert>}</View>
           <Timer></Timer>
           <View style={styles.NavBarDivider} />
@@ -94,7 +95,7 @@ const ASTScreen = ({navigation}) => {
 
         <View style={styles.NavBarDivider} />
         <Plot></Plot>
-      </ScrollView>
+        </KeyboardAvoidingScrollView>
     </View>
   );
 };

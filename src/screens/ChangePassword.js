@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput} from 'react-native';
 import Header from '../components/Header-Component';
-
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const ChangePassword = ({navigation}) => {
     const[oldPass, setOldPass]=useState('');
@@ -13,8 +13,9 @@ const ChangePassword = ({navigation}) => {
 
 
   return (
-    <View style={styles.container}>
-      <Header openDrawer={navigation.openDrawer} />
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+      <KeyboardAvoidingScrollView>
+        <Header openDrawer={navigation.openDrawer} />
       <Text style={styles.title}>Update Password</Text>
       <TextInput
           placeholder="Current password"
@@ -40,6 +41,7 @@ const ChangePassword = ({navigation}) => {
           onPress={submit}>
           <Text style={styles.buttonText}>Save Changes</Text>
         </TouchableOpacity>
+        </KeyboardAvoidingScrollView>
     </View>
   );
 };

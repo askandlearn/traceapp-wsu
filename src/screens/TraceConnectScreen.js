@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import HealthDashboard from './HealthDashboardScreen';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const TraceConnectScreen = ({navigation}) => {
   const saveChanges = () => {
@@ -10,7 +11,8 @@ const TraceConnectScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+      <KeyboardAvoidingScrollView>
       <Header openDrawer={navigation.openDrawer} />
       <Image
         style={styles.backgroundImage}
@@ -26,6 +28,7 @@ const TraceConnectScreen = ({navigation}) => {
           CONNECT
         </Text>
       </TouchableOpacity>
+      </KeyboardAvoidingScrollView>
     </View>
   );
 };
@@ -48,9 +51,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 30,
     marginBottom: 70,
-    width: '55%',
-    height: '20%',
-    resizeMode: 'stretch',
+    width: 150,
+    height: 150,
+    //resizeMode: 'stretch',
   },
   inputFields: {
     backgroundColor: '#FFFFFF',

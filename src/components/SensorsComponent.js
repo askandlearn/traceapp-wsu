@@ -32,7 +32,7 @@ export default class SensorsComponent extends Component {
       nn50: 0,
       nBeats: 0,
       digOut: 0,
-      time: 0.00,
+      time: 0.0,
     };
     this.ServicesUUID;
     this.CharacteristicUUID;

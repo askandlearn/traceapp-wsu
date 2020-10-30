@@ -10,6 +10,7 @@ import {
   TextInput,
   Button,
   Alert,
+  Platform,
 } from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
@@ -96,10 +97,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: '5%',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   container: {
     flex: 1,
     backgroundColor: '#b7b7b7',
+    paddingTop: 50,
     //justifyContent:'center'
   },
   textInput: {
@@ -162,6 +167,11 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     backgroundColor: '#ff0000',
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
   },
   buttonText: {
     color: '#FFFFFF',

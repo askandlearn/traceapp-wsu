@@ -1,15 +1,37 @@
 import React from 'react';
+<<<<<<< HEAD
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
+import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
+import Header from '../components/Header-Component';
+import SensorsComponent from '../components/SensorsComponent';
+=======
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+>>>>>>> prototype-2
 import HealthDashboard from './HealthDashboardScreen';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const TraceConnectScreen = ({navigation}) => {
-  const saveChanges = () => {
-    alert('Device Connected!');
-  };
-
   return (
+<<<<<<< HEAD
+    <View style={styles.container}>
+      <Header openDrawer={navigation.openDrawer} />
+      <ScrollView>
+        <Text style={styles.title}>Connect Your TRACE Device</Text>
+        <Image
+          style={styles.deviceImage}
+          source={require('../images/Trace-3D.png')}
+        />
+        <SensorsComponent />
+      </ScrollView>
+=======
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
       <KeyboardAvoidingScrollView>
       <View style={styles.header}>
@@ -32,10 +54,10 @@ const TraceConnectScreen = ({navigation}) => {
         </Text>
       </TouchableOpacity>
       </KeyboardAvoidingScrollView>
+>>>>>>> prototype-2
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -53,10 +75,17 @@ const styles = StyleSheet.create({
   deviceImage: {
     alignSelf: 'center',
     marginTop: 30,
+<<<<<<< HEAD
+    marginBottom: 50,
+    width: '55%',
+    height: '50%',
+    resizeMode: 'stretch',
+=======
     marginBottom: 70,
     width: 150,
     height: 150,
     //resizeMode: 'stretch',
+>>>>>>> prototype-2
   },
   inputFields: {
     backgroundColor: '#FFFFFF',

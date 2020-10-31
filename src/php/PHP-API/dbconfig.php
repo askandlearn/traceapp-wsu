@@ -10,6 +10,6 @@ $databasename = "api"; //edit as necessary
 $hostuser = "root";
 
 //Define database password - leave this blank
-$hostpass = "";
+$hostpass = "Zackwhite1996!";
 
 ?>

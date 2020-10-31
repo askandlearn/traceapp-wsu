@@ -131,6 +131,18 @@ const ProfileScreen = (props) => {
     }
   };
 
+  const chooseButtonAction = () => {
+    console.log('In choose action...')
+    if(buttonText === 'Edit'){
+      setButtonText('Save')
+      onEdit();
+    }
+    else{
+      setButtonText('Edit')
+      saveChanges();
+    }
+  }
+
   return (
     <View
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -143,8 +155,9 @@ const ProfileScreen = (props) => {
         </View>
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
-            <TextInput
+            <TextInput    
               value={name}
+
               editable={false}
               style={styles.name}/>
           </View>
@@ -313,7 +326,6 @@ const styles = StyleSheet.create({
     //margin: 10,
    marginHorizontal: '10%',
     //marginVertical: 5,
-
   },
   contentTitle: {
     margin: 10,

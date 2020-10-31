@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
-import Header from '../components/Header-Component';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HealthDashboard from './HealthDashboardScreen';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const TraceConnectScreen = ({navigation}) => {
   const saveChanges = () => {
@@ -10,22 +10,28 @@ const TraceConnectScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header openDrawer={navigation.openDrawer} />
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+      <KeyboardAvoidingScrollView>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.pop()}>
+          <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+        </TouchableOpacity>
+      </View>
       <Image
         style={styles.backgroundImage}
-        source={require('../images/TraceBio-White.png')}
+        source={require('../images/TraceBio-Black.png')}
       />
       <Text style={styles.title}>Connect Your TRACE Device</Text>
       <Image
         style={styles.deviceImage}
-        source={require('../images/Trace-3D.png')}
+        source={require('../images/Trace-3DTransparent.png')}
       />
       <TouchableOpacity title="Connect" onPress={null} style={styles.button}>
         <Text style={styles.buttonText} onPress={saveChanges}>
           CONNECT
         </Text>
       </TouchableOpacity>
+      </KeyboardAvoidingScrollView>
     </View>
   );
 };
@@ -33,7 +39,7 @@ const TraceConnectScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
   },
   backgroundImage: {
@@ -48,9 +54,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 30,
     marginBottom: 70,
-    width: '55%',
-    height: '20%',
-    resizeMode: 'stretch',
+    width: 150,
+    height: 150,
+    //resizeMode: 'stretch',
   },
   inputFields: {
     backgroundColor: '#FFFFFF',

@@ -1,14 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import HealthDashboard from './HealthDashboardScreen';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const HomeScreen = ({navigation}) => {
+  const [stats, setStats] = useState('week');
+  const [status, setStatus] = useState('true');
   return (
-    <View style={styles.container}>
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+      <KeyboardAvoidingScrollView>
       <Header openDrawer={navigation.openDrawer} />
       <HealthDashboard />
+      </KeyboardAvoidingScrollView>
     </View>
   );
 };
@@ -16,8 +20,11 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
-    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    //alignItems: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -58,6 +65,37 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#FFFFFF',
     fontWeight: 'bold',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+  },
+  chartRow: {
+    width: '100%',
+  },
+  chart: {
+    flex: 1,
+    height: 300,
+    width: '80%',
+  },
+  hidden: {
+    display: 'none',
+  },
+  calendar: {
+    flex: 1,
+  },
+  colorKey: {
+    flex: 1,
+    alignSelf: 'center',
+    margin: 0,
+    paddingTop: 20,
+    paddingBottom: 40,
+  },
+  colorKeyRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    //alignItems: 'left',
   },
   header: {
     width: '100%',

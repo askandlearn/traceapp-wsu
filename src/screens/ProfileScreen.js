@@ -148,6 +148,8 @@ const ProfileScreen = (props) => {
               editable={false}
               style={styles.name}/>
           </View>
+          <Text style={styles.profileCategory}>Basic Info:</Text>
+          <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
             <TextInput
@@ -155,7 +157,7 @@ const ProfileScreen = (props) => {
               editable={false}
               style={styles.content}/>
           </TouchableOpacity>
-          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Date of Birth: </Text>
             <TextInput
@@ -163,11 +165,14 @@ const ProfileScreen = (props) => {
               editable={false}
               style={styles.content}/>
           </TouchableOpacity>
-          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <View style={styles.contentBorder} />
+          <View style={{paddingBottom: 40}}/>
+          <Text style={styles.profileCategory}>Additional Info:</Text>
+          <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Address: </Text>
             <TextInput
-              placeholder='Add address'
+              placeholder='Address (optional)'
               placeholderTextColor="#a1a2a6"
               textContentType='addressCityAndState'
               value={address}
@@ -176,11 +181,11 @@ const ProfileScreen = (props) => {
               onChangeText={(address) => editAddress(address)}
               onEndEditing={(e) => checkAddress(e.nativeEvent.text)}/>
           </TouchableOpacity>
-          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Height (cm): </Text>
             <TextInput
-              placeholder='Add Height'
+              placeholder='Height (optional)'
               placeholderTextColor="#a1a2a6"
               value={height}
               editable={isEditable}
@@ -188,11 +193,11 @@ const ProfileScreen = (props) => {
               onChangeText={(height) => editHeight(height)}
               onEndEditing={(e) => checkHeight(e.nativeEvent.text)}/>
           </TouchableOpacity>
-          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Weight (lbs): </Text>
             <TextInput
-              placeholder='Add Weight'
+              placeholder='Weight (optional)'
               placeholderTextColor="#a1a2a6"  
               value={weight}
               editable={isEditable}
@@ -200,8 +205,8 @@ const ProfileScreen = (props) => {
               onChangeText={(weight) => editWeight(weight)}
               onEndEditing={(e) => checkWeight(e.nativeEvent.text)}/>
           </TouchableOpacity>
-          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
-          <View style={{paddingVertical: 10}}></View>
+          <View style={styles.contentBorder} />
+          <View style={{paddingVertical: 30}}></View>
           <Button
             title={changeText}
             color="#ff0000"
@@ -297,18 +302,25 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     padding: 20,
     alignSelf: 'center',
-    color:'black'
+    color:'black',
+    fontStyle: 'italic',
   },
   content: {
-    fontSize: 20,
+    fontSize: 17,
     alignSelf: 'center',
     textAlign: 'center',
-    color: 'black' 
+    color: 'black',
+    //margin: 10,
+   marginHorizontal: '10%',
+    //marginVertical: 5,
+
   },
   contentTitle: {
     margin: 10,
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
+    textAlign: 'center',
+    alignSelf: 'center',
   },
   horizontal: {
     flexDirection: 'row',
@@ -316,8 +328,25 @@ const styles = StyleSheet.create({
   },
   save: {
     //come back to style the save button
-    marginTop: 10,
+    //marginTop: 10,
+    alignItems: 'center',
+    marginHorizontal: '10%',
+    marginVertical: 10,
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: '#ff0000',
   },
+  profileCategory: {
+    fontSize: 22,
+    //fontWeight: 'bold',
+    paddingBottom: 10,
+    color: 'black',
+
+  },
+  contentBorder: {
+    borderBottomColor: 'gainsboro', 
+    borderBottomWidth: 1
+  }
 });
 
 export default ProfileScreen;

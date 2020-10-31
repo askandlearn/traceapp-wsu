@@ -27,7 +27,7 @@ const ChangePassword = ({navigation}) => {
   const updatePass = async()=>{
     handleConfNewPass();
     if(checkPass){
-      const url = 'http://192.168.7.97/PHP-API/updatePass.php';
+      const url = 'http://192.168.1.189/PHP-API/updatePass.php';
       //there is a timout parameter set for 2 sec
       //reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
       const results = await axios.post(url, {

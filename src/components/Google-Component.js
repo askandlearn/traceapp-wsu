@@ -1,13 +1,11 @@
 import React from 'react';
 import { Component } from 'react';
 import {
-  SafeAreaView,
+  TouchableOpacity,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Image
+  Platform
 } from 'react-native';
 import {GoogleSignin, GoogleSigninButton, statusCodes} from '@react-native-community/google-signin'
 
@@ -21,7 +19,7 @@ import {GoogleSignin, GoogleSigninButton, statusCodes} from '@react-native-commu
 
 
 
-const GoogleComponent = () => {
+const GoogleComponent = ({height, width, text}) => {
    [userGoogleInfo, setUserGoogleInfo] = React.useState({})
 
    React.useEffect(() => {
@@ -55,13 +53,47 @@ const GoogleComponent = () => {
    }
 
     return (
-        <>
+        <TouchableOpacity style={[styles.button,{width: width, height: height}]} onPress={() => signIn()}>
             <GoogleSigninButton
-                size={GoogleSigninButton.Size.Wide}
+                style={styles.googleIcon}
+                size={GoogleSigninButton.Size.Icon}
                 color={GoogleSigninButton.Color.Dark}
-                onPress={signIn()}/>
-        </>
+                onPress={() => signIn()}/>
+            <View style={styles.textBox}>
+                <Text style={styles.googleText}>{text}</Text>
+            </View>
+        </TouchableOpacity>
     )
 }
+
+const styles = StyleSheet.create({
+    button:{
+        marginTop: 15,
+        // alignItems: 'center',
+        flexDirection: 'row',
+        width: 340,
+        height: 48,
+        backgroundColor: '#4285F4',
+        borderWidth: 0,
+        borderRadius: 5,
+        alignSelf: 'center'
+        // justifyContent: 'center'
+    },
+    googleIcon:{
+       
+    },
+    googleText:{
+        fontSize: 20,
+        color: '#FFFFFF',
+        fontFamily: Platform.OS === 'ios' ? 'San Francisco' : 'notoserif',
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+    textBox:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 40
+    }
+})
 
 export default GoogleComponent;

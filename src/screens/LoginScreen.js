@@ -89,8 +89,8 @@ const LoginScreen = (props) => {
             <Text style={styles.orOption}>Or sign in with</Text>
           </View>
           <View style={styles.horizantalLine} />
-          <Google />
         </View>
+        <Google height={48} width={340} text={'Sign in with Google'}/>
         <View style={[styles.bottomContainer]}>
           <View style={styles.flexContainer}>
             <Text style={styles.otherText}>Not a member?</Text>

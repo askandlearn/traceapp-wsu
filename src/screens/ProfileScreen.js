@@ -275,7 +275,7 @@ const ProfileScreen = (props) => {
           </View>
           </View>
           <View style={styles.contentBorder}/>
-          <View style={{paddingVertical: 60}}></View>
+          <View style={{paddingVertical: 40}}></View>
           <Button
             title={changeText}
             color="#ff0000"

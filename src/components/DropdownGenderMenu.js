@@ -28,10 +28,12 @@ import {
                 items={[
                     {label: 'Male', value: 'male'},
                     {label: 'Female', value: 'female'},
-                    {label: 'Non-binary', value: 'nonbin'}
+                    {label: 'Non-binary', value: 'nonbin'},
+                    {label: 'Other', value: 'other'},
                 ]}
                 defaultValue={this.state.gender}
                 containerStyle={{height: 30, width: 220}}
+                placeholder="Select a gender option"
           style={{backgroundColor: '#fafafa'}}
           itemStyle={{
             justifyContent: 'flex-start',

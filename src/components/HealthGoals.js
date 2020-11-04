@@ -35,6 +35,7 @@ import {
                 ]}
                 defaultValue={this.state.goals}
                 containerStyle={{height: 30, width: 220}}
+                placeholder="Select a health goal"
           style={{backgroundColor: '#fafafa'}}
           itemStyle={{
             justifyContent: 'flex-start',

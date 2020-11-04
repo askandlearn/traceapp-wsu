@@ -11,9 +11,11 @@ import {
   Platform,
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import Google from '../components/Google-Component'
 import {set} from 'react-native-reanimated';
 import {Loading} from '../components/Loading-Component';
 import {AuthContext} from '../contexts/AuthContext';
+
 
 const logo = '../images/TraceBio-White.png';
 
@@ -87,6 +89,7 @@ const LoginScreen = (props) => {
           </View>
           <View style={styles.horizantalLine} />
         </View>
+        <Google height={48} width={340} text={'Sign in with Google'}/>
         <View style={[styles.bottomContainer]}>
           <View style={styles.flexContainer}>
             <Text style={styles.otherText}>Not a member?</Text>

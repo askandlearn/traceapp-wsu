@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import * as Animatable from 'react-native-animatable';
+import Google from '../components/Google-Component'
 import {AuthContext} from '../contexts/AuthContext';
 import { Loading } from '../components/Loading-Component';
 
@@ -276,6 +277,7 @@ const SignUpScreen = (props) => {
           </View>
           <View style={styles.horizantalLine} />
         </View>
+        <Google height={48} width={300} text={'Sign up with Google'}/>
         <View style={[styles.bottomContainer]}>
           <View style={styles.flexContainer}>
             <Text style={styles.otherText}>Already a member?</Text>
@@ -311,6 +313,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     marginBottom: '15%',
+    marginTop: 10
   },
   nameContainer: {
     // marginHorizontal:'10%',

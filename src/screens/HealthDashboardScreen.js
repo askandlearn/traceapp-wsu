@@ -1,7 +1,9 @@
+
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, Component} from 'react';
 import {View, ScrollView, Text, StyleSheet, Image} from 'react-native';
 import {VictoryBar, VictoryChart, VictoryAxis} from 'victory-native';
+
 import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';
 import {Calendar} from 'react-native-calendars';
@@ -18,12 +20,14 @@ const data = [
 
 const sharedAxisStyles = {
   axisLabel: {
+
     margin: 30,
     padding: 30,
     fontSize: 15,
     fontStyle: 'italic',
   },
 };
+
 
 const HealthDashboardScreen = () => {
   const [stats, setStats] = useState('week');
@@ -146,6 +150,7 @@ const HealthDashboardScreen = () => {
   );
 };
 
+
 //All styling options created below
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -210,6 +215,7 @@ const styles = StyleSheet.create({
     margin: 0,
     paddingTop: 20,
     paddingBottom: 40,
+
   },
   colorKeyRow: {
     flex: 1,

@@ -1,6 +1,16 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
+import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
+import Header from '../components/Header-Component';
+import SensorsComponent from '../components/SensorsComponent';
 import HealthDashboard from './HealthDashboardScreen';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
@@ -52,6 +62,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     //resizeMode: 'stretch',
+
   },
   inputFields: {
     backgroundColor: '#FFFFFF',

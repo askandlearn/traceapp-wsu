@@ -12,6 +12,8 @@ target 'traceApp' do
 
   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
 
+  pod 'GoogleSignIn', '~> 5.0.2'
+
   target 'traceAppTests' do
     inherit! :complete
     # Pods for testing

@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -8,9 +8,13 @@ import {
   Image,
   Button,
   Alert,
+  Platform,
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Google from '../components/Google-Component'
+import {set} from 'react-native-reanimated';
+import {Loading} from '../components/Loading-Component';
+import {AuthContext} from '../contexts/AuthContext';
 
 
 const logo = '../images/TraceBio-White.png';
@@ -22,36 +26,11 @@ const LoginScreen = (props) => {
         to login without inputting anything, null values will passed onto the php script and then the database. The script
         does not know how to handle null values.
     */
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('test@email.com');
+  const [password, setPassword] = useState('pass123');
+  const [loading, setLoading] = useState(false);
 
-  const loginUser = () => {
-    const SUCCESS_MESSAGE = 'Login successful!';
-    const url = 'http://localhost:8080/PHP-API/user_registration.php';
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        type: 'signin',
-        email: email,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        //Showing response message coming from server after inserting records
-        Alert.alert(responseJson);
-        if (responseJson == SUCCESS_MESSAGE) {
-          props.navigation.navigate('Home');
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
+  const {login} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -78,8 +57,28 @@ const LoginScreen = (props) => {
         <TouchableOpacity
           title="Submit"
           style={styles.button}
-          onPress={loginUser}>
-          <Text style={styles.buttonText} onPress={loginUser}>
+          onPress={async () => {
+            try {
+              setLoading(true);
+              await login(email, password);
+              setLoading(false);
+            } catch (e) {
+              setLoading(false);
+              Alert.alert("Error: Couldn't sign in");
+              console.log('Error: ' + e.message);
+            }
+          }}>
+          <Text
+            style={styles.buttonText}
+            onPress={async () => {
+              try {
+                setLoading(true);
+                await login(email, password);
+                setLoading(false);
+              } catch (e) {
+                console.log('Error: ' + e.message);
+              }
+            }}>
             SIGN IN
           </Text>
         </TouchableOpacity>
@@ -104,6 +103,7 @@ const LoginScreen = (props) => {
           </View>
         </View>
       </KeyboardAvoidingScrollView>
+      <Loading loading={loading} />
     </View>
   );
 };

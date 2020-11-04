@@ -1,45 +1,121 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput} from 'react-native';
-import Header from '../components/Header-Component';
-
+import React, {useState, useContext} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  Platform,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {UserContext} from '../contexts/UserContext';
+import {Alert} from 'react-native';
+import axios from 'axios';
 
 const ChangePassword = ({navigation}) => {
-    const[oldPass, setOldPass]=useState('');
-    const[newPass, setNewPass]=useState('');
-    const[confNewPass, setConfNewPass]=useState('');
-    const submit = () =>{
-        alert('Password Updated');
-    };
+  //create user context
+  const user = useContext(UserContext);
+
+
+  //define
+  const [email] = useState(() => {if (user.email) {return user.email;} else {return '';}});
+  const [oldPass, setOldPass] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [confNewPass, setConfNewPass] = useState('');
+
+  const updatePass = async()=>{
+    handleConfNewPass();
+    if(checkPass){
+      const url = 'http://192.168.1.189/PHP-API/updatePass.php';
+      //there is a timout parameter set for 2 sec
+      //reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
+      const results = await axios.post(url, {
+          email: email,
+          oldPass: oldPass,
+          password: newPass,
+      }, {
+          timeout: 2000
+      }).then(res => res.data).catch(err => {
+          console.log(err.code)
+          console.log(err.message)
+      })
+      console.log(results)
+
+      if(results === 'Update password successful'){
+        alert('Password change successful!')
+      }
+      else{
+        alert('Password change unsuccessful.')
+      }
+    }
+    else{
+      alert('Password does not match')
+    }
+   
+  }
+  /*const submit = () => {
+    alert('Password Updated');
+  };*/
+  
+   //Validation flags
+  const [checkPass, setCheckPass] = useState(false);
+
+  const handleConfNewPass = () => {
+    if(confNewPass === newPass){
+      console.log('Same pass')
+      setCheckPass(true)
+    }
+    else{
+      console.log('Diff pass')
+      setCheckPass(false)
+    }
+  };
 
 
   return (
     <View style={styles.container}>
-      <Header openDrawer={navigation.openDrawer} />
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.pop()}>
+          <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.title}>Update Password</Text>
       <TextInput
-          placeholder="Current password"
-          style={styles.textInput}
-          autoCapitalize="none"
-          onChangeText={(oldPass) => setOldPass(oldPass)}
-        />
-        <TextInput
-          placeholder="New password"
-          style={styles.textInput}
-          autoCapitalize="none"
-          onChangeText={(newPass) => setNewPass(newPass)}
-        />
-        <TextInput
-          placeholder="Re-type new password"
-          style={styles.textInput}
-          autoCapitalize="none"
-          onChangeText={(confNewPass) => setConfNewPass(confNewPass)}
-        />
-         <TouchableOpacity
-          title="Save Changes"
-          style={styles.button}
-          onPress={submit}>
-          <Text style={styles.buttonText}>Save Changes</Text>
-        </TouchableOpacity>
+        secureTextEntry
+        placeholder="Current password"
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(oldPass) => setOldPass(oldPass)}
+      />
+      <TextInput
+        secureTextEntry
+        placeholder="New password"
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(newPass) => setNewPass(newPass)}
+      />
+      <TextInput
+        secureTextEntry
+        placeholder="Re-type new password"
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(confNewPass) => setConfNewPass(confNewPass)}
+        onEndEditing={() => handleConfNewPass()}
+      />
+      <TouchableOpacity
+        title="Save Changes"
+        style={styles.button}
+        onPress={async () => {
+          try {
+            await updatePass();
+          } catch (e) {
+            Alert.alert("Error: Couldn't update password.");
+            console.log('Error: ' + e.message);
+          }
+        }}>
+        <Text style={styles.buttonText}>Save Changes</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -49,6 +125,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -115,7 +194,6 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     borderRadius: 20,
   },
-
 });
 
 export default ChangePassword;

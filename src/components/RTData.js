@@ -53,7 +53,7 @@ import {
             setModalVisible(true);
             setTimerOn(true);
         }}>
-            {isTimerOn && <Pulse color='red' numPulses={1} diameter={65} speed={55} >   
+            {isHR!=0 && <Pulse color='red' numPulses={1} diameter={35} speed={55} >   
             </Pulse>}
              
             <Text style={styles.valueText}>{isHR}</Text>
@@ -62,12 +62,16 @@ import {
             setIsBiometric(2);
             setModalVisible(true);
         }}>
+          {isIBI!=0 && <Pulse color='red' numPulses={1} diameter={35} speed={55} >   
+            </Pulse>}
             <Text style={styles.valueText}>{isIBI}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.valueButton}  onPress={() => {
             setIsBiometric(3);
             setModalVisible(true);
         }}>
+          {isHRV!=0 && <Pulse color='red' numPulses={1} diameter={35} speed={55} >   
+            </Pulse>}
             <Text style={styles.valueText}>{isHRV}</Text>
         </TouchableOpacity>
     </View>
@@ -83,6 +87,8 @@ import {
             setIsBiometric(4);
             setModalVisible(true);
         }}>
+          {isPN!=0 && <Pulse color='red' numPulses={1} diameter={35} speed={55} >   
+            </Pulse>}
             <Text style={styles.valueText}>{isPN}</Text>
         </TouchableOpacity>
 
@@ -90,12 +96,16 @@ import {
             setIsBiometric(5);
             setModalVisible(true);
         }}>
+          {isSkinTemp!=0 && <Pulse color='red' numPulses={1} diameter={35} speed={55} >   
+            </Pulse>}
             <Text style={styles.valueText}>{isSkinTemp}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.valueButton}  onPress={() => {
             setIsBiometric(6);
             setModalVisible(true);
         }}>
+          {isPAMP!=0 && <Pulse color='red' numPulses={1} diameter={35} speed={55} >   
+            </Pulse>}
             <Text style={styles.valueText}>{isPAMP}</Text>
         </TouchableOpacity>
     </View>
@@ -112,6 +122,8 @@ import {
             setIsBiometric(7);
             setModalVisible(true);
         }}>
+          {isDAMP!=0 && <Pulse color='red' numPulses={1} diameter={35} speed={55} >   
+            </Pulse>}
             <Text style={styles.valueText}>{isDAMP}</Text>
         </TouchableOpacity>
 
@@ -119,12 +131,16 @@ import {
             setIsBiometric(8);
             setModalVisible(true);
         }}>
+          {isCBF!=0 && <Pulse color='red' numPulses={1} diameter={35} speed={55} >   
+            </Pulse>}
             <Text style={styles.valueText}>{isCBF}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.valueButton}  onPress={() => {
             setIsBiometric(9);
             setModalVisible(true);
         }}>
+          {isDIF!=0 && <Pulse color='red' numPulses={1} diameter={35} speed={55} >   
+            </Pulse>}
             <Text style={styles.valueText}>{isDIF}</Text>
         </TouchableOpacity>
     </View>
@@ -138,6 +154,8 @@ import {
             setIsBiometric(10);
             setModalVisible(true);
         }}>
+          {isACC!=0 && <Pulse color='red' numPulses={1} diameter={35} speed={55} >   
+            </Pulse>}
             <Text style={styles.valueText}>{isACC}</Text>
         </TouchableOpacity>
     </View>

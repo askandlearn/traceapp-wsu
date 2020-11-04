@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -9,75 +9,45 @@ import {
   Alert,
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import DatePicker from 'react-native-datepicker';
-import {Form, TextValidator} from 'react-native-validator-form';
-import {minNumber} from 'react-native-validator-form/lib/ValidationRules';
 import * as Animatable from 'react-native-animatable';
 import Google from '../components/Google-Component'
+import {AuthContext} from '../contexts/AuthContext';
+import { Loading } from '../components/Loading-Component';
 
 //Create the Sign Up Page
 
 const logo = '../images/TraceBio-White.png';
 
 const SignUpScreen = (props) => {
-  const [first, setFirst] = useState('');
-  const [last, setLast] = useState('');
-  const [date, setDate] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPass, setConfirmPass] = useState('');
+  const [firstName, setFirstName] = useState('Mo');
+  const [lastName, setLastName] = useState('Ha');
+  const [birthdate, setBirthdate] = useState('1999-12-10');
+  const [email, setEmail] = useState('test@email.com');
+  const [password, setPassword] = useState('pass123');
+  const [confirmPass, setConfirmPass] = useState('pass123');
+
+  //export context
+  const {register} = useContext(AuthContext);
+
+  //loading state
+  const [loading, setLoading] = useState(false);
 
   //Validation flags
   const [validation_flags, setValidationFlags] = useState({
-    isValidFirst: true,
-    isValidLast: true,
+    isValidFirstName: true,
+    isValidLastName: true,
     isValidEmail: true,
-    isValidDate: true,
+    isValidBirthdate: true,
     isValidPassword: true,
     isSamePassword: true,
     isFilled: false,
   });
 
-  const registerUser = () => {
-    checkIsFilled();
-    if (!validation_flags.isFilled) {
-      Alert.alert('One or more fields are empty or done incorrectly!');
-    } else {
-      const SUCCESS_MESSAGE = 'User Registered Successfully!';
-      const url = 'http://localhost:8080/PHP-API/user_registration.php';
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'signup',
-          firstName: first,
-          lastName: last,
-          date: date,
-          email: email,
-          password: password,
-        }),
-      })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          //Showing response message coming from server after inserting records
-          Alert.alert(responseJson);
-          if (responseJson === SUCCESS_MESSAGE) {
-            props.navigation.navigate('Login');
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-  };
 
   const display = () => {
-    console.log(first);
-    console.log(last);
-    console.log(date);
+    console.log(firstName);
+    console.log(lastName);
+    console.log(birthdate);
     console.log(email);
     console.log(password);
   };
@@ -87,12 +57,12 @@ const SignUpScreen = (props) => {
     if (val.trim().length > 0) {
       setValidationFlags({
         ...validation_flags,
-        isValidFirst: true,
+        isValidFirstName: true,
       });
     } else {
       setValidationFlags({
         ...validation_flags,
-        isValidFirst: false,
+        isValidFirstName: false,
       });
     }
   };
@@ -101,12 +71,12 @@ const SignUpScreen = (props) => {
     if (val.trim().length > 0) {
       setValidationFlags({
         ...validation_flags,
-        isValidLast: true,
+        isValidLastName: true,
       });
     } else {
       setValidationFlags({
         ...validation_flags,
-        isValidLast: false,
+        isValidLastName: false,
       });
     }
   };
@@ -142,12 +112,12 @@ const SignUpScreen = (props) => {
     ) {
       setValidationFlags({
         ...validation_flags,
-        isValidDate: false,
+        isValidBirthdate: false,
       });
     } else {
       setValidationFlags({
         ...validation_flags,
-        isValidDate: true,
+        isValidBirthdate: true,
       });
     }
   };
@@ -181,15 +151,6 @@ const SignUpScreen = (props) => {
     }
   };
 
-  const checkIsFilled = () => {
-    if (first && last && date && email && password && confirmPass) {
-      setValidationFlags({
-        ...validation_flags,
-        isFilled: true,
-      });
-    }
-  };
-
   return (
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
@@ -200,12 +161,12 @@ const SignUpScreen = (props) => {
         <TextInput
           style={styles.inputFields}
           placeholder="Firstname"
-          value={first}
-          onChangeText={(val) => setFirst(val)}
+          value={firstName}
+          onChangeText={(val) => setFirstName(val)}
           onEndEditing={(e) => handleFirst(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}
-        {validation_flags.isValidFirst ? null : (
+        {validation_flags.isValidFirstName ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMessage}>Field cannot be empty</Text>
           </Animatable.View>
@@ -214,12 +175,12 @@ const SignUpScreen = (props) => {
         <TextInput
           style={styles.inputFields}
           placeholder="Lastname"
-          value={last}
-          onChangeText={(val) => setLast(val)}
+          value={lastName}
+          onChangeText={(val) => setLastName(val)}
           onEndEditing={(e) => handleLast(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}
-        {validation_flags.isValidLast ? null : (
+        {validation_flags.isValidLastName ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMessage}>Field cannot be empty</Text>
           </Animatable.View>
@@ -244,12 +205,12 @@ const SignUpScreen = (props) => {
         <TextInput
           style={styles.inputFields}
           placeholder="Birthdate (yyyy-mm-dd)"
-          value={date}
-          onChangeText={(val) => setDate(val)}
+          value={birthdate}
+          onChangeText={(val) => setBirthdate(val)}
           onEndEditing={(e) => handleDate(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}
-        {validation_flags.isValidDate ? null : (
+        {validation_flags.isValidBirthdate ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMessage}>
               Format incorrect (yyyy-mm-dd){' '}
@@ -291,10 +252,23 @@ const SignUpScreen = (props) => {
         <TouchableOpacity
           title="Submit"
           style={styles.button}
-          onPress={registerUser}>
-          <Text style={styles.buttonText} onPress={registerUser}>
-            CREATE ACCOUNT
-          </Text>
+          onPress={async () => {
+            try {
+              setLoading(true)
+              await register(
+                email,
+                password,
+                firstName,
+                lastName,
+                birthdate,
+                props.navigation.navigate,
+              );
+              setLoading(false)
+            } catch (error) {
+              console.log('Error: ' + error.message);
+            }
+          }}>
+          <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
         <View style={styles.flexContainer}>
           <View style={styles.horizantalLine} />
@@ -317,6 +291,7 @@ const SignUpScreen = (props) => {
           </View>
         </View>
       </KeyboardAvoidingScrollView>
+      <Loading loading={loading}/>
     </View>
   );
 };

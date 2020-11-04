@@ -6,9 +6,11 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Platform,
 } from 'react-native';
 import SettingsList from 'react-native-settings-list';
 import Header from '../components/Header-Component';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const SettingsMenu = ({navigation}, props) => {
   var bgColor = '#DCE3F4';
@@ -16,7 +18,8 @@ const SettingsMenu = ({navigation}, props) => {
   // this.onValueChange.bind(this);
   //this.state = {switchValue: false};
   return (
-    <View style={{backgroundColor: '#f1f1f2', flex: 1}}>
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{backgroundColor: '#f1f1f2', flex: 1}}>
+      <KeyboardAvoidingScrollView>
       <Header openDrawer={navigation.openDrawer} />
       <View
         style={{
@@ -43,9 +46,9 @@ const SettingsMenu = ({navigation}, props) => {
             onPress={() => navigation.navigate('HealthInformation')}
           />*/}
           <SettingsList.Item
-          title="Change Password"
-          titleInfoStyle={styles.titleInfoStyle}
-          onPress={()=> navigation.navigate('ChangePassword')}
+            title="Change Password"
+            titleInfoStyle={styles.titleInfoStyle}
+            onPress={() => navigation.navigate('ChangePassword')}
           />
           <SettingsList.Item
             title="Connect TRACE Sensor"
@@ -56,6 +59,7 @@ const SettingsMenu = ({navigation}, props) => {
           <SettingsList.Item title="Sync My Data" onPress={() => null} />
         </SettingsList>
       </View>
+      </KeyboardAvoidingScrollView>
     </View>
   );
 
@@ -66,6 +70,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#b7b7b7',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',

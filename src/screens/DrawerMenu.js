@@ -9,6 +9,7 @@ import {
   Image,
   FlatList,
   InteractionManager,
+  Platform,
 } from 'react-native';
 
 const options = [
@@ -25,17 +26,15 @@ const options = [
     icon: 'bolt',
   },
   {
-    name:'HRV',
+    name: 'HRV',
     icon: 'heartbeat',
-
   },
   {
-    name:"Live",
+    name: 'Live',
     icon: 'rocket',
   },
   {
     name: 'RealTime',
-
   },
   {
     name: 'Settings',
@@ -45,7 +44,6 @@ const options = [
     name: 'Log Out',
     icon: 'sign-out',
   },
-  
 ];
 
 //implement logout functionality - AsyncStorage
@@ -100,6 +98,9 @@ const NavItem = ({navigation, name, icon}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   OptionsItem: {
     height: 60,

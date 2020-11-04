@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Modal
+  Modal,
+  Platform,
+  Alert,
 } from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
@@ -19,62 +21,76 @@ import SensorAlert from '../components/ConnectToSensorAlert';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Plot from '../components/ASTPlot';
 
-
-var check= false;
+var check = false;
 
 const ASTScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
- 
-  handleCheck = (checkedId) => {
-    this.setState({checkedId})
-  }
- 
+  const handleCheck = (checkedId) => {
+    this.setState({checkedId});
+  };
+
   return (
-    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    style={styles.container}>
+    <View
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
       <KeyboardAvoidingScrollView>
-      <Header openDrawer={navigation.openDrawer} />
-      <Text style={styles.title}>Active StandUp Test (AST)</Text>
-        <View style={styles.container}>{check && <SensorAlert></SensorAlert>}</View>
-          <Timer></Timer>
-          <View style={styles.NavBarDivider} />
-          <Swiper style={styles.wrapper} showsButtons loop={false} autoplay={false}>
-            
-            <View testID="Hello" style={styles.slide1}>
-              <Text style={styles.slide1Text}>Welcome to the Active StandUp Test. This test will provide TRACE with
-            important data regarding your blood flow dynamics.{"\n"}</Text>
-            
-            <Text styles={styles.note}>NOTE: While the test is being conducted, your TRACE device will
-            continue to run analytics. After the 3 minute mark, please make sure
-            to stand still to ensure your TRACE device performs accurate
-            diagnostics.</Text>
-            </View>
-            <View testID="Beautiful" style={styles.slide2}>
-              <Text style={styles.steps}>1. To begin, lie flat on your back. {"\n"}
-              2. Start the timer. {"\n"}
-              </Text>
-              <Image style={styles.backgroundImage}
-              source={require('../images/figures/lyingfigure.png')}></Image>    
-            </View>
-            <View testID="Simple" style={styles.slide3}>
-              <Text style={styles.steps}>3. After the 3-minute timer is done, stand back up. {"\n"}</Text>
-              <Image style={{width:50, height:170, marginBottom: 60}}
-              source={require('../images/figures/standingfigure.png')}></Image> 
-            </View>
-            <View testID="Slide4" style={styles.slide3}>
-              <Text style={styles.steps}>4. Now, fill out the survey to complete the test. {"\n"}</Text>
-              <View style={styles.centeredView}>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-              }}>
+        <Header openDrawer={navigation.openDrawer} />
+        <Text style={styles.title}>Active StandUp Test (AST)</Text>
+        <View style={styles.container}>{check && <SensorAlert />}</View>
+        <Timer />
+        <View style={styles.NavBarDivider} />
+        <Swiper
+          style={styles.wrapper}
+          showsButtons
+          loop={false}
+          autoplay={false}>
+          <View testID="Hello" style={styles.slide1}>
+            <Text style={styles.slide1Text}>
+              Welcome to the Active StandUp Test. This test will provide TRACE
+              with important data regarding your blood flow dynamics.{'\n'}
+            </Text>
+            <Text styles={styles.note}>
+              NOTE: While the test is being conducted, your TRACE device will
+              continue to run analytics. After the 3 minute mark, please make
+              sure to stand still to ensure your TRACE device performs accurate
+              diagnostics.
+            </Text>
+          </View>
+          <View testID="Beautiful" style={styles.slide2}>
+            <Text style={styles.steps}>
+              1. To begin, lie flat on your back. {'\n'}
+              2. Start the timer. {'\n'}
+            </Text>
+            <Image
+              style={styles.backgroundImage}
+              source={require('../images/figures/lyingfigure.png')}
+            />
+          </View>
+          <View testID="Simple" style={styles.slide3}>
+            <Text style={styles.steps}>
+              3. After the 3-minute timer is done, stand back up. {'\n'}
+            </Text>
+            <Image
+              style={{width: 50, height: 170, marginBottom: 60}}
+              source={require('../images/figures/standingfigure.png')}
+            />
+          </View>
+          <View testID="Slide4" style={styles.slide3}>
+            <Text style={styles.steps}>
+              4. Now, fill out the survey to complete the test. {'\n'}
+            </Text>
             <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Animate></Animate>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert('Modal has been closed.');
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Animate />
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => {
@@ -85,17 +101,20 @@ const ASTScreen = ({navigation}) => {
                   </View>
                 </View>
               </Modal>
-              <TouchableOpacity style={styles.button}
-              onPress={() => {
-                setModalVisible(true);
-              }}><Text style={styles.buttonText}>Take Survey</Text></TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  setModalVisible(true);
+                }}>
+                <Text style={styles.buttonText}>Take Survey</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Swiper>
 
         <View style={styles.NavBarDivider} />
-        <Plot></Plot>
-        </KeyboardAvoidingScrollView>
+        <Plot />
+      </KeyboardAvoidingScrollView>
     </View>
   );
 };
@@ -106,8 +125,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    alignContent:'center',
-
+    alignContent: 'center',
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -134,7 +152,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 30,
     paddingBottom: 10,
-    textAlign:'center'
+    textAlign: 'center',
   },
   button: {
     alignItems: 'center',
@@ -174,96 +192,93 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   wrapper: {
-   // flex:1,
-    height:300,
+    // flex:1,
+    height: 300,
     //backgroundColor: '#9DD6EB'
-    
+
     //opacity:0.4,
-    backgroundColor:'#ffffff',
-    
+    backgroundColor: '#ffffff',
   },
   slide1: {
     //flex: 1,
-    height:'80%',
+    height: '80%',
     //paddingVertical:'10%',
-    paddingHorizontal:'10%',
+    paddingHorizontal: '10%',
     justifyContent: 'center',
     alignItems: 'center',
     color: '#000000',
     fontSize: 20,
-  
-    
+
     //textAlign:'center',
   },
   slide2: {
-   // flex: 1,
-    height:'80%',
+    // flex: 1,
+    height: '80%',
     //justifyContent: 'center',
-    paddingVertical:'10%',
-    paddingHorizontal:'10%',
+    paddingVertical: '10%',
+    paddingHorizontal: '10%',
     alignItems: 'center',
-   
+
     //backgroundColor: '#97CAE5'
   },
   slide3: {
-   // flex: 1,
-    height:'80%',
+    // flex: 1,
+    height: '80%',
     //justifyContent: 'center',
-    paddingVertical:'10%',
-    paddingHorizontal:'5%',
+    paddingVertical: '10%',
+    paddingHorizontal: '5%',
     alignItems: 'center',
-   
+
     //backgroundColor: '#92BBD9'
   },
-  slide1Text:{
+  slide1Text: {
     color: '#000000',
     fontSize: 20,
     fontWeight: 'bold',
   },
-  note:{
+  note: {
     color: '#000000',
     fontSize: 10,
-   // marginVertical:50,
+    // marginVertical:50,
   },
-  steps:{
+  steps: {
     color: '#000000',
     fontSize: 15,
   },
   centeredView: {
-    height:'90%',
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical:'10%',
+    height: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: '10%',
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   openButton: {
-    backgroundColor: "#F194FF",
+    backgroundColor: '#F194FF',
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
-
+    textAlign: 'center',
+  },
 });

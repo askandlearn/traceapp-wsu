@@ -16,7 +16,7 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 import {useAuth} from '../hooks/useAuth';
 import {UserContext} from '../contexts/UserContext';
 import {AuthContext} from '../contexts/AuthContext';
-import { useScreens } from 'react-native-screens';
+import {useScreens} from 'react-native-screens';
 
 const ProfileScreen = (props) => {
   /*
@@ -35,12 +35,48 @@ const ProfileScreen = (props) => {
   //Load in logout function from AuthContext
   const {logout} = useContext(AuthContext);
 
-  const [name, editName] = useState(() => {if (user.name) {return user.name;} else {return '';}});
-  const [email, setEmail] = useState(() => {if (user.email) {return user.email;} else {return '';}});
-  const [dob, editDOB] = useState(() => {if (user.birthdate) {return user.birthdate;} else {return '';}});
-  const [address, editAddress] = useState(() => {if (user.address) {return user.address;} else {return '';}});
-  const [height, editHeight] = useState(() => {if (user.height) {return user.height;} else {return '';}});
-  const [weight, editWeight] = useState(() => {if (user.weight) {return user.weight;} else {return '';}});
+  const [name, editName] = useState(() => {
+    if (user.name) {
+      return user.name;
+    } else {
+      return '';
+    }
+  });
+  const [email, setEmail] = useState(() => {
+    if (user.email) {
+      return user.email;
+    } else {
+      return '';
+    }
+  });
+  const [dob, editDOB] = useState(() => {
+    if (user.birthdate) {
+      return user.birthdate;
+    } else {
+      return '';
+    }
+  });
+  const [address, editAddress] = useState(() => {
+    if (user.address) {
+      return user.address;
+    } else {
+      return '';
+    }
+  });
+  const [height, editHeight] = useState(() => {
+    if (user.height) {
+      return user.height;
+    } else {
+      return '';
+    }
+  });
+  const [weight, editWeight] = useState(() => {
+    if (user.weight) {
+      return user.weight;
+    } else {
+      return '';
+    }
+  });
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
 
@@ -48,7 +84,7 @@ const ProfileScreen = (props) => {
     diffAddress: false,
     diffHeight: false,
     diffWeight: false,
-  })
+  });
 
   const initialzeAvatarText = () => {
     if (user) {
@@ -62,67 +98,66 @@ const ProfileScreen = (props) => {
   const [initials, setInitials] = useState(initialzeAvatarText());
 
   //check if new value is different from old value
-  const checkAddress = (val) =>{
-    if(val === user.address || val === ''){
-      console.log('No changes made')
-    }
-    else{
-      console.log('Different')
+  const checkAddress = (val) => {
+    if (val === user.address || val === '') {
+      console.log('No changes made');
+    } else {
+      console.log('Different');
       editAddress(val);
       setCheckValidations({
         ...checkValidations,
-        diffAddress: true
+        diffAddress: true,
       });
     }
-  }
-  const checkHeight = (val) =>{
-    if(val === user.height || val === ''){
-      console.log('No changes made')
-    }
-    else{
-      console.log('Different')
+  };
+  const checkHeight = (val) => {
+    if (val === user.height || val === '') {
+      console.log('No changes made');
+    } else {
+      console.log('Different');
       editHeight(val);
       setCheckValidations({
         ...checkValidations,
-        diffHeight: true
+        diffHeight: true,
       });
-
     }
-  }
-  const checkWeight = (val) =>{
-    if(val === user.weight || val===''){
-      console.log('No changes made')
-    }
-    else{
-      console.log('Different')
+  };
+  const checkWeight = (val) => {
+    if (val === user.weight || val === '') {
+      console.log('No changes made');
+    } else {
+      console.log('Different');
       editWeight(val);
       setCheckValidations({
         ...checkValidations,
-        diffWeight: true
+        diffWeight: true,
       });
     }
-  }
+  };
 
   //save changes
   const saveChanges = async () => {
     if (isEditable) {
       //POST Request to Update DB
-      if(checkValidations.diffAddress || checkValidations.diffHeight || checkValidations.diffWeight){
-        console.log('Calling update')
-        try{
-          await update(email,address,height,weight);
+      if (
+        checkValidations.diffAddress ||
+        checkValidations.diffHeight ||
+        checkValidations.diffWeight
+      ) {
+        console.log('Calling update');
+        try {
+          await update(email, address, height, weight);
           setCheckValidations({
             ...checkValidations,
             diffAddress: false,
             diffHeight: false,
-            diffWeight: false
-          })
-        }
-        catch(err){
-          console.log('Error in saveChanges():',err.message)
+            diffWeight: false,
+          });
+        } catch (err) {
+          console.log('Error in saveChanges():', err.message);
         }
       }
-      
+
       setChangeText('Edit');
       editEditable(false);
     } else {
@@ -143,65 +178,59 @@ const ProfileScreen = (props) => {
         </View>
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
-            <TextInput
-              value={name}
-              editable={false}
-              style={styles.name}/>
+            <TextInput value={name} editable={false} style={styles.name} />
           </View>
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
-            <TextInput
-              value={email}
-              editable={false}
-              style={styles.content}/>
+            <TextInput value={email} editable={false} style={styles.content} />
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Date of Birth: </Text>
-            <TextInput
-              value={dob}
-              editable={false}
-              style={styles.content}/>
+            <TextInput value={dob} editable={false} style={styles.content} />
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Address: </Text>
             <TextInput
-              placeholder='Add address'
+              placeholder="Add address"
               placeholderTextColor="#a1a2a6"
-              textContentType='addressCityAndState'
+              textContentType="addressCityAndState"
               value={address}
               editable={isEditable}
               style={styles.content}
               onChangeText={(address) => editAddress(address)}
-              onEndEditing={(e) => checkAddress(e.nativeEvent.text)}/>
+              onEndEditing={(e) => checkAddress(e.nativeEvent.text)}
+            />
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Height (cm): </Text>
             <TextInput
-              placeholder='Add Height'
+              placeholder="Add Height"
               placeholderTextColor="#a1a2a6"
               value={height}
               editable={isEditable}
               style={styles.content}
               onChangeText={(height) => editHeight(height)}
-              onEndEditing={(e) => checkHeight(e.nativeEvent.text)}/>
+              onEndEditing={(e) => checkHeight(e.nativeEvent.text)}
+            />
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Weight (lbs): </Text>
             <TextInput
-              placeholder='Add Weight'
-              placeholderTextColor="#a1a2a6"  
+              placeholder="Add Weight"
+              placeholderTextColor="#a1a2a6"
               value={weight}
               editable={isEditable}
               style={styles.content}
               onChangeText={(weight) => editWeight(weight)}
-              onEndEditing={(e) => checkWeight(e.nativeEvent.text)}/>
+              onEndEditing={(e) => checkWeight(e.nativeEvent.text)}
+            />
           </TouchableOpacity>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
-          <View style={{paddingVertical: 10}}></View>
+          <View style={{paddingVertical: 10}} />
           <Button
             title={changeText}
             color="#ff0000"
@@ -297,13 +326,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     padding: 20,
     alignSelf: 'center',
-    color:'black'
+    color: 'black',
   },
   content: {
     fontSize: 20,
     alignSelf: 'center',
     textAlign: 'center',
-    color: 'black' 
+    color: 'black',
   },
   contentTitle: {
     margin: 10,

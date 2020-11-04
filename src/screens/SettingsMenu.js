@@ -18,47 +18,49 @@ const SettingsMenu = ({navigation}, props) => {
   // this.onValueChange.bind(this);
   //this.state = {switchValue: false};
   return (
-    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{backgroundColor: '#f1f1f2', flex: 1}}>
+    <View
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{backgroundColor: '#f1f1f2', flex: 1}}>
       <KeyboardAvoidingScrollView>
-      <Header openDrawer={navigation.openDrawer} />
-      <View
-        style={{
-          borderBottomWidth: 1,
-          backgroundColor: '#f1f1f2',
-          borderColor: '#f1f1f2',
-        }}>
-        {/* <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>     */}
-        <Text style={styles.title}>Settings</Text>
-      </View>
-      <View style={{backgroundColor: '#f1f1f2', flex: 1}}>
-        <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
-          <SettingsList.Header headerStyle={{marginTop: 15}} />
-          {/* <SettingsList.Item
+        <Header openDrawer={navigation.openDrawer} />
+        <View
+          style={{
+            borderBottomWidth: 1,
+            backgroundColor: '#f1f1f2',
+            borderColor: '#f1f1f2',
+          }}>
+          {/* <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>     */}
+          <Text style={styles.title}>Settings</Text>
+        </View>
+        <View style={{backgroundColor: '#f1f1f2', flex: 1}}>
+          <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
+            <SettingsList.Header headerStyle={{marginTop: 15}} />
+            {/* <SettingsList.Item
                   hasSwitch={true}
                   switchState={this.state.switchValue}
                   switchOnValueChange={this.onValueChange}
                   hasNavArrow={false}
                   title='Airplane Mode'
                 /> */}
-          {/*<SettingsList.Item
+            {/*<SettingsList.Item
             title="My Health Information"
             titleInfoStyle={styles.titleInfoStyle}
             onPress={() => navigation.navigate('HealthInformation')}
           />*/}
-          <SettingsList.Item
-            title="Change Password"
-            titleInfoStyle={styles.titleInfoStyle}
-            onPress={() => navigation.navigate('ChangePassword')}
-          />
-          <SettingsList.Item
-            title="Connect TRACE Sensor"
-            titleInfo="Disconnected"
-            titleInfoStyle={styles.titleInfoStyle}
-            onPress={() => navigation.navigate('TraceConnect')}
-          />
-          <SettingsList.Item title="Sync My Data" onPress={() => null} />
-        </SettingsList>
-      </View>
+            <SettingsList.Item
+              title="Change Password"
+              titleInfoStyle={styles.titleInfoStyle}
+              onPress={() => navigation.navigate('ChangePassword')}
+            />
+            <SettingsList.Item
+              title="Connect TRACE Sensor"
+              titleInfo="Disconnected"
+              titleInfoStyle={styles.titleInfoStyle}
+              onPress={() => navigation.navigate('TraceConnect')}
+            />
+            <SettingsList.Item title="Sync My Data" onPress={() => null} />
+          </SettingsList>
+        </View>
       </KeyboardAvoidingScrollView>
     </View>
   );

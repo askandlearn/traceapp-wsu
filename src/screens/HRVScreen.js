@@ -31,9 +31,9 @@ const HRVScreen = ({navigation}, props) => {
   return (
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
-      <Header openDrawer={navigation.openDrawer} />
-      <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
-        <View >{check && <SensorAlert />}</View>
+        <Header openDrawer={navigation.openDrawer} />
+        <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
+        <View>{check && <SensorAlert />}</View>
         <Timer />
         <View style={styles.NavBarDivider} />
         <Swiper
@@ -108,7 +108,7 @@ const HRVScreen = ({navigation}, props) => {
         </Swiper>
         <View style={styles.NavBarDivider} />
         <Plot />
-        </KeyboardAvoidingScrollView>
+      </KeyboardAvoidingScrollView>
     </View>
   );
 };

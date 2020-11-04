@@ -11,7 +11,7 @@ import {
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import * as Animatable from 'react-native-animatable';
 import {AuthContext} from '../contexts/AuthContext';
-import { Loading } from '../components/Loading-Component';
+import {Loading} from '../components/Loading-Component';
 
 //Create the Sign Up Page
 
@@ -41,7 +41,6 @@ const SignUpScreen = (props) => {
     isSamePassword: true,
     isFilled: false,
   });
-
 
   const display = () => {
     console.log(firstName);
@@ -253,7 +252,7 @@ const SignUpScreen = (props) => {
           style={styles.button}
           onPress={async () => {
             try {
-              setLoading(true)
+              setLoading(true);
               await register(
                 email,
                 password,
@@ -262,7 +261,7 @@ const SignUpScreen = (props) => {
                 birthdate,
                 props.navigation.navigate,
               );
-              setLoading(false)
+              setLoading(false);
             } catch (error) {
               console.log('Error: ' + error.message);
             }
@@ -289,7 +288,7 @@ const SignUpScreen = (props) => {
           </View>
         </View>
       </KeyboardAvoidingScrollView>
-      <Loading loading={loading}/>
+      <Loading loading={loading} />
     </View>
   );
 };

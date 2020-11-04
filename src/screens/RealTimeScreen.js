@@ -24,17 +24,18 @@ var check = true;
 
 const RealTimeScreen = ({navigation}, props) => {
   return (
-    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    style={styles.container}>
-       <KeyboardAvoidingScrollView>
-         <Header openDrawer={navigation.openDrawer} />
-         <Text style={styles.title}>Real-Time Data</Text>
-        <RTTimer></RTTimer>
-        <View style={styles.NavBarDivider}/>
-        <RTData></RTData>
+    <View
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <KeyboardAvoidingScrollView>
+        <Header openDrawer={navigation.openDrawer} />
+        <Text style={styles.title}>Real-Time Data</Text>
+        <RTTimer />
+        <View style={styles.NavBarDivider} />
+        <RTData />
         {/* <View style={styles.NavBarDivider} /> */}
-        <Plot></Plot>
-        </KeyboardAvoidingScrollView>
+        <Plot />
+      </KeyboardAvoidingScrollView>
     </View>
   );
 };

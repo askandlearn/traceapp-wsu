@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from 'react-native';
 import Header from '../components/Header-Component';
 import HealthDashboard from './HealthDashboardScreen';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
@@ -8,10 +15,12 @@ const HomeScreen = ({navigation}) => {
   const [stats, setStats] = useState('week');
   const [status, setStatus] = useState('true');
   return (
-    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+    <View
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
       <KeyboardAvoidingScrollView>
-      <Header openDrawer={navigation.openDrawer} />
-      <HealthDashboard />
+        <Header openDrawer={navigation.openDrawer} />
+        <HealthDashboard />
       </KeyboardAvoidingScrollView>
     </View>
   );

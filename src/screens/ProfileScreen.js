@@ -17,6 +17,10 @@ import {useAuth} from '../hooks/useAuth';
 import {UserContext} from '../contexts/UserContext';
 import {AuthContext} from '../contexts/AuthContext';
 import { useScreens } from 'react-native-screens';
+import GenderMenu from '../components/DropdownGenderMenu';
+import HealthGoals from '../components/HealthGoals';
+import HeightPicker from '../components/HeightPicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const ProfileScreen = (props) => {
   /*
@@ -43,6 +47,33 @@ const ProfileScreen = (props) => {
   const [weight, editWeight] = useState(() => {if (user.weight) {return user.weight;} else {return '';}});
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
+
+  //for testing date picker only. remove when user 
+  //registration dob format is updated to MM-DD-YYY
+  const [date, setDate] = useState(new Date(1598051730000));
+
+ //set mode for date picker
+ const [mode, setMode] = useState('date');
+ const [show, setShow] = useState(false);
+
+ //handle onChange for date picker
+ const onChange = (even, selectedDate) => {
+   const currentDate = selectedDate || date;
+   setShow(Platform.OS === 'ios');
+   selectedDate(currentDate);
+ };
+
+ //update showMode and setShow for date picker
+ const showMode = currentMode => {
+   setShow(true);
+   setMode(currentMode);
+ }
+
+ //use date picker mode
+ const showDatePicker = () => {
+   showMode('date');
+ }
+
 
   const [checkValidations, setCheckValidations] = useState({
     diffAddress: false,
@@ -173,10 +204,12 @@ const ProfileScreen = (props) => {
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Date of Birth: </Text>
-            <TextInput
+            {/*<TextInput
               value={dob}
               editable={false}
-              style={styles.content}/>
+            style={styles.content}/> */}
+            
+            
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <View style={{paddingBottom: 40}}/>
@@ -219,7 +252,16 @@ const ProfileScreen = (props) => {
               onEndEditing={(e) => checkWeight(e.nativeEvent.text)}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
-          <View style={{paddingVertical: 30}}></View>
+          <View style={{flex: 1}}>
+          <Text style={styles.contentTitleGender}>Gender: </Text>
+           <GenderMenu></GenderMenu>
+           </View>
+          <View style={styles.contentBorder} />
+          <Text style={styles.contentTitleGender}>Wellness Goals:</Text>
+          <HealthGoals></HealthGoals>
+          <View style={styles.contentBorder}/>
+          <HeightPicker></HeightPicker>
+          <View style={{paddingVertical: 60}}></View>
           <Button
             title={changeText}
             color="#ff0000"
@@ -334,6 +376,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
   },
+  contentTitleGender: {
+    margin: 10,
+    fontSize: 17,
+    fontWeight: 'bold',
+    textAlign: 'left',
+
+  },
   horizontal: {
     flexDirection: 'row',
     alignContent: 'center',
@@ -349,7 +398,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff0000',
   },
   profileCategory: {
-    fontSize: 22,
+    fontSize: 15,
     //fontWeight: 'bold',
     paddingBottom: 10,
     color: 'black',

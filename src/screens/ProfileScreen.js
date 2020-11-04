@@ -20,7 +20,6 @@ import { useScreens } from 'react-native-screens';
 import GenderMenu from '../components/DropdownGenderMenu';
 import HealthGoals from '../components/HealthGoals';
 import HeightPicker from '../components/HeightPicker';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 const ProfileScreen = (props) => {
   /*
@@ -48,31 +47,8 @@ const ProfileScreen = (props) => {
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
 
-  //for testing date picker only. remove when user 
-  //registration dob format is updated to MM-DD-YYY
-  const [date, setDate] = useState(new Date(1598051730000));
+  
 
- //set mode for date picker
- const [mode, setMode] = useState('date');
- const [show, setShow] = useState(false);
-
- //handle onChange for date picker
- const onChange = (even, selectedDate) => {
-   const currentDate = selectedDate || date;
-   setShow(Platform.OS === 'ios');
-   selectedDate(currentDate);
- };
-
- //update showMode and setShow for date picker
- const showMode = currentMode => {
-   setShow(true);
-   setMode(currentMode);
- }
-
- //use date picker mode
- const showDatePicker = () => {
-   showMode('date');
- }
 
 
   const [checkValidations, setCheckValidations] = useState({
@@ -204,12 +180,11 @@ const ProfileScreen = (props) => {
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Date of Birth: </Text>
-            {/*<TextInput
+            <TextInput
               value={dob}
               editable={false}
-            style={styles.content}/> */}
-            
-            
+              keyboardType='number-pad'
+            style={styles.content}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <View style={{paddingBottom: 40}}/>
@@ -220,12 +195,42 @@ const ProfileScreen = (props) => {
             <TextInput
               placeholder='Address (optional)'
               placeholderTextColor="#a1a2a6"
-              textContentType='addressCityAndState'
+              textContentType='fullStreetAddress'
               value={address}
               editable={isEditable}
               style={styles.content}
               onChangeText={(address) => editAddress(address)}
               onEndEditing={(e) => checkAddress(e.nativeEvent.text)}/>
+          </TouchableOpacity>
+          <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>City: </Text>
+            <TextInput
+              placeholder='City (optional)'
+              placeholderTextColor="#a1a2a6"
+              textContentType='addressCity'
+              style={styles.content}
+              />
+          </TouchableOpacity>
+          <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>State: </Text>
+            <TextInput
+              placeholder='State (optional)'
+              placeholderTextColor="#a1a2a6"
+              textContentType='addressState'
+              style={styles.content}/>
+          </TouchableOpacity>
+          <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Zip: </Text>
+            <TextInput
+              placeholder='Zip Code (optional)'
+              placeholderTextColor="#a1a2a6"
+              textContentType='postalCode'
+              keyboardType='number-pad'
+              style={styles.content}
+             />
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
@@ -236,6 +241,7 @@ const ProfileScreen = (props) => {
               value={height}
               editable={isEditable}
               style={styles.content}
+              keyboardType='number-pad'
               onChangeText={(height) => editHeight(height)}
               onEndEditing={(e) => checkHeight(e.nativeEvent.text)}/>
           </TouchableOpacity>
@@ -248,19 +254,27 @@ const ProfileScreen = (props) => {
               value={weight}
               editable={isEditable}
               style={styles.content}
+              keyboardType='number-pad'
               onChangeText={(weight) => editWeight(weight)}
               onEndEditing={(e) => checkWeight(e.nativeEvent.text)}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
-          <View style={{flex: 1}}>
+          <View style={{flexDirection: "row"}}>
           <Text style={styles.contentTitleGender}>Gender: </Text>
+          <View style={{flex: 0.99}}/>
+          <View style={{alignSelf: 'center'}}>
            <GenderMenu></GenderMenu>
            </View>
+           </View>
           <View style={styles.contentBorder} />
+          <View style={{flexDirection: "row"}}>
           <Text style={styles.contentTitleGender}>Wellness Goals:</Text>
+          <View style={{flex: 0.2}}/>
+          <View style={{alignSelf: 'center'}}>
           <HealthGoals></HealthGoals>
+          </View>
+          </View>
           <View style={styles.contentBorder}/>
-          <HeightPicker></HeightPicker>
           <View style={{paddingVertical: 60}}></View>
           <Button
             title={changeText}

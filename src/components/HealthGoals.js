@@ -34,7 +34,7 @@ import {
                     {label: 'Monitor health', value: 'health'},
                 ]}
                 defaultValue={this.state.goals}
-                containerStyle={{height: 30, width: 250}}
+                containerStyle={{height: 30, width: 220}}
           style={{backgroundColor: '#fafafa'}}
           itemStyle={{
             justifyContent: 'flex-start',

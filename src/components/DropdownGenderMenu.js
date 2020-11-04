@@ -31,7 +31,7 @@ import {
                     {label: 'Non-binary', value: 'nonbin'}
                 ]}
                 defaultValue={this.state.gender}
-                containerStyle={{height: 30, width: 150}}
+                containerStyle={{height: 30, width: 220}}
           style={{backgroundColor: '#fafafa'}}
           itemStyle={{
             justifyContent: 'flex-start',

@@ -23,7 +23,6 @@ import {AuthContext} from './src/contexts/AuthContext';
 import {UserContext} from './src/contexts/UserContext';
 import {useAuth} from './src/hooks/useAuth';
 import {SplashScreen} from './src/screens/SplashScreen';
-import SensorsComponent from './src/components/SensorsComponent';
 
 const RootStack = createStackNavigator();
 // const AuthStack = createStackNavigator();  //not needed

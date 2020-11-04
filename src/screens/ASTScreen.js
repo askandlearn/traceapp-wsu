@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 //To-do: Check if can autoplay on time start
 import React, {useState} from 'react';
 import {
@@ -10,6 +9,7 @@ import {
   ScrollView,
   Modal,
   Platform,
+  Alert,
 } from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
@@ -18,7 +18,7 @@ import Timer from '../components/Timer';
 import Animate from '../components/ASTSurvey';
 import Swiper from 'react-native-swiper';
 import SensorAlert from '../components/ConnectToSensorAlert';
-
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Plot from '../components/ASTPlot';
 
 var check = false;
@@ -31,10 +31,12 @@ const ASTScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header openDrawer={navigation.openDrawer} />
-      <Text style={styles.title}>Active StandUp Test (AST)</Text>
-      <ScrollView>
+    <View
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <KeyboardAvoidingScrollView>
+        <Header openDrawer={navigation.openDrawer} />
+        <Text style={styles.title}>Active StandUp Test (AST)</Text>
         <View style={styles.container}>{check && <SensorAlert />}</View>
         <Timer />
         <View style={styles.NavBarDivider} />
@@ -48,7 +50,6 @@ const ASTScreen = ({navigation}) => {
               Welcome to the Active StandUp Test. This test will provide TRACE
               with important data regarding your blood flow dynamics.{'\n'}
             </Text>
-
             <Text styles={styles.note}>
               NOTE: While the test is being conducted, your TRACE device will
               continue to run analytics. After the 3 minute mark, please make
@@ -85,7 +86,7 @@ const ASTScreen = ({navigation}) => {
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                  //Alert.alert('Modal has been closed.');
+                  Alert.alert('Modal has been closed.');
                 }}>
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
@@ -113,7 +114,7 @@ const ASTScreen = ({navigation}) => {
 
         <View style={styles.NavBarDivider} />
         <Plot />
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </View>
   );
 };
@@ -125,9 +126,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignContent: 'center',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
   },
   backgroundImage: {
     alignSelf: 'center',

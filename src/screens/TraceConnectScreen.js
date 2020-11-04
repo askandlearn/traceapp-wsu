@@ -13,31 +13,21 @@ import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/
 import Header from '../components/Header-Component';
 import SensorsComponent from '../components/SensorsComponent';
 import HealthDashboard from './HealthDashboardScreen';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const TraceConnectScreen = ({navigation}) => {
   const [pushed, setPushed] = useState(false);
   return (
     <View style={styles.container}>
       <Header openDrawer={navigation.openDrawer} />
-      <Image
-        style={styles.backgroundImage}
-        source={require('../images/TraceBio-Black.png')}
-      />
-      <Text style={styles.title}>Connect Your TRACE Device</Text>
-      <Image
-        style={styles.deviceImage}
-        source={require('../images/Trace-3DTransparent.png')}
-      />
-      <TouchableOpacity title="Connect" style={styles.button}>
-        <Text
-          style={styles.buttonText}
-          onPress={() => {
-            setPushed(true);
-          }}>
-          CONNECT
-        </Text>
-      </TouchableOpacity>
-      {pushed == true ? <SensorsComponent /> : null}
+      <ScrollView>
+        <Text style={styles.title}>Connect Your TRACE Device</Text>
+        <Image
+          style={styles.deviceImage}
+          source={require('../images/Trace-3D.png')}
+        />
+        <SensorsComponent />
+      </ScrollView>
     </View>
   );
 };

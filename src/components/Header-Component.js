@@ -1,11 +1,11 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {View, Text, StyleSheet, TouchableOpacity, Image, Platform} from 'react-native';
 
 const Header = ({openDrawer}) => (
   <View style={styles.header}>
     <TouchableOpacity onPress={() => openDrawer()}>
-      <Icon name="bars" size={30} paddingVertical={50} />
+      <Icon name="menu" size={30} paddingVertical={50} />
     </TouchableOpacity>
     <Text style={{width: 45}} />
   </View>
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
+    padding: Platform.OS === 'ios' ? 20 : 10
   },
   backgroundImage: {
     alignSelf: 'center',

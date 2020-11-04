@@ -5,16 +5,47 @@ import {VictoryBar, VictoryChart, VictoryAxis} from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';
 import {Calendar} from 'react-native-calendars';
+import {createServer} from 'miragejs';
 
-const data = [
-  {day: 'Mon', score: 50},
-  {day: 'Tues', score: 69},
-  {day: 'Wed', score: 90},
-  {day: 'Thurs', score: 70},
-  {day: 'Fri', score: 50},
-  {day: 'Sat', score: 20},
-  {day: 'Sun', score: 69},
-];
+window.server = createServer({
+  routes() {
+    this.get('/api/existingUser', () => {
+      return {
+        scores: [
+          {day: 'Mon', score: 50},
+          {day: 'Tues', score: 80},
+          {day: 'Wed', score: 90},
+          {day: 'Thurs', score: 50},
+          {day: 'Fri', score: 10},
+          {day: 'Sat', score: 20},
+          {day: 'Sun', score: 69},
+        ],
+      };
+    });
+    this.get('/api/newUser', () => {
+      return {
+        scores: [
+          {day: 'Mon', score: 0},
+          {day: 'Tues', score: 0},
+          {day: 'Wed', score: 0},
+          {day: 'Thurs', score: 0},
+          {day: 'Fri', score: 0},
+          {day: 'Sat', score: 0},
+          {day: 'Sun', score: 0},
+        ],
+      };
+    });
+  },
+});
+// const data = [
+//   {day: 'Mon', score: 5},
+//   {day: 'Tues', score: 50},
+//   {day: 'Wed', score: 50},
+//   {day: 'Thurs', score: 50},
+//   {day: 'Fri', score: 40},
+//   {day: 'Sat', score: 20},
+//   {day: 'Sun', score: 69},
+// ];
 
 const sharedAxisStyles = {
   axisLabel: {
@@ -28,6 +59,19 @@ const sharedAxisStyles = {
 const HealthDashboardScreen = () => {
   const [stats, setStats] = useState('week');
   const [status, setStatus] = useState('true');
+  let [existingUser, setExistingUser] = React.useState([]);
+  let [newUser, setNewUser] = useState([]);
+
+  React.useEffect(() => {
+    fetch('/api/existingUser')
+      .then((res) => res.json())
+      .then((json) => setExistingUser(json.scores));
+  }, []);
+  React.useEffect(() => {
+    fetch('/api/newUser')
+      .then((res) => res.json())
+      .then((json) => setNewUser(json.scores));
+  }, []);
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -55,8 +99,9 @@ const HealthDashboardScreen = () => {
         viewBox={'0 0 140 350'}
         preserveAspectRatio="none">
         <VictoryChart domainPadding={15} height={300} width={385}>
+          (
           <VictoryBar
-            data={data}
+            data={newUser}
             x="day"
             y="score"
             style={{
@@ -70,6 +115,7 @@ const HealthDashboardScreen = () => {
               },
             }}
           />
+          )
           <VictoryAxis />
           <VictoryAxis dependentAxis label="Score" style={sharedAxisStyles} />
         </VictoryChart>
@@ -98,7 +144,7 @@ const HealthDashboardScreen = () => {
           console.log('month changed', month);
         }}
         // Hide month navigation arrows. Default = false
-        hideArrows={true}
+        hideArrows={false}
         // Replace default arrows with custom ones (direction can be 'left' or 'right')
         //renderArrow={(direction) => (<Arrow/>)}
         // Do not show days of other months in month page. Default = false

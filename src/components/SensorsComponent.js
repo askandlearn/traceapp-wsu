@@ -32,7 +32,7 @@ export default class SensorsComponent extends Component {
       nn50: 0,
       nBeats: 0,
       digOut: 0,
-      time: 0.00,
+      time: 0.0,
     };
     this.ServicesUUID;
     this.CharacteristicUUID;
@@ -158,10 +158,17 @@ export default class SensorsComponent extends Component {
               device.id,
               heartBeatService[0].uuid,
             );
-            return characteristicService;
+            var thing = device.isConnected();
+            return thing;
           })
           .then((characteristicService) => {
-            this.info('returning values');
+            if (characteristicService) {
+              this.info('yay');
+            } else {
+              this.info('boo');
+            }
+
+            /*
             characteristicService[0].monitor((error, characteristic) => {
               if (error) {
                 this.error(error.message);
@@ -170,7 +177,7 @@ export default class SensorsComponent extends Component {
               if (characteristic.isNotifying) {
                 this.convertData(characteristic.value);
               }
-            });
+            });*/
           }),
           (error) => {
             this.error(error.message);

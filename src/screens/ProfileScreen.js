@@ -17,6 +17,9 @@ import {useAuth} from '../hooks/useAuth';
 import {UserContext} from '../contexts/UserContext';
 import {AuthContext} from '../contexts/AuthContext';
 import { useScreens } from 'react-native-screens';
+import GenderMenu from '../components/DropdownGenderMenu';
+import HealthGoals from '../components/HealthGoals';
+import HeightPicker from '../components/HeightPicker';
 
 const ProfileScreen = (props) => {
   /*
@@ -43,6 +46,10 @@ const ProfileScreen = (props) => {
   const [weight, editWeight] = useState(() => {if (user.weight) {return user.weight;} else {return '';}});
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
+
+  
+
+
 
   const [checkValidations, setCheckValidations] = useState({
     diffAddress: false,
@@ -176,7 +183,8 @@ const ProfileScreen = (props) => {
             <TextInput
               value={dob}
               editable={false}
-              style={styles.content}/>
+              keyboardType='number-pad'
+            style={styles.content}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <View style={{paddingBottom: 40}}/>
@@ -187,12 +195,42 @@ const ProfileScreen = (props) => {
             <TextInput
               placeholder='Address (optional)'
               placeholderTextColor="#a1a2a6"
-              textContentType='addressCityAndState'
+              textContentType='fullStreetAddress'
               value={address}
               editable={isEditable}
               style={styles.content}
               onChangeText={(address) => editAddress(address)}
               onEndEditing={(e) => checkAddress(e.nativeEvent.text)}/>
+          </TouchableOpacity>
+          <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>City: </Text>
+            <TextInput
+              placeholder='City (optional)'
+              placeholderTextColor="#a1a2a6"
+              textContentType='addressCity'
+              style={styles.content}
+              />
+          </TouchableOpacity>
+          <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>State: </Text>
+            <TextInput
+              placeholder='State (optional)'
+              placeholderTextColor="#a1a2a6"
+              textContentType='addressState'
+              style={styles.content}/>
+          </TouchableOpacity>
+          <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Zip: </Text>
+            <TextInput
+              placeholder='Zip Code (optional)'
+              placeholderTextColor="#a1a2a6"
+              textContentType='postalCode'
+              keyboardType='number-pad'
+              style={styles.content}
+             />
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
@@ -203,6 +241,7 @@ const ProfileScreen = (props) => {
               value={height}
               editable={isEditable}
               style={styles.content}
+              keyboardType='number-pad'
               onChangeText={(height) => editHeight(height)}
               onEndEditing={(e) => checkHeight(e.nativeEvent.text)}/>
           </TouchableOpacity>
@@ -215,11 +254,28 @@ const ProfileScreen = (props) => {
               value={weight}
               editable={isEditable}
               style={styles.content}
+              keyboardType='number-pad'
               onChangeText={(weight) => editWeight(weight)}
               onEndEditing={(e) => checkWeight(e.nativeEvent.text)}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
-          <View style={{paddingVertical: 30}}></View>
+          <View style={{flexDirection: "row"}}>
+          <Text style={styles.contentTitleGender}>Gender: </Text>
+          <View style={{flex: 0.99}}/>
+          <View style={{alignSelf: 'center'}}>
+           <GenderMenu></GenderMenu>
+           </View>
+           </View>
+          <View style={styles.contentBorder} />
+          <View style={{flexDirection: "row"}}>
+          <Text style={styles.contentTitleGender}>Wellness Goals:</Text>
+          <View style={{flex: 0.2}}/>
+          <View style={{alignSelf: 'center'}}>
+          <HealthGoals></HealthGoals>
+          </View>
+          </View>
+          <View style={styles.contentBorder}/>
+          <View style={{paddingVertical: 40}}></View>
           <Button
             title={changeText}
             color="#ff0000"
@@ -334,6 +390,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
   },
+  contentTitleGender: {
+    margin: 10,
+    fontSize: 17,
+    fontWeight: 'bold',
+    textAlign: 'left',
+
+  },
   horizontal: {
     flexDirection: 'row',
     alignContent: 'center',
@@ -349,7 +412,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff0000',
   },
   profileCategory: {
-    fontSize: 22,
+    fontSize: 15,
     //fontWeight: 'bold',
     paddingBottom: 10,
     color: 'black',

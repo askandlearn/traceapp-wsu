@@ -41,7 +41,7 @@ const ProfileScreen = (props) => {
   const [name, editName] = useState(() => {if (user.name) {return user.name;} else {return '';}});
   const [email, setEmail] = useState(() => {if (user.email) {return user.email;} else {return '';}});
   const [dob, editDOB] = useState(() => {if (user.birthdate) {return user.birthdate;} else {return '';}});
-  const [address, editAddress] = useState(() => {if (user.address) {return user.address;} else {return '';}});
+  const [zip, editZip] = useState(() => {if (user.zip) {return user.zip;} else {return '';}});
   const [height, editHeight] = useState(() => {if (user.height) {return user.height;} else {return '';}});
   const [weight, editWeight] = useState(() => {if (user.weight) {return user.weight;} else {return '';}});
   const [changeText, setChangeText] = useState('Edit');
@@ -52,7 +52,7 @@ const ProfileScreen = (props) => {
 
 
   const [checkValidations, setCheckValidations] = useState({
-    diffAddress: false,
+    diffZip: false,
     diffHeight: false,
     diffWeight: false,
   })
@@ -69,16 +69,18 @@ const ProfileScreen = (props) => {
   const [initials, setInitials] = useState(initialzeAvatarText());
 
   //check if new value is different from old value
-  const checkAddress = (val) =>{
-    if(val === user.address || val === ''){
+  const checkZip = (val) =>{
+    //If no changes to the zip code 
+    if(val === user.zip || val === ''){
       console.log('No changes made')
     }
+    //If the zip code has changed
     else{
       console.log('Different')
-      editAddress(val);
+      editZip(val);
       setCheckValidations({
         ...checkValidations,
-        diffAddress: true
+        diffZip: true
       });
     }
   }
@@ -114,13 +116,13 @@ const ProfileScreen = (props) => {
   const saveChanges = async () => {
     if (isEditable) {
       //POST Request to Update DB
-      if(checkValidations.diffAddress || checkValidations.diffHeight || checkValidations.diffWeight){
+      if(checkValidations.diffZip || checkValidations.diffHeight || checkValidations.diffWeight){
         console.log('Calling update')
         try{
-          await update(email,address,height,weight);
+          await update(email,zip,height,weight);
           setCheckValidations({
             ...checkValidations,
-            diffAddress: false,
+            diffZip: false,
             diffHeight: false,
             diffWeight: false
           })
@@ -198,6 +200,8 @@ const ProfileScreen = (props) => {
               textContentType='postalCode'
               keyboardType='number-pad'
               style={styles.content}
+              onChangeText={(zip) => editZip(zip)}
+              onEndEditing={(e) => checkZip(e.nativeEvent.text)}
              />
           </TouchableOpacity>
           <View style={styles.contentBorder} />

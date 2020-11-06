@@ -144,7 +144,7 @@ export function useAuth(){
     /**************************************************
                         UPDATE USER
     ***************************************************/
-    update: async (email, address, height, weight ) => {
+    update: async (email, zip, height, weight ) => {
         console.log('In update...');
         const STATUS_CODES = [200,204];
         const url = 'http://192.168.1.189/PHP-API/update.php';
@@ -152,7 +152,7 @@ export function useAuth(){
         // reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
         const results = await axios.post(url, {
             email: email,
-            address: address,
+            zip: zip,
             height: height,
             weight: weight,
         } 

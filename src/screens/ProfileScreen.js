@@ -191,38 +191,6 @@ const ProfileScreen = (props) => {
           <Text style={styles.profileCategory}>Additional Info:</Text>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>Address: </Text>
-            <TextInput
-              placeholder='Address (optional)'
-              placeholderTextColor="#a1a2a6"
-              textContentType='fullStreetAddress'
-              value={address}
-              editable={isEditable}
-              style={styles.content}
-              onChangeText={(address) => editAddress(address)}
-              onEndEditing={(e) => checkAddress(e.nativeEvent.text)}/>
-          </TouchableOpacity>
-          <View style={styles.contentBorder} />
-          <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>City: </Text>
-            <TextInput
-              placeholder='City (optional)'
-              placeholderTextColor="#a1a2a6"
-              textContentType='addressCity'
-              style={styles.content}
-              />
-          </TouchableOpacity>
-          <View style={styles.contentBorder} />
-          <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>State: </Text>
-            <TextInput
-              placeholder='State (optional)'
-              placeholderTextColor="#a1a2a6"
-              textContentType='addressState'
-              style={styles.content}/>
-          </TouchableOpacity>
-          <View style={styles.contentBorder} />
-          <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Zip: </Text>
             <TextInput
               placeholder='Zip Code (optional)'

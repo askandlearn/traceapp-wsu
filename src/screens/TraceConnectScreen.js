@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   View,
   ScrollView,
@@ -57,10 +58,11 @@ const styles = StyleSheet.create({
   deviceImage: {
     alignSelf: 'center',
     marginTop: 30,
-    marginBottom: 50,
-    width: '55%',
-    height: '50%',
-    resizeMode: 'stretch',
+    marginBottom: 70,
+    width: 150,
+    height: 150,
+    //resizeMode: 'stretch',
+
   },
   inputFields: {
     backgroundColor: '#FFFFFF',

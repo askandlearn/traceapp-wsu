@@ -26,7 +26,7 @@ const ASTScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
  
-  handleCheck = (checkedId) => {
+  const handleCheck = (checkedId) => {
     this.setState({checkedId})
   }
  

@@ -1,6 +1,13 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {View, Text, StyleSheet, TouchableOpacity, Image, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from 'react-native';
 
 const Header = ({openDrawer}) => (
   <View style={styles.header}>
@@ -19,7 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    padding: Platform.OS === 'ios' ? 20 : 10
+    padding: Platform.OS === 'ios' ? 20 : 10,
   },
   backgroundImage: {
     alignSelf: 'center',

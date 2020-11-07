@@ -39,26 +39,6 @@ export default class SensorsComponent extends Component {
     this.id = '';
   }
 
-<<<<<<< HEAD
-  async _returnConnection(device) {
-    var connection = await device.isConnected();
-    return connection;
-  }
-
-  serviceUUID(num) {
-    return this.prefixUUID + num + '0' + this.suffixUUID;
-  }
-
-  notifyUUID(num) {
-    return this.prefixUUID + num + '1' + this.suffixUUID;
-  }
-
-  writeUUID(num) {
-    return this.prefixUUID + num + '2' + this.suffixUUID;
-  }
-
-=======
->>>>>>> 05606e4139f50d2a0d916065f80aca2402b55260
   info(message) {
     this.setState({info: message});
   }
@@ -216,10 +196,9 @@ export default class SensorsComponent extends Component {
   }*/
 }
 
-
 const atob = (input = '') => {
   const chars =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
   let str = input.replace(/[=]+$/, '');
   let output = '';
 

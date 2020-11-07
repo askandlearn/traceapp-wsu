@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, {useContext, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {UserContext} from '../contexts/UserContext';

@@ -199,6 +199,7 @@ const ProfileScreen = (props) => {
               placeholderTextColor="#a1a2a6"
               textContentType='postalCode'
               keyboardType='number-pad'
+              maxLength = {5}
               style={styles.content}
               onChangeText={(zip) => editZip(zip)}
               onEndEditing={(e) => checkZip(e.nativeEvent.text)}

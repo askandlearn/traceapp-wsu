@@ -7,45 +7,7 @@ import Svg from 'react-native-svg';
 import {Calendar} from 'react-native-calendars';
 import {createServer} from 'miragejs';
 
-window.server = createServer({
-  routes() {
-    this.get('/api/existingUser', () => {
-      return {
-        scores: [
-          {day: 'Mon', score: 50},
-          {day: 'Tues', score: 80},
-          {day: 'Wed', score: 90},
-          {day: 'Thurs', score: 50},
-          {day: 'Fri', score: 10},
-          {day: 'Sat', score: 20},
-          {day: 'Sun', score: 69},
-        ],
-      };
-    });
-    this.get('/api/newUser', () => {
-      return {
-        scores: [
-          {day: 'Mon', score: 0},
-          {day: 'Tues', score: 0},
-          {day: 'Wed', score: 0},
-          {day: 'Thurs', score: 0},
-          {day: 'Fri', score: 0},
-          {day: 'Sat', score: 0},
-          {day: 'Sun', score: 0},
-        ],
-      };
-    });
-  },
-});
-// const data = [
-//   {day: 'Mon', score: 5},
-//   {day: 'Tues', score: 50},
-//   {day: 'Wed', score: 50},
-//   {day: 'Thurs', score: 50},
-//   {day: 'Fri', score: 40},
-//   {day: 'Sat', score: 20},
-//   {day: 'Sun', score: 69},
-// ];
+
 
 const sharedAxisStyles = {
   axisLabel: {

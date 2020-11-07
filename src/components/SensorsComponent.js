@@ -12,9 +12,9 @@ import {FlatList} from 'react-native-gesture-handler';
 import {cursorContainerMixin} from 'victory-native';
 
 export default class SensorsComponent extends Component {
-  constructor() {
+  constructor(manager) {
     super();
-    this.manager = new BleManager();
+    this.manager = manager;
     this.state = {
       info: '',
       vcnlCurrent: 0,
@@ -37,6 +37,11 @@ export default class SensorsComponent extends Component {
     this.ServicesUUID;
     this.CharacteristicUUID;
     this.id = '';
+  }
+
+  async _returnConnection(device) {
+    var connection = await device.isConnected();
+    return connection;
   }
 
   serviceUUID(num) {
@@ -178,7 +183,8 @@ export default class SensorsComponent extends Component {
             return thing;
           })
           .then((characteristicService) => {
-            if (characteristicService) {
+            var otherThing = this._returnConnection(device);
+            if (otherThing) {
               this.info('yay');
             } else {
               this.info('boo');
@@ -202,7 +208,7 @@ export default class SensorsComponent extends Component {
     });
   }
 
-  render() {
+  /*render() {
     return (
       <View>
         <Text>{this.state.info}</Text>
@@ -222,7 +228,7 @@ export default class SensorsComponent extends Component {
         <Text>State Diff: {this.state.diff}</Text>
       </View>
     );
-  }
+  }*/
 }
 
 const chars =

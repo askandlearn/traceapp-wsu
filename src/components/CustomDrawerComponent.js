@@ -36,7 +36,7 @@ export function CusomDrawerComponent({...props}){
                         onPress={() => {props.navigation.navigate('Home')}}
                     />
                     <DrawerItem
-                        label='Profile'
+                        label='Account'
                         icon={({color,size}) => (
                             <Icon name='account' color={color} size={size} style={styles.drawerItem}/>
                         )}

@@ -17,6 +17,9 @@ import {UserContext} from '../contexts/UserContext';
 import {AuthContext} from '../contexts/AuthContext';
 import { useScreens } from 'react-native-screens';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import GenderMenu from '../components/DropdownGenderMenu';
+import HealthGoals from '../components/HealthGoals';
+import HeightPicker from '../components/HeightPicker';
 
 const ProfileScreen = (props) => {
   /*
@@ -40,6 +43,10 @@ const ProfileScreen = (props) => {
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
   const [showDate, setShowDate] = useState(false);
+
+  
+
+
 
   const [checkValidations, setCheckValidations] = useState({
     diffzip: false,
@@ -169,6 +176,36 @@ const ProfileScreen = (props) => {
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>City: </Text>
+            <TextInput
+              placeholder='City (optional)'
+              placeholderTextColor="#a1a2a6"
+              textContentType='addressCity'
+              style={styles.content}
+              />
+          </TouchableOpacity>
+          <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>State: </Text>
+            <TextInput
+              placeholder='State (optional)'
+              placeholderTextColor="#a1a2a6"
+              textContentType='addressState'
+              style={styles.content}/>
+          </TouchableOpacity>
+          <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Zip: </Text>
+            <TextInput
+              placeholder='Zip Code (optional)'
+              placeholderTextColor="#a1a2a6"
+              textContentType='postalCode'
+              keyboardType='number-pad'
+              style={styles.content}
+             />
+          </TouchableOpacity>
+          <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Height (cm): </Text>
             <TextInput
               placeholder='Height (optional)'
@@ -190,7 +227,23 @@ const ProfileScreen = (props) => {
               onChangeText={(weight) => setCurrentUser({...currentUser, weight: weight})}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
-          <View style={{paddingVertical: 30}}></View>
+          <View style={{flexDirection: "row"}}>
+            <Text style={styles.contentTitleGender}>Gender: </Text>
+            <View style={{flex: 0.99}}/>
+            <View style={{alignSelf: 'center'}}>
+              <GenderMenu></GenderMenu>
+            </View>
+          </View>
+          <View style={styles.contentBorder} />
+          <View style={{flexDirection: "row"}}>
+          <Text style={styles.contentTitleGender}>Wellness Goals:</Text>
+          <View style={{flex: 0.2}}/>
+          <View style={{alignSelf: 'center'}}>
+          <HealthGoals></HealthGoals>
+          </View>
+          </View>
+          <View style={styles.contentBorder}/>
+          <View style={{paddingVertical: 40}}></View>
           <Button
             title={changeText}
             color="#ff0000"
@@ -305,6 +358,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
   },
+  contentTitleGender: {
+    margin: 10,
+    fontSize: 17,
+    fontWeight: 'bold',
+    textAlign: 'left',
+
+  },
   horizontal: {
     flexDirection: 'row',
     alignContent: 'center',
@@ -320,7 +380,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff0000',
   },
   profileCategory: {
-    fontSize: 22,
+    fontSize: 15,
     //fontWeight: 'bold',
     paddingBottom: 10,
     color: 'black',

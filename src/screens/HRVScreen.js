@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Modal,
   Alert,
   Platform,
+  Button
 } from 'react-native';
 
 import Header from '../components/Header-Component';
@@ -18,20 +19,32 @@ import SensorAlert from '../components/ConnectToSensorAlert';
 import Swiper from 'react-native-swiper';
 import Plot from '../components/Plot';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import { DeviceContext } from '../contexts/DeviceContext';
 
 var check = false;
 
 const HRVScreen = ({navigation}, props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
+  //get device functions from context
+  const {getInfo, isConnected} = useContext(DeviceContext)
+
   const handleCheck = (checkedId) => {
     this.setState({checkedId});
   };
+
 
   return (
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
         <Header openDrawer={navigation.openDrawer} />
+        <Button
+          title='Press me'
+          onPress={() => {
+            getInfo()
+            isConnected()
+          }}
+        />
         <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
         <View>{check && <SensorAlert />}</View>
         <Timer />

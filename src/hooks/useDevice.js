@@ -5,15 +5,45 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import { sleep } from '../utils/sleep';
 
-export function useAuth(){
+export function useDevice(){
     
-    const [deviceObject, setDeviceObject] = useState()
+    const [state, dispatch] = React.useReducer((state, action) => {
+        switch(action.type){
+            case 'SET_DEVICE':
+                return{
+                    ...state,
+                    isConnected: true,
+                    device: {...action.payload}
+                }
+                //break;
+            case 'DISCONNECT_DEVICE':
+                return{
+                    ...state,
+                    user: undefined
+                }
+            default:
+                return{
+                    ...state,
+                    user: undefined
+                };
+        }
+    }, {
+        device: undefined,
+        isConnected: false
+    });
     
-    const auth = React.useMemo(() => ({
+    const actions = React.useMemo(() => ({
         connect: () => {
-
+            console.log('Connecting device...')
+        },
+        getInfo: () => {
+            console.log('Reading info....')
+        },
+        isConnected: () => {
+            console.log('Checking if it is connected....')
+            return state.isConnected
         }
     }), []);
 
-    return {auth, state};
+    return {actions};
 }

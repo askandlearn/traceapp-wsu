@@ -22,13 +22,16 @@ import {lightTheme} from './src/themes/light';
 import {AuthContext} from './src/contexts/AuthContext';
 import {UserContext} from './src/contexts/UserContext';
 import {useAuth} from './src/hooks/useAuth';
+import {useDevice} from './src/hooks/useDevice'
 import {SplashScreen} from './src/screens/SplashScreen';
+import { DeviceContext } from './src/contexts/DeviceContext';
 
 const RootStack = createStackNavigator();
 // const AuthStack = createStackNavigator();  //not needed
 
 export default function () {
   const {auth, state} = useAuth();
+  const {actions} = useDevice();
 
   function renderScreens() {
     //return splash loading is true
@@ -40,7 +43,9 @@ export default function () {
       <RootStack.Screen name={'MainStack'}>
         {() => (
           <UserContext.Provider value={state.user}>
-            <MainStackNavigator />
+            <DeviceContext.Provider value={actions}>
+              <MainStackNavigator />
+            </DeviceContext.Provider>
           </UserContext.Provider>
         )}
       </RootStack.Screen>

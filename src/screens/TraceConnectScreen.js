@@ -1,8 +1,5 @@
 import React, {useState} from 'react';
-<<<<<<< HEAD
-=======
 import {render} from 'react-dom';
->>>>>>> 05606e4139f50d2a0d916065f80aca2402b55260
 import {
   View,
   ScrollView,
@@ -20,14 +17,7 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 import {BleManager} from 'react-native-ble-plx';
 
 const TraceConnectScreen = ({navigation}) => {
-<<<<<<< HEAD
-  const manager = new BleManager();
-  const Sensor = new SensorsComponent(manager);
-  const [info, setInfo] = useState('');
-  setInfo(Sensor.state.info);
-=======
   const [pushed, setPushed] = useState(false);
->>>>>>> 05606e4139f50d2a0d916065f80aca2402b55260
   return (
     <View style={styles.container}>
       <Header openDrawer={navigation.openDrawer} />

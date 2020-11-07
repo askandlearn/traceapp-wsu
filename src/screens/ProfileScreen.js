@@ -11,19 +11,19 @@ import {
   Platform,
 } from 'react-native';
 import Header from '../components/Header-Component';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {useAuth} from '../hooks/useAuth';
 import {UserContext} from '../contexts/UserContext';
 import {AuthContext} from '../contexts/AuthContext';
 import { useScreens } from 'react-native-screens';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const ProfileScreen = (props) => {
   /*
     props that should be passed when calling this screen
     name:
     DOB:
-    Address:
+    zip:
     Password(?):
     */
 
@@ -35,17 +35,14 @@ const ProfileScreen = (props) => {
   //Load in logout function from AuthContext
   const {logout} = useContext(AuthContext);
 
-  const [name, editName] = useState(() => {if (user.name) {return user.name;} else {return '';}});
-  const [email, setEmail] = useState(() => {if (user.email) {return user.email;} else {return '';}});
-  const [dob, editDOB] = useState(() => {if (user.birthdate) {return user.birthdate;} else {return '';}});
-  const [address, editAddress] = useState(() => {if (user.address) {return user.address;} else {return '';}});
-  const [height, editHeight] = useState(() => {if (user.height) {return user.height;} else {return '';}});
-  const [weight, editWeight] = useState(() => {if (user.weight) {return user.weight;} else {return '';}});
+  const [currentUser, setCurrentUser] = useState(user)
+
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
+  const [showDate, setShowDate] = useState(false);
 
   const [checkValidations, setCheckValidations] = useState({
-    diffAddress: false,
+    diffzip: false,
     diffHeight: false,
     diffWeight: false,
   })
@@ -62,17 +59,9 @@ const ProfileScreen = (props) => {
   const [initials, setInitials] = useState(initialzeAvatarText());
 
   //check if new value is different from old value
-  const checkAddress = (val) =>{
-    if(val === user.address || val === ''){
-      console.log('No changes made')
-    }
-    else{
-      console.log('Different')
-      editAddress(val);
-      setCheckValidations({
-        ...checkValidations,
-        diffAddress: true
-      });
+  const checkzip = (val) =>{
+    if(val.length != 5){
+      console.log('Invalid zip')
     }
   }
   const checkHeight = (val) =>{
@@ -105,22 +94,15 @@ const ProfileScreen = (props) => {
 
   //save changes
   const saveChanges = async () => {
+    console.log(currentUser)
     if (isEditable) {
       //POST Request to Update DB
-      if(checkValidations.diffAddress || checkValidations.diffHeight || checkValidations.diffWeight){
-        console.log('Calling update')
-        try{
-          await update(email,address,height,weight);
-          setCheckValidations({
-            ...checkValidations,
-            diffAddress: false,
-            diffHeight: false,
-            diffWeight: false
-          })
-        }
-        catch(err){
-          console.log('Error in saveChanges():',err.message)
-        }
+      console.log('Calling update')
+      try{
+        await update(currentUser);
+      }
+      catch(err){
+        console.log('Error in saveChanges():',err.message)
       }
       
       setChangeText('Edit');
@@ -131,17 +113,6 @@ const ProfileScreen = (props) => {
     }
   };
 
-  const chooseButtonAction = () => {
-    console.log('In choose action...')
-    if(buttonText === 'Edit'){
-      setButtonText('Save')
-      onEdit();
-    }
-    else{
-      setButtonText('Edit')
-      saveChanges();
-    }
-  }
 
   return (
     <View
@@ -156,8 +127,7 @@ const ProfileScreen = (props) => {
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
             <TextInput    
-              value={name}
-
+              value={currentUser.name}
               editable={false}
               style={styles.name}/>
           </View>
@@ -166,7 +136,7 @@ const ProfileScreen = (props) => {
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
             <TextInput
-              value={email}
+              value={user.email}
               editable={false}
               style={styles.content}/>
           </TouchableOpacity>
@@ -174,25 +144,28 @@ const ProfileScreen = (props) => {
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Date of Birth: </Text>
             <TextInput
-              value={dob}
-              editable={false}
-              style={styles.content}/>
+              value={currentUser.birthdate}
+              placeholder='mm/dd/yyyy (optional)'
+              placeholderTextColor="#a1a2a6"
+              editable={isEditable}
+              style={styles.content}
+              onChange={(birthdate) => setCurrentUser({...currentUser, birthdate: birthdate})}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <View style={{paddingBottom: 40}}/>
           <Text style={styles.profileCategory}>Additional Info:</Text>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>Address: </Text>
+            <Text style={styles.contentTitle}>Zip: </Text>
             <TextInput
-              placeholder='Address (optional)'
+              placeholder='Zip (optional)'
               placeholderTextColor="#a1a2a6"
-              textContentType='addressCityAndState'
-              value={address}
+              textContentType='postalCode'
+              value={currentUser.zip}
               editable={isEditable}
               style={styles.content}
-              onChangeText={(address) => editAddress(address)}
-              onEndEditing={(e) => checkAddress(e.nativeEvent.text)}/>
+              onChangeText={(zip) => setCurrentUser({...currentUser, zip: zip})}
+              onEndEditing={(e) => checkzip(e.nativeEvent.text)}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
@@ -200,11 +173,10 @@ const ProfileScreen = (props) => {
             <TextInput
               placeholder='Height (optional)'
               placeholderTextColor="#a1a2a6"
-              value={height}
+              value={currentUser.height}
               editable={isEditable}
               style={styles.content}
-              onChangeText={(height) => editHeight(height)}
-              onEndEditing={(e) => checkHeight(e.nativeEvent.text)}/>
+              onChangeText={(height) => setCurrentUser({...currentUser, height: height})}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
@@ -212,11 +184,10 @@ const ProfileScreen = (props) => {
             <TextInput
               placeholder='Weight (optional)'
               placeholderTextColor="#a1a2a6"  
-              value={weight}
+              value={currentUser.weight}
               editable={isEditable}
               style={styles.content}
-              onChangeText={(weight) => editWeight(weight)}
-              onEndEditing={(e) => checkWeight(e.nativeEvent.text)}/>
+              onChangeText={(weight) => setCurrentUser({...currentUser, weight: weight})}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <View style={{paddingVertical: 30}}></View>

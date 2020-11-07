@@ -1,0 +1,2 @@
+export const DISCONNECT = 'DISCONNECT';
+export const UPDATE_BIOMETRIC = 'UPDATE_BIOMETRIC';

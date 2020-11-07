@@ -5,7 +5,7 @@
 //Device Info = 180A
 //Model Number String = 2A24
 //PNP ID (2A50)
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {Platform, View, Text} from 'react-native';
 import {BleManager, Characteristic} from 'react-native-ble-plx';
 import {FlatList} from 'react-native-gesture-handler';
@@ -39,6 +39,7 @@ export default class SensorsComponent extends Component {
     this.id = '';
   }
 
+<<<<<<< HEAD
   async _returnConnection(device) {
     var connection = await device.isConnected();
     return connection;
@@ -56,16 +57,14 @@ export default class SensorsComponent extends Component {
     return this.prefixUUID + num + '2' + this.suffixUUID;
   }
 
+=======
+>>>>>>> 05606e4139f50d2a0d916065f80aca2402b55260
   info(message) {
     this.setState({info: message});
   }
 
   error(message) {
     this.setState({info: 'ERROR: ' + message});
-  }
-
-  updateValue(key, value) {
-    this.setState({values: {...this.state.values, [key]: value}});
   }
 
   convertData(base64) {
@@ -212,28 +211,15 @@ export default class SensorsComponent extends Component {
     return (
       <View>
         <Text>{this.state.info}</Text>
-        <Text>Time: {this.state.time}</Text>
-        <Text>Heart Rate: {this.state.bpm}</Text>
-        <Text>Vcnl Current: {this.state.vcnlCurrent}</Text>
-        <Text>Skin Temp: {this.state.skinTemp}C</Text>
-        <Text>IBI: {this.state.ibi}</Text>
-        <Text>Pamp: {this.state.pamp}</Text>
-        <Text>Damp: {this.state.damp}</Text>
-        <Text>HRV: {this.state.hrv}</Text>
-        <Text>CBF: {this.state.cbf}</Text>
-        <Text>HRV PNN 50: {this.state.hrv_pnn50}</Text>
-        <Text>PPG: {this.state.ppg}</Text>
-        <Text>Dig Out: {this.state.digOut}</Text>
-        <Text>Acceleraometer: {this.state.accelX}</Text>
-        <Text>State Diff: {this.state.diff}</Text>
       </View>
     );
   }*/
 }
 
-const chars =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
 const atob = (input = '') => {
+  const chars =
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
   let str = input.replace(/[=]+$/, '');
   let output = '';
 
@@ -254,3 +240,20 @@ const atob = (input = '') => {
 
   return output;
 };
+
+/*
+<Text>Time: {this.state.time}</Text>
+<Text>Heart Rate: {this.state.bpm}</Text>
+<Text>Vcnl Current: {this.state.vcnlCurrent}</Text>
+<Text>Skin Temp: {this.state.skinTemp}C</Text>
+<Text>IBI: {this.state.ibi}</Text>
+<Text>Pamp: {this.state.pamp}</Text>
+<Text>Damp: {this.state.damp}</Text>
+<Text>HRV: {this.state.hrv}</Text>
+<Text>CBF: {this.state.cbf}</Text>
+<Text>HRV PNN 50: {this.state.hrv_pnn50}</Text>
+<Text>PPG: {this.state.ppg}</Text>
+<Text>Dig Out: {this.state.digOut}</Text>
+<Text>Acceleraometer: {this.state.accelX}</Text>
+<Text>State Diff: {this.state.diff}</Text>
+*/

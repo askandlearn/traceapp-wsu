@@ -1,4 +1,8 @@
 import React, {useState} from 'react';
+<<<<<<< HEAD
+=======
+import {render} from 'react-dom';
+>>>>>>> 05606e4139f50d2a0d916065f80aca2402b55260
 import {
   View,
   ScrollView,
@@ -6,6 +10,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Platform,
 } from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
@@ -15,10 +20,14 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 import {BleManager} from 'react-native-ble-plx';
 
 const TraceConnectScreen = ({navigation}) => {
+<<<<<<< HEAD
   const manager = new BleManager();
   const Sensor = new SensorsComponent(manager);
   const [info, setInfo] = useState('');
   setInfo(Sensor.state.info);
+=======
+  const [pushed, setPushed] = useState(false);
+>>>>>>> 05606e4139f50d2a0d916065f80aca2402b55260
   return (
     <View style={styles.container}>
       <Header openDrawer={navigation.openDrawer} />
@@ -37,21 +46,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   backgroundImage: {
     alignSelf: 'center',
     marginTop: 30,
-    marginBottom: 70,
+    marginBottom: 20,
     width: '60%',
     height: 100,
     resizeMode: 'stretch',
   },
   deviceImage: {
     alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 50,
+    marginTop: 10,
+    marginBottom: 20,
     width: '55%',
-    height: '50%',
+    height: '20%',
     resizeMode: 'stretch',
   },
   inputFields: {

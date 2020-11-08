@@ -20,7 +20,7 @@ const Time = (props) =>  {
   const toggleTimer = () => {
     setIsTimerStart(!isTimerStart)
     setResetTimer(false)
-    props.setStarted(true)
+    props?.setStarted(true)
   }
 
   const resetTimerFunction = () => {
@@ -29,8 +29,8 @@ const Time = (props) =>  {
     setIsDone(false)
 
     //set started state in parent back to false
-    props.setStarted(false)
-    props.setDone(false)
+    props?.setStarted(false)
+    props?.setDone(false)
   }
 
   //sound 
@@ -54,7 +54,7 @@ const Time = (props) =>  {
     setIsDone(true)
     
     //set done state in parent to true
-    props.setDone(true)
+    props?.setDone(true)
     // setResetTimer(true)
   }
 

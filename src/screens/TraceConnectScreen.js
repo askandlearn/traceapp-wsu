@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {render} from 'react-dom';
 import {
   View,
@@ -15,12 +15,11 @@ import SensorsComponent from '../components/SensorsComponent';
 import HealthDashboard from './HealthDashboardScreen';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {BleManager} from 'react-native-ble-plx';
+import {DeviceContext} from '../contexts/DeviceContext';
 
 const TraceConnectScreen = ({navigation}) => {
-  const manager = new BleManager();
-  const Sensor = new SensorsComponent(manager);
-  const [info, setInfo] = useState('');
-  setInfo(Sensor.state.info);
+  const {connect} = useContext(DeviceContext);
+
   return (
     <View style={styles.container}>
       <Header openDrawer={navigation.openDrawer} />
@@ -30,6 +29,12 @@ const TraceConnectScreen = ({navigation}) => {
           style={styles.deviceImage}
           source={require('../images/Trace-3D.png')}
         />
+        <TouchableOpacity
+          title="Save Changes"
+          style={styles.button}
+          onPress={connect}>
+          <Text style={styles.buttonText}>Connect</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

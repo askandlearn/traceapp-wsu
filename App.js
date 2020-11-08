@@ -22,9 +22,9 @@ import {lightTheme} from './src/themes/light';
 import {AuthContext} from './src/contexts/AuthContext';
 import {UserContext} from './src/contexts/UserContext';
 import {useAuth} from './src/hooks/useAuth';
-import {useDevice} from './src/hooks/useDevice'
+import {useDevice} from './src/hooks/useDevice';
 import {SplashScreen} from './src/screens/SplashScreen';
-import { DeviceContext } from './src/contexts/DeviceContext';
+import {DeviceContext} from './src/contexts/DeviceContext';
 
 const RootStack = createStackNavigator();
 // const AuthStack = createStackNavigator();  //not needed

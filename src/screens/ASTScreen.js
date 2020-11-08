@@ -25,6 +25,10 @@ var check= false;
 const ASTScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
+  const [started, setStarted] = useState(false)
+  const [done, setDone] = useState(false)
+
+
  
   const handleCheck = (checkedId) => {
     this.setState({checkedId})
@@ -37,19 +41,21 @@ const ASTScreen = ({navigation}) => {
       <Header openDrawer={navigation.openDrawer} />
       <Text style={styles.title}>Active StandUp Test (AST)</Text>
         <View style={styles.container}>{check && <SensorAlert></SensorAlert>}</View>
-          <Timer></Timer>
+          <Timer setStarted={setStarted} setDone={setDone}></Timer>
           <View style={styles.NavBarDivider} />
-          <Swiper style={styles.wrapper} showsButtons loop={false} autoplay={false}>
-            
-            <View testID="Hello" style={styles.slide1}>
-              <Text style={styles.slide1Text}>Welcome to the Active StandUp Test. This test will provide TRACE with
-            important data regarding your blood flow dynamics.{"\n"}</Text>
-            
-            <Text styles={styles.note}>NOTE: While the test is being conducted, your TRACE device will
-            continue to run analytics. After the 3 minute mark, please make sure
-            to stand still to ensure your TRACE device performs accurate
-            diagnostics.</Text>
-            </View>
+          <Swiper autoplayTimeout={1} style={styles.wrapper} showsButtons loop={true} autoplay={started}>
+            { started ? null :
+              <View testID="Hello" style={styles.slide1}>
+                <Text style={styles.slide1Text}>Welcome to the Active StandUp Test. This test will provide TRACE with
+                important data regarding your blood flow dynamics.{"\n"}</Text>
+              
+                <Text styles={styles.note}>NOTE: While the test is being conducted, your TRACE device will
+                continue to run analytics. After the 3 minute mark, please make sure
+                to stand still to ensure your TRACE device performs accurate
+                diagnostics.</Text>
+              </View>
+            }
+            {done ? null :
             <View testID="Beautiful" style={styles.slide2}>
               <Text style={styles.steps}>1. To begin, lie flat on your back. {"\n"}
               2. Start the timer. {"\n"}
@@ -57,14 +63,18 @@ const ASTScreen = ({navigation}) => {
               <Image style={styles.backgroundImage}
               source={require('../images/figures/lyingfigure.png')}></Image>    
             </View>
+            }
+            {done ? null : 
             <View testID="Simple" style={styles.slide3}>
               <Text style={styles.steps}>3. After the 3-minute timer is done, stand back up. {"\n"}</Text>
               <Image style={{width:50, height:170, marginBottom: 60}}
               source={require('../images/figures/standingfigure.png')}></Image> 
             </View>
+            }
+            {!done ? null :
             <View testID="Slide4" style={styles.slide3}>
-              <Text style={styles.steps}>4. Now, fill out the survey to complete the test. {"\n"}</Text>
-              <View style={styles.centeredView}>
+            <Text style={styles.steps}>4. Now, fill out the survey to complete the test. {"\n"}</Text>
+            <View style={styles.centeredView}>
             <Modal
               animationType="slide"
               transparent={true}
@@ -90,7 +100,8 @@ const ASTScreen = ({navigation}) => {
                 setModalVisible(true);
               }}><Text style={styles.buttonText}>Take Survey</Text></TouchableOpacity>
             </View>
-          </View>
+            </View>
+            }
         </Swiper>
 
         <View style={styles.NavBarDivider} />

@@ -10,71 +10,27 @@ var Sound = require('react-native-sound');
 //importing library to use Stopwatch and Timer
 
 
-export default Time = (props) =>  {
-  
-
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     isTimerStart: false,
-  //     //Set at 3 seconds for prototype 2 presentation purposes
-  //     timerDuration: 18000,
-  //     resetTimer: false,
-  //   };
-  //   this.startStopTimer = this.startStopTimer.bind(this);
-  //   this.resetTimer = this.resetTimer.bind(this);
-  // }
-
-  // //sound = new Sound('../files/sound.mp3');
-
-  // startStopTimer() {
-  //   this.setState({
-  //     isTimerStart: !this.state.isTimerStart,
-  //     resetTimer: false,
-  //   });
-  // }
-  // resetTimer() {
-  //   this.setState({ isTimerStart: false, resetTimer: true });
-  // }
-
-  // getFormattedTime(time) {
-  //   this.currentTime = time;
-  // }
-
-  // playSound=()=>{
-  //   let sound = new Sound('sound.mp3', Sound.MAIN_BUNDLE, (error) => {
-  //     if (error) {
-  //         console.log('failed to load the sound', error);
-  //     } 
-  //     else if(isTimerStart=false){
-  //       sound.pause();
-  //     }
-  //     else {
-  //       sound.play(); // have to put the call to play() in the onload callback
-  //   }
-  // });
-
-  // }
-  //  handleTimerComplete = () => {
-  //    this.playSound();
-  //    this.setState({ isTimerStart: false, resetTimer: true });
-
-  //   };
+const Time = (props) =>  {
 
   const [isTimerStart, setIsTimerStart] = useState(false)
-  const [timerDuration, setTimerDuration] = useState(5000)
+  const [timerDuration, setTimerDuration] = useState(10000)
   const [resetTimer, setResetTimer] = useState(false)
   const [isDone, setIsDone] = useState(false)
 
   const toggleTimer = () => {
     setIsTimerStart(!isTimerStart)
     setResetTimer(false)
+    props.setStarted(true)
   }
 
   const resetTimerFunction = () => {
     setIsTimerStart(false)
     setResetTimer(true)
     setIsDone(false)
+
+    //set started state in parent back to false
+    props.setStarted(false)
+    props.setDone(false)
   }
 
   //sound 
@@ -96,6 +52,9 @@ export default Time = (props) =>  {
     playSound();
     setIsTimerStart(false)
     setIsDone(true)
+    
+    //set done state in parent to true
+    props.setDone(true)
     // setResetTimer(true)
   }
 
@@ -225,3 +184,5 @@ text: {
 // marginLeft: 7,
 },
 };
+
+export default Time;

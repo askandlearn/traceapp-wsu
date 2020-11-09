@@ -25,10 +25,6 @@ const TraceConnectScreen = ({navigation}) => {
       <Header openDrawer={navigation.openDrawer} />
       <ScrollView>
         <Text style={styles.title}>Connect Your TRACE Device</Text>
-        <Image
-          style={styles.deviceImage}
-          source={require('../images/Trace-3D.png')}
-        />
         <TouchableOpacity
           title="Save Changes"
           style={styles.button}

@@ -62,23 +62,25 @@ export function useDevice() {
     [],
   );
 
+  const manager = new BleManager();
+
+  const scanAndConnect = async () => {
+    manager.startDeviceScan(null, null, (error, device) => {
+      console.log('Scanning for TRACE device');
+      if (error) {
+        console.log(error.message);
+        return;
+      }
+  
+      if (device.name === 'TRACE') {
+        console.log('Connecting to TRACE Sensor');
+        manager.stopDeviceScan();
+        // eslint-disable-next-line prettier/prettier
+        return device.connect();
+      }
+    });
+  };
+
   return {actions};
 }
-const manager = new BleManager();
 
-const scanAndConnect = async () => {
-  manager.startDeviceScan(null, null, (error, device) => {
-    console.log('Scanning for TRACE device');
-    if (error) {
-      this.error(error.message);
-      return;
-    }
-
-    if (device.name === 'TRACE') {
-      console.log('Connecting to TRACE Sensor');
-      manager.stopDeviceScan();
-      // eslint-disable-next-line prettier/prettier
-      return device.connect();
-    }
-  });
-};

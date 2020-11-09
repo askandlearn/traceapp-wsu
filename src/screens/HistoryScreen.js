@@ -8,9 +8,12 @@ import { UserContext } from '../contexts/UserContext';
 
 
 //data list
-const Item = ({session}) => (
+const Item = ({session}) => {
+    const [date, time] = session.start_time.split('T');
+    return (
     <View style={styles.card}>
         <Text style={styles.content}>Session ID: {session.pk}</Text>
+        <Text style={styles.content}>Recorded: {date} at {time}</Text>
         <Text style={styles.content}>Type: {session.label}</Text>
         <Text style={styles.content}>Description: {session.description}</Text>
         <Text style={styles.content}>Comments: {session.comments}</Text>
@@ -19,7 +22,7 @@ const Item = ({session}) => (
             <Text style={[styles.content, {color: 'blue', borderBottomWidth: 1}]} onPress={() => Linking.openURL(session.datafile)}>Link to data</Text>
         </View>
     </View>
-)
+)}
 
 
 const HistoryScreen = (props) => {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -19,10 +19,14 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 //import SensorAlert from '../components/ConnectToSensorAlert';
 
 import Plot from '../components/RTPlot';
+import { DeviceContext } from '../contexts/DeviceContext';
 
 var check = true;
 
 const RealTimeScreen = ({navigation}, props) => {
+
+  const {setConnected} = useContext(DeviceContext)
+
   return (
     <View
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -30,11 +34,9 @@ const RealTimeScreen = ({navigation}, props) => {
       <KeyboardAvoidingScrollView>
         <Header openDrawer={navigation.openDrawer} />
         <Text style={styles.title}>Real-Time Data</Text>
-        <RTTimer />
-        <View style={styles.NavBarDivider} />
-        <RTData />
-        {/* <View style={styles.NavBarDivider} /> */}
-        <Plot />
+        <Button 
+          onPress={() => setConnected()}
+          title='Fake Button'/>
       </KeyboardAvoidingScrollView>
     </View>
   );

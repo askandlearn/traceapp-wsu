@@ -22,6 +22,11 @@ export function useDevice() {
             ...state,
             user: undefined,
           };
+        case 'SET_CONNECTED':
+          return{
+            ...state,
+            isConnected: {...action.payload}
+          }
         default:
           return {
             ...state,
@@ -57,26 +62,45 @@ export function useDevice() {
         console.log('Checking if it is connected....');
         return state.isConnected;
       },
+      setConnected: () => {
+        dispatch(createAction('SET_CONNECTED',true))
+      }
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
   const manager = new BleManager();
 
+
   const scanAndConnect = async () => {
+    let startTime = new Date()
     manager.startDeviceScan(null, null, (error, device) => {
       console.log('Scanning for TRACE device');
+      
+      //timeout
+      endTime = new Date()
+      var timeDiff = endTime - startTime; //in ms
+      timeDiff /= 1000
+
+      //get seconds
+      var seconds = Math.round(timeDiff)
+
       if (error) {
         console.log(error.message);
         return;
       }
-  
+      
       if (device.name === 'TRACE') {
         console.log('Connecting to TRACE Sensor');
         manager.stopDeviceScan();
         // eslint-disable-next-line prettier/prettier
         return device.connect();
+      }
+      //if not found within 
+      if(seconds > 5){
+        console.log('Unabe to connect within 5 seconds...')
+        alert('Unable to connect...')
+        manager.stopDeviceScan();
       }
     });
   };

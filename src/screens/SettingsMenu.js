@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -11,12 +11,14 @@ import {
 import SettingsList from 'react-native-settings-list';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import { DeviceContext } from '../contexts/DeviceContext';
 
 const SettingsMenu = ({navigation}, props) => {
   var bgColor = '#DCE3F4';
-  // var navigate= props.navigation.navigate;
-  // this.onValueChange.bind(this);
-  //this.state = {switchValue: false};
+  
+  const {isConnected} = useContext(DeviceContext)
+
+
   return (
     <View
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -54,7 +56,7 @@ const SettingsMenu = ({navigation}, props) => {
             />
             <SettingsList.Item
               title="Connect TRACE Sensor"
-              titleInfo="Disconnected"
+              titleInfo={isConnected() ? 'Connected':'Disconnected'}
               titleInfoStyle={styles.titleInfoStyle}
               onPress={() => navigation.navigate('TraceConnect')}
             />

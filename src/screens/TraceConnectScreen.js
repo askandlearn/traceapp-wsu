@@ -16,9 +16,13 @@ import HealthDashboard from './HealthDashboardScreen';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {BleManager} from 'react-native-ble-plx';
 import {DeviceContext} from '../contexts/DeviceContext';
+import { Loading } from '../components/Loading-Component';
+import { sleep } from '../utils/sleep';
 
 const TraceConnectScreen = ({navigation}) => {
   const {connect} = useContext(DeviceContext);
+
+  const [loading, setLoading] = useState(false)
 
   return (
     <View style={styles.container}>
@@ -28,10 +32,22 @@ const TraceConnectScreen = ({navigation}) => {
         <TouchableOpacity
           title="Save Changes"
           style={styles.button}
-          onPress={connect}>
+          onPress={async () => {
+            try{
+              setLoading(true)
+              await connect()
+              sleep(5000).then(() => {setLoading(false)}) //for developement purposes... take out in final version
+            }
+            catch(err){
+              setLoading(false)
+              console.log(err.message)
+              alert('Device is not authorized to use BluetoothLE')
+            }
+          }}>
           <Text style={styles.buttonText}>Connect</Text>
         </TouchableOpacity>
       </ScrollView>
+      <Loading loading={loading} />
     </View>
   );
 };

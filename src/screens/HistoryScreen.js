@@ -12,14 +12,34 @@ const Item = ({session}) => {
     const [date, time] = session.start_time.split('T');
     return (
     <View style={styles.card}>
-        <Text style={styles.content}>Session ID: {session.pk}</Text>
-        <Text style={styles.content}>Recorded: {date} at {time}</Text>
-        <Text style={styles.content}>Type: {session.label}</Text>
-        <Text style={styles.content}>Description: {session.description}</Text>
-        <Text style={styles.content}>Comments: {session.comments}</Text>
+        <View style={{flexDirection: 'row'}}>
+            <Text style={styles.SessionTitle}>Session ID: </Text>
+            <Text style={styles.content}>{session.pk}</Text>
+        </View>
+       {/*} <Text style={styles.content}>Session ID: {session.pk}</Text> */}
+       <View style={{flexDirection: 'row'}}>
+            <Text style={styles.TitleContent}>Recorded: </Text>
+            <Text style={styles.content}>{date} at {time}</Text>
+        </View>
+       {/*} <Text style={styles.content}>Recorded: {date} at {time}</Text> */}
+       <View style={{flexDirection: 'row'}}>
+            <Text style={styles.TitleContent}>Type: </Text>
+            <Text style={styles.content}>{session.label}</Text>
+        </View>
+        {/* <Text style={styles.content}>Type: {session.label}</Text> */}
+        <View style={{flexDirection: 'row'}}>
+            <Text style={styles.TitleContent}>Description: </Text>
+            <Text style={styles.DescriptionContent}>{session.description}</Text>
+        </View>
+        {/* <Text style={styles.content}>Description: {session.description}</Text> */}
+        <View style={{flexDirection: 'row'}}>
+            <Text style={styles.TitleContent}>Comments: </Text>
+            <Text style={styles.content}>{session.comments}</Text>
+        </View>
+        {/* <Text style={styles.content}>Comments: {session.comments}</Text> */}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.content}>Data file: </Text>
-            <Text style={[styles.content, {color: 'blue', borderBottomWidth: 1}]} onPress={() => Linking.openURL(session.datafile)}>Link to data</Text>
+            <Text style={styles.DataFileTitle}>Data file: </Text>
+            <Text style={styles.DataFileContent} onPress={() => Linking.openURL(session.datafile)}>Link to data</Text>
         </View>
     </View>
 )}
@@ -81,7 +101,7 @@ const styles = StyleSheet.create({
         color: '#202020',
         fontWeight: 'bold',
         fontSize: 30,
-        paddingBottom: 10,
+        paddingBottom: 20,
         textAlign:'center'
     },
     card:{
@@ -89,11 +109,46 @@ const styles = StyleSheet.create({
         margin: 5,
         borderRadius: 5,
         padding: 5,
-        backgroundColor: '#ff0000'
+        //backgroundColor: '#ff0000'
+        backgroundColor: '#445092'
+    },
+    SessionTitle: {
+        fontSize: 15,
+        color: 'white',
+        fontWeight: 'bold'
+    },
+    TitleContent: {
+        fontSize: 17,
+        color: 'white',
+        //fontWeight: 'bold'
+    },
+    DataFileTitle: {
+        fontSize: 15,
+        color: 'white',
+        //fontWeight: 'bold',
+
     },
     content: {
+        fontSize: 17,
+        color: 'white',
+        textAlign: 'center',
+        alignSelf: 'center',
+        //marginHorizontal: '10%',
+        
+    },
+    DescriptionContent: {
         fontSize: 15,
-        color: 'white'
+        color: 'white',
+        flex: 1,
+       // flexWrap: 'wrap',
+        //marginHorizontal: '10%',
+    },
+    DataFileContent: {
+        fontSize: 15,
+        color: 'black',
+        textAlign: 'center',
+        alignSelf: 'center',
+        borderBottomWidth: 1
     }
 })
 

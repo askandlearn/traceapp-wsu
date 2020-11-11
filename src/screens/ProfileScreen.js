@@ -245,7 +245,6 @@ const ProfileScreen = (props) => {
             <Text style={styles.contentTitleGender}>Gender: </Text>
             <View style={{flex: 0.99}}/>
             <View style={{alignSelf: 'center'}}>
-              {/*}
             <DropDownPicker
                 items={[
                     {label: 'Male', value: 'M'},
@@ -263,8 +262,7 @@ const ProfileScreen = (props) => {
           onChangeItem={(item) =>
             setCurrentUser({...currentUser, gender: item.value})
           }/>
-        */}
-        <GenderMenu></GenderMenu>
+        
             </View>
           </View>
           <View style={styles.contentBorder} />

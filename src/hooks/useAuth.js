@@ -84,6 +84,7 @@ export function useAuth(){
             console.log(results)
             const user = {
                 token: token,
+                username: results.username,
                 email: results.email,
                 name: results.first_name + ' ' + results.last_name,
                 birthdate: results.profile.birthdate,
@@ -92,7 +93,7 @@ export function useAuth(){
                 height: null,   //will remove if not needed
                 weight: null,   //will remove if not needed
             }
-
+            console.log('user:',user)
             console.log('Setting user using async...')
             await AsyncStorage.setItem('@user', JSON.stringify(user))
             console.log('Dispatching action....')
@@ -141,47 +142,51 @@ export function useAuth(){
             navigate('Login')
         }
     },
+
     /**************************************************
                         UPDATE USER
     ***************************************************/
-    update: async (email, zip, height, weight ) => {
+    update: async (user) => {
         console.log('In update...');
-        const STATUS_CODES = [200,204];
-        const url = 'http://192.168.1.189/PHP-API/update.php';
-        // there is a timout parameter set for 2 sec
-        // reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
-        const results = await axios.post(url, {
-            email: email,
-            zip: zip,
-            height: height,
-            weight: weight,
-        } 
-        /*{
+        console.log('username:',user);
+        const STATUS_CODES = [200,400];
+        const url = `http://134.209.76.190:8000/api/User/${user.username}`
+        const config = {
+            headers: {'Content-Type':'application/json', 'Authorization':`Token ${user.token}`},
             timeout: 2000
-        }*/
-    ).then(res => res.data).catch(err => {
+        }
+
+        const response = await axios.patch(url, {
+            email: user.email,
+            profile:{
+                birthdate: user.birthdate,
+                sex: user.gender,
+                zip: user.zip
+            }
+        },config).catch(err => {
             console.log(err.code)
             console.log(err.message)
         })
-        console.log(results)
-        const user = {
-            email: results[1],
-            name: results[3] +' ' + results[4],
-            birthdate: results[5],
-            address: results[6],
-            gender: results[7],
-            height: results[8],
-            weight: results[9]
-        }
-         console.log(user);
-        //if anything other than success code
-        if(parseInt(results[0]) != STATUS_CODES[0]){
-            console.log('Unable to retrieve info')
-        }
+
+        if(response.status == STATUS_CODES[0]){
+            const results = response.data
+            const updated = {
+                token: user.token,
+                username: results.username,
+                email: results.email,
+                name: results.first_name + ' ' + results.last_name,
+                birthdate: results.profile.birthdate,
+                gender: results.profile.sex,
+                zip: results.profile.zip,
+                height: null,   //will remove if not needed
+                weight: null,   //will remove if not needed
+            }
+            console.log('Setting updated...')
+            await AsyncStorage.setItem('@user', JSON.stringify(updated))
+        }   //if status 200
         else{
-            //update local storage
-            await AsyncStorage.setItem('@user', JSON.stringify(user));
-        }
+            console.log('Unable to fetch user info')
+        }   //anything other than 200
 
     }
 }), []);

@@ -5,6 +5,9 @@
 //Device Info = 180A
 //Model Number String = 2A24
 //PNP ID (2A50)
+
+/*Consider taking the NotifyUUID given from the console log and using making a NotifyUUID
+variable and a ServiceUUID variable. This will allow you to remove 2 promises. */
 import React, {Component, useState} from 'react';
 import {Platform, View, Text} from 'react-native';
 import {BleManager, Characteristic} from 'react-native-ble-plx';
@@ -159,12 +162,12 @@ export default class SensorsComponent extends Component {
               services[0].uuid,
             );
             console.log(services[0].uuid);
-            //Consider jotting down the uuid and using it directly rather 
-            //returning these promise arrays
             return characteristicService;
           })
           .then((characteristicService) => {            
             console.log(characteristicService[0].uuid);
+            /*Consider taking the NotifyUUID given from the console log and using making a NotifyUUID
+            variable and a ServiceUUID variable. This will allow you to remove 2 promises. */
             characteristicService[0].monitor((error, characteristic) => {
               if (error) {
                 this.error(error.message);

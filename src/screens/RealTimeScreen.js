@@ -23,18 +23,29 @@ import Plot from '../components/RTPlot';
 var check = true;
 
 const RealTimeScreen = ({navigation}, props) => {
+  const [isTimer, setTimer]= useState(true);
+testTimer=(stopwatchStart)=>{
+  setTimer(stopwatchStart);
+  console.log("Test timer works");
+  console.log(isTimer);
+}
+function trueor(){
+  console.log("Works");
+}
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}>
-       <KeyboardAvoidingScrollView>
+      <ScrollView>
          <Header openDrawer={navigation.openDrawer} />
          <Text style={styles.title}>Real-Time Data</Text>
-        <RTTimer></RTTimer>
+        <RTTimer sendData={this.testTimer} ></RTTimer>
+        
         <View style={styles.NavBarDivider}/>
+        
         <RTData></RTData>
         {/* <View style={styles.NavBarDivider} /> */}
-        <Plot></Plot>
-        </KeyboardAvoidingScrollView>
+        {isTimer==true && <Plot></Plot>}
+      </ScrollView> 
     </View>
   );
 };

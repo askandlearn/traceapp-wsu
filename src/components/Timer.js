@@ -56,7 +56,7 @@ export default class Time extends Component {
   }
    handleTimerComplete = () => {
      this.playSound();
-     this.setState({ isTimerStart: false, resetTimer: true });
+     this.setState({ isTimerStart: false});
 
     };
   render() {

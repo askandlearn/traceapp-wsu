@@ -22,6 +22,8 @@ export default class RTStopwatch extends Component {
   }
   toggleStopwatch() {
     this.setState({stopwatchStart: !this.state.stopwatchStart, stopwatchReset: false});
+    this.props.sendData(this.state.stopwatchStart);
+    console.log(this.state.stopwatchStart);
   }
  
   resetStopwatch() {

@@ -148,28 +148,23 @@ export default class SensorsComponent extends Component {
             return device.discoverAllServicesAndCharacteristics();
           })
           .then((device) => {
-            this.info('Reterning services');
-            var heartBeatService = this.manager.servicesForDevice(device.id);
-            return heartBeatService;
+            this.info('Returning services');
+            var services = this.manager.servicesForDevice(device.id);
+            return services;
           })
-          .then((heartBeatService) => {
+          .then((services) => {
             this.info('Returning characteristics');
             var characteristicService = this.manager.characteristicsForDevice(
               device.id,
-              heartBeatService[0].uuid,
+              services[0].uuid,
             );
-            var thing = device.isConnected();
-            return thing;
+            console.log(services[0].uuid);
+            //Consider jotting down the uuid and using it directly rather 
+            //returning these promise arrays
+            return characteristicService;
           })
-          .then((characteristicService) => {
-            var otherThing = this._returnConnection(device);
-            if (otherThing) {
-              this.info('yay');
-            } else {
-              this.info('boo');
-            }
-
-            /*
+          .then((characteristicService) => {            
+            console.log(characteristicService[0].uuid);
             characteristicService[0].monitor((error, characteristic) => {
               if (error) {
                 this.error(error.message);
@@ -178,7 +173,7 @@ export default class SensorsComponent extends Component {
               if (characteristic.isNotifying) {
                 this.convertData(characteristic.value);
               }
-            });*/
+            });
           }),
           (error) => {
             this.error(error.message);

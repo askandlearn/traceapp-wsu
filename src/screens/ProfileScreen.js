@@ -182,6 +182,7 @@ const ProfileScreen = (props) => {
               placeholderTextColor="#a1a2a6"
               textContentType='postalCode'
                keyboardType='number-pad'
+               maxLength={5}
               value={currentUser.zip}
               editable={isEditable}
               style={styles.content}
@@ -192,7 +193,7 @@ const ProfileScreen = (props) => {
           
 
             {/*
-            API ZIP UPDATE
+            City/State to be removed??
             
             
             <Text style={styles.contentTitle}>City: </Text>
@@ -216,9 +217,6 @@ const ProfileScreen = (props) => {
           <TouchableOpacity style={styles.horizontal}>
           */}
 
-          
-          {/*
-          NOT YET IMPLEMENTED IN THE API
 
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
@@ -242,7 +240,7 @@ const ProfileScreen = (props) => {
               style={styles.content}
               onChangeText={(weight) => setCurrentUser({...currentUser, weight: weight})}/>
           </TouchableOpacity>
-          */}
+    
           <View style={{flexDirection: "row"}}>
             <Text style={styles.contentTitleGender}>Gender: </Text>
             <View style={{flex: 0.99}}/>

@@ -57,13 +57,14 @@ export const scan = () => {
             }
 
             // timeout if not found withing 5 seconds
-            if(seconds > 5){
-                dispatch(changeStatus("Timed out"));
-                alert('Unable to connect...')
-                dispatch(changeStatus("Changing is connected to true"))
-                dispatch(connectAction())
-                DeviceManager.stopDeviceScan();
-            }
+            // this is not working at the moment. leave commented out until i can fix 
+            // if(seconds > 5){
+            //     dispatch(changeStatus("Timed out"));
+            //     alert('Unable to connect...')
+            //     dispatch(changeStatus("Changing is connected to true"))
+            //     dispatch(connectAction())
+            //     DeviceManager.stopDeviceScan();
+            // }
         });
     }
 }
@@ -108,7 +109,7 @@ export const connectDevice = (device) => {
     }
 }
 
-
+//get metric 
 export const updateMetric = (newMetric) => {
     return (dispatch, getState, DeviceManager) => {
         const state = getState();

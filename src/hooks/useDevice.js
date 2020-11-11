@@ -46,13 +46,13 @@ export function useDevice() {
         if (Platform.OS === 'ios') {
           manager.onStateChange(async (state) => {
             if (state === 'PoweredOn') {
-              var device = await scanAndConnect();
+              const device = await scanAndConnect();
               dispatch(createAction('SET_DEVICE', device));
             }
           });
         } else {
-          var device = await scanAndConnect();
-          dispatch(createAction('SET_DEVICE', device));
+          console.log('Platform is Android...')
+          const device = await scanAndConnect();
         }
       },
       getInfo: () => {
@@ -94,7 +94,9 @@ export function useDevice() {
         console.log('Connecting to TRACE Sensor');
         manager.stopDeviceScan();
         // eslint-disable-next-line prettier/prettier
-        return device.connect();
+        return device.connect().catch(err => {
+          console.log(err.message)
+        })
       }
       //if not found within 
       if(seconds > 5){

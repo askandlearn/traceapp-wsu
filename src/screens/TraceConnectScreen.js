@@ -19,31 +19,37 @@ import {DeviceContext} from '../contexts/DeviceContext';
 import { Loading } from '../components/Loading-Component';
 import { sleep } from '../utils/sleep';
 
-const TraceConnectScreen = ({navigation}) => {
-  const {connect} = useContext(DeviceContext);
+//redux functions
+import {startScan} from '../actions';
+import {connect} from 'react-redux';
+
+function mapStateToProps(state){
+  return{
+    isConnected : state.BLE['isConnected']
+  };
+}
+
+const mapDispatchToProps = dispatch => ({
+  startScan: () => dispatch(startScan())
+})
+
+const TraceConnectScreen = props => {
 
   const [loading, setLoading] = useState(false)
 
+  const onConnect = () => {
+    props.startScan();
+  }
+
   return (
     <View style={styles.container}>
-      <Header openDrawer={navigation.openDrawer} />
+      <Header openDrawer={props.navigation.openDrawer} />
       <ScrollView>
         <Text style={styles.title}>Connect Your TRACE Device</Text>
         <TouchableOpacity
           title="Save Changes"
           style={styles.button}
-          onPress={async () => {
-            try{
-              setLoading(true)
-              await connect()
-              sleep(5000).then(() => {setLoading(false)}) //for developement purposes... take out in final version
-            }
-            catch(err){
-              setLoading(false)
-              console.log(err.message)
-              alert('Device is not authorized to use BluetoothLE')
-            }
-          }}>
+          onPress={onConnect}>
           <Text style={styles.buttonText}>Connect</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -118,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TraceConnectScreen;
+export default connect(mapStateToProps,mapDispatchToProps) (TraceConnectScreen);

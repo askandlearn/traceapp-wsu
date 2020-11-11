@@ -1,32 +1,41 @@
-import {DISCONNECT, UPDATE_BIOMETRIC} from '../actions/types';
 
 const initialState = {
+  metrics: undefined,
   status: 'disconnected',
   connectedDeviece: {},
+  isConnected: false
 };
 
 const bleReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'NOTIFY':
+    case 'CONNECT':
+      console.log('Connecting...')
       return {
-        bpm: action.newBpm,
-        connectedDeviece: state.connectedDeviece,
+        metrics: state.metrics,
         status: action.status,
-      };
-    case 'CONNECTED_DEVICE':
-      console.log('Reducer connected device', action);
-      return {
-        bpm: state.bpm,
-        connctedDevice: action.connectedDevice,
-        status: action.status,
+        connectedDevice: action.connectedDevice,
+        isConnected: action.isConnected
       };
     case 'CHANGE_STATUS':
       console.log('change status:', action.status);
       return {
-        bpm: state.bpm,
-        connectedDevice: action.connectedDevice,
-        status: action.status,
+        metrics:state.metrics,
+        status:action.status,
+        connectedDevice:action.connectedDevice,
+        isConnected: action.isConnected
       };
+    case 'UPDATE_METRIC':
+      return{
+        metrics: action.metric,
+        status:action.status,
+        connectedDevice: state.connectedDeviece,
+        isConnected: state.isConnected
+      }
+    case 'CHANGE_CONNECT':  //for testing purposes
+      return{
+        ...state,
+        isConnected: action.isConnected
+      }
     default:
       return state;
   }

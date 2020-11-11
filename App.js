@@ -26,8 +26,25 @@ import {useDevice} from './src/hooks/useDevice';
 import {SplashScreen} from './src/screens/SplashScreen';
 import {DeviceContext} from './src/contexts/DeviceContext';
 
+//redux and its helper libraries
+//reference for implementing redux: https://itnext.io/using-a-raspberry-pi-to-control-leds-part-iii-react-native-app-29ee3f4afb8c
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './src/reducers/index';
+
+//bleManager
+import { 
+  BleManager,
+  BleError 
+} from 'react-native-ble-plx';
+
 const RootStack = createStackNavigator();
 // const AuthStack = createStackNavigator();  //not needed
+const DeviceManager = new BleManager();
+
+const store = createStore(rootReducer, applyMiddleware(thunk.withExtraArgument(DeviceManager)));
+
 
 export default function () {
   const {auth, state} = useAuth();
@@ -43,9 +60,9 @@ export default function () {
       <RootStack.Screen name={'MainStack'}>
         {() => (
           <UserContext.Provider value={state.user}>
-            <DeviceContext.Provider value={actions}>
+            <Provider store={store}>
               <MainStackNavigator />
-            </DeviceContext.Provider>
+            </Provider>
           </UserContext.Provider>
         )}
       </RootStack.Screen>

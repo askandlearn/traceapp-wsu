@@ -13,10 +13,15 @@ import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import { DeviceContext } from '../contexts/DeviceContext';
 
-const SettingsMenu = ({navigation}, props) => {
+//redux
+import {connect} from 'react-redux';
+
+const mapStateToProps = (state) => ({
+  isConnected: state.BLE['isConnected']
+})
+
+const SettingsMenu = (props) => {
   var bgColor = '#DCE3F4';
-  
-  const {isConnected} = useContext(DeviceContext)
 
 
   return (
@@ -24,7 +29,7 @@ const SettingsMenu = ({navigation}, props) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{backgroundColor: '#f1f1f2', flex: 1}}>
       <KeyboardAvoidingScrollView>
-        <Header openDrawer={navigation.openDrawer} />
+        <Header openDrawer={props.navigation.openDrawer} />
         <View
           style={{
             borderBottomWidth: 1,
@@ -52,13 +57,13 @@ const SettingsMenu = ({navigation}, props) => {
             <SettingsList.Item
               title="Change Password"
               titleInfoStyle={styles.titleInfoStyle}
-              onPress={() => navigation.navigate('ChangePassword')}
+              onPress={() => props.navigation.navigate('ChangePassword')}
             />
             <SettingsList.Item
               title="Connect TRACE Sensor"
-              titleInfo={isConnected() ? 'Connected':'Disconnected'}
+              titleInfo={props.isConnected ? 'Connected':'Disconnected'}
               titleInfoStyle={styles.titleInfoStyle}
-              onPress={() => navigation.navigate('TraceConnect')}
+              onPress={() => props.navigation.navigate('TraceConnect')}
             />
             <SettingsList.Item title="Sync My Data" onPress={() => null} />
           </SettingsList>
@@ -119,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingsMenu;
+export default connect(mapStateToProps, null) (SettingsMenu);

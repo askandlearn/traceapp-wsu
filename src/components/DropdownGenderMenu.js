@@ -28,8 +28,8 @@ import {
                 items={[
                     {label: 'Male', value: 'M'},
                     {label: 'Female', value: 'F'},
-                    {label: 'Non-binary', value: 'nonbin'},
-                    {label: 'Other', value: 'other'},
+                    {label: 'Other', value: 'O'},
+                    {label: 'Decline to Answer', value: 'NA'},
                 ]}
                 defaultValue={this.state.gender}
                 containerStyle={{height: 30, width: 220}}

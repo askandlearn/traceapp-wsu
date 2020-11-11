@@ -20,6 +20,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import GenderMenu from '../components/DropdownGenderMenu';
 import HealthGoals from '../components/HealthGoals';
 import HeightPicker from '../components/HeightPicker';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const ProfileScreen = (props) => {
   /*
@@ -38,21 +39,24 @@ const ProfileScreen = (props) => {
   //Load in logout function from AuthContext
   const {logout} = useContext(AuthContext);
 
+  /*
   const [name, editName] = useState(() => {if (user.name) {return user.name;} else {return '';}});
   const [email, setEmail] = useState(() => {if (user.email) {return user.email;} else {return '';}});
   const [dob, editDOB] = useState(() => {if (user.birthdate) {return user.birthdate;} else {return '';}});
   const [zip, editZip] = useState(() => {if (user.zip) {return user.zip;} else {return '';}});
   const [height, editHeight] = useState(() => {if (user.height) {return user.height;} else {return '';}});
   const [weight, editWeight] = useState(() => {if (user.weight) {return user.weight;} else {return '';}});
-
+  const [gender, editGender]  = useState(() => {if (user.gender) {return user.gender;} else {return '';}});
+*/
   const [currentUser, setCurrentUser] = useState(user)
 
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
   const [showDate, setShowDate] = useState(false);
 
-  
-
+//console.log(currentUser.gender);
+//console.log("****************");
+//console.log(user.gender);
 
 
   const [checkValidations, setCheckValidations] = useState({
@@ -74,26 +78,10 @@ const ProfileScreen = (props) => {
   const [initials, setInitials] = useState(initialzeAvatarText());
 
   //check if new value is different from old value
-  const checkZip = (val) =>{
-    //If no changes to the zip code 
-    if(val === user.zip || val === ''){
-      console.log('No changes made')
-    }
-    //If the zip code has changed
-    else{
+  const checkzip = (val) =>{
       //If the zip length is invalid
-    if (val.length != 5){
-      console.log('Invalid Zip length')
-    }
-      //Zip has changed
-      console.log('Different')
-      editZip(val);
-      setCheckValidations({
-        ...checkValidations,
-        diffZip: true
-    
-  
-      });
+      if (val.length != 5){
+        console.log('Invalid Zip length')
     }
   }
   const checkHeight = (val) =>{
@@ -129,22 +117,6 @@ const ProfileScreen = (props) => {
     console.log(currentUser)
     if (isEditable) {
       //POST Request to Update DB
-      /* feature/Profile Updates branch
-      if(checkValidations.diffZip || checkValidations.diffHeight || checkValidations.diffWeight){
-        console.log('Calling update')
-        try{
-          await update(email,zip,height,weight);
-          setCheckValidations({
-            ...checkValidations,
-            diffZip: false,
-            diffHeight: false,
-            diffWeight: false
-          })
-        }
-        catch(err){
-          console.log('Error in saveChanges():',err.message)
-        }
-        */
       console.log('Calling update')
       try{
         await update(currentUser);
@@ -204,15 +176,12 @@ const ProfileScreen = (props) => {
           <Text style={styles.profileCategory}>Additional Info:</Text>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
-
-            {/*
-            API ZIP UPDATE
-            
-            <Text style={styles.contentTitle}>Zip: </Text>
+          <Text style={styles.contentTitle}>Zip: </Text>
             <TextInput
               placeholder='Zip (optional)'
               placeholderTextColor="#a1a2a6"
               textContentType='postalCode'
+               keyboardType='number-pad'
               value={currentUser.zip}
               editable={isEditable}
               style={styles.content}
@@ -220,7 +189,12 @@ const ProfileScreen = (props) => {
               onEndEditing={(e) => checkzip(e.nativeEvent.text)}/>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
-          <TouchableOpacity style={styles.horizontal}>
+          
+
+            {/*
+            API ZIP UPDATE
+            
+            
             <Text style={styles.contentTitle}>City: </Text>
             <TextInput
               placeholder='City (optional)'
@@ -242,18 +216,10 @@ const ProfileScreen = (props) => {
           <TouchableOpacity style={styles.horizontal}>
           */}
 
-            <Text style={styles.contentTitle}>Zip: </Text>
-            <TextInput
-              placeholder='Zip Code (optional)'
-              placeholderTextColor="#a1a2a6"
-              textContentType='postalCode'
-              keyboardType='number-pad'
-              maxLength = {5}
-              style={styles.content}
-              onChangeText={(zip) => editZip(zip)}
-              onEndEditing={(e) => checkZip(e.nativeEvent.text)}
-             />
-          </TouchableOpacity>
+          
+          {/*
+          NOT YET IMPLEMENTED IN THE API
+
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Height (cm): </Text>
@@ -276,12 +242,31 @@ const ProfileScreen = (props) => {
               style={styles.content}
               onChangeText={(weight) => setCurrentUser({...currentUser, weight: weight})}/>
           </TouchableOpacity>
-          <View style={styles.contentBorder} />
+          */}
           <View style={{flexDirection: "row"}}>
             <Text style={styles.contentTitleGender}>Gender: </Text>
             <View style={{flex: 0.99}}/>
             <View style={{alignSelf: 'center'}}>
-              <GenderMenu></GenderMenu>
+              {/*}
+            <DropDownPicker
+                items={[
+                    {label: 'Male', value: 'M'},
+                    {label: 'Female', value: 'F'},
+                    {label: 'Other', value: 'O'},
+                    {label: 'Decline to Answer', value: 'NA'},
+                ]}
+                defaultValue={currentUser.gender}
+                containerStyle={{height: 30, width: 220}}
+          style={{backgroundColor: '#fafafa'}}
+          itemStyle={{
+            justifyContent: 'flex-start',
+          }}
+          dropDownStyle={{backgroundColor: '#fafafa'}}
+          onChangeItem={(item) =>
+            setCurrentUser({...currentUser, gender: item.value})
+          }/>
+        */}
+        <GenderMenu></GenderMenu>
             </View>
           </View>
           <View style={styles.contentBorder} />

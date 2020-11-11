@@ -36,7 +36,9 @@ export function useAuth(){
         user: undefined,
         loading: true
     });
-    
+    /**************************************************
+                         LOGIN
+    ***************************************************/
     const auth = React.useMemo(() => ({
     login: async (username,password) => {
         const STATUS_CODES = [200,400];
@@ -105,12 +107,17 @@ export function useAuth(){
 
         }   //if anything else
     },
+     /**************************************************
+                        LOGOUT
+    ***************************************************/
     logout: async () => {
         console.log('Logout')
         await AsyncStorage.removeItem('@user')
         dispatch(createAction('REMOVE_USER'));
     },
-    /*register: async (firstName,lastName,birthdate,email,password,navigate) => {*/
+    /**************************************************
+                    NEW USER REGISTRATION
+    ***************************************************/
     register: async (email, password, firstName, lastName, birthdate, navigate) => {
         console.log('Register')
         const SUCCESS_MESSAGE = 'User Registered Successfully!';
@@ -135,6 +142,10 @@ export function useAuth(){
             navigate('Login')
         }
     },
+
+    /**************************************************
+                        UPDATE USER
+    ***************************************************/
     update: async (user) => {
         console.log('In update...');
         console.log('username:',user);

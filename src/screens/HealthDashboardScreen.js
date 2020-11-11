@@ -150,7 +150,9 @@ const HealthDashboardScreen = () => {
   );
 };
 
-export default HealthDashboardScreen
+
+export default HealthDashboardScreen;
+
 
 //All styling options created below
 const styles = StyleSheet.create({

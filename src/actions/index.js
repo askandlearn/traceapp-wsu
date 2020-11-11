@@ -108,10 +108,11 @@ export const connectDevice = (device) => {
     }
 }
 
-export const updateColor = (newcolor) => {
+
+export const updateMetric = (newMetric) => {
     return (dispatch, getState, DeviceManager) => {
         const state = getState();
-        console.log("thunk update color: ", state.BLE.connectedDevice);
+        console.log("thunk update metric: ", state.BLE.connectedDevice);
         // try {
         //     // this.info("Updating Device")
         //     let base64 = Base64.btoa(unescape(encodeURIComponent(newcolor)));

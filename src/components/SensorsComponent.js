@@ -5,6 +5,9 @@
 //Device Info = 180A
 //Model Number String = 2A24
 //PNP ID (2A50)
+
+/*Consider taking the NotifyUUID given from the console log and using making a NotifyUUID
+variable and a ServiceUUID variable. This will allow you to remove 2 promises. */
 import React, {Component, useState} from 'react';
 import {Platform, View, Text} from 'react-native';
 import {BleManager, Characteristic} from 'react-native-ble-plx';
@@ -148,28 +151,23 @@ export default class SensorsComponent extends Component {
             return device.discoverAllServicesAndCharacteristics();
           })
           .then((device) => {
-            this.info('Reterning services');
-            var heartBeatService = this.manager.servicesForDevice(device.id);
-            return heartBeatService;
+            this.info('Returning services');
+            var services = this.manager.servicesForDevice(device.id);
+            return services;
           })
-          .then((heartBeatService) => {
+          .then((services) => {
             this.info('Returning characteristics');
             var characteristicService = this.manager.characteristicsForDevice(
               device.id,
-              heartBeatService[0].uuid,
+              services[0].uuid,
             );
-            var thing = device.isConnected();
-            return thing;
+            console.log(services[0].uuid);
+            return characteristicService;
           })
-          .then((characteristicService) => {
-            var otherThing = this._returnConnection(device);
-            if (otherThing) {
-              this.info('yay');
-            } else {
-              this.info('boo');
-            }
-
-            
+          .then((characteristicService) => {            
+            console.log(characteristicService[0].uuid);
+            /*Consider taking the NotifyUUID given from the console log and using making a NotifyUUID
+            variable and a ServiceUUID variable. This will allow you to remove 2 promises. */
             characteristicService[0].monitor((error, characteristic) => {
               if (error) {
                 this.error(error.message);

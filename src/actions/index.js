@@ -1,5 +1,3 @@
-import { Device } from "react-native-ble-plx";
-
 export const connectedDevice = (device) => ({
     type: "CONNECT",
     connectedDevice: device,
@@ -15,7 +13,10 @@ export const changeStatus = (status) => ({
 export const connectAction = () => ({
     type: "CHANGE_CONNECT",
     isConnected: true
-})
+});
+
+const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb'
+const deviceID = 'AB:89:67:45:11:FF'
 
 //some thunks to control the BLE Device
 
@@ -52,7 +53,7 @@ export const scan = () => {
             if (error) {
                 console.log(error);
             }
-            if(device.name === 'I_TL'){
+            if(device.name === 'TRACE'){
                 dispatch(connectDevice(device));
             }
 
@@ -88,14 +89,15 @@ export const connectDevice = (device) => {
               })
               .then((device) => {
                // this.setState({"status":"Setting notifications..."});
-                //console.log("Setting notifications")
-                dispatch(changeStatus("Setting notifications"));
+                //console.log("Setting notifications"
+                dispatch(changeStatus("Getting services"));
+                console.log('device',device)
                 dispatch(connectedDevice(device))
                 return device
                 // var service = DeviceManager.servicesForDevice(device.id);
                 // return service; //device object
               }, (error) => {
-                console.log("SCAN", error);
+                console.log("SCAN", error.message);
                 //return null;
               })
     }
@@ -106,6 +108,33 @@ export const updateMetric = (newMetric) => {
     return (dispatch, getState, DeviceManager) => {
         const state = getState();
         console.log("thunk update metric: ", state.BLE.connectedDevice);
+        state.BLE.connectedDevice.isConnected().then(val => {
+            if(val){
+                dispatch(changeStatus('Returning services'))
+                return DeviceManager.servicesForDevice(deviceID)
+            }else{
+                dispatch(changeStatus('Device is not connected'))
+            }
+        }).then(services => {
+            console.log('services',services)
+            dispatch(changeStatus('Getting characteristics'))
+            return DeviceManager.characteristicsForDevice(deviceID,serviceUUID)
+        }).then(characteristics => {
+            console.log('characteristics',characteristics)
+            
+            var subscription = characteristics[0].monitor((err, characteristics)=>{
+                if(err){
+                    console.log(err.message)
+                    return
+                }
+                if(characteristics.isNotifying){
+                    console.log(characteristics.value)
+                }
+            })
+            subscription.remove()
+        }, (err) => {
+            console.log('UPDATE', err.message)
+        })
         // try {
         //     // this.info("Updating Device")
         //     let base64 = Base64.btoa(unescape(encodeURIComponent(newcolor)));

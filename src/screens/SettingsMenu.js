@@ -11,7 +11,6 @@ import {
 import SettingsList from 'react-native-settings-list';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import { DeviceContext } from '../contexts/DeviceContext';
 
 //redux
 import {connect} from 'react-redux';

@@ -19,7 +19,6 @@ import SensorAlert from '../components/ConnectToSensorAlert';
 import Swiper from 'react-native-swiper';
 import Plot from '../components/Plot';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import { DeviceContext } from '../contexts/DeviceContext';
 
 var check = false;
 

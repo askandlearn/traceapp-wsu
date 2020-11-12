@@ -22,9 +22,7 @@ import {lightTheme} from './src/themes/light';
 import {AuthContext} from './src/contexts/AuthContext';
 import {UserContext} from './src/contexts/UserContext';
 import {useAuth} from './src/hooks/useAuth';
-import {useDevice} from './src/hooks/useDevice';
 import {SplashScreen} from './src/screens/SplashScreen';
-import {DeviceContext} from './src/contexts/DeviceContext';
 
 //redux and its helper libraries
 //reference for implementing redux: https://itnext.io/using-a-raspberry-pi-to-control-leds-part-iii-react-native-app-29ee3f4afb8c
@@ -48,7 +46,6 @@ const store = createStore(rootReducer, applyMiddleware(thunk.withExtraArgument(D
 
 export default function () {
   const {auth, state} = useAuth();
-  const {actions} = useDevice();
 
   function renderScreens() {
     //return splash loading is true

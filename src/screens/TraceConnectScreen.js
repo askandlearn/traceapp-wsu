@@ -15,7 +15,6 @@ import SensorsComponent from '../components/SensorsComponent';
 import HealthDashboard from './HealthDashboardScreen';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {BleManager} from 'react-native-ble-plx';
-import {DeviceContext} from '../contexts/DeviceContext';
 import { Loading } from '../components/Loading-Component';
 import { sleep } from '../utils/sleep';
 
@@ -25,7 +24,8 @@ import {connect} from 'react-redux';
 
 function mapStateToProps(state){
   return{
-    isConnected : state.BLE['isConnected']
+    isConnected : state.BLE['isConnected'],
+    status: state.BLE['status']
   };
 }
 
@@ -52,6 +52,7 @@ const TraceConnectScreen = props => {
           onPress={onConnect}>
           <Text style={styles.buttonText}>Connect</Text>
         </TouchableOpacity>
+        <Text>Connection status: {props.status}</Text>
       </ScrollView>
       <Loading loading={loading} />
     </View>

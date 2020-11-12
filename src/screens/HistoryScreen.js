@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, Linking, FlatList} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image, Linking, FlatList, Platform} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Axios from 'axios';
@@ -77,7 +77,7 @@ const HistoryScreen = (props) => {
     }
 
     return(
-        <View style={{flex: 1}}>
+        <View style={styles.container}>
             <Header openDrawer={props.navigation.openDrawer} />
             <Text style={styles.title}>Recording History</Text>
             <FlatList
@@ -92,7 +92,10 @@ const HistoryScreen = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        ...Platform.select({
+            ios: {paddingTop: 50},
+          }),
     },
     title:{
         alignSelf: 'center',

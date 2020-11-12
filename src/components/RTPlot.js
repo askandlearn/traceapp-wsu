@@ -9,41 +9,47 @@ export default class App extends React.Component {
         type: "scatter",
         mode: "lines+points",
         x: [1, 2, 3],
-        y: [2, 6, 3],
+        y: [1,2,3],
         marker: { color: "#fdcc00" },
         line: { shape: "spline" }
       }
     ],
     check: false,
+    count: 3
   };
 
-  // componentDidMount() {
-  //   // Simulate realtime data
-  //   //if(check==true){
-  //   setInterval(() => {
-  //     let newRealtimeData = [...this.state.realtimeData];
-  //    if(newRealtimeData[0].x.length>5){
-  //       newRealtimeData[0].x.push(Math.floor(Math.random() * 6) + 1);
-  //       console.log("push second"+newRealtimeData[0].x);
-  //       newRealtimeData[0].x.shift();
-  //       console.log("push second"+newRealtimeData[0].x);       
-  //       this.setState({
-  //         realtimeData: newRealtimeData
-  //       });
-  //     }
-  //     else{
-  //       newRealtimeData[0].x.push(newRealtimeData[0].x.length + 1);
-  //       newRealtimeData[0].y.push(newRealtimeData[0].x.length + 2);
-  //       console.log("push first"+newRealtimeData[0].x);
-  //       console.log("push first"+newRealtimeData[0].y);
-  //       this.setState({
-  //         realtimeData: newRealtimeData
-  //       });
-  //     }
+  componentDidMount() {
+    // Simulate realtime data
+    //if(check==true){
+    setInterval(() => {
+      let newRealtimeData = [...this.state.realtimeData];
+    
+     if(newRealtimeData[0].y.length>5){
+        newRealtimeData[0].y.push(Math.floor(Math.random() * 10) + 1);
+        console.log("y second"+newRealtimeData[0].y);
+        newRealtimeData[0].y.shift();
+        newRealtimeData[0].x.push(this.state.count+1);
+        newRealtimeData[0].x.shift();
+        console.log("x second"+newRealtimeData[0].x);       
+        this.setState({
+          realtimeData: newRealtimeData,
+          count: this.state.count+1
+        });
+      }
+      else{
+        newRealtimeData[0].y.push(newRealtimeData[0].x.length + 1);
+        newRealtimeData[0].x.push(this.state.count+1);
+        console.log("x first"+newRealtimeData[0].x);
+        console.log("y first"+newRealtimeData[0].y);
+        this.setState({
+          realtimeData: newRealtimeData,
+          count: this.state.count+1
+        });
+      }
       
-  //   }, 2000);
-  // //}
-  // }
+    }, 4000);
+  //}
+  }
 
   render() {
     return (

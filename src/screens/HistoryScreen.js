@@ -11,6 +11,7 @@ import { UserContext } from '../contexts/UserContext';
 const Item = ({session}) => {
     const [date, time] = session.start_time.split('T');
     return (
+        
     <View style={styles.card}>
         <View style={{flexDirection: 'row'}}>
             <Text style={styles.SessionTitle}>Session ID: </Text>
@@ -77,7 +78,9 @@ const HistoryScreen = (props) => {
     }
 
     return(
-        <View style={{flex: 1}}>
+        <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+          <KeyboardAvoidingScrollView>
             <Header openDrawer={props.navigation.openDrawer} />
             <Text style={styles.title}>Recording History</Text>
             <FlatList
@@ -85,6 +88,7 @@ const HistoryScreen = (props) => {
                 renderItem={renderItem}
                 keyExtractor={session => session.pk.toString()}
             />
+            </KeyboardAvoidingScrollView>
         </View>
     )
 }
@@ -92,8 +96,10 @@ const HistoryScreen = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff'
-    },
+        backgroundColor: '#ffffff',
+        alignContent:'center',
+    
+      },
     title:{
         alignSelf: 'center',
         //marginHorizontal: '10%',

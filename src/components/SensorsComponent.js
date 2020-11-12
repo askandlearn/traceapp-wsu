@@ -169,7 +169,7 @@ export default class SensorsComponent extends Component {
               this.info('boo');
             }
 
-            /*
+            
             characteristicService[0].monitor((error, characteristic) => {
               if (error) {
                 this.error(error.message);
@@ -178,7 +178,7 @@ export default class SensorsComponent extends Component {
               if (characteristic.isNotifying) {
                 this.convertData(characteristic.value);
               }
-            });*/
+            });
           }),
           (error) => {
             this.error(error.message);

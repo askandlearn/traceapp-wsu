@@ -42,7 +42,7 @@ export const scan = () => {
            dispatch(changeStatus("Scanning"));
 
             //timeout
-            endTime = new Date()
+            let endTime = new Date()
             var timeDiff = endTime - startTime; //in ms
             timeDiff /= 1000
 
@@ -52,7 +52,7 @@ export const scan = () => {
             if (error) {
                 console.log(error);
             }
-            if(device.name === 'TRACE'){
+            if(device.name === 'I_TL'){
                 dispatch(connectDevice(device));
             }
 
@@ -90,20 +90,12 @@ export const connectDevice = (device) => {
                // this.setState({"status":"Setting notifications..."});
                 //console.log("Setting notifications")
                 dispatch(changeStatus("Setting notifications"));
+                dispatch(connectedDevice(device))
+                return device
                 // var service = DeviceManager.servicesForDevice(device.id);
                 // return service; //device object
-              })
-              .then((device) => {
-                //this.setState({"status":"listening..."});
-                //console.log("listening")
-                dispatch(changeStatus("Listening"));
-                dispatch(connectedDevice(device))
-                //dispatch(NavigationActions.navigate({routeName:'ColorPicker'}));
-                //this.props.navigation.navigate('ColorPicker');
-                //this.device = device;
-                return device;
               }, (error) => {
-                console.log(this._logError("SCAN", error));
+                console.log("SCAN", error);
                 //return null;
               })
     }

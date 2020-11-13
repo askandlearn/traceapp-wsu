@@ -48,24 +48,26 @@ const ProfileScreen = (props) => {
   const [weight, editWeight] = useState(() => {if (user.weight) {return user.weight;} else {return '';}});
   const [gender, editGender]  = useState(() => {if (user.gender) {return user.gender;} else {return '';}});
 */
+//Create instance of current user
   const [currentUser, setCurrentUser] = useState(user)
 
+  //Create instance of state change variables
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(false);
   const [showDate, setShowDate] = useState(false);
 
-//console.log(currentUser.gender);
-//console.log("****************");
-//console.log(user.gender);
 
-
+//Create validation variables; default value: false
   const [checkValidations, setCheckValidations] = useState({
 
     diffzip: false,
     diffHeight: false,
     diffWeight: false,
+    diffBirthdate: false,
   })
 
+ 
+  //Initialize avatar with the user initials 
   const initialzeAvatarText = () => {
     if (user) {
       const [first, last] = user.name.split(' ');
@@ -74,45 +76,150 @@ const ProfileScreen = (props) => {
       return '';
     }
   };
-
   const [initials, setInitials] = useState(initialzeAvatarText());
 
-  //check if new value is different from old value
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//       VALIDATE ZIP CODE
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const checkzip = (val) =>{
-      //If the zip length is invalid
-      if (val.length != 5){
-        console.log('Invalid Zip length')
-    }
+      //If no changes made to zip
+      if(val === user.zip || val === ''){
+        console.log('No changes made to zip')
+      }
+      //Changes have been made to zip
+      else{
+        //If the zip is not exactly 5 numbers
+        if (val.length != 5){
+          console.log('Invalid Zip length')
+      }
+      //Zip length is valid, update successful
+      else{
+        console.log('Zip has been updated')
+      }
+
+      }
   }
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        VALIDATE HEIGHT
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const checkHeight = (val) =>{
+    //If no changes made to height
     if(val === user.height || val === ''){
-      console.log('No changes made')
+      console.log('No changes made to height')
     }
+    //Changes have been made to height
     else{
-      console.log('Different')
+      console.log('Height has been updated')
+      /*
       editHeight(val);
       setCheckValidations({
         ...checkValidations,
         diffHeight: true
-      });
+      }); */
 
     }
   }
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        VALIDATE WEIGHT
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const checkWeight = (val) =>{
+    //If no changes made to weight
     if(val === user.weight || val===''){
-      console.log('No changes made')
+      console.log('No changes made to weight')
     }
+    //Changes have been made to weight
     else{
-      console.log('Different')
+      console.log('Weight has been updated')
+      /*
       editWeight(val);
       setCheckValidations({
         ...checkValidations,
         diffWeight: true
-      });
+      }); */
     }
   }
 
-  //save changes
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        VALIDATE BIRTHDATE
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const checkBirthdate = (val) =>{
+    //If no changes made to birthdate
+    if(val === user.birthdate || val === ''){
+      console.log('No changes made to birthdate')
+    }
+    //Changes have been made for birthdate
+    else{
+      //Make sure birthdate has been entered in the 
+      //correct format: {mm/dd/yyy}
+
+      //Split date into three variables
+      const [month, day, year] = val.split('/');
+
+    
+
+      //Make sure month, day, year are all defined and of the correct length
+      if (year === undefined || month === undefined || day === undefined || year.length < 4 ||
+        year.length > 4 || month.length !== 2 || day.length !== 2 ) {
+        console.log('Error: Birthdate entry is invalid.')
+      }
+      //Month, day, year are all defined and are the correct length
+      else{
+
+          //Convert month/day/year to an int and store it in a new variable
+      let intYear = parseInt(year, 10);
+      let intDay = parseInt(day, 10);
+      let intMonth = parseInt(month, 10);
+      
+
+      console.log('INT CONVERTED YEAR')
+      console.log(intYear)
+        //If the month entered is invalid
+        if(intMonth < 1 || intMonth > 12){
+          console.log('Month entered is an invalid number')
+        }
+        //If the day entered is invalid
+        else if(intDay <1 || intDay > 31){ 
+          console.log('Day entered is an invalid number')
+        }
+        //If the year entered is invalid
+        else if( intYear > 2020 || intYear < 1920){
+          console.log('Year entered is invalid')
+        }
+        //Month/Day/Year is in the correct format
+        else{
+          //If the birth month is February, make sure the day is correct
+          if(intMonth == 2){
+            //Make sure february has a valid day
+            if(((intYear % 4) == 0 && intDay > 29) || (intDay > 28) ){
+              console.log('Day entered is invalid for the month')
+            }
+          }
+          //If month is jan/mar/may/jul/aug/oct/dec and day > 31
+          else if ((intMonth == 1 || intMonth == 3 || intMonth == 5 || intMonth == 7 ||
+            intMonth === 8 || intMonth == 10 || intMonth == 12) && intDay > 31){
+              console.log('Day cannot be more than 31 for the month')
+            }
+            //Default months left are sept/april/june/november. Make sure day !> 30
+            else if(intDay > 30){
+              console.log('Day cannot be more than 30 for the month')
+            }
+            else{ //Birthday is valid!
+              console.log('Birthdate has been updated')
+              console.log(currentUser.birthdate)
+
+            }
+        }
+      }
+
+
+    }
+  }
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        SAVE CHANGES
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const saveChanges = async () => {
     console.log(currentUser)
     if (isEditable) {
@@ -169,7 +276,9 @@ const ProfileScreen = (props) => {
               placeholderTextColor="#a1a2a6"
               editable={isEditable}
               style={styles.content}
-              onChange={(birthdate) => setCurrentUser({...currentUser, birthdate: birthdate})}/>
+              onChangeText={(birthdate) => setCurrentUser({...currentUser, birthdate: birthdate})}
+              onEndEditing={(e) => checkBirthdate(e.nativeEvent.text)}
+                />
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <View style={{paddingBottom: 40}}/>

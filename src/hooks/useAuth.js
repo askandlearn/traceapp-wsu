@@ -155,11 +155,13 @@ export function useAuth(){
             headers: {'Content-Type':'application/json', 'Authorization':`Token ${user.token}`},
             timeout: 2000
         }
-
+        const [month, day, year] = user.birthdate.split('/');
+        let formatDate = new Date((month -1 ),day,year)
+        console.log(formatDate)
         const response = await axios.patch(url, {
             email: user.email,
             profile:{
-                birthdate: user.birthdate,
+                birthdate: formatDate,
                 sex: user.gender,
                 zip: user.zip
             }

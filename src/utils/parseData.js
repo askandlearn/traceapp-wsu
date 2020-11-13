@@ -1,6 +1,5 @@
 
-
-const convertData = (base64) => {
+export default parseData = (base64) => {
     //Convert from base 64 to byte array
     var binary_string = atob(base64);
     var len = binary_string.length;
@@ -30,44 +29,13 @@ const convertData = (base64) => {
         9.846e-6;
     var deltaT = t_currTime - this.time;
 
-    /*//Update screen
-    this.setState({
-        ppg: t_ppg,
-        dif: t_dif,
-        accelX: t_accelX,
-        });
-        if (this.state.digOut == 0 && t_digOut == 1) {
-        var t_hrv = t_ibi - this.state.ibi;
+    var stats = [
+        t_currTime.toFixed(3),
+        t_bpm,
+        t_ibi
+    ]
     
-        this.setState({
-            ibi: t_ibi,
-            nBeats: this.nBeats++,
-        });
-    
-        if (Math.abs(t_hrv) >= 50) {
-            this.setState({
-            nn50: this.nn50++,
-            });
-        }
-    
-        this.setState({
-            vcnlCurrent: t_vcnlCurrent,
-            bpm: t_bpm,
-            skinTemp: t_skinTemp,
-            ibi: t_ibi,
-            pamp: t_pamp,
-            damp: t_damp,
-            hrv: t_hrv,
-            hrv_pnn50: this.nn50 / this.nBeats,
-            cbf: t_ppg,
-        });
-        }
-    
-        this.setState({
-        time: t_currTime,
-        digOut: t_digOut,
-        });
-    }*/
+    console.log('stats',stats)
 }
 
 const atob = (input = '') => {
@@ -93,7 +61,5 @@ const atob = (input = '') => {
   
     return output;
 };
-
-export default convertData;
 
 

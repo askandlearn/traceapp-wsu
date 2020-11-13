@@ -1,3 +1,5 @@
+import parseData from "../utils/parseData";
+
 export const connectedDevice = (device) => ({
     type: "CONNECT",
     connectedDevice: device,
@@ -9,14 +11,19 @@ export const changeStatus = (status) => ({
     status: status
 });
 
-//for testing purposes
-export const connectAction = () => ({
-    type: "CHANGE_CONNECT",
-    isConnected: true
-});
+export const deviceDisconnected = () => ({
+    type: "DISCONNECTED",
+    isConnected: false,
+    status: 'Disconnected',
+    connectDevice: undefined
+})
+
 
 const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb'
 const deviceID = 'AB:89:67:45:11:FF'
+
+//transaction id for monitoring data
+const transactionID = 'monitor_metrics'
 
 //some thunks to control the BLE Device
 
@@ -24,96 +31,71 @@ export const startScan = () => {
     return (dispatch, getState, DeviceManager) => {
         // you can use Device Manager here
         console.log("thunk startScan: ", DeviceManager);
-        DeviceManager.onStateChange((state) => {
+        const subscription = DeviceManager.onStateChange((state) => {
             if (state === 'PoweredOn') {
                 dispatch(scan());
-                // subscription.remove();
             }
         }, true);
+
+        dispatch(onDisconnect())
       };
 }
 
 export const scan = () => {
     return (dispatch, getState, DeviceManager) => {
-        let startTime = new Date()
         //console.log("thunk Scan: ", DeviceManager);
+
         DeviceManager.startDeviceScan(null, null, (error, device) => {
-            //this.setState({"status":"Scanning..."});
-           // console.log("scanning...");
            dispatch(changeStatus("Scanning"));
-
-            //timeout
-            let endTime = new Date()
-            var timeDiff = endTime - startTime; //in ms
-            timeDiff /= 1000
-
-            //get seconds
-            var seconds = Math.round(timeDiff)
-
             if (error) {
                 console.log(error);
             }
             if(device.name === 'TRACE'){
                 dispatch(connectDevice(device));
             }
-
-            // timeout if not found withing 5 seconds
-            // this is not working at the moment. leave commented out until i can fix 
-            // if(seconds > 5){
-            //     dispatch(changeStatus("Timed out"));
-            //     alert('Unable to connect...')
-            //     dispatch(changeStatus("Changing is connected to true"))
-            //     dispatch(connectAction())
-            //     DeviceManager.stopDeviceScan();
-            // }
         });
+
+        // setTimeout(() => {
+        //     DeviceManager.stopDeviceScan()
+        //     dispatch(changeStatus('Timed out'))
+        // }, 25000)
     }
 }
 
 export const connectDevice = (device) => {
     return (dispatch, getState, DeviceManager) => {
-        //console.log('thunk connectDevice',device['BLE']);
-        //this.setState({"status":"Connecting..."});
-           // console.log("Connecting")
-           dispatch(changeStatus("Connecting"));
-           DeviceManager.stopDeviceScan()
-           // this.device = device['BLE'];
-            device.connect()
-              .then((device) => {
-                //this.setState({"status":"Discovering..."});
-                //console.log("Discovering")
-                dispatch(changeStatus("Discovering"));
-                let characteristics = device.discoverAllServicesAndCharacteristics()
-                console.log("characteristics:", characteristics);
-                return characteristics;
-              })
-              .then((device) => {
-               // this.setState({"status":"Setting notifications..."});
-                //console.log("Setting notifications"
-                dispatch(changeStatus("Getting services"));
-                console.log('device',device)
-                dispatch(connectedDevice(device))
-                return device
-                // var service = DeviceManager.servicesForDevice(device.id);
-                // return service; //device object
-              }, (error) => {
-                console.log("SCAN", error.message);
-                //return null;
-              })
+        dispatch(changeStatus("Connecting"));
+        DeviceManager.stopDeviceScan()
+        device.connect().then((device) => {
+            dispatch(changeStatus("Discovering"));
+            let characteristics = device.discoverAllServicesAndCharacteristics()
+            console.log("characteristics:", characteristics);
+            return characteristics;
+        }).then((device) => {
+            dispatch(changeStatus("Getting services"));
+            console.log('device',device)
+            dispatch(connectedDevice(device))
+            return device
+        }, (error) => {
+            console.log("SCAN", error.message);
+        })
     }
 }
 
 //get metric 
-export const updateMetric = (newMetric) => {
+export const updateMetric = () => {
     return (dispatch, getState, DeviceManager) => {
         const state = getState();
-        console.log("thunk update metric: ", state.BLE.connectedDevice);
-        state.BLE.connectedDevice.isConnected().then(val => {
+        // var device = state.BLE.connectedDevice
+        console.log("thunk update metric: ", state);
+        
+        DeviceManager.isDeviceConnected(deviceID).then(val => {
             if(val){
                 dispatch(changeStatus('Returning services'))
                 return DeviceManager.servicesForDevice(deviceID)
             }else{
                 dispatch(changeStatus('Device is not connected'))
+                
             }
         }).then(services => {
             console.log('services',services)
@@ -122,29 +104,62 @@ export const updateMetric = (newMetric) => {
         }).then(characteristics => {
             console.log('characteristics',characteristics)
             
-            var subscription = characteristics[0].monitor((err, characteristics)=>{
+            const subscription = characteristics[0].monitor((err, characteristics)=>{
                 if(err){
                     console.log(err.message)
                     return
                 }
                 if(characteristics.isNotifying){
-                    console.log(characteristics.value)
+                    // Parse the BLE data packet
+                    // assuming heart rate measurement is Uint8 format, real code should check the flags
+                    // See the characteristic specs http://goo.gl/N7S5ZS
+                    // our format will be 19 bytes total
+                    // [flags, bpm, skin temp msb, AccelX, ibi lsb, ibi msb,
+                    // PAMP lsb, PAMP msb, DAMP lsb, DAMP msb,
+                    // ppg lsb, ppg msb, diff lsb, diff msb, digital out,
+                    // time lsb to msb in ticks (4 bytes) ]
+                    parseData(characteristics.value)
                 }
-            })
-            subscription.remove()
+            }, transactionID)
+
+            // Cancel after specified amount of time
+            setTimeout(() => DeviceManager.cancelTransaction(transactionID),5000)
         }, (err) => {
             console.log('UPDATE', err.message)
         })
-        // try {
-        //     // this.info("Updating Device")
-        //     let base64 = Base64.btoa(unescape(encodeURIComponent(newcolor)));
-        //     let LEDResponse = state.BLEs.connectedDevice.writeCharacteristicWithResponseForService("00010000-89BD-43C8-9231-40F6E305F96D", "00010001-89BD-43C8-9231-40F6E305F96D", base64 )
-        //     dispatch(changeStatus("Changing Color"));
-        //     dispatch(changedColor(newcolor));
-        //     return true;
-        //   } catch(error){
-        //     console.log("update Error:", error)
-        //     return false;
-        //   }
+    }
+}
+
+//cancel data getting
+export const stopMetric = () => {
+    return (dispatch, getState, DeviceManager) => {
+    
+    }
+}
+
+//on disconnect
+export const onDisconnect = () => {
+    return (dispatch, getState, DeviceManager) => {
+        console.log('Disconnect listener...')
+        DeviceManager.onDeviceDisconnected(deviceID, (err,disconnectDevice) => {
+            console.log('Connection lost')
+            dispatch(deviceDisconnected())
+
+            DeviceManager.onStateChange((state) => {
+                if (state === 'PoweredOn') {
+                    console.log('Attempting to reconnect')
+                    dispatch(scan());
+                    setTimeout(() => {
+                        DeviceManager.stopDeviceScan()
+                        console.log('Timed out. Try connecting from connect screen')
+                    }, 5000)
+
+                }
+                else{
+                    console.log('Bluetooth is not on')
+
+                }
+            }, true)
+        })
     }
 }

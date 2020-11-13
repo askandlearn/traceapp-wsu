@@ -9,7 +9,7 @@ const initialState = {
 const bleReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'CONNECT':
-      console.log('Connecting...')
+      // console.log('Connecting...')
       return {
         metrics: state.metrics,
         status: action.status,
@@ -19,10 +19,8 @@ const bleReducer = (state = initialState, action) => {
     case 'CHANGE_STATUS':
       console.log('change status:', action.status);
       return {
-        metrics:state.metrics,
-        status:action.status,
-        connectedDevice:action.connectedDevice,
-        isConnected: action.isConnected
+        ...state,
+        status: action.status
       };
     case 'UPDATE_METRIC':
       return{
@@ -31,9 +29,11 @@ const bleReducer = (state = initialState, action) => {
         connectedDevice: state.connectedDeviece,
         isConnected: state.isConnected
       }
-    case 'CHANGE_CONNECT':  //for testing purposes
+    case 'DISCONNECTED':
       return{
         ...state,
+        status: action.status,
+        connectedDevice: action.connectedDevice,
         isConnected: action.isConnected
       }
     default:

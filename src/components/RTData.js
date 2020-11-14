@@ -17,8 +17,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont();
 
 //const screenWidth = Dimensions.get("window").width;
-// eslint-disable-next-line no-undef
-export default RTData = () => {
+//props.data [0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+export default RTData = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isBiometric, setIsBiometric] = useState(1);
   const [isTimerOn, setTimerOn] = useState(false);
@@ -32,6 +32,8 @@ export default RTData = () => {
   const [isCBF, setCBF] = useState(0);
   const [isDIF, setDIF] = useState(0);
   const [isACC, setACC] = useState(0);
+
+
   return (
     // <PinchZoomView>
     <View style={styles.valueContainer}>

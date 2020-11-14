@@ -1,5 +1,7 @@
 import atob from '../utils/atob';
 
+var RNFS = require('react-native-fs');
+
 //======================================== ACTION CREATORS ======================================
 /**
  * Returns an updated state value
@@ -52,6 +54,20 @@ const deviceID = 'AB:89:67:45:11:FF'
 
 //transaction id for monitoring data
 const transactionID = 'monitor_metrics'
+
+//headers to write into text file
+const headers = [
+    "Time",
+    "HR",
+    "IBI",
+    "PAMP",
+    "DAMP",
+    "PPG",
+    "DIF",
+    "DIG",
+    "ST",
+    "AccX\n"
+]
 
 //=====================================================END=============================================
 
@@ -135,6 +151,26 @@ export const updateMetric = () => {
         //get current state
         const state = getState();
         //console.log("thunk update metric: ", state);  //debugging purposes
+
+        //create file name
+        //e.g. Trace-20201114-045303.txt
+        var curDate = new Date();
+        var filename = "Trace-".concat(
+            curDate.getFullYear().toString(),
+            (curDate.getMonth() + 1).toString().padStart(2, "0"),
+            curDate.getDate().toString().padStart(2, "0"),
+            "-",
+            curDate.getHours().toString().padStart(2, "0"),
+            curDate.getMinutes().toString().padStart(2, "0"),
+            curDate.getSeconds().toString().padStart(2, "0"),
+            ".txt"
+          );
+        // console.log('filename',filename);    //debugging purposes
+
+        // var path = RNFS.DocumentDirectoryPath + '/' + filename;
+        var path = RNFS.DocumentDirectoryPath + '/test.txt';    //testing purposes
+
+        // console.log('path:',path);   //debugging purposes
         
         DeviceManager.isDeviceConnected(deviceID).then(val => {
             if(val){
@@ -146,7 +182,7 @@ export const updateMetric = () => {
             }
         }).then(services => {
             //console.log('services',services); //debugging purposes
-            dispatch(changeStatus('Getting characteristics'))
+            dispatch(changeStatus('Getting custom characteristics'))
             return DeviceManager.characteristicsForDevice(deviceID,serviceUUID)
         }).then(characteristics => {
             //console.log('characteristics',characteristics);   //debugging purposes
@@ -167,6 +203,8 @@ export const updateMetric = () => {
                     // time lsb to msb in ticks (4 bytes) ]
                     const metrics = parseData(characteristics.value)
                     dispatch(updatedMetrics(metrics))
+                    //write to a text file
+                    writeToFile(path, metrics)
                 }
             }, transactionID)
 
@@ -297,9 +335,30 @@ const parseData = (base64) => {
       digOut,
       skinTemp,
       accelX,
-    //   "\n",
+      "\n",
     ];
     console.log('stats',stats)
     return stats
+}
+
+const writeToFile = (path,metrics) => {
+    RNFS.exists(path).then((exists) => {
+        if(exists){
+          RNFS.write(path,metrics.toString(),-1,'utf8').then(success => {
+            console.log('FILE APPENDED')
+          }).catch(err => {
+            console.log(err.message)
+          })
+        }
+        else{
+          RNFS.writeFile(path, headers.toString(), 'utf8').then((success) => {
+            console.log("FILE WRITTEN")
+          }).catch((err) => {
+            console.log(err.message);
+          })
+        }
+    }).catch(err => {
+        console.log('WRITE',err.message)
+    })
 }
 //=====================================================END=============================================

@@ -24,6 +24,9 @@ import {connect} from 'react-redux';
 import { onDisconnect, stopTransaction, updateMetric } from '../actions';
 import { sleep } from '../utils/sleep';
 
+//require module
+var RNFS = require('react-native-fs');
+
 var check = true;
 
 const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb'
@@ -32,7 +35,7 @@ const transactionID = 'monitor_metrics'
 
 const mapStateToProps = state => ({
   connectedDevice: state.BLE['connectedDevice'],
-  metrics: state.BLE['metrics']
+  metrics: state.BLE['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -41,6 +44,22 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const RealTimeScreen = (props) => {
+
+  var path = RNFS.DocumentDirectoryPath + '/test.txt';
+
+  const [content,setContent] = useState()
+
+  const read = () => {
+    //read the file
+    console.log('PATHFILE:',path)
+    RNFS.readFile(path).then(res => {
+      console.log("FILE READ SUCCESSFULLY")
+      setContent(res)
+    }).catch(err => {
+      console.log(err.message,err.code)
+    })
+  }
+
   
   const onStart = async () => {
     props.updateMetric();
@@ -91,14 +110,12 @@ const RealTimeScreen = (props) => {
       <KeyboardAvoidingScrollView>
         <Header openDrawer={props.navigation.openDrawer} />
         <Text style={styles.title}>Real-Time Data</Text>
-        <Button 
+        {/* <RTData data={props.metrics}/> */}
+        <Button
+          title='Start'
           onPress={onStart}
-          title='Start Button'/>
-        <Button 
-          onPress={onStop}
-          title='Stop Button'/>
-        <Text>Metrics:</Text>
-        <Text>{props.metrics.toString()}</Text>
+        />
+        <RTData data={props.metrics}/>
       </KeyboardAvoidingScrollView>
     </View>
   );

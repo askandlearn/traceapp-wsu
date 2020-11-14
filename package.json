@@ -1,5 +1,5 @@
 {
-  "name": "traceApp",
+  "name": "traceapp",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -38,6 +38,7 @@
     "react-native-drawer": "^2.5.1",
     "react-native-dropdown-picker": "^3.7.0",
     "react-native-form-validation": "^1.0.5",
+    "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-ionicons": "^4.6.5",
     "react-native-keyboard-avoiding-scroll-view": "^1.0.1",

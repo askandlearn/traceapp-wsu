@@ -1,6 +1,6 @@
 
 const initialState = {
-  metrics: [],
+  metrics: new Array(11),
   status: 'disconnected',
   connectedDeviece: {},
   isConnected: false

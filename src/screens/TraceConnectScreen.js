@@ -11,7 +11,6 @@ import {
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import SensorsComponent from '../components/SensorsComponent';
-import HealthDashboard from './HealthDashboardScreen';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const TraceConnectScreen = ({navigation}) => {

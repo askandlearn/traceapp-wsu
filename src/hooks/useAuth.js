@@ -165,7 +165,7 @@ export function useAuth(){
       intMonth = intMonth -1;
 
       //Create new date object
-        let formatDate = new Date(user.birthdate);
+        var formatDate = new Date(user.birthdate);
         /*
         formatDate.setMonth(intMonth);
         formatDate.setDate(intDay);

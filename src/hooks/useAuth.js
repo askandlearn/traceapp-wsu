@@ -155,9 +155,26 @@ export function useAuth(){
             headers: {'Content-Type':'application/json', 'Authorization':`Token ${user.token}`},
             timeout: 2000
         }
+        //FORMAT BIRTHDATE FOR MM/DD/YYYY
         const [month, day, year] = user.birthdate.split('/');
-        let formatDate = new Date((month -1 ),day,year)
+        
+        //convert to mm/dd/yy to int
+        let intYear = parseInt(year, 10);
+      let intDay = parseInt(day, 10);
+      let intMonth = parseInt(month, 10);
+      intMonth = intMonth -1;
+
+      //Create new date object
+        let formatDate = new Date(user.birthdate);
+        /*
+        formatDate.setMonth(intMonth);
+        formatDate.setDate(intDay);
+        formatDate.setFullYear(intYear);
+        */
+
         console.log(formatDate)
+
+
         const response = await axios.patch(url, {
             email: user.email,
             profile:{

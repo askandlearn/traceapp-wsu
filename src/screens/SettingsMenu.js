@@ -61,7 +61,7 @@ const SettingsMenu = (props) => {
             <SettingsList.Item
               title="Connect TRACE Sensor"
               titleInfo={props.isConnected ? 'Connected':'Disconnected'}
-              titleInfoStyle={styles.titleInfoStyle}
+              titleInfoStyle={{color: props.isConnected ? 'green':'red'}}
               onPress={() => props.navigation.navigate('TraceConnect')}
             />
             <SettingsList.Item title="Sync My Data" onPress={() => null} />

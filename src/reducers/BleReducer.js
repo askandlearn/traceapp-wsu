@@ -1,6 +1,6 @@
 
 const initialState = {
-  metrics: undefined,
+  metrics: [],
   status: 'disconnected',
   connectedDeviece: {},
   isConnected: false
@@ -24,10 +24,8 @@ const bleReducer = (state = initialState, action) => {
       };
     case 'UPDATE_METRIC':
       return{
-        metrics: action.metric,
-        status:action.status,
-        connectedDevice: state.connectedDeviece,
-        isConnected: state.isConnected
+        ...state,
+        metrics: action.metrics
       }
     case 'DISCONNECTED':
       return{

@@ -21,18 +21,67 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 import Plot from '../components/RTPlot';
 
 import {connect} from 'react-redux';
-import { updateMetric } from '../actions';
+import { onDisconnect, stopTransaction, updateMetric } from '../actions';
+import { sleep } from '../utils/sleep';
 
 var check = true;
 
+const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb'
+//transaction id for monitoring data
+const transactionID = 'monitor_metrics'
+
+const mapStateToProps = state => ({
+  connectedDevice: state.BLE['connectedDevice'],
+  metrics: state.BLE['metrics']
+})
+
 const mapDispatchToProps = dispatch => ({
-  updateMetric: () => dispatch(updateMetric())
+  updateMetric: () => dispatch(updateMetric()),
+  stopTransaction: ID => dispatch(stopTransaction(ID)),
 })
 
 const RealTimeScreen = (props) => {
   
-  const onStart = () => {
+  const onStart = async () => {
     props.updateMetric();
+    // const device = props.connectedDevice
+    // if(device){
+    //   console.log('Device is connected')
+    //   try {
+    //     const characteristics = await device.characteristicsForService(serviceUUID);
+    //     //console.log('Characteristics',characteristics)
+    //     characteristics[0].monitor((err, characteristics) => {
+    //       if(err){
+    //         console.log(err.message)
+    //         return
+    //       }
+    //       if(characteristics.isNotifying){
+    //         // Parse the BLE data packet
+    //         // assuming heart rate measurement is Uint8 format, real code should check the flags
+    //         // See the characteristic specs http://goo.gl/N7S5ZS
+    //         // our format will be 19 bytes total
+    //         // [flags, bpm, skin temp msb, AccelX, ibi lsb, ibi msb,
+    //         // PAMP lsb, PAMP msb, DAMP lsb, DAMP msb,
+    //         // ppg lsb, ppg msb, diff lsb, diff msb, digital out,
+    //         // time lsb to msb in ticks (4 bytes) ]
+    //         // console.log('Reading characteristics...')
+    //         parseData(characteristics.value)
+    //       }
+    //     }, transactionID)
+    //   } catch (error) {
+    //     console.log('UPDATE', error.message)
+    //   }
+      
+    // }
+    // else{
+    //   console.log('Device is undefined')
+    // }
+
+  }
+
+  const onStop = async () => {
+    console.log('Cancelling transaction...')
+    props.stopTransaction(transactionID)
   }
 
   return (
@@ -44,13 +93,18 @@ const RealTimeScreen = (props) => {
         <Text style={styles.title}>Real-Time Data</Text>
         <Button 
           onPress={onStart}
-          title='Fake Button'/>
+          title='Start Button'/>
+        <Button 
+          onPress={onStop}
+          title='Stop Button'/>
+        <Text>Metrics:</Text>
+        <Text>{props.metrics.toString()}</Text>
       </KeyboardAvoidingScrollView>
     </View>
   );
 };
 
-export default connect(null, mapDispatchToProps) (RealTimeScreen);
+export default connect(mapStateToProps, mapDispatchToProps) (RealTimeScreen);
 
 const styles = StyleSheet.create({
   container: {

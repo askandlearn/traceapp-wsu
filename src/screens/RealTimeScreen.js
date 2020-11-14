@@ -17,34 +17,77 @@ import RTTimer from '../components/RTTimer';
 import RTData from '../components/RTData';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 //import SensorAlert from '../components/ConnectToSensorAlert';
-
+import Swiper from 'react-native-swiper';
 import Plot from '../components/RTPlot';
 
 var check = true;
 
 const RealTimeScreen = ({navigation}, props) => {
   const [isTimer, setTimer]= useState(true);
-testTimer=(stopwatchStart)=>{
-  setTimer(stopwatchStart);
-  console.log("Test timer works");
-  console.log(isTimer);
-}
-function trueor(){
-  console.log("Works");
-}
+  const [isStart, setIsStart] = useState(false);
+  // const[isRealTime, setRealTime]= useState({ x: [1, 2, 3],
+  //   y: [1,2,3]});
+    
+//   testTimer=(stopwatchStart)=>{
+//     setTimer(stopwatchStart);
+//     console.log("Test timer works");
+//     console.log(isTimer);
+//     setChild(isTimer);
+//     console.log("isChild:"+stopwatchStart)
+//     return (isTimer);
+// }
+// setPlot=()=>{     
+//   console.log("Started Timer");
+//   const [newRealtimeData, setNewRealTimeData] = [...this.state.realtimeData];
+//   setInterval(() => {
+//   if(newRealtimeData[0].y.length>5){
+//     newRealtimeData[0].y.push(Math.floor(Math.random() * 10) + 1);
+//     console.log("y second"+newRealtimeData[0].y);
+//     newRealtimeData[0].y.shift();
+//     newRealtimeData[0].x.push(this.state.count+1);
+//     newRealtimeData[0].x.shift();
+//     console.log("x second"+newRealtimeData[0].x);       
+//     this.setState({
+//       realtimeData: newRealtimeData,
+//       count: this.state.count+1
+//     });
+//   }
+//   else{
+//     newRealtimeData[0].y.push(newRealtimeData[0].x.length + 1);
+//     newRealtimeData[0].x.push(this.state.count+1);
+//     console.log("x first"+newRealtimeData[0].x);
+//     console.log("y first"+newRealtimeData[0].y);
+//     this.setState({
+//       realtimeData: newRealtimeData,
+//       count: this.state.count+1
+//     });
+//   }
+// }, 2000);
+
+// }
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}>
       <ScrollView>
          <Header openDrawer={navigation.openDrawer} />
          <Text style={styles.title}>Real-Time Data</Text>
-        <RTTimer sendData={this.testTimer} ></RTTimer>
-        
+         <Button
+         title='Show Value'
+         onPress={() => console.log(isStart)}/>
+        <RTTimer setIsStart={setIsStart}></RTTimer>  
+    {/* sendData={this.testTimer} */}
         <View style={styles.NavBarDivider}/>
-        
-        <RTData></RTData>
+        <Swiper style={styles.wrapper} showsButtons loop={false} autoplay={false}>
+        <View testID="Data" style={styles.slide1}>
+          <Text style={styles.slideTitles}>Biometric Data by Numbers</Text>
+          <RTData></RTData>
+        </View>
         {/* <View style={styles.NavBarDivider} /> */}
-        {isTimer==true && <Plot></Plot>}
+        <View testID="Plot" style={styles.slide2}>
+        <Text style={styles.slideTitles}>Biometric Data by Plot</Text>
+         <Plot isStart={isStart}></Plot>
+        </View>
+        </Swiper>
       </ScrollView> 
     </View>
   );
@@ -165,13 +208,36 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   wrapper: {
-    // flex:1,
-    height: 300,
-    //backgroundColor: '#9DD6EB'
-
-    //opacity:0.4,
-    backgroundColor: '#ffffff',
-  },
+     height:600,
+     backgroundColor:'#ffffff', 
+   },
+   slide1: {
+     height:'100%',
+     paddingHorizontal:'10%',
+     justifyContent: 'center',
+     alignItems: 'center',
+     color: '#000000',
+     fontSize: 20,
+   },
+   slideTitles:{
+    alignSelf: 'center',
+    //marginHorizontal: '10%',
+    //marginVertical: 50,
+    color: '#202020',
+    fontWeight: 'bold',
+    fontSize: 30,
+    textAlign: 'center',
+   },
+   slide2: {
+    // flex: 1,
+     height:'100%',
+     //justifyContent: 'center',
+     paddingVertical:'10%',
+     paddingHorizontal:'10%',
+     alignItems: 'center',
+    
+     //backgroundColor: '#97CAE5'
+   },
 
   steps: {
     color: '#000000',

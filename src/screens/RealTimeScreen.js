@@ -63,39 +63,6 @@ const RealTimeScreen = (props) => {
   
   const onStart = async () => {
     props.updateMetric();
-    // const device = props.connectedDevice
-    // if(device){
-    //   console.log('Device is connected')
-    //   try {
-    //     const characteristics = await device.characteristicsForService(serviceUUID);
-    //     //console.log('Characteristics',characteristics)
-    //     characteristics[0].monitor((err, characteristics) => {
-    //       if(err){
-    //         console.log(err.message)
-    //         return
-    //       }
-    //       if(characteristics.isNotifying){
-    //         // Parse the BLE data packet
-    //         // assuming heart rate measurement is Uint8 format, real code should check the flags
-    //         // See the characteristic specs http://goo.gl/N7S5ZS
-    //         // our format will be 19 bytes total
-    //         // [flags, bpm, skin temp msb, AccelX, ibi lsb, ibi msb,
-    //         // PAMP lsb, PAMP msb, DAMP lsb, DAMP msb,
-    //         // ppg lsb, ppg msb, diff lsb, diff msb, digital out,
-    //         // time lsb to msb in ticks (4 bytes) ]
-    //         // console.log('Reading characteristics...')
-    //         parseData(characteristics.value)
-    //       }
-    //     }, transactionID)
-    //   } catch (error) {
-    //     console.log('UPDATE', error.message)
-    //   }
-      
-    // }
-    // else{
-    //   console.log('Device is undefined')
-    // }
-
   }
 
   const onStop = async () => {

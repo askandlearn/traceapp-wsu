@@ -5,6 +5,7 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 import Axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Loading } from '../components/Loading-Component';
 
 
 
@@ -51,25 +52,36 @@ const HistoryScreen = (props) => {
 
     const user = useContext(UserContext);
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     //upon inital render
     useEffect(() => {
         const getData = async () => {
-            const url = 'http://134.209.76.190:8000/api/Recording'
-            const config = {
-                headers: {'Authorization':`Token ${user.token}`},
-                timeout: 2000   //two seconds timeout
+            try{
+                const url = 'http://134.209.76.190:8000/api/Recording'
+                const config = {
+                    headers: {'Authorization':`Token ${user.token}`},
+                    timeout: 2000   //two seconds timeout
+                }
+                
+                const data = await Axios.get(url, config).then(res => res.data).catch(err => {
+                    console.log(err.code);
+                    console.log(err.message)
+                })
+                
+                setData(data.results)
+                setLoading(false)
             }
-    
-            const data = await Axios.get(url, config).then(res => res.data).catch(err => {
-                console.log(err.code);
+            catch(err){
+                setLoading(false);
+                alert('Error getting recordings')
                 console.log(err.message)
-            })
-
-            setData(data.results)
+            }
         }
 
+    
         getData();
+
         // console.log(data[0].pk)
     },[])
 
@@ -92,6 +104,7 @@ const HistoryScreen = (props) => {
                 renderItem={renderItem}
                 keyExtractor={session => session.pk.toString()}
             />
+            <Loading loading={loading}/>
         </View>
     )
 }

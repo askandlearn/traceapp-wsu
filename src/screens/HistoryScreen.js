@@ -1,9 +1,10 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, Linking, FlatList, Platform} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image, Linking, FlatList, Platform, ScrollView} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 
@@ -80,15 +81,17 @@ const HistoryScreen = (props) => {
     return(
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-          <KeyboardAvoidingScrollView>
-            <Header openDrawer={props.navigation.openDrawer} />
-            <Text style={styles.title}>Recording History</Text>
-            <FlatList
+            <FlatList 
+                ListHeaderComponent={
+                    <View>
+                        <Header openDrawer={props.navigation.openDrawer} />
+                        <Text style={styles.title}>Recording History</Text>
+                    </View>
+                }
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={session => session.pk.toString()}
             />
-            </KeyboardAvoidingScrollView>
         </View>
     )
 }
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
         
     },
     DescriptionContent: {
-        fontSize: 15,
+        fontSize: 17,
         color: 'white',
         flex: 1,
        // flexWrap: 'wrap',

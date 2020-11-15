@@ -33,6 +33,7 @@ export default function () {
     }
 
     return (state.user)? (
+
       <RootStack.Screen name={'MainStack'}>
         {() => (
           <UserContext.Provider value={state.user}>

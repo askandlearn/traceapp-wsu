@@ -1,4 +1,3 @@
-
 import React, {useContext} from 'react'
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { View, StyleSheet, Text } from 'react-native';
@@ -36,7 +35,7 @@ export function CusomDrawerComponent({...props}){
                         onPress={() => {props.navigation.navigate('Home')}}
                     />
                     <DrawerItem
-                        label='Profile'
+                        label='Account'
                         icon={({color,size}) => (
                             <Icon name='account' color={color} size={size} style={styles.drawerItem}/>
                         )}

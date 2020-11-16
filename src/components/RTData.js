@@ -90,9 +90,6 @@ const RTData = (props) => {
             setModalVisible(true);
             setTimerOn(true);
           }}>
-          {isHR != 0 && (
-            <Pulse color="red" numPulses={1} diameter={35} speed={55} />
-          )}
           <Text style={styles.valueText}>{isHR}</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -101,9 +98,6 @@ const RTData = (props) => {
             setIsBiometric(2);
             setModalVisible(true);
           }}>
-          {isIBI != 0 && (
-            <Pulse color="red" numPulses={1} diameter={35} speed={55} />
-          )}
           <Text style={styles.valueText}>{isIBI}</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -112,9 +106,6 @@ const RTData = (props) => {
             setIsBiometric(3);
             setModalVisible(true);
           }}>
-          {isHRV != 0 && (
-            <Pulse color="red" numPulses={1} diameter={35} speed={55} />
-          )}
           <Text style={styles.valueText}>{isHRV}</Text>
         </TouchableOpacity>
       </View>
@@ -133,9 +124,6 @@ const RTData = (props) => {
             setIsBiometric(4);
             setModalVisible(true);
           }}>
-          {isPN != 0 && (
-            <Pulse color="red" numPulses={1} diameter={35} speed={55} />
-          )}
           <Text style={styles.valueText}>{isPN}</Text>
         </TouchableOpacity>
 
@@ -145,9 +133,6 @@ const RTData = (props) => {
             setIsBiometric(5);
             setModalVisible(true);
           }}>
-          {isSkinTemp != 0 && (
-            <Pulse color="red" numPulses={1} diameter={35} speed={55} />
-          )}
           <Text style={styles.valueText}>{isSkinTemp}</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -156,9 +141,6 @@ const RTData = (props) => {
             setIsBiometric(6);
             setModalVisible(true);
           }}>
-          {isPAMP != 0 && (
-            <Pulse color="red" numPulses={1} diameter={35} speed={55} />
-          )}
           <Text style={styles.valueText}>{isPAMP}</Text>
         </TouchableOpacity>
       </View>
@@ -178,9 +160,6 @@ const RTData = (props) => {
             setIsBiometric(7);
             setModalVisible(true);
           }}>
-          {isDAMP != 0 && (
-            <Pulse color="red" numPulses={1} diameter={35} speed={55} />
-          )}
           <Text style={styles.valueText}>{isDAMP}</Text>
         </TouchableOpacity>
 
@@ -190,9 +169,6 @@ const RTData = (props) => {
             setIsBiometric(8);
             setModalVisible(true);
           }}>
-          {isCBF != 0 && (
-            <Pulse color="red" numPulses={1} diameter={35} speed={55} />
-          )}
           <Text style={styles.valueText}>{isCBF}</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -201,9 +177,6 @@ const RTData = (props) => {
             setIsBiometric(9);
             setModalVisible(true);
           }}>
-          {isDIF != 0 && (
-            <Pulse color="red" numPulses={1} diameter={35} speed={55} />
-          )}
           <Text style={styles.valueText}>{isDIF}</Text>
         </TouchableOpacity>
       </View>
@@ -220,9 +193,6 @@ const RTData = (props) => {
             setIsBiometric(10);
             setModalVisible(true);
           }}>
-          {isACC != 0 && (
-            <Pulse color="red" numPulses={1} diameter={35} speed={55} />
-          )}
           <Text style={styles.valueText}>{isACC}</Text>
         </TouchableOpacity>
       </View>

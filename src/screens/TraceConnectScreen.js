@@ -1,5 +1,4 @@
 import React, {useContext, useState} from 'react';
-import {render} from 'react-dom';
 import {
   View,
   ScrollView,
@@ -8,15 +7,14 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  ImageBackground,
 } from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
 import SensorsComponent from '../components/SensorsComponent';
 import HealthDashboard from './HealthDashboardScreen';
-import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import {BleManager} from 'react-native-ble-plx';
 import { Loading } from '../components/Loading-Component';
 import { sleep } from '../utils/sleep';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //redux functions
 import {startScan} from '../actions';
@@ -33,6 +31,7 @@ const mapDispatchToProps = dispatch => ({
   startScan: () => dispatch(startScan())
 })
 
+
 const TraceConnectScreen = props => {
 
   const [loading, setLoading] = useState(false)
@@ -44,17 +43,18 @@ const TraceConnectScreen = props => {
   return (
     <View style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
-      <ScrollView>
-        <Text style={styles.title}>Connect Your TRACE Device</Text>
-        <TouchableOpacity
-          title="Save Changes"
-          style={styles.button}
-          onPress={onConnect}>
-          <Text style={styles.buttonText}>Connect</Text>
-        </TouchableOpacity>
-        <Text>Connection status: {props.status}</Text>
-      </ScrollView>
-      <Loading loading={loading} />
+      <Text style={styles.title}>Connect Your TRACE Device</Text>
+      <TouchableOpacity
+        title="On Connect"
+        style={styles.button}
+        onPress={onConnect}>
+        <Text style={styles.buttonText}>Connect</Text>
+      </TouchableOpacity>
+      <Text>Connection status: {props.status}</Text>
+      <View style={[styles.bluetooth, {backgroundColor: props.isConnected ? '#ff0000':'gray'}]}>
+        <Icon style={{alignSelf:'center'}} name="bluetooth" size={50} color='white'/>
+        {/* <Pulse/> */}
+      </View>
     </View>
   );
 };
@@ -67,31 +67,6 @@ const styles = StyleSheet.create({
       ios: {paddingTop: 50},
     }),
   },
-  backgroundImage: {
-    alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 20,
-    width: '60%',
-    height: 100,
-    resizeMode: 'stretch',
-  },
-  deviceImage: {
-    alignSelf: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-    width: '55%',
-    height: '20%',
-    resizeMode: 'stretch',
-  },
-  inputFields: {
-    backgroundColor: '#FFFFFF',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    padding: 10,
-    fontWeight: 'bold',
-    opacity: 0.4,
-    borderRadius: 3,
-  },
   title: {
     alignSelf: 'center',
     marginHorizontal: '10%',
@@ -102,8 +77,8 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   button: {
-    //alignSelf: 'center',
-    //width: '60%',
+    // alignSelf: 'center',
+    width: '60%',
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
@@ -115,14 +90,18 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
-  header: {
-    width: '100%',
-    height: 60,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
+  bluetooth:{
+    marginTop: 80,
+    borderWidth: 0,
+    padding: 5,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    alignContent: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'gray'
+    
+  }
 });
 
 export default connect(mapStateToProps,mapDispatchToProps) (TraceConnectScreen);

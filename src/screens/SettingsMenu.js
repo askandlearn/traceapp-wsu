@@ -41,18 +41,6 @@ const SettingsMenu = (props) => {
         <View style={{backgroundColor: '#f1f1f2', flex: 1}}>
           <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
             <SettingsList.Header headerStyle={{marginTop: 15}} />
-            {/* <SettingsList.Item
-                  hasSwitch={true}
-                  switchState={this.state.switchValue}
-                  switchOnValueChange={this.onValueChange}
-                  hasNavArrow={false}
-                  title='Airplane Mode'
-                /> */}
-            {/*<SettingsList.Item
-            title="My Health Information"
-            titleInfoStyle={styles.titleInfoStyle}
-            onPress={() => navigation.navigate('HealthInformation')}
-          />*/}
             <SettingsList.Item
               title="Change Password"
               titleInfoStyle={styles.titleInfoStyle}

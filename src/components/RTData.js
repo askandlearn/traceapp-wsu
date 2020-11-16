@@ -23,7 +23,8 @@ import {connect} from 'react-redux';
 function mapStateToProps(state){
   return{
     pnn50: state.DATA['pnn50'],
-    hrv: state.DATA['hrv']
+    hrv: state.DATA['hrv'],
+    metrics: state.BLE['metrics'],
   }
 }
 
@@ -52,7 +53,7 @@ const RTData = (props) => {
     //   setPAMP(props.data[3])
     //   setDAMP(props.data[4])
     //   setACC(props.data[9])
-    // }, 1000);
+    // }, 2000);
     setPN(props.pnn50)
     setHRV(props.hrv)
   },[props.hrv,props.pnn50])
@@ -90,7 +91,7 @@ const RTData = (props) => {
             setModalVisible(true);
             setTimerOn(true);
           }}>
-          <Text style={styles.valueText}>{isHR}</Text>
+          <Text style={styles.valueText}>{props.metrics[1]}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.valueButton}
@@ -98,7 +99,7 @@ const RTData = (props) => {
             setIsBiometric(2);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{isIBI}</Text>
+          <Text style={styles.valueText}>{props.metrics[2]}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.valueButton}
@@ -133,7 +134,7 @@ const RTData = (props) => {
             setIsBiometric(5);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{isSkinTemp}</Text>
+          <Text style={styles.valueText}>{props.metrics[8]}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.valueButton}
@@ -141,7 +142,7 @@ const RTData = (props) => {
             setIsBiometric(6);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{isPAMP}</Text>
+          <Text style={styles.valueText}>{props.metrics[3]}</Text>
         </TouchableOpacity>
       </View>
 
@@ -160,7 +161,7 @@ const RTData = (props) => {
             setIsBiometric(7);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{isDAMP}</Text>
+          <Text style={styles.valueText}>{props.metrics[4]}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -177,7 +178,7 @@ const RTData = (props) => {
             setIsBiometric(9);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{isDIF}</Text>
+          <Text style={styles.valueText}>0</Text>
         </TouchableOpacity>
       </View>
       {/* FOURTH ROW */}
@@ -193,7 +194,7 @@ const RTData = (props) => {
             setIsBiometric(10);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{isACC}</Text>
+          <Text style={styles.valueText}>{props.metrics[9]}</Text>
         </TouchableOpacity>
       </View>
 

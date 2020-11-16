@@ -70,7 +70,10 @@ export const updatedHRV = (value) => ({
 //==========================================CONSTANTS=================================================
 // device constants
 const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb' 
-const deviceID = 'AB:89:67:45:11:FF'
+// For Android const deviceID = 'AB:89:67:45:11:FF'
+
+//For iOS
+const deviceID = 'A0524966-65F3-A409-C6D1-20ED628ED43A'
 
 //transaction id for monitoring data
 const transactionID = 'monitor_metrics'
@@ -148,11 +151,11 @@ export const connectDevice = (device) => {
         device.connect().then((device) => {
             dispatch(changeStatus("Discovering"));
             let characteristics = device.discoverAllServicesAndCharacteristics()
-            //console.log("characteristics:", characteristics); //debugging purposes
+            console.log("characteristics:", characteristics); //debugging purposes
             return characteristics;
         }).then((device) => {
             dispatch(changeStatus("Getting services"));
-            //console.log('device',device); //debugging purposes
+            console.log('device',device); //debugging purposes
             dispatch(connectedDevice(device))
             dispatch(changeStatus('Connected'))
             return device
@@ -204,11 +207,11 @@ export const updateMetric = () => {
                 
             }
         }).then(services => {
-            //console.log('services',services); //debugging purposes
+            console.log('services',services); //debugging purposes
             dispatch(changeStatus('Getting custom characteristics'))
             return DeviceManager.characteristicsForDevice(deviceID,serviceUUID)
         }).then(characteristics => {
-            //console.log('characteristics',characteristics);   //debugging purposes
+            console.log('characteristics',characteristics);   //debugging purposes
             
             const subscription = characteristics[0].monitor((err, characteristics)=>{
                 if(err){
@@ -232,7 +235,7 @@ export const updateMetric = () => {
             }, transactionID)
 
             // Cancel after specified amount of time
-            setTimeout(() => DeviceManager.cancelTransaction(transactionID),2000)
+            setTimeout(() => DeviceManager.cancelTransaction(transactionID),10000)
         }, (err) => {
             console.log('UPDATE', err.message)
         })

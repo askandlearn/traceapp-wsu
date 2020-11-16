@@ -53,28 +53,14 @@ export default RTData = (props) => {
       </View>
       {/* FIRST ROW */}
       <View
-        style={{
-          flexDirection: 'row',
-          width: '95%',
-          paddingHorizontal: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginHorizontal: '2%',
-        }}>
-        <Text style={styles.valueTitle}> HR (bpm)</Text>
+        style={styles.row}>
+        <Text style={[styles.valueTitle,{}]}> HR (bpm)</Text>
         <Text style={styles.valueTitle}> IBI (ms)</Text>
         <Text style={styles.valueTitle}>HRV (ms)</Text>
       </View>
 
       <View
-        style={{
-          flexDirection: 'row',
-          width: '95%',
-          paddingHorizontal: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginHorizontal: '2%',
-        }}>
+        style={styles.row}>
         <TouchableOpacity
           style={styles.valueButton}
           onPress={() => {
@@ -112,27 +98,13 @@ export default RTData = (props) => {
       </View>
       {/* SECOND ROW */}
       <View
-        style={{
-          flexDirection: 'row',
-          width: '95%',
-          paddingHorizontal: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginHorizontal: '2%',
-        }}>
+        style={styles.row}>
         <Text style={styles.valueTitle}> pNN50</Text>
         <Text style={styles.valueTitle}>Skin Temp</Text>
         <Text style={styles.valueTitle}> PAMP</Text>
       </View>
       <View
-        style={{
-          flexDirection: 'row',
-          width: '95%',
-          paddingHorizontal: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginHorizontal: '2%',
-        }}>
+        style={styles.row}>
         <TouchableOpacity
           style={styles.valueButton}
           onPress={() => {
@@ -171,27 +143,13 @@ export default RTData = (props) => {
 
       {/* THIRD ROW */}
       <View
-        style={{
-          flexDirection: 'row',
-          width: '95%',
-          paddingHorizontal: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginHorizontal: '2%',
-        }}>
+        style={styles.row}>
         <Text style={styles.valueTitle}> DAMP</Text>
         <Text style={styles.valueTitle}> CBF</Text>
         <Text style={styles.valueTitle}> DIF</Text>
       </View>
       <View
-        style={{
-          flexDirection: 'row',
-          width: '95%',
-          paddingHorizontal: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginHorizontal: '2%',
-        }}>
+        style={styles.row}>
         <TouchableOpacity
           style={styles.valueButton}
           onPress={() => {
@@ -229,25 +187,11 @@ export default RTData = (props) => {
       </View>
       {/* FOURTH ROW */}
       <View
-        style={{
-          flexDirection: 'row',
-          width: '95%',
-          paddingHorizontal: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginHorizontal: '2%',
-        }}>
+        style={styles.row}>
         <Text style={styles.valueTitle}> ACC_X</Text>
       </View>
       <View
-        style={{
-          flexDirection: 'row',
-          width: '95%',
-          paddingHorizontal: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginHorizontal: '2%',
-        }}>
+        style={styles.row}>
         <TouchableOpacity
           style={styles.valueButton}
           onPress={() => {
@@ -401,7 +345,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginHorizontal: '8.5%',
     marginTop: '3%',
-    width: 80,
+    width: 85,
     height: 25,
     alignSelf: 'center',
     alignContent: 'center',
@@ -418,7 +362,7 @@ const styles = StyleSheet.create({
     //borderRadius: 20,
 
     borderBottomWidth: 1,
-    width: 65,
+    width: 75,
     height: 30,
     borderColor: 'rgba(0,0,0,0.2)',
     // backgroundColor:'rgba(255,255,255,0.7)',
@@ -519,4 +463,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
+  row:{
+
+    flexDirection: 'row',
+    width: '100%',
+    paddingHorizontal: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: '2%',
+  }
 });

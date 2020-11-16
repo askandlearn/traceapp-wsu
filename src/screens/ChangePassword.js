@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -9,14 +9,69 @@ import {
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {UserContext} from '../contexts/UserContext';
+import {Alert} from 'react-native';
+import axios from 'axios';
 
 const ChangePassword = ({navigation}) => {
+  //create user context
+  const user = useContext(UserContext);
+
+
+  //define
+  const [email] = useState(() => {if (user.email) {return user.email;} else {return '';}});
   const [oldPass, setOldPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [confNewPass, setConfNewPass] = useState('');
-  const submit = () => {
+
+  const updatePass = async()=>{
+    handleConfNewPass();
+    if(checkPass){
+      const url = 'http://192.168.1.189/PHP-API/updatePass.php';
+      //there is a timout parameter set for 2 sec
+      //reference: https://medium.com/@masnun/handling-timeout-in-axios-479269d83c68
+      const results = await axios.post(url, {
+          email: email,
+          oldPass: oldPass,
+          password: newPass,
+      }, {
+          timeout: 2000
+      }).then(res => res.data).catch(err => {
+          console.log(err.code)
+          console.log(err.message)
+      })
+      console.log(results)
+
+      if(results === 'Update password successful'){
+        alert('Password change successful!')
+      }
+      else{
+        alert('Password change unsuccessful.')
+      }
+    }
+    else{
+      alert('Password does not match')
+    }
+   
+  }
+  /*const submit = () => {
     alert('Password Updated');
+  };*/
+  
+   //Validation flags
+  const [checkPass, setCheckPass] = useState(false);
+
+  const handleConfNewPass = () => {
+    if(confNewPass === newPass){
+      console.log('Same pass')
+      setCheckPass(true)
+    }
+    else{
+      console.log('Diff pass')
+      setCheckPass(false)
+    }
   };
+
 
   return (
     <View style={styles.container}>
@@ -27,27 +82,38 @@ const ChangePassword = ({navigation}) => {
       </View>
       <Text style={styles.title}>Update Password</Text>
       <TextInput
+        secureTextEntry
         placeholder="Current password"
         style={styles.textInput}
         autoCapitalize="none"
         onChangeText={(oldPass) => setOldPass(oldPass)}
       />
       <TextInput
+        secureTextEntry
         placeholder="New password"
         style={styles.textInput}
         autoCapitalize="none"
         onChangeText={(newPass) => setNewPass(newPass)}
       />
       <TextInput
+        secureTextEntry
         placeholder="Re-type new password"
         style={styles.textInput}
         autoCapitalize="none"
         onChangeText={(confNewPass) => setConfNewPass(confNewPass)}
+        onEndEditing={() => handleConfNewPass()}
       />
       <TouchableOpacity
         title="Save Changes"
         style={styles.button}
-        onPress={submit}>
+        onPress={async () => {
+          try {
+            await updatePass();
+          } catch (e) {
+            Alert.alert("Error: Couldn't update password.");
+            console.log('Error: ' + e.message);
+          }
+        }}>
         <Text style={styles.buttonText}>Save Changes</Text>
       </TouchableOpacity>
     </View>

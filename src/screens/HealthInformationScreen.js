@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 import Header from '../components/Header-Component';
-import HealthDashboard from './HealthDashboardScreen';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 //export default class HealthInfoScreen extends Component{

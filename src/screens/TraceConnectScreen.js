@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import Header from '../components/Header-Component';
 import SensorsComponent from '../components/SensorsComponent';
-import HealthDashboard from './HealthDashboardScreen';
 import { Loading } from '../components/Loading-Component';
 import { sleep } from '../utils/sleep';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,6 +18,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 //redux functions
 import {startScan} from '../actions';
 import {connect} from 'react-redux';
+import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 
 function mapStateToProps(state){
   return{
@@ -41,8 +41,12 @@ const TraceConnectScreen = props => {
   }
 
   return (
-    <View style={styles.container}>
-      <Header openDrawer={props.navigation.openDrawer} />
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => props.navigation.pop()}>
+          <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.title}>Connect Your TRACE Device</Text>
       <TouchableOpacity
         title="On Connect"
@@ -101,7 +105,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'gray'
     
-  }
+  },
+  header: {
+    width: '100%',
+    height: 60,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
 });
 
 export default connect(mapStateToProps,mapDispatchToProps) (TraceConnectScreen);

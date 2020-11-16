@@ -45,6 +45,26 @@ export const updatedMetrics = (metrics) => ({
     type: 'UPDATE_METRIC',
     metrics: metrics
 })
+/**
+ * Returns an updated state value for DataReducer
+ * Called in updateMetrics()
+ * 
+ * @returns {state} pnn50: newValue
+ */
+export const updatedPNN50 = (value) => ({
+    type:'UPDATE_PNN50',
+    pnn50: value
+})
+/**
+ * Returns an updated state value for DataReducer
+ * Called in updateMetrics()
+ * 
+ * @returns {state} hrv: newValue
+ */
+export const updatedHRV = (value) => ({
+    type:'UPDATE_HRV',
+    hrv: value
+})
 //====================================================END=============================================
 
 //==========================================CONSTANTS=================================================
@@ -204,15 +224,15 @@ export const updateMetric = () => {
                     // PAMP lsb, PAMP msb, DAMP lsb, DAMP msb,
                     // ppg lsb, ppg msb, diff lsb, diff msb, digital out,
                     // time lsb to msb in ticks (4 bytes) ]
-                    const metrics = parseData(characteristics.value)
+                    const metrics = parseData(characteristics.value, dispatch)
                     dispatch(updatedMetrics(metrics))
                     //write to a text file
-                    writeToFile(path, metrics)
+                    // writeToFile(path, metrics)
                 }
             }, transactionID)
 
             // Cancel after specified amount of time
-            // setTimeout(() => DeviceManager.cancelTransaction(transactionID),5000)
+            setTimeout(() => DeviceManager.cancelTransaction(transactionID),2000)
         }, (err) => {
             console.log('UPDATE', err.message)
         })
@@ -274,8 +294,8 @@ const reset = () => {
     }
 }
 
-
-const parseData = (base64) => {
+//Taken from Dr. Amar Basu parsing function in traceapp-cordova
+const parseData = (base64, dispatch) => {
     //Convert from base 64 to byte array
     var binary_string = atob(base64);
     var len = binary_string.length;
@@ -322,6 +342,10 @@ const parseData = (base64) => {
       const reducer = (accumulator, currentValue) => accumulator + (currentValue >=50);
       var pnn50 = values_p.hrv_fifo.reduce(reducer, 0)/values_p.hrv_fifo.length;
     //   console.log('pnn50',pnn50.toFixed(3))
+
+      // call dispatch and update pnn50 and hrv
+      dispatch(updatedHRV(hrv))
+      dispatch(updatedPNN50(pnn50.toFixed(3)))
     }
 
     values_p.time_p = curTime
@@ -344,6 +368,7 @@ const parseData = (base64) => {
     return stats
 }
 
+//reference: https://github.com/itinance/react-native-fs#Examples
 const writeToFile = (path,metrics) => {
     RNFS.exists(path).then((exists) => {
         if(exists){

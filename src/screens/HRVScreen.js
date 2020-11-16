@@ -25,8 +25,6 @@ var check = false;
 const HRVScreen = ({navigation}, props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  //get device functions from context
-  const {getInfo, isConnected} = useContext(DeviceContext)
 
   const handleCheck = (checkedId) => {
     this.setState({checkedId});
@@ -37,13 +35,6 @@ const HRVScreen = ({navigation}, props) => {
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
         <Header openDrawer={navigation.openDrawer} />
-        <Button
-          title='Press me'
-          onPress={() => {
-            getInfo()
-            isConnected()
-          }}
-        />
         <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
         <View>{check && <SensorAlert />}</View>
         <Timer />

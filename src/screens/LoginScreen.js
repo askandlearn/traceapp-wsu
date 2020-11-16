@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginTop: '25%',
+    marginTop: '5%',
   },
   backgroundImage: {
     alignSelf: 'center',

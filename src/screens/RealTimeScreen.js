@@ -17,7 +17,7 @@ import RTTimer from '../components/RTTimer';
 import RTData from '../components/RTData';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 //import SensorAlert from '../components/ConnectToSensorAlert';
-
+import Swiper from 'react-native-swiper';
 import Plot from '../components/RTPlot';
 
 import {connect} from 'react-redux';
@@ -73,26 +73,29 @@ const RealTimeScreen = (props) => {
   }
 
   return (
-    <View
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <KeyboardAvoidingScrollView>
-        <Header openDrawer={props.navigation.openDrawer} />
-        <Text style={styles.title}>Real-Time Data</Text>
-        {/* <RTData data={props.metrics}/> */}
-        <Button
-          title='Start'
-          onPress={onStart}
-        />
-        <Button
-          color='red'
-          title='Stop'
-          onPress={onStop}
-        />
-        <RTData data={props.metrics}/>
-        {/* <Text>PNN50: {props.pnn50}</Text>
-        <Text>HRV: {props.hrv}</Text> */}
-      </KeyboardAvoidingScrollView>
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    style={styles.container}>
+      <ScrollView>
+         <Header openDrawer={props.navigation.openDrawer} />
+         <Text style={styles.title}>Real-Time Data</Text>
+         {/* <Button
+         title='Show Value'
+         onPress={() => console.log(isStart)}/> */}
+        <RTTimer ></RTTimer>  
+    {/* sendData={this.testTimer} */}
+        <View style={styles.NavBarDivider}/>
+        <Swiper style={styles.wrapper} showsButtons loop={false} autoplay={false}>
+        <View testID="Data" style={styles.slide1}>
+          <Text style={styles.slideTitles}>Biometric Data by Numbers</Text>
+          <RTData></RTData>
+        </View>
+        {/* <View style={styles.NavBarDivider} /> */}
+        <View testID="Plot" style={styles.slide2}>
+        <Text style={styles.slideTitles}>Biometric Data by Plot</Text>
+         <Plot ></Plot>
+        </View>
+        </Swiper>
+      </ScrollView> 
     </View>
   );
 };
@@ -212,13 +215,36 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   wrapper: {
-    // flex:1,
-    height: 300,
-    //backgroundColor: '#9DD6EB'
-
-    //opacity:0.4,
-    backgroundColor: '#ffffff',
-  },
+     height:600,
+     backgroundColor:'#ffffff', 
+   },
+   slide1: {
+     height:'100%',
+     paddingHorizontal:'10%',
+     justifyContent: 'center',
+     alignItems: 'center',
+     color: '#000000',
+     fontSize: 20,
+   },
+   slideTitles:{
+    alignSelf: 'center',
+    //marginHorizontal: '10%',
+    //marginVertical: 50,
+    color: '#202020',
+    fontWeight: 'bold',
+    fontSize: 30,
+    textAlign: 'center',
+   },
+   slide2: {
+    // flex: 1,
+     height:'100%',
+     //justifyContent: 'center',
+     paddingVertical:'10%',
+     paddingHorizontal:'10%',
+     alignItems: 'center',
+    
+     //backgroundColor: '#97CAE5'
+   },
 
   steps: {
     color: '#000000',

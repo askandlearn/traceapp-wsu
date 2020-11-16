@@ -34,16 +34,16 @@ const RTData = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isBiometric, setIsBiometric] = useState(1);
   const [isTimerOn, setTimerOn] = useState(false);
-  const [isHR, setHR] = useState(props.data[1]);
-  const [isHRV, setHRV] = useState(props.hrv);
-  const [isIBI, setIBI] = useState(props.data[2]);
-  const [isPN, setPN] = useState(props.pnn50);
-  const [isSkinTemp, setSkinTemp] = useState(props.data[8]);
-  const [isPAMP, setPAMP] = useState(props.data[3]);
-  const [isDAMP, setDAMP] = useState(props.data[4]);
+   const [isHR, setHR] = useState(0);
+   const [isHRV, setHRV] = useState(props.hrv);
+  const [isIBI, setIBI] = useState(0);
+   const [isPN, setPN] = useState(props.pnn50);
+  const [isSkinTemp, setSkinTemp] = useState(0);
+  const [isPAMP, setPAMP] = useState(0);
+  const [isDAMP, setDAMP] = useState(0);
   const [isCBF, setCBF] = useState(0);
   const [isDIF, setDIF] = useState(0);
-  const [isACC, setACC] = useState(props.data[9]);
+  const [isACC, setACC] = useState(0);
 
   useEffect(() => {
     // setInterval(() => {
@@ -150,7 +150,7 @@ const RTData = (props) => {
       <View
         style={styles.row}>
         <Text style={styles.valueTitle}> DAMP</Text>
-        <Text style={styles.valueTitle}> CBF</Text>
+      
         <Text style={styles.valueTitle}> DIF</Text>
       </View>
       <View
@@ -164,14 +164,7 @@ const RTData = (props) => {
           <Text style={styles.valueText}>{props.metrics[4]}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.valueButton}
-          onPress={() => {
-            setIsBiometric(8);
-            setModalVisible(true);
-          }}>
-          <Text style={styles.valueText}>{isCBF}</Text>
-        </TouchableOpacity>
+        
         <TouchableOpacity
           style={styles.valueButton}
           onPress={() => {

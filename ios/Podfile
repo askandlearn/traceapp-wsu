@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'traceapp' do
+target 'traceApp' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
@@ -21,7 +21,11 @@ target 'traceapp' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
-  target 'traceappTests' do
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
+  target 'traceAppTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -36,10 +40,10 @@ target 'traceapp' do
   end
 end
 
-target 'traceapp-tvOS' do
+target 'traceApp-tvOS' do
   # Pods for traceapp-tvOS
 
-  target 'traceapp-tvOSTests' do
+  target 'traceApp-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -16,26 +16,48 @@ import Pulse from 'react-native-pulse';
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont();
 
+
+//redux functions
+import {connect} from 'react-redux';
+
+function mapStateToProps(state){
+  return{
+    pnn50: state.DATA['pnn50'],
+    hrv: state.DATA['hrv']
+  }
+}
+
 //const screenWidth = Dimensions.get("window").width;
 //props.data [0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
-export default RTData = (props) => {
+const RTData = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isBiometric, setIsBiometric] = useState(1);
   const [isTimerOn, setTimerOn] = useState(false);
-  const [isHR, setHR] = useState(0);
-  const [isHRV, setHRV] = useState(0);
-  const [isIBI, setIBI] = useState(0);
-  const [isPN, setPN] = useState(0);
-  const [isSkinTemp, setSkinTemp] = useState(0);
-  const [isPAMP, setPAMP] = useState(0);
-  const [isDAMP, setDAMP] = useState(0);
+  const [isHR, setHR] = useState(props.data[1]);
+  const [isHRV, setHRV] = useState(props.hrv);
+  const [isIBI, setIBI] = useState(props.data[2]);
+  const [isPN, setPN] = useState(props.pnn50);
+  const [isSkinTemp, setSkinTemp] = useState(props.data[8]);
+  const [isPAMP, setPAMP] = useState(props.data[3]);
+  const [isDAMP, setDAMP] = useState(props.data[4]);
   const [isCBF, setCBF] = useState(0);
   const [isDIF, setDIF] = useState(0);
-  const [isACC, setACC] = useState(0);
+  const [isACC, setACC] = useState(props.data[9]);
 
+  useEffect(() => {
+    // setInterval(() => {
+    //   setHR(props.data[1])
+    //   setIBI(props.data[2])
+    //   setSkinTemp(props.data[8])
+    //   setPAMP(props.data[3])
+    //   setDAMP(props.data[4])
+    //   setACC(props.data[9])
+    // }, 1000);
+    setPN(props.pnn50)
+    setHRV(props.hrv)
+  },[props.hrv,props.pnn50])
 
   return (
-    // <PinchZoomView>
     <View style={styles.valueContainer}>
       <View
         style={{
@@ -269,16 +291,16 @@ export default RTData = (props) => {
                 : isBiometric == 4
                 ? 'PNN50 refers to the proportion of NN50 divided by the total number of NN (R-R) intervals. NN50 is the number of times successive heartbeat intervals exceed 50ms.'
                 : isBiometric == 5
-                ? 'Skin Temp refers to the temperature of the outermost surface of the body. \n\nNormal human skin temperature ranges between 92.3 and 98.4 °F (33.5 and 36.9 °C)'
+                ? 'Skin Temp refers to the temperature of the outermost surface of the body. \n\nNormal human skin temperature ranges between 92.3 and 98.4 °F (33.5 and 36.9 °C).'
                 : isBiometric == 6
-                ? 'Value6'
+                ? 'Pulse amplitude of systole (integer). Indicates the volume of blood flow.'
                 : isBiometric == 7
-                ? 'Value7'
+                ? 'Differential amplitude (integer). Indicates the strength of heart contractions.'
                 : isBiometric == 8
                 ? 'CBF refers to the Coronary Blood Flow.'
                 : isBiometric == 9
                 ? 'Value9'
-                : 'Value10'}
+                : 'Accelerometer signal indicating movement.'}
 
               {/* {isBiometric==1? "Value1":  isBiometric==2? "Value2":
                 isBiometric==3? "Value3":
@@ -302,6 +324,8 @@ export default RTData = (props) => {
     </View>
   );
 };
+
+export default connect(mapStateToProps, null) (RTData)
 
 const styles = StyleSheet.create({
   container: {

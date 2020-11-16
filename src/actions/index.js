@@ -85,6 +85,9 @@ export const startScan = () => {
             if (state === 'PoweredOn') {
                 dispatch(scan());
             }
+            else{
+                dispatch(changeStatus('Bluetooth is not on'))
+            }
         }, true);
 
         dispatch(onDisconnect())
@@ -209,7 +212,7 @@ export const updateMetric = () => {
             }, transactionID)
 
             // Cancel after specified amount of time
-            setTimeout(() => DeviceManager.cancelTransaction(transactionID),5000)
+            // setTimeout(() => DeviceManager.cancelTransaction(transactionID),5000)
         }, (err) => {
             console.log('UPDATE', err.message)
         })

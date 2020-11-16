@@ -1,9 +1,10 @@
 
 const initialState = {
-  metrics: new Array(11),
+  metrics: new Array(11).fill(0),
   status: 'disconnected',
-  connectedDeviece: {},
-  isConnected: false
+  connectedDevice: {},
+  isConnected: false,
+  recordings: [],
 };
 
 const bleReducer = (state = initialState, action) => {
@@ -11,8 +12,7 @@ const bleReducer = (state = initialState, action) => {
     case 'CONNECT':
       // console.log('Connecting...')
       return {
-        metrics: state.metrics,
-        status: action.status,
+        ...state,
         connectedDevice: action.connectedDevice,
         isConnected: action.isConnected
       };

@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         margin: 5,
         borderRadius: 5,
         padding: 5,
-        //backgroundColor: '#ff0000'
+        //backgroundColor: '#242852'
         backgroundColor: '#445092'
     },
     SessionTitle: {

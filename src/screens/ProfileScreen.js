@@ -528,12 +528,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     // position: 'absolute',
     marginTop: 25,
-    backgroundColor: 'black',
+    backgroundColor: '#242852',
   },
   avatar_text: {
     alignSelf: 'center',
     fontSize: 75,
     color: 'white',
+    textShadowColor: '#656885',
+    textShadowRadius: 50,
   },
   body: {
     //marginTop: 100,
@@ -605,6 +607,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'gainsboro', 
     borderBottomWidth: 1,
     width: 300,
+    //paddingHorizontal: .6
   },
   modalView:{
     flex: 1,
@@ -663,7 +666,8 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 80,
     borderRadius: 20,
-    backgroundColor: '#445092',
+    //backgroundColor: '#445092',
+    backgroundColor: '#ff3333',
     shadowColor: '#000000',
     shadowOffset: {width: 1, height: 2},
     shadowOpacity: 0.8,
@@ -679,7 +683,8 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 80,
     borderRadius: 20,
-    backgroundColor: '#445092',
+   // backgroundColor: '#445092',
+    backgroundColor: '#ff3333',
     shadowColor: '#000000',
     shadowOffset: {width: 1, height: 2},
     shadowOpacity: 0.8,

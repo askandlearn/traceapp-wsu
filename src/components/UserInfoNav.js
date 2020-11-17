@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 50 / 2,
-        backgroundColor: 'black',
+        backgroundColor: '#242852',
       },
       avatar_text:{
         fontSize: 25,

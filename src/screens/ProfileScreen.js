@@ -302,7 +302,7 @@ const ProfileScreen = (props) => {
               onPress={()=> {setShowModalDate(!showModalDate)}}>Submit</Text>
              </View>
           </Modal>
-          <Text style={styles.content} onPress={()=> {setShowModalDate(!showModalDate)}}>mm/dd/yyyy</Text>
+          <Text style={styles.content} onPress={()=> {setShowModalDate(!showModalDate)}}>{currentUser.birthdate}</Text>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           {/*  ~~~~~~~~  Add section title and padding back later ~~~~~~~~~
@@ -603,7 +603,8 @@ const styles = StyleSheet.create({
   },
   contentBorder: {
     borderBottomColor: 'gainsboro', 
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    width: 300,
   },
   modalView:{
     flex: 1,

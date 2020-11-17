@@ -258,7 +258,9 @@ const ProfileScreen = (props) => {
               editable={false}
               style={styles.name}/>
           </View>
+          {/*       ~~~~~~  Add section title back later ~~~~~~
           <Text style={styles.profileCategory}>Basic Info:</Text>
+            */}
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
@@ -275,15 +277,17 @@ const ProfileScreen = (props) => {
               placeholder='mm/dd/yyyy (optional)'
               placeholderTextColor="#a1a2a6"
               editable={isEditable}
-              style={styles.content}
+              style={styles.contentBirthdate}
               onChangeText={(birthdate) => setCurrentUser({...currentUser, birthdate: birthdate})}
               onEndEditing={(e) => checkBirthdate(e.nativeEvent.text)}
                 />
           </TouchableOpacity>
           <View style={styles.contentBorder} />
+          {/*  ~~~~~~~~  Add section title and padding back later ~~~~~~~~~
           <View style={{paddingBottom: 40}}/>
           <Text style={styles.profileCategory}>Additional Info:</Text>
           <View style={styles.contentBorder} />
+          */}
           <TouchableOpacity style={styles.horizontal}>
           <Text style={styles.contentTitle}>Zip: </Text>
             <TextInput
@@ -326,6 +330,8 @@ const ProfileScreen = (props) => {
           <TouchableOpacity style={styles.horizontal}>
           */}
 
+          {/* Height/Weight are not in the api schema
+
 
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
@@ -349,7 +355,8 @@ const ProfileScreen = (props) => {
               style={styles.content}
               onChangeText={(weight) => setCurrentUser({...currentUser, weight: weight})}/>
           </TouchableOpacity>
-    
+        */}
+          <View style={styles.contentBorder}/>
           <View style={{flexDirection: "row"}}>
             <Text style={styles.contentTitleGender}>Gender: </Text>
             <View style={{flex: 0.99}}/>
@@ -375,6 +382,10 @@ const ProfileScreen = (props) => {
             </View>
           </View>
           <View style={styles.contentBorder} />
+          {/*
+
+            wellness goals not in the api schema
+
           <View style={{flexDirection: "row"}}>
           <Text style={styles.contentTitleGender}>Wellness Goals:</Text>
           <View style={{flex: 0.2}}/>
@@ -383,6 +394,7 @@ const ProfileScreen = (props) => {
           </View>
           </View>
           <View style={styles.contentBorder}/>
+        */}
           <View style={{paddingVertical: 40}}></View>
           <Button
             title={changeText}
@@ -482,7 +494,7 @@ const styles = StyleSheet.create({
     color:'black',
     fontStyle: 'italic',
   },
-  content: {
+  contentBirthdate: {
     fontSize: 17,
     alignSelf: 'center',
     textAlign: 'center',
@@ -490,6 +502,15 @@ const styles = StyleSheet.create({
     //margin: 10,
    marginHorizontal: '10%',
     //marginVertical: 5,
+  },
+  content:{
+    fontSize: 17,
+    // alignSelf: 'center',
+     textAlign: 'right',
+     color: 'black',
+    marginHorizontal: '10%',
+    //paddingLeft: 45,
+    flex: 1,
   },
   contentTitle: {
     margin: 10,

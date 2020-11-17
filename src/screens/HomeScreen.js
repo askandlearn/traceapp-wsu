@@ -57,7 +57,7 @@ for(var i = 1; i < 30; i++) {
   
   calDate.push({
     date: format,
-    score: Math.floor(Math.random() * 110),
+    score: Math.floor(Math.random() * 100),
   });
 
   formatStr = formatStr.concat("\n" + format + " " + calDate[i].score);
@@ -77,8 +77,8 @@ var calData = {};
 
 for(const i in calDate) {
   calData.[calDate[i].date] =  {
-    textColor: calDate[i].score > 70 || calDate[i].score <= 40 && calDate[i].score != 0 ? 'white' : 'black',
-    color: calDate[i].score > 70 ? 'green': calDate[i].score > 40 ? 'yellow' : calDate[i].score > 0 ? 'red' : 'white',
+    textColor: calDate[i].score > 70 || calDate[i].score < 40 && calDate[i].score != 0 ? 'white' : 'black',
+    color: calDate[i].score > 70 ? 'green': calDate[i].score >= 40 ? 'yellow' : calDate[i].score > 0 ? 'red' : 'white',
     startingDay: true,
     endingDay: true,
   }
@@ -143,7 +143,7 @@ const HomeScreen = ({navigation}) => {
            
     
             <VictoryAxis />
-            <VictoryAxis dependentAxis label="Score" style={sharedAxisStyles} />
+            <VictoryAxis dependentAxis label="Score" style={sharedAxisStyles} domain={[0, 100]} />
           </VictoryChart>
         </Svg>
 

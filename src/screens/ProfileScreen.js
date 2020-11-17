@@ -603,7 +603,8 @@ const styles = StyleSheet.create({
   },
   contentBorder: {
     borderBottomColor: 'gainsboro', 
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    width: 300,
   },
   modalView:{
     flex: 1,

@@ -41,9 +41,9 @@ const ASTScreen = ({navigation}) => {
       <Header openDrawer={navigation.openDrawer} />
       <Text style={styles.title}>Active StandUp Test (AST)</Text>
         <View style={styles.container}>{check && <SensorAlert></SensorAlert>}</View>
-          <Timer setStarted={setStarted} setDone={setDone}></Timer>
-          <View style={styles.NavBarDivider} />
-          <Swiper autoplayTimeout={1} style={styles.wrapper} showsButtons loop={true} autoplay={started}>
+          {/* <Timer setStarted={setStarted} setDone={setDone}></Timer> */}
+         
+          {/* <Swiper autoplayTimeout={1} style={styles.wrapper} showsButtons loop={true} autoplay={started}>
             { started ? null :
               <View testID="Hello" style={styles.slide1}>
                 <Text style={styles.slide1Text}>Welcome to the Active StandUp Test. This test will provide TRACE with
@@ -102,9 +102,10 @@ const ASTScreen = ({navigation}) => {
             </View>
             </View>
             }
-        </Swiper>
+        </Swiper> */}
         <View style={styles.NavBarDivider} />
-        <Plot></Plot>
+       <Plot></Plot>
+       
         </KeyboardAvoidingScrollView>
     </View>
   );

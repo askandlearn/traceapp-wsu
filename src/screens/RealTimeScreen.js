@@ -81,20 +81,26 @@ const RealTimeScreen = (props) => {
          {/* <Button
          title='Show Value'
          onPress={() => console.log(isStart)}/> */}
-        <RTTimer ></RTTimer>  
+        {/* <RTTimer ></RTTimer>  */}
+        <TouchableOpacity style={styles.button} onPress={() => onStart()}>
+            <Text>Start Plot</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => onStop()}>
+            <Text>Stop Plot</Text>
+          </TouchableOpacity> 
     {/* sendData={this.testTimer} */}
         <View style={styles.NavBarDivider}/>
-        <Swiper style={styles.wrapper} showsButtons loop={false} autoplay={false}>
+        {/* <Swiper style={styles.wrapper} showsButtons loop={false} autoplay={false}> */}
         <View testID="Data" style={styles.slide1}>
           <Text style={styles.slideTitles}>Biometric Data by Numbers</Text>
           <RTData></RTData>
         </View>
         {/* <View style={styles.NavBarDivider} /> */}
-        <View testID="Plot" style={styles.slide2}>
+        {/* <View testID="Plot" style={styles.slide2}>
         <Text style={styles.slideTitles}>Biometric Data by Plot</Text>
          <Plot ></Plot>
         </View>
-        </Swiper>
+        </Swiper> */}
       </ScrollView> 
     </View>
   );

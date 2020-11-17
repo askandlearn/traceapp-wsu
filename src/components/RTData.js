@@ -12,7 +12,6 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import Pulse from 'react-native-pulse';
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont();
 

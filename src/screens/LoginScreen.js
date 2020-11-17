@@ -43,7 +43,7 @@ const LoginScreen = (props) => {
           style={styles.inputFields}
           label="Username"
           placeholder="Username"
-          autoCapitalize={false}
+          autoCapitalize='none'
           value={email}
           onChangeText={(val) => setEmail(val)}
         />

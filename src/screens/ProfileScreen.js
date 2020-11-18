@@ -246,7 +246,7 @@ const ProfileScreen = (props) => {
   //        Close Modal (bday)
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const changeModalViewBirthdate = () => {
-    setShowModalBirthdate(false);
+    setShowModalDate(false);
     saveChanges();
 
   }

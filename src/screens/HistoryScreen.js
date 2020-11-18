@@ -93,18 +93,23 @@ const HistoryScreen = (props) => {
     return(
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
+            
             <FlatList 
                 ListHeaderComponent={
+                    <KeyboardAvoidingScrollView>
                     <View>
                         <Header openDrawer={props.navigation.openDrawer} />
                         <Text style={styles.title}>Recording History</Text>
                     </View>
+                    </KeyboardAvoidingScrollView>
                 }
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={session => session.pk.toString()}
             />
+           
             <Loading loading={loading}/>
+            
         </View>
     )
 }

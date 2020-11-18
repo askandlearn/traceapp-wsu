@@ -50,7 +50,7 @@ const transactionID = 'monitor_metrics'
   setPlot=()=>{
     console.log("Started Timer");
    
-    if(isNewData[0].y.length>5){
+    if(isNewData[0].y.length>15){
       isNewData[0].y.push(props.metrics[1]);
       //console.log("y second"+isNewData[0].y);
       isNewData[0].y.shift();
@@ -70,7 +70,7 @@ const transactionID = 'monitor_metrics'
   setPAMPVal=()=>{
     console.log("Started PAMP");
    
-    if(isNewPAMP[0].y.length>5){
+    if(isNewPAMP[0].y.length>15){
       isNewPAMP[0].y.push(props.metrics[3]);
       //console.log("y second"+isNewData[0].y);
       isNewPAMP[0].y.shift();

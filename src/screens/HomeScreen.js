@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     marginHorizontal: '10%',
-    marginVertical: 0,
+    marginTop: 50,
     color: '#202020',
     fontWeight: 'bold',
     fontSize: 30,

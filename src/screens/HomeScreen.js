@@ -86,7 +86,8 @@ var calData = {};
 for(const i in calDate) {
   calData.[calDate[i].date] =  {
     textColor: calDate[i].score > 70 || calDate[i].score < 40 && calDate[i].score != 0 ? 'white' : 'black',
-    color: calDate[i].score > 70 ? 'green': calDate[i].score >= 40 ? 'yellow' : calDate[i].score > 0 ? 'red' : 'white',
+    color: calDate[i].score > 70 ? 'rgba(0,150,0,.8)': calDate[i].score >= 40 ? 'rgba(255,255,0,.6)' : calDate[i].score > 0 ? 'rgba(255,0,0,.8)' : 'white',
+    opacity: .4,
     startingDay: true,
     endingDay: true,
   }

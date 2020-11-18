@@ -226,10 +226,47 @@ const ProfileScreen = (props) => {
     }
   }
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (zip)
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const changeModalViewZip = () => {
+    setShowModal(false);
+    saveChanges();
+
+  }
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (gender)
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const changeModalViewGender = () => {
+    setShowModalGender(false);
+    saveChanges();
+
+  }
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (bday)
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const changeModalViewBirthdate = () => {
+    setShowModalBirthdate(false);
+    saveChanges();
+
+  }
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        SAVE CHANGES
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const saveChanges = async () => {
     console.log(currentUser)
+    console.log('Calling update')
+    try{
+      await update(currentUser);
+    }
+    catch(err){
+      console.log('Error in saveChanges():',err.message)
+    }
+
+    /*
+    console.log(currentUser)
+
     if (isEditable) {
       //POST Request to Update DB
       console.log('Calling update')
@@ -246,6 +283,7 @@ const ProfileScreen = (props) => {
       setChangeText('Save');
       editEditable(true);
     }
+    */
   };
 
 
@@ -299,7 +337,7 @@ const ProfileScreen = (props) => {
                 />
               <View style={{paddingTop: 15}}/>
               <Text style={styles.buttonContainer}
-              onPress={()=> {setShowModalDate(!showModalDate)}}>Submit</Text>
+              onPress={()=> {changeModalViewBirthdate()}}>Submit</Text>
              </View>
           </Modal>
           <Text style={styles.content} onPress={()=> {setShowModalDate(!showModalDate)}}>{currentUser.birthdate}</Text>
@@ -334,7 +372,7 @@ const ProfileScreen = (props) => {
               onEndEditing={(e) => checkzip(e.nativeEvent.text)}/>
               <View style={{paddingTop: 15}}/>
               <Text style={styles.buttonContainer}
-              onPress={()=> {setShowModal(!showModal)}}>Submit</Text>
+              onPress={()=> {changeModalViewZip()}}>Submit</Text>
             </View>
           </Modal>
         <Text style={styles.content} onPress={()=> {setShowModal(!showModal)}}>{currentUser.zip}</Text>
@@ -425,7 +463,7 @@ const ProfileScreen = (props) => {
               <View style={{paddingTop: 150}}/>
               <Text 
               style={styles.buttonContainerGender}
-              onPress={()=> {setShowModalGender(!showModalGender)}}>Submit</Text>
+              onPress={()=> {changeModalViewGender()}}>Submit</Text>
                
             </View>
           </Modal>
@@ -449,7 +487,7 @@ const ProfileScreen = (props) => {
           <View style={{paddingVertical: 40}}></View>
           {/*}
           <Button
-            title={changeText}
+            title="Update"
             color="#ff0000"
             style={styles.save}
             onPress={saveChanges}

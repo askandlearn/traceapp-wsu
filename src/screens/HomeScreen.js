@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import {VictoryBar, VictoryChart, VictoryAxis, VictoryTooltip, VictoryVoronoiContainer} from 'victory-native';
+import {VictoryBar, VictoryChart, VictoryAxis, VictoryTooltip, VictoryVoronoiContainer, VictoryLine, VictoryLabel} from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';
 import {Calendar} from 'react-native-calendars';
@@ -132,9 +132,23 @@ const HomeScreen = ({navigation}) => {
         <Svg
           style={status ? styles.chart : styles.hidden}
           preserveAspectRatio="none">
-          <VictoryChart domainPadding={15} height={300} width={420}
-            
-          >   
+          <VictoryChart domainPadding={15} height={300} width={420}>   
+            <VictoryLine
+              y={() => 40}
+              samples={1}
+              // labels={"Fair"}
+              style={{
+                data: {stroke: "yellow"}
+              }}
+            />
+            <VictoryLine
+              y={() => 70}
+              samples={1}
+              // lables={["","Good"]}
+              style={{
+                data: {stroke: "green"}
+              }}
+            />
             <VictoryBar
               data={data}
               x="day"
@@ -150,8 +164,6 @@ const HomeScreen = ({navigation}) => {
                 },
               }}
             />
-           
-    
             <VictoryAxis />
             <VictoryAxis dependentAxis label="Score" style={sharedAxisStyles} domain={[0, 100]} />
           </VictoryChart>

@@ -82,11 +82,10 @@ export const addRecording = (username, recording) => ({
 //==========================================CONSTANTS=================================================
 // device constants
 const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb' 
-// For Android 
-const deviceID = 'AB:89:67:45:11:FF'
+// For Android const deviceID = 'AB:89:67:45:11:FF'
 
 //For iOS
-// const deviceID = 'A0524966-65F3-A409-C6D1-20ED628ED43A'
+const deviceID = 'A0524966-65F3-A409-C6D1-20ED628ED43A'
 
 //transaction id for monitoring data
 const transactionID = 'monitor_metrics'
@@ -188,11 +187,8 @@ export const updateMetric = () => {
         reset();
 
         //get current state
-        const state = dispatch(getState());
+        const state = getState();
         //console.log("thunk update metric: ", state);  //debugging purposes
-
-        //get current username
-        // const username = username();
 
         //create file name
         //e.g. Trace-20201114-045303.txt

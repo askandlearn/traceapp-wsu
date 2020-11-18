@@ -35,25 +35,25 @@ ASTPlot=(props)=> {
  const [isCount, setCount]=useState(0); 
  const [isNewData, setNewData] =useState(isData);
 
-
+ var d = new Date();
   setPlot=()=>{
     console.log("Started Timer");
-  
+   
     if(isNewData[0].y.length>100){
       isNewData[0].y.push(props.hrv);
-      console.log("y second"+isNewData[0].y);
+      //console.log("y second"+isNewData[0].y);
       isNewData[0].y.shift();
-      isNewData[0].x.push(isCount);
+      isNewData[0].x.push( d.toLocaleTimeString());
       isNewData[0].x.shift();
-      console.log("x second"+isNewData[0].x);       
+      //console.log("x second"+isNewData[0].x);       
       setData(isNewData);
       setCount(isCount+1);    
     }
     else{
       isNewData[0].y.push(props.hrv);
-      isNewData[0].x.push(isCount);
-      console.log("x first"+isNewData[0].x);
-      console.log("y first"+isNewData[0].y);
+      isNewData[0].x.push( d.toLocaleTimeString());
+     // console.log("x first"+isNewData[0].x);
+     // console.log("y first"+isNewData[0].y);
       setData(isNewData);
       setCount(isCount+1);  
     }
@@ -73,6 +73,9 @@ ASTPlot=(props)=> {
 const onStop = async () => {
   console.log('Cancelling transaction...')
   props.stopTransaction(transactionID);
+  //var currentTimeInSeconds=Math.floor(Date.now()/1000)
+  
+  //console.log()
  // clearInterval(plot);
 }
 update = (_, { data, layout, config, }, plotly) => {
@@ -89,22 +92,19 @@ const config={
 }
     return (     
       <View style={styles.container}>
-      <View>
+      <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
       <TouchableOpacity style={styles.button} onPress={() => onStart()}>
           <Text>Start Plot</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => onStop()}>
           <Text>Stop Plot</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => onStop()}>
-        <Text>hrv: {props.hrv}</Text>
-        </TouchableOpacity>
      
       </View>
         <View style={styles.chartRow}>
           <Plotly
             data={isData}
-             layout={layout}
+            layout={layout}
             // update={this.update}
             onLoad={() => console.log('loaded')}
             debug
@@ -123,16 +123,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   chartRow: {
-    //flex: 1,
-    width: '100%'
-    ,height: 900,
+    flex: 1,
   },
   container: {
-   // paddingTop: 30,
-    width: '100%',
-    height: 900,
+    flex:1,
+    paddingTop: 20,
+    width: 400,
     backgroundColor: '#fff',
+  },
+  button: {
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    marginHorizontal: '10%',
+    marginVertical: 10,
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: '#ff0000',
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+  },
 });

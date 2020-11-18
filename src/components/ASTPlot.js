@@ -24,8 +24,8 @@ ASTPlot=(props)=> {
     {
       // type: "scatter",
       // mode: "lines+points",
-      x: [1, 2, 3],
-      y: [1,2,3],
+      x: [],
+      y: [],
       // marker: { color: "#ff0000" },
       // line: { shape: "spline" }
     }

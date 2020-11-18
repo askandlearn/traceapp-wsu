@@ -235,7 +235,7 @@ export const updateMetric = () => {
             }, transactionID)
 
             // Cancel after specified amount of time
-            setTimeout(() => DeviceManager.cancelTransaction(transactionID),10000)
+            //setTimeout(() => DeviceManager.cancelTransaction(transactionID),10000)
         }, (err) => {
             console.log('UPDATE', err.message)
         })

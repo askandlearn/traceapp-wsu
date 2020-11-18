@@ -1,180 +1,138 @@
-import React, {Component} from 'react';
-import {
-    View,
-    Text,
-    StyleSheet
-  } from 'react-native';
-import {
-    LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
-  } from "react-native-chart-kit";
-  import PinchZoomView from 'react-native-pinch-zoom-view';
-  import PureChart from 'react-native-pure-chart';
-  //const screenWidth = Dimensions.get("window").width;
-  export default plot=()=>{
-    let sampleData = [
-      {
-        seriesName: 'HR',
-        data:[
-        {x: '0', y: 37.5},
-        {x: '0.04', y: 39.47368421},
-        {x: '0.06', y: 38.46153846},
-        {x: '0.08', y: 35},
-        {x: '0.1', y: 35.71428571},
-        {x: '0.12', y: 35},
-        {x: '0.14', y: 34},
-        {x: '0.16', y: 35},
-        {x: '0.181', y: 37.5},
-        {x: '0.201', y: 37},], color:'red'
-      }]
-   return( 
-     <View>
-    <PureChart height={190} data={sampleData}  width={'50%'} type='line' backgroundColor={'#ffffff'} 
-    />
-    <View style={styles.colorKey}>
-        <View style={styles.colorKeyRow}>
-            <Text>- X Axis: Time </Text>
-          </View>
-          <View style={styles.colorKeyRow}>
-            <Text>- Y Axis: HR </Text>
-        </View>
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, View, TouchableOpacity,Text } from 'react-native';
+import Plotly from 'react-native-plotly';
+import { onDisconnect, stopTransaction, updateMetric } from '../actions';
+import {connect} from 'react-redux';
 
-      </View>
-    </View> 
-    
-    // <PinchZoomView>
+const mapStateToProps = state => ({
+  pnn50: state.DATA['pnn50'],
+  hrv: state.DATA['hrv'],
+  connectedDevice: state.BLE['connectedDevice'],
+  metrics: state.BLE['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+})
+
+const mapDispatchToProps = dispatch => ({
+  updateMetric: () => dispatch(updateMetric()),
+  stopTransaction: ID => dispatch(stopTransaction(ID)),
+})
+
+const transactionID = 'monitor_metrics'
+
+ASTPlot=(props)=> {
+
+  const [isData, setData]= useState([
+    {
+      // type: "scatter",
+      // mode: "lines+points",
+      x: [],
+      y: [],
+      // marker: { color: "#ff0000" },
+      // line: { shape: "spline" }
+      name:'HRV'
+      
+    }
+  ]);
+ const [isCount, setCount]=useState(0); 
+ const [isNewData, setNewData] =useState(isData);
+
+
+  setPlot=()=>{
+    console.log("Started Timer");
   
-  // <LineChart
-  //   data={{
-  //     labels: ["BPM", "BPM", "BPM", "BPM", "BPM", "BPM"],
-  //     datasets: [
-  //       {
-  //         data: [
-  //           Math.random() * 100,
-  //           Math.random() * 100,
-  //           Math.random() * 100,
-  //           Math.random() * 100,
-  //           Math.random() * 100,
-  //           Math.random() * 100
-  //         ]
-  //       }
-  //     ]
-  //   }}
-  //  // width={Dimensions.get("window").width} // from react-native
-  //   height={180}
-  //   width={400}
-  //   //yAxisLabel="Days"
-  //   //yAxisSuffix=""
-  //   yAxisInterval={1} // optional, defaults to 1
-    
-  //   chartConfig={{
-  //     backgroundColor: "#000000",
-  //     backgroundGradientFrom: "#ff1111",
-  //     backgroundGradientTo: "#ff6666",
-  //     decimalPlaces: 1, // optional, defaults to 2dp
-  //     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  //     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  //     style: {
-  //       borderRadius: 16
-  //     },
-  //     propsForDots: {
-  //       r: "4",
-  //       strokeWidth: "2",
-  //       stroke: "#ffffff"
-  //     }
-  //   }}
-  //   bezier
-  //   style={{
-  //     marginVertical: '2%',
-  //     marginHorizontal:'5%',
-  //     width:'90%',
-  //    // marginLeft: '5%',
-  //    // marginRight:'5%',
-  //     alignItems:'center',
-  //     borderRadius: 16
-  //   }}
-  // />
-// </PinchZoomView>
-)
-
+    if(isNewData[0].y.length>100){
+      isNewData[0].y.push(props.hrv);
+      console.log("y second"+isNewData[0].y);
+      isNewData[0].y.shift();
+      isNewData[0].x.push(isCount);
+      isNewData[0].x.shift();
+      console.log("x second"+isNewData[0].x);       
+      setData(isNewData);
+      setCount(isCount+1);    
+    }
+    else{
+      isNewData[0].y.push(props.hrv);
+      isNewData[0].x.push(isCount);
+      console.log("x first"+isNewData[0].x);
+      console.log("y first"+isNewData[0].y);
+      setData(isNewData);
+      setCount(isCount+1);  
+    }
   }
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#ffffff',
-    },
-    backgroundImage: {
-      alignSelf: 'center',
-      marginTop: 30,
-      marginBottom: 70,
-      width: '60%',
-      height: 100,
-      resizeMode: 'stretch',
-    },
-    inputFields: {
-      backgroundColor: '#FFFFFF',
-      marginHorizontal: '10%',
-      marginVertical: 10,
-      padding: 10,
-      fontWeight: 'bold',
-      opacity: 0.4,
-      borderRadius: 3,
-    },
-    title: {
-      alignSelf: 'center',
-      marginHorizontal: '10%',
-      marginVertical: 10,
-      color: '#202020',
-      fontWeight: 'bold',
-      fontSize: 30,
-    },
-    button: {
-      //alignSelf: 'center',
-      //width: '60%',
-      alignItems: 'center',
-      marginHorizontal: '10%',
-      marginVertical: 10,
-      padding: 10,
-      borderRadius: 20,
-      backgroundColor: '#ff0000',
-    },
-    buttonText: {
-      color: '#FFFFFF',
-      fontWeight: 'bold',
-    },
-    buttonRow: {
-      flexDirection: 'row',
-    },
-    chartRow: {
-      width: '100%',
-    },
-    chart: {
-      flex: 1,
-      height: 300,
-      width: '80%',
-    },
-    hidden: {
-      display: 'none',
-    },
-    calendar: {
-      flex: 1,
-    },
-    colorKey: {
-      flex: 1,
-      alignSelf: 'center',
-      margin: 0,
-      paddingTop: 20,
-      paddingBottom: 40,
-    },
-    colorKeyRow: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
+  var plot;
+  const onStart = async () => {
+    props.updateMetric();
+   // plot=setInterval(() => {
+      //setPlot();
+    //}, 5000);
+  }
+
+  useEffect(()=>{
+    setPlot();
+  },[props.hrv])
+
+const onStop = async () => {
+  console.log('Cancelling transaction...')
+  props.stopTransaction(transactionID);
+ // clearInterval(plot);
+}
+update = (_, { data, layout, config, }, plotly) => {
+  plotly.react(data, layout, config);
+};
+const layout={
+  title: 'HRV vs Time',
+  showlegend:true,
   
-      //alignItems: 'left',
-    },
-  });
+}
+const config={
+  displaylogo:false,
+  responsive:true
+}
+    return (     
+      <View style={styles.container}>
+      <View>
+      <TouchableOpacity style={styles.button} onPress={() => onStart()}>
+          <Text>Start Plot</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => onStop()}>
+          <Text>Stop Plot</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => onStop()}>
+        <Text>hrv: {props.hrv}</Text>
+        </TouchableOpacity>
+     
+      </View>
+        <View style={styles.chartRow}>
+          <Plotly
+            data={isData}
+             layout={layout}
+            // update={this.update}
+            onLoad={() => console.log('loaded')}
+            debug
+            config={config}
+            enableFullPlotly
+            update={update}
+          />
+        </View>
+      </View>
+    
+    );
+  }
+  export default connect(mapStateToProps, mapDispatchToProps) (ASTPlot);
+const styles = StyleSheet.create({
+  buttonRow: {
+    flexDirection: 'row'
+  },
+  chartRow: {
+    //flex: 1,
+    width: '100%'
+    ,height: 900,
+  },
+  container: {
+   // paddingTop: 30,
+    width: '100%',
+    height: 900,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+});

@@ -15,17 +15,23 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont();
 
-
+import { onDisconnect, stopTransaction, updateMetric } from '../actions';
 //redux functions
 import {connect} from 'react-redux';
 
-function mapStateToProps(state){
-  return{
-    pnn50: state.DATA['pnn50'],
-    hrv: state.DATA['hrv'],
-    metrics: state.BLE['metrics'],
-  }
-}
+const mapStateToProps = state => ({
+  pnn50: state.DATA['pnn50'],
+  hrv: state.DATA['hrv'],
+  connectedDevice: state.BLE['connectedDevice'],
+  metrics: state.BLE['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+})
+
+const mapDispatchToProps = dispatch => ({
+  updateMetric: () => dispatch(updateMetric()),
+  stopTransaction: ID => dispatch(stopTransaction(ID)),
+})
+
+
 
 //const screenWidth = Dimensions.get("window").width;
 //props.data [0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
@@ -73,6 +79,7 @@ const RTData = (props) => {
           Click on any of the values below for details
         </Text>
       </View>
+
       {/* FIRST ROW */}
       <View
         style={styles.row}>
@@ -288,7 +295,7 @@ const RTData = (props) => {
   );
 };
 
-export default connect(mapStateToProps, null) (RTData)
+export default connect(mapStateToProps, mapDispatchToProps) (RTData)
 
 const styles = StyleSheet.create({
   container: {

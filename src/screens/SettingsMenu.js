@@ -52,7 +52,7 @@ const SettingsMenu = (props) => {
               titleInfoStyle={{color: props.isConnected ? 'green':'red'}}
               onPress={() => props.navigation.navigate('TraceConnect')}
             />
-            <SettingsList.Item title="Sync My Data" onPress={() => null} />
+            <SettingsList.Item title="Sync My Data" onPress={() => props.navigation.navigate('SyncData')} />
           </SettingsList>
         </View>
       </KeyboardAvoidingScrollView>

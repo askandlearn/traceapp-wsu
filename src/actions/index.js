@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import atob from '../utils/atob';
 
 var RNFS = require('react-native-fs');
@@ -65,15 +66,27 @@ export const updatedHRV = (value) => ({
     type:'UPDATE_HRV',
     hrv: value
 })
+/**
+ * Returns an updated state value for BleReducer
+ * Called in updateMetrics()
+ * 
+ * @returns {state} records: [..., newRecording]
+ */
+export const addRecording = (username, recording) => ({
+    type:'ADD_RECORDING',
+    user: username,
+    newRecording: recording
+})
 //====================================================END=============================================
 
 //==========================================CONSTANTS=================================================
 // device constants
 const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb' 
-// For Android const deviceID = 'AB:89:67:45:11:FF'
+// For Android 
+const deviceID = 'AB:89:67:45:11:FF'
 
 //For iOS
-const deviceID = 'A0524966-65F3-A409-C6D1-20ED628ED43A'
+// const deviceID = 'A0524966-65F3-A409-C6D1-20ED628ED43A'
 
 //transaction id for monitoring data
 const transactionID = 'monitor_metrics'
@@ -175,8 +188,11 @@ export const updateMetric = () => {
         reset();
 
         //get current state
-        const state = getState();
+        const state = dispatch(getState());
         //console.log("thunk update metric: ", state);  //debugging purposes
+
+        //get current username
+        // const username = username();
 
         //create file name
         //e.g. Trace-20201114-045303.txt
@@ -275,6 +291,49 @@ export const onDisconnect = () => {
                 }
             }, true)
         })
+    }
+}
+//testing purposes for recordings
+export const updateRecordings = (username) => {
+    return (dispatch) => {
+        var curDate = new Date();
+        var filename = "Trace-".concat(
+            curDate.getFullYear().toString(),
+            (curDate.getMonth() + 1).toString().padStart(2, "0"),
+            curDate.getDate().toString().padStart(2, "0"),
+            "-",
+            curDate.getHours().toString().padStart(2, "0"),
+            curDate.getMinutes().toString().padStart(2, "0"),
+            curDate.getSeconds().toString().padStart(2, "0"),
+            ".txt"
+        );
+        var path = RNFS.DocumentDirectoryPath + `/${filename}`
+        const data =`
+,DateTime,Time,SensorTime,HR,IBI,PAMP,DAMP,PPG,DIF,DIG,ST,AccX,PVW,PVWD1
+0,2020-10-17 09:34:44.000,0.0,788.927,35,1702,1005,147,44061,0,0,26,0,947.0,
+1,2020-10-17 09:34:44.040,0.04,788.967,35,1702,1005,147,44062,2,0,26,-1,946.0,-1.0
+2,2020-10-17 09:34:44.060,0.06,788.987,35,1702,1005,147,44078,-4,0,27,-1,930.0,-16.0
+3,2020-10-17 09:34:44.080,0.08,789.007,35,1702,1005,147,44079,-4,0,26,0,929.0,-1.0
+4,2020-10-17 09:34:44.100,0.1,789.027,35,1702,1005,147,44092,-7,0,26,-1,916.0,-13.0
+5,2020-10-17 09:34:44.120,0.12,789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0,-1.0
+6,2020-10-17 09:34:44.140,0.14,789.067,35,1702,1005,147,44117,-10,0,26,0,891.0,-24.0
+7,2020-10-17 09:34:44.160,0.16,789.087,35,1702,1005,147,44121,-11,0,26,0,887.0,-4.0
+8,2020-10-17 09:34:44.181,0.181,789.108,35,1702,1005,147,44140,-12,0,26,0,868.0,-19.0
+9,2020-10-17 09:34:44.201,0.201,789.128,35,1702,1005,147,44155,-15,0,26,-1,853.0,-15.0
+10,2020-10-17 09:34:44.221,0.221,789.148,35,1702,1005,147,44180,-16,0,26,0,828.0,-25.0
+`
+        
+        // write the file
+        RNFS.writeFile(path, data, 'utf8')
+        .then((success) => {
+            console.log('FILE WRITTEN!');
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+        // const session_name = username + '_' + filename
+        dispatch(addRecording(username,filename))
+        // console.log('sesion name',session_name)
     }
 }
 //=====================================================END=============================================

@@ -50,68 +50,69 @@ export default UserInfo = () => {
 };
 
 const styles = StyleSheet.create({
-  drawerContent: {
-    flex: 1,
-  },
-  userInfoSection: {
-    paddingLeft: 20,
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 18,
-    marginTop: 3,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  caption: {
-    fontSize: 14,
-    lineHeight: 14,
-    color: 'black',
-  },
-  row: {
-    marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  section: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 15,
-  },
-  paragraph: {
-    fontWeight: 'bold',
-    marginRight: 3,
-  },
-  drawerSection: {
-    marginTop: 15,
-  },
-  bottomDrawerSection: {
-    marginBottom: 15,
-    borderTopColor: '#f4f4f4',
-    borderTopWidth: 1,
-  },
-  preference: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  avatar: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
-    backgroundColor: 'black',
-  },
-  avatar_text: {
-    fontSize: 25,
-    color: 'white',
-    alignSelf: 'center',
-  },
-  drawerItem: {
-    alignSelf: 'center',
-    marginRight: 2,
-    paddingLeft: 2,
-  },
-});
+    drawerContent: {
+        flex: 1,
+      },
+      userInfoSection: {
+        paddingLeft: 20,
+        marginBottom: 20
+      },
+      title: {
+        fontSize: 18,
+        marginTop: 3,
+        fontWeight: 'bold',
+        color: 'black',
+      },
+      caption: {
+        fontSize: 14,
+        lineHeight: 14,
+        color: 'black',
+      },
+      row: {
+        marginTop: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      section: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 15,
+      },
+      paragraph: {
+        fontWeight: 'bold',
+        marginRight: 3,
+      },
+      drawerSection: {
+        marginTop: 15,
+      },
+      bottomDrawerSection: {
+          marginBottom: 15,
+          borderTopColor: '#f4f4f4',
+          borderTopWidth: 1
+      },
+      preference: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+      },
+      avatar:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 50,
+        height: 50,
+        borderRadius: 50 / 2,
+        backgroundColor: '#242852',
+      },
+      avatar_text:{
+        fontSize: 25,
+        color: 'white',
+        alignSelf: 'center',
+      },
+      drawerItem:{
+        alignSelf: "center",
+        marginRight: 2,
+        paddingLeft: 2,
+      }
+})
+

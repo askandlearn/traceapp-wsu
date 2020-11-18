@@ -9,6 +9,7 @@ import {
   Button,
   KeyboardAvoidingView,
   Platform,
+  Modal,
 } from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
@@ -39,6 +40,13 @@ const ProfileScreen = (props) => {
   //Load in logout function from AuthContext
   const {logout} = useContext(AuthContext);
 
+  //Handle state of modal visability
+  const [showModal, setShowModal] = useState(false); //zip
+  const [showModalDate, setShowModalDate] = useState(false); //birthdate
+  const [showModalGender, setShowModalGender] = useState(false); //gender
+
+
+
   /*
   const [name, editName] = useState(() => {if (user.name) {return user.name;} else {return '';}});
   const [email, setEmail] = useState(() => {if (user.email) {return user.email;} else {return '';}});
@@ -53,7 +61,7 @@ const ProfileScreen = (props) => {
 
   //Create instance of state change variables
   const [changeText, setChangeText] = useState('Edit');
-  const [isEditable, editEditable] = useState(false);
+  const [isEditable, editEditable] = useState(true);
   const [showDate, setShowDate] = useState(false);
 
 
@@ -218,10 +226,47 @@ const ProfileScreen = (props) => {
     }
   }
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (zip)
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const changeModalViewZip = () => {
+    setShowModal(false);
+    saveChanges();
+
+  }
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (gender)
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const changeModalViewGender = () => {
+    setShowModalGender(false);
+    saveChanges();
+
+  }
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (bday)
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const changeModalViewBirthdate = () => {
+    setShowModalBirthdate(false);
+    saveChanges();
+
+  }
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        SAVE CHANGES
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const saveChanges = async () => {
     console.log(currentUser)
+    console.log('Calling update')
+    try{
+      await update(currentUser);
+    }
+    catch(err){
+      console.log('Error in saveChanges():',err.message)
+    }
+
+    /*
+    console.log(currentUser)
+
     if (isEditable) {
       //POST Request to Update DB
       console.log('Calling update')
@@ -238,6 +283,7 @@ const ProfileScreen = (props) => {
       setChangeText('Save');
       editEditable(true);
     }
+    */
   };
 
 
@@ -258,7 +304,9 @@ const ProfileScreen = (props) => {
               editable={false}
               style={styles.name}/>
           </View>
+          {/*       ~~~~~~  Add section title back later ~~~~~~
           <Text style={styles.profileCategory}>Basic Info:</Text>
+            */}
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
@@ -270,36 +318,68 @@ const ProfileScreen = (props) => {
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Date of Birth: </Text>
-            <TextInput
+            <Modal
+             animationType="slide"
+             transparent={true}
+             visible={showModalDate}
+             onRequestClose={() => {console.log('Closed birthdate text input window');}}
+          >
+             <View style={styles.modalView}>
+             <Text style={styles.modalContentTitle}>Birthdate:</Text>
+             <TextInput
               value={currentUser.birthdate}
               placeholder='mm/dd/yyyy (optional)'
               placeholderTextColor="#a1a2a6"
               editable={isEditable}
-              style={styles.content}
+              style={styles.textInput}
               onChangeText={(birthdate) => setCurrentUser({...currentUser, birthdate: birthdate})}
               onEndEditing={(e) => checkBirthdate(e.nativeEvent.text)}
                 />
+              <View style={{paddingTop: 15}}/>
+              <Text style={styles.buttonContainer}
+              onPress={()=> {changeModalViewBirthdate()}}>Submit</Text>
+             </View>
+          </Modal>
+          <Text style={styles.content} onPress={()=> {setShowModalDate(!showModalDate)}}>{currentUser.birthdate}</Text>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
+          {/*  ~~~~~~~~  Add section title and padding back later ~~~~~~~~~
           <View style={{paddingBottom: 40}}/>
           <Text style={styles.profileCategory}>Additional Info:</Text>
           <View style={styles.contentBorder} />
+          */}
           <TouchableOpacity style={styles.horizontal}>
+            
           <Text style={styles.contentTitle}>Zip: </Text>
-            <TextInput
-              placeholder='Zip (optional)'
+          <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showModal}
+          onRequestClose={() => {console.log('Closed zip text input window');}}
+          >
+            <View style={styles.modalView}>
+              <Text style={styles.modalContentTitle}>Zip:</Text>
+              <TextInput
+              placeholder='Zip'
               placeholderTextColor="#a1a2a6"
               textContentType='postalCode'
                keyboardType='number-pad'
                maxLength={5}
               value={currentUser.zip}
               editable={isEditable}
-              style={styles.content}
+              style={styles.textInput}
               onChangeText={(zip) => setCurrentUser({...currentUser, zip: zip})}
               onEndEditing={(e) => checkzip(e.nativeEvent.text)}/>
+              <View style={{paddingTop: 15}}/>
+              <Text style={styles.buttonContainer}
+              onPress={()=> {changeModalViewZip()}}>Submit</Text>
+            </View>
+          </Modal>
+        <Text style={styles.content} onPress={()=> {setShowModal(!showModal)}}>{currentUser.zip}</Text>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           
+
 
             {/*
             City/State to be removed??
@@ -326,6 +406,8 @@ const ProfileScreen = (props) => {
           <TouchableOpacity style={styles.horizontal}>
           */}
 
+          {/* Height/Weight are not in the api schema
+
 
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
@@ -349,12 +431,19 @@ const ProfileScreen = (props) => {
               style={styles.content}
               onChangeText={(weight) => setCurrentUser({...currentUser, weight: weight})}/>
           </TouchableOpacity>
-    
+        */}
+          <View style={styles.contentBorder}/>
           <View style={{flexDirection: "row"}}>
             <Text style={styles.contentTitleGender}>Gender: </Text>
-            <View style={{flex: 0.99}}/>
-            <View style={{alignSelf: 'center'}}>
-            <DropDownPicker
+            <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showModalGender}
+          onRequestClose={() => {console.log('Closed gender text input window');}}
+          >
+            <View style={styles.modalView}>
+              <Text style={styles.modalContentTitle}>Gender:</Text>
+              <DropDownPicker
                 items={[
                     {label: 'Male', value: 'M'},
                     {label: 'Female', value: 'F'},
@@ -371,10 +460,21 @@ const ProfileScreen = (props) => {
           onChangeItem={(item) =>
             setCurrentUser({...currentUser, gender: item.value})
           }/>
-        
+              <View style={{paddingTop: 150}}/>
+              <Text 
+              style={styles.buttonContainerGender}
+              onPress={()=> {changeModalViewGender()}}>Submit</Text>
+               
             </View>
+          </Modal>
+        <Text style={styles.content} onPress={()=> {setShowModalGender(!showModalGender)}}>{currentUser.gender}</Text>
+
           </View>
           <View style={styles.contentBorder} />
+          {/*
+
+            wellness goals not in the api schema
+
           <View style={{flexDirection: "row"}}>
           <Text style={styles.contentTitleGender}>Wellness Goals:</Text>
           <View style={{flex: 0.2}}/>
@@ -383,13 +483,16 @@ const ProfileScreen = (props) => {
           </View>
           </View>
           <View style={styles.contentBorder}/>
+        */}
           <View style={{paddingVertical: 40}}></View>
+          {/*}
           <Button
-            title={changeText}
+            title="Update"
             color="#ff0000"
             style={styles.save}
             onPress={saveChanges}
           />
+      */}
         </View>
       </KeyboardAvoidingScrollView>
       <View style={{marginTop: 20}} />
@@ -463,12 +566,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     // position: 'absolute',
     marginTop: 25,
-    backgroundColor: 'black',
+    backgroundColor: '#242852',
   },
   avatar_text: {
     alignSelf: 'center',
     fontSize: 75,
     color: 'white',
+    textShadowColor: '#656885',
+    textShadowRadius: 50,
   },
   body: {
     //marginTop: 100,
@@ -482,14 +587,24 @@ const styles = StyleSheet.create({
     color:'black',
     fontStyle: 'italic',
   },
-  content: {
+  contentBirthdate: {
     fontSize: 17,
     alignSelf: 'center',
-    textAlign: 'center',
+    textAlign: 'right',
     color: 'black',
     //margin: 10,
    marginHorizontal: '10%',
     //marginVertical: 5,
+    flex: 1,
+  },
+  content:{
+    fontSize: 17,
+     alignSelf: 'center',
+     textAlign: 'right',
+     color: 'black',
+    marginHorizontal: '10%',
+    //paddingLeft: 45,
+    flex: 1,
   },
   contentTitle: {
     margin: 10,
@@ -528,8 +643,96 @@ const styles = StyleSheet.create({
   },
   contentBorder: {
     borderBottomColor: 'gainsboro', 
-    borderBottomWidth: 1
-  }
+    borderBottomWidth: 1,
+    width: 300,
+    //paddingHorizontal: .6
+  },
+  modalView:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    padding: 10,
+    //paddingVertical: 10,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: 'gainsboro',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    margin: 65,
+    marginTop: 170,
+    marginBottom: 100,
+    //height: '30%',
+    
+  },
+  modalContentTitle:{
+    fontWeight: 'bold',
+    fontSize: 22,
+    textAlign: 'center',
+    color: 'black',
+    paddingBottom: 20,
+    paddingTop: 5,
+    letterSpacing: 2.5,
+  },
+  textInput: {
+    marginHorizontal: '10%',
+    marginVertical: 5,
+    width: '80%',
+    height: 50,
+    padding: 13,
+    fontWeight: 'bold',
+    borderColor: 'rgba(0, 0, 0, .4)',
+    borderWidth: 1,
+    color: 'rgba(0, 0, 0, 1)',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    shadowColor: '#000000',
+    shadowOffset: {width: 1, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    borderRadius: 20,
+  },
+  buttonContainer:{
+    alignItems: 'center',
+    marginHorizontal: '10%',
+    marginVertical: 10,
+    padding: 10,
+    paddingHorizontal: 80,
+    borderRadius: 20,
+    //backgroundColor: '#445092',
+    backgroundColor: '#ff3333',
+    shadowColor: '#000000',
+    shadowOffset: {width: 1, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  buttonContainerGender:{
+    alignItems: 'center',
+    marginHorizontal: '10%',
+    marginVertical: 10,
+    padding: 10,
+    paddingHorizontal: 80,
+    borderRadius: 20,
+   // backgroundColor: '#445092',
+    backgroundColor: '#ff3333',
+    shadowColor: '#000000',
+    shadowOffset: {width: 1, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+    color: 'white',
+    fontWeight: 'bold',
+   
+  },
+
 });
 
 export default ProfileScreen;

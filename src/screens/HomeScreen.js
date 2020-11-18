@@ -10,14 +10,13 @@ import {
 } from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import {VictoryBar, VictoryChart, VictoryAxis} from 'victory-native';
+import {VictoryBar, VictoryChart, VictoryAxis, VictoryTooltip, VictoryVoronoiContainer} from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';
 import {Calendar} from 'react-native-calendars';
+import { withOrientation } from 'react-navigation';
 
 const date = new Date();
-const calDate = [];
-date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + ((date.getDate()  + 0) % 7);
 //newRealtimeData[0].y.shift();
  //newRealtimeData[0].x.push(this.state.count+1);
 const strDay = (day) => {  
@@ -33,20 +32,63 @@ const strDay = (day) => {
   }
 }
 
+
+
+const calDate = [];
+var format = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+calDate.push({
+  date: format,
+  score: Math.random() * 100,
+});
+
+var thisDay = date.getDate();
+var thisMonth = date.getMonth() + 1;
+var thisYear = date.getFullYear();
+var formatStr = '';
+for(var i = 1; i < 30; i++) {
+  if(thisDay == 1 && thisMonth == 1){
+    thisYear--;
+    thisMonth = 12;
+    thisDay = new Date(thisYear, thisMonth, 0).getDate();
+  } else if(thisDay == 1){
+    thisMonth--;
+    thisDay = new Date(thisYear, thisMonth, 0).getDate();
+  } else {
+    thisDay--;
+  }
+
+  if(thisDay < 10){
+    var temp = "0";
+    thisDay = temp.concat(thisDay);
+  }
+  var format = thisYear+ "-" + thisMonth + "-" + thisDay
+  
+  calDate.push({
+    date: format,
+    score: Math.floor(Math.random() * 100),
+  });
+
+  formatStr = formatStr.concat("\n" + format + " " + calDate[i].score);
+}
+
 const data = [
-  {day: strDay((date.getDay() + 1) % 7), score: 5},
-  {day: strDay((date.getDay() + 2) % 7), score: 50},
-  {day: strDay((date.getDay() + 3) % 7), score: 20},
-  {day: strDay((date.getDay() + 4) % 7), score: 70},
-  {day: strDay((date.getDay() + 5) % 7), score: 40},
-  {day: strDay((date.getDay() + 6) % 7), score: 90},
-  {day: strDay(date.getDay()), score: 69},
+  {day: strDay((date.getDay() + 1) % 7), score: calDate[6].score},
+  {day: strDay((date.getDay() + 2) % 7), score: calDate[5].score},
+  {day: strDay((date.getDay() + 3) % 7), score: calDate[4].score},
+  {day: strDay((date.getDay() + 4) % 7), score: calDate[3].score},
+  {day: strDay((date.getDay() + 5) % 7), score: calDate[2].score},
+  {day: strDay((date.getDay() + 6) % 7), score: calDate[1].score},
+  {day: strDay(date.getDay()), score: calDate[0].score},
 ];
 
-const calData = {
-  [calDate]: {
-    textColor: 'white', 
-    color: data[0].score > 70 ? 'green': 'red',
+var calData = {};
+
+for(const i in calDate) {
+  calData.[calDate[i].date] =  {
+    textColor: calDate[i].score > 70 || calDate[i].score < 40 && calDate[i].score != 0 ? 'white' : 'black',
+    color: calDate[i].score > 70 ? 'green': calDate[i].score >= 40 ? 'yellow' : calDate[i].score > 0 ? 'red' : 'white',
+    startingDay: true,
+    endingDay: true,
   }
 }
 
@@ -72,7 +114,6 @@ const HomeScreen = ({navigation}) => {
           style={styles.backgroundImage}
           source={require('../images/TraceBio-Black.png')}
         />
-        <Text style={styles.title}></Text>
         <Text style={styles.title}>Health Dashboard</Text>
         <DropDownPicker
           items={[
@@ -91,7 +132,9 @@ const HomeScreen = ({navigation}) => {
         <Svg
           style={status ? styles.chart : styles.hidden}
           preserveAspectRatio="none">
-          <VictoryChart domainPadding={15} height={300} width={420}>   
+          <VictoryChart domainPadding={15} height={300} width={420}
+            
+          >   
             <VictoryBar
               data={data}
               x="day"
@@ -107,9 +150,10 @@ const HomeScreen = ({navigation}) => {
                 },
               }}
             />
+           
     
             <VictoryAxis />
-            <VictoryAxis dependentAxis label="Score" style={sharedAxisStyles} />
+            <VictoryAxis dependentAxis label="Score" style={sharedAxisStyles} domain={[0, 100]} />
           </VictoryChart>
         </Svg>
 
@@ -165,7 +209,19 @@ const HomeScreen = ({navigation}) => {
           // Enable the option to swipe between months. Default = false
           enableSwipeMonths={true}
           markedDates = {calData}
-          markingType={'period'}
+          markingType = "period"
+          theme={{
+            'stylesheet.day.period': {
+                base: {
+                  overflow: 'hidden',
+                  height: 34,
+                  alignItems: 'center',
+                  width: 38,
+                }
+            }
+          }}
+          
+          
         />
         <View style={styles.colorKey}>
           <View style={styles.colorKeyRow}>

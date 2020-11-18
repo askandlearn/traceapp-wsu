@@ -1,6 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useRef, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Animated, Button } from 'react-native'
 import {connect} from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 //require module
 var RNFS = require('react-native-fs');
@@ -14,7 +15,13 @@ const SyncDataScreen = props => {
     return (
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-            <Text style={styles.title}>Recording History</Text>
+            <View style={styles.header}>
+                <TouchableOpacity onPress={() => props.navigation.pop()}>
+                <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+                </TouchableOpacity>
+            </View>
+            <Text style={styles.title}>Recordings</Text>
+            <Text style={{margin: 10}}>In construction... </Text>
         </View>
     )
 }
@@ -35,7 +42,15 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingBottom: 20,
         textAlign:'center'
-    }
+    },
+    header: {
+        width: '100%',
+        height: 60,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+      },
 })
 
 export default connect(mapStateToProps,null) (SyncDataScreen);

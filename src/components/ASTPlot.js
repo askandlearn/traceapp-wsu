@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, TouchableOpacity,Text } from 'react-native';
+import { StyleSheet, View, Button, Text, TouchableOpacity } from 'react-native';
 import Plotly from 'react-native-plotly';
 import { onDisconnect, stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
@@ -18,9 +18,8 @@ const mapDispatchToProps = dispatch => ({
 
 const transactionID = 'monitor_metrics'
 
-ASTPlot=(props)=> {
-
-  const [isData, setData]= useState([
+ App =(props)=>{
+  const [isHR, setHR]= useState([
     {
       // type: "scatter",
       // mode: "lines+points",
@@ -28,14 +27,26 @@ ASTPlot=(props)=> {
       y: [],
       // marker: { color: "#ff0000" },
       // line: { shape: "spline" }
-      name:'HR'
-      
+      name:'HR',
     }
   ]);
- const [isCount, setCount]=useState(0); 
- const [isNewData, setNewData] =useState(isData);
+  const [isPAMP, setPAMP]= useState([
+    {
+      // type: "scatter",
+      // mode: "lines+points",
+      x: [],
+      y: [],
+      // marker: { color: "#ff0000" },
+      // line: { shape: "spline" }
+      name:'PAMP',
+    }
+  ]);
+  const [isData, setData]=useState(isHR);
 
- var d = new Date();
+  const [isNewData, setNewData] =useState(isData);
+  const [isNewPAMP, setNewPAMP]=useState(isPAMP);
+
+  var d = new Date();
   setPlot=()=>{
     console.log("Started Timer");
    
@@ -46,19 +57,36 @@ ASTPlot=(props)=> {
       isNewData[0].x.push( d.toLocaleTimeString());
       isNewData[0].x.shift();
       //console.log("x second"+isNewData[0].x);       
-      setData(isNewData);
-      setCount(isCount+1);    
+      setHR(isNewData);  
     }
     else{
       isNewData[0].y.push(props.metrics[1]);
       isNewData[0].x.push( d.toLocaleTimeString());
      // console.log("x first"+isNewData[0].x);
      // console.log("y first"+isNewData[0].y);
-      setData(isNewData);
-      setCount(isCount+1);  
+     setHR(isNewData);
     }
   }
-  var plot;
+  setPAMPVal=()=>{
+    console.log("Started PAMP");
+   
+    if(isNewPAMP[0].y.length>5){
+      isNewPAMP[0].y.push(props.metrics[3]);
+      //console.log("y second"+isNewData[0].y);
+      isNewPAMP[0].y.shift();
+      isNewPAMP[0].x.push( d.toLocaleTimeString());
+      isNewPAMP[0].x.shift();
+      //console.log("x second"+isNewData[0].x);       
+      setPAMP(isNewPAMP);  
+    }
+    else{
+      isNewPAMP[0].y.push(props.metrics[3]);
+      isNewPAMP[0].x.push( d.toLocaleTimeString());
+     // console.log("x first"+isNewData[0].x);
+     // console.log("y first"+isNewData[0].y);
+     setPAMP(isNewPAMP);
+    }
+  }
   const onStart = async () => {
     props.updateMetric();
    // plot=setInterval(() => {
@@ -67,7 +95,12 @@ ASTPlot=(props)=> {
   }
 
   useEffect(()=>{
-    setPlot();
+    if (isData[0].name=== 'HR') {
+     setPlot();
+    }
+    else{
+     setPAMPVal();
+    }
   },[props.hrv])
 
 const onStop = async () => {
@@ -78,64 +111,89 @@ const onStop = async () => {
   //console.log()
  // clearInterval(plot);
 }
-update = (_, { data, layout, config, }, plotly) => {
-  plotly.react(data, layout, config);
-};
-const layout={
+const [layout, setLayout]=useState({
   title: 'HR vs Time',
-  showlegend:true,
-  
-}
+  showlegend:true 
+})
+// const [layout2, setLayout2]=useState({
+//   title: 'PAMP vs Time',
+//   showlegend:true 
+// })
+
 const config={
   displaylogo:false,
   responsive:true
 }
-    return (     
+  swapData = () => {
+    if (isData[0].name=== 'HR') {
+      setData(isPAMP);
+      setLayout({
+        title: 'PAMP vs Time',
+        showlegend:true 
+      })
+    } else {
+      setData(isHR);
+      setLayout({
+        title: 'HR vs Time',
+        showlegend:true 
+      });
+    }
+  };
+
+  update = (_, { data, layout, config }, plotly) => {
+    plotly.react(data, layout, config);
+  };
+    return (
       <View style={styles.container}>
-      <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
+        <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
       <TouchableOpacity style={styles.button} onPress={() => onStart()}>
-          <Text>Start Plot</Text>
+          <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => onStop()}>
-          <Text>Stop Plot</Text>
+          <Text style={styles.buttonText}>Stop</Text>
         </TouchableOpacity>
-     
       </View>
+      <View style={styles.buttonRow}>
+          <Button onPress={() =>swapData()} title="Swap Data" />
+        </View>
         <View style={styles.chartRow}>
           <Plotly
             data={isData}
             layout={layout}
-            // update={this.update}
-            onLoad={() => console.log('loaded')}
-            debug
-            config={config}
-            enableFullPlotly
             update={update}
+            //onLoad={() => console.log('loaded')}
+            debug
+            enableFullPlotly
+            config={config}
           />
         </View>
       </View>
-    
     );
   }
-  export default connect(mapStateToProps, mapDispatchToProps) (ASTPlot);
+
+  export default connect(mapStateToProps, mapDispatchToProps) (App);
 const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row'
   },
   chartRow: {
     flex: 1,
+    width: '100%'
   },
   container: {
-    flex:1,
-    paddingTop: 20,
-    width: 400,
+    //paddingTop: 5,
+    width: '100%',
+    height: '100%',
     backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
-    padding: 10,
+    paddingHorizontal: 20,
+    paddingVertical:10,
     borderRadius: 20,
     backgroundColor: '#ff0000',
     shadowColor: '#000000',
@@ -143,5 +201,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
 });

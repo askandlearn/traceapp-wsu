@@ -207,12 +207,12 @@ const styles = StyleSheet.create({
   //   //textAlign:'center',
   // },
   wrapper: {
-    height:600,
+    height:650,
     backgroundColor:'#ffffff', 
   },
   slide1: {
     height:'100%',
-    paddingHorizontal:'10%',
+    //paddingHorizontal:'2%',
     justifyContent: 'center',
     alignItems: 'center',
     color: '#000000',

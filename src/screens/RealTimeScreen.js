@@ -21,8 +21,10 @@ import Swiper from 'react-native-swiper';
 import Plot from '../components/RTPlot';
 
 import {connect} from 'react-redux';
-import { onDisconnect, stopTransaction, updateMetric } from '../actions';
+import { onDisconnect, stopTransaction, updateMetric , updateRecordings} from '../actions';
 import { sleep } from '../utils/sleep';
+import AsyncStorage from '@react-native-community/async-storage';
+import {UserContext} from '../contexts/UserContext';
 
 //require module
 var RNFS = require('react-native-fs');
@@ -37,17 +39,21 @@ const mapStateToProps = state => ({
   pnn50: state.DATA['pnn50'],
   hrv: state.DATA['hrv'],
   connectedDevice: state.BLE['connectedDevice'],
-  metrics: state.BLE['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  metrics: state.BLE['metrics'], //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  recordings: state.BLE['recordings']
 })
 
 const mapDispatchToProps = dispatch => ({
   updateMetric: () => dispatch(updateMetric()),
   stopTransaction: ID => dispatch(stopTransaction(ID)),
+  addRecording: (username) => dispatch(updateRecordings(username))
 })
 
 const RealTimeScreen = (props) => {
 
   var path = RNFS.DocumentDirectoryPath + '/test.txt';
+
+  const user = useContext(UserContext);
 
   const [content,setContent] = useState()
 
@@ -72,6 +78,10 @@ const RealTimeScreen = (props) => {
     props.stopTransaction(transactionID)
   }
 
+  const pressed = () => {
+    props.addRecording(user.username)
+  }
+
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}>
@@ -81,20 +91,14 @@ const RealTimeScreen = (props) => {
          {/* <Button
          title='Show Value'
          onPress={() => console.log(isStart)}/> */}
-        <RTTimer ></RTTimer>  
+        <RTTimer ></RTTimer> 
+        <Button
+        title='Press'
+        onPress={pressed}/> 
+        <Button
+        title='Get recordings'
+        onPress={() => console.log(props.recordings)}/>
     {/* sendData={this.testTimer} */}
-        <View style={styles.NavBarDivider}/>
-        <Swiper style={styles.wrapper} showsButtons loop={false} autoplay={false}>
-        <View testID="Data" style={styles.slide1}>
-          <Text style={styles.slideTitles}>Biometric Data by Numbers</Text>
-          <RTData></RTData>
-        </View>
-        {/* <View style={styles.NavBarDivider} /> */}
-        <View testID="Plot" style={styles.slide2}>
-        <Text style={styles.slideTitles}>Biometric Data by Plot</Text>
-         <Plot ></Plot>
-        </View>
-        </Swiper>
       </ScrollView> 
     </View>
   );

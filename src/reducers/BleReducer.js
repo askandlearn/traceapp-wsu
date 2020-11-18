@@ -4,8 +4,8 @@ const initialState = {
   status: 'disconnected',
   connectedDevice: {},
   isConnected: false,
-  recordings: [],
-};
+  recordings: {user: undefined, recordings: []}
+}
 
 const bleReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -33,6 +33,11 @@ const bleReducer = (state = initialState, action) => {
         status: action.status,
         connectedDevice: action.connectedDevice,
         isConnected: action.isConnected
+      }
+    case 'ADD_RECORDING':
+      return{
+        ...state,
+        recordings: {user: action.user, recordings:[...state.recordings.recordings,action.newRecording]}
       }
     default:
       return state;

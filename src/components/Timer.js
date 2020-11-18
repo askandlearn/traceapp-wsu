@@ -2,10 +2,10 @@
 import React, { Component,useRef, useState } from 'react';
 //import React in our project
 
-import { StyleSheet, Animated,Text, View, TouchableOpacity } from 'react-native';
+import {StyleSheet, Animated, Text, View, TouchableOpacity} from 'react-native';
 //import all the required components
 
-import { Timer } from 'react-native-stopwatch-timer';
+import {Timer} from 'react-native-stopwatch-timer';
 var Sound = require('react-native-sound');
 //importing library to use Stopwatch and Timer
 
@@ -41,8 +41,7 @@ const Time = (props) =>  {
       } 
       else if(isTimerStart ){
         sound.pause();
-      }
-      else {
+      } else {
         sound.play(); // have to put the call to play() in the onload callback
       }
     });
@@ -88,10 +87,7 @@ const Time = (props) =>  {
   );
 }
 
-
-
 const styles = {
-  
   container: {
     //flex: 1,
      backgroundColor: '#ffffff',

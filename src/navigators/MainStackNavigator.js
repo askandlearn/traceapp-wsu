@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import React from 'react';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {CusomDrawerComponent} from '../components/CustomDrawerComponent';
 
 //Import screens
@@ -26,7 +26,6 @@ import HistoryScreen from '../screens/HistoryScreen';
 
 
 const MainStack = createDrawerNavigator();
-
 
 export function MainStackNavigator() {
   return(

@@ -148,7 +148,7 @@ const ProfileScreen = (props) => {
         diffWeight: true
       }); */
     }
-  }
+  };
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        VALIDATE BIRTHDATE
@@ -276,7 +276,7 @@ const ProfileScreen = (props) => {
       catch(err){
         console.log('Error in saveChanges():',err.message)
       }
-      
+
       setChangeText('Edit');
       editEditable(false);
     } else {

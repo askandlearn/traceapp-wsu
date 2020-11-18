@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -12,53 +12,49 @@ import SettingsList from 'react-native-settings-list';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
-const SettingsMenu = ({navigation}, props) => {
+//redux
+import {connect} from 'react-redux';
+
+const mapStateToProps = (state) => ({
+  isConnected: state.BLE['isConnected']
+})
+
+const SettingsMenu = (props) => {
   var bgColor = '#DCE3F4';
-  // var navigate= props.navigation.navigate;
-  // this.onValueChange.bind(this);
-  //this.state = {switchValue: false};
+
+
   return (
-    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{backgroundColor: '#f1f1f2', flex: 1}}>
+    <View
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{backgroundColor: '#f1f1f2', flex: 1}}>
       <KeyboardAvoidingScrollView>
-      <Header openDrawer={navigation.openDrawer} />
-      <View
-        style={{
-          borderBottomWidth: 1,
-          backgroundColor: '#f1f1f2',
-          borderColor: '#f1f1f2',
-        }}>
-        {/* <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>     */}
-        <Text style={styles.title}>Settings</Text>
-      </View>
-      <View style={{backgroundColor: '#f1f1f2', flex: 1}}>
-        <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
-          <SettingsList.Header headerStyle={{marginTop: 15}} />
-          {/* <SettingsList.Item
-                  hasSwitch={true}
-                  switchState={this.state.switchValue}
-                  switchOnValueChange={this.onValueChange}
-                  hasNavArrow={false}
-                  title='Airplane Mode'
-                /> */}
-          {/*<SettingsList.Item
-            title="My Health Information"
-            titleInfoStyle={styles.titleInfoStyle}
-            onPress={() => navigation.navigate('HealthInformation')}
-          />*/}
-          <SettingsList.Item
-            title="Change Password"
-            titleInfoStyle={styles.titleInfoStyle}
-            onPress={() => navigation.navigate('ChangePassword')}
-          />
-          <SettingsList.Item
-            title="Connect TRACE Sensor"
-            titleInfo="Disconnected"
-            titleInfoStyle={styles.titleInfoStyle}
-            onPress={() => navigation.navigate('TraceConnect')}
-          />
-          <SettingsList.Item title="Sync My Data" onPress={() => null} />
-        </SettingsList>
-      </View>
+        <Header openDrawer={props.navigation.openDrawer} />
+        <View
+          style={{
+            borderBottomWidth: 1,
+            backgroundColor: '#f1f1f2',
+            borderColor: '#f1f1f2',
+          }}>
+          {/* <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>     */}
+          <Text style={styles.title}>Settings</Text>
+        </View>
+        <View style={{backgroundColor: '#f1f1f2', flex: 1}}>
+          <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
+            <SettingsList.Header headerStyle={{marginTop: 15}} />
+            <SettingsList.Item
+              title="Change Password"
+              titleInfoStyle={styles.titleInfoStyle}
+              onPress={() => props.navigation.navigate('ChangePassword')}
+            />
+            <SettingsList.Item
+              title="Connect TRACE Sensor"
+              titleInfo={props.isConnected ? 'Connected':'Disconnected'}
+              titleInfoStyle={{color: props.isConnected ? 'green':'red'}}
+              onPress={() => props.navigation.navigate('TraceConnect')}
+            />
+            <SettingsList.Item title="Sync My Data" onPress={() => props.navigation.navigate('SyncData')} />
+          </SettingsList>
+        </View>
       </KeyboardAvoidingScrollView>
     </View>
   );
@@ -115,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingsMenu;
+export default connect(mapStateToProps, null) (SettingsMenu);

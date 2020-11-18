@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import SettingsMenu from '../screens/SettingsMenu';
 import TraceConnect from '../screens/TraceConnectScreen';
 import ChangePasswordScreen from '../screens/ChangePassword';
+import SyncDataScreen from '../screens/SyncDataScreen';
 
 const SettingStack = createStackNavigator()
 
@@ -15,6 +16,7 @@ export function SettingStackNavigator(){
             <SettingStack.Screen name={'SettingsMenu'} component={SettingsMenu}/>
             <SettingStack.Screen name={'TraceConnect'} component={TraceConnect}/>
             <SettingStack.Screen name={'ChangePassword'} component={ChangePasswordScreen}/>
+            <SettingStack.Screen name={'SyncData'} component={SyncDataScreen}/>
         </SettingStack.Navigator>
     )
 }

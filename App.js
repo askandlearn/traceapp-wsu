@@ -7,7 +7,10 @@
  */
 // Tracebio background color hex:#242852
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  createAppContainer,
+} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 
 import {AuthStackNavigator} from './src/navigators/AuthStackNavigator';
@@ -20,8 +23,25 @@ import {UserContext} from './src/contexts/UserContext';
 import {useAuth} from './src/hooks/useAuth';
 import {SplashScreen} from './src/screens/SplashScreen';
 
+//redux and its helper libraries
+//reference for implementing redux: https://itnext.io/using-a-raspberry-pi-to-control-leds-part-iii-react-native-app-29ee3f4afb8c
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './src/reducers/index';
+
+//bleManager
+import { 
+  BleManager,
+  BleError 
+} from 'react-native-ble-plx';
+
 const RootStack = createStackNavigator();
 // const AuthStack = createStackNavigator();  //not needed
+const DeviceManager = new BleManager();
+
+const store = createStore(rootReducer, applyMiddleware(thunk.withExtraArgument(DeviceManager)));
+
 
 export default function () {
   const {auth, state} = useAuth();
@@ -37,7 +57,9 @@ export default function () {
       <RootStack.Screen name={'MainStack'}>
         {() => (
           <UserContext.Provider value={state.user}>
-            <MainStackNavigator />
+            <Provider store={store}>
+              <MainStackNavigator />
+            </Provider>
           </UserContext.Provider>
         )}
       </RootStack.Screen>

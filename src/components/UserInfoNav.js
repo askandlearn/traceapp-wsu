@@ -1,47 +1,53 @@
+/* eslint-disable no-undef */
 import React, {useContext, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet}
-from 'react-native';
-import { UserContext } from '../contexts/UserContext';
+import {View, Text, StyleSheet} from 'react-native';
+import {UserContext} from '../contexts/UserContext';
 
-export default UserInfo=()=>{
-    //create user
-    const user = useContext(UserContext);
+export default UserInfo = () => {
+  //create user
+  const user = useContext(UserContext);
 
-    const [name] = useState(() => {if(user) return user.name; else return ''});
-    const [email] = useState(() => {if(user) return user.email; else return ''});
+  const [name] = useState(() => {
+    if (user) {
+      return user.name;
+    } else {
+      return '';
+    }
+  });
+  const [email] = useState(() => {
+    if (user) {
+      return user.email;
+    } else {
+      return '';
+    }
+  });
 
-    //console.log(user);
+  //console.log(user);
 
-    //split name to get initials for avatar
-    const initialzeAvatarText = () => {
-        if (user){
-          const[first, last] = user.name.split(' ')
-          return first[0]+last[0]
-        }else{
-          return ''
-        }
-      }
-    
-      const [initials] = useState(initialzeAvatarText())
+  //split name to get initials for avatar
+  const initialzeAvatarText = () => {
+    if (user) {
+      const [first, last] = user.name.split(' ');
+      return first[0] + last[0];
+    } else {
+      return '';
+    }
+  };
 
-      return(
-          <View style={{flexDirection:'row', marginTop: 15}}>
-              <View style={styles.avatar}>
-                  <Text style={styles.avatar_text}>{initials}</Text>
-                </View>
-                <View style={{flexDirection:'column', marginLeft: 15}}>
-                    <Text style={styles.title} >{name}</Text>
-                    <Text style={styles.caption}>{email}</Text>
-                </View>
-          </View>
+  const [initials] = useState(initialzeAvatarText());
 
-
-      )
-    
-}
+  return (
+    <View style={{flexDirection: 'row', marginTop: 15}}>
+      <View style={styles.avatar}>
+        <Text style={styles.avatar_text}>{initials}</Text>
+      </View>
+      <View style={{flexDirection: 'column', marginLeft: 15}}>
+        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.caption}>{email}</Text>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
     drawerContent: {
@@ -109,3 +115,4 @@ const styles = StyleSheet.create({
         paddingLeft: 2,
       }
 })
+

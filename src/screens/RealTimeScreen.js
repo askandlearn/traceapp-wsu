@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -17,29 +17,103 @@ import RTTimer from '../components/RTTimer';
 import RTData from '../components/RTData';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 //import SensorAlert from '../components/ConnectToSensorAlert';
-
+import Swiper from 'react-native-swiper';
 import Plot from '../components/RTPlot';
+
+import {connect} from 'react-redux';
+import { onDisconnect, stopTransaction, updateMetric , updateRecordings} from '../actions';
+import { sleep } from '../utils/sleep';
+import AsyncStorage from '@react-native-community/async-storage';
+import {UserContext} from '../contexts/UserContext';
+
+//require module
+var RNFS = require('react-native-fs');
 
 var check = true;
 
-const RealTimeScreen = ({navigation}, props) => {
+const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb'
+//transaction id for monitoring data
+const transactionID = 'monitor_metrics'
+
+const mapStateToProps = state => ({
+  pnn50: state.DATA['pnn50'],
+  hrv: state.DATA['hrv'],
+  connectedDevice: state.BLE['connectedDevice'],
+  metrics: state.BLE['metrics'], //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  recordings: state.BLE['recordings']
+})
+
+const mapDispatchToProps = dispatch => ({
+  updateMetric: () => dispatch(updateMetric()),
+  stopTransaction: ID => dispatch(stopTransaction(ID)),
+  addRecording: (username) => dispatch(updateRecordings(username))
+})
+
+const RealTimeScreen = (props) => {
+
+  var path = RNFS.DocumentDirectoryPath + '/test.txt';
+
+  const user = useContext(UserContext);
+
+  const [content,setContent] = useState()
+
+  const read = () => {
+    //read the file
+    console.log('PATHFILE:',path)
+    RNFS.readFile(path).then(res => {
+      console.log("FILE READ SUCCESSFULLY")
+      setContent(res)
+    }).catch(err => {
+      console.log(err.message,err.code)
+    })
+  }
+
+  var interval;
+  const onStart = async () => {
+
+    props.updateMetric();
+
+  }
+
+  const onStop = async () => {
+    console.log('Cancelling transaction...')
+    props.stopTransaction(transactionID);
+  
+  }
+
+  const pressed = () => {
+    props.addRecording(user.username)
+  }
+
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}>
-       <KeyboardAvoidingScrollView>
-         <Header openDrawer={navigation.openDrawer} />
+      <ScrollView>
+         <Header openDrawer={props.navigation.openDrawer} />
          <Text style={styles.title}>Real-Time Data</Text>
-        <RTTimer></RTTimer>
+         {/* <Button
+         title='Show Value'
+         onPress={() => console.log(isStart)}/> */}
+        <TouchableOpacity style={styles.button} onPress={() => onStart()}>
+            <Text>Start Plot</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => onStop()}>
+            <Text>Stop Plot</Text>
+          </TouchableOpacity> 
+    {/* sendData={this.testTimer} */}
         <View style={styles.NavBarDivider}/>
-        <RTData></RTData>
-        {/* <View style={styles.NavBarDivider} /> */}
-        <Plot></Plot>
-        </KeyboardAvoidingScrollView>
+        {/* <Swiper style={styles.wrapper} showsButtons loop={false} autoplay={false}> */}
+        <View testID="Data" style={styles.wrapper}>
+          {/* <Text style={styles.slideTitles}>Biometric Data by Numbers</Text> */}
+          <RTData></RTData>
+        </View>
+
+      </ScrollView> 
     </View>
   );
 };
 
-export default RealTimeScreen;
+export default connect(mapStateToProps, mapDispatchToProps) (RealTimeScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -154,13 +228,36 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   wrapper: {
-    // flex:1,
-    height: 300,
-    //backgroundColor: '#9DD6EB'
-
-    //opacity:0.4,
-    backgroundColor: '#ffffff',
-  },
+     height:600,
+     backgroundColor:'#ffffff', 
+   },
+   slide1: {
+     height:'100%',
+     paddingHorizontal:'10%',
+     justifyContent: 'center',
+     alignItems: 'center',
+     color: '#000000',
+     fontSize: 20,
+   },
+   slideTitles:{
+    alignSelf: 'center',
+    //marginHorizontal: '10%',
+    //marginVertical: 50,
+    color: '#202020',
+    fontWeight: 'bold',
+    fontSize: 30,
+    textAlign: 'center',
+   },
+   slide2: {
+    // flex: 1,
+     height:'100%',
+     //justifyContent: 'center',
+     paddingVertical:'10%',
+     paddingHorizontal:'10%',
+     alignItems: 'center',
+    
+     //backgroundColor: '#97CAE5'
+   },
 
   steps: {
     color: '#000000',

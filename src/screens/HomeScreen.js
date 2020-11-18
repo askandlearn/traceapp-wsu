@@ -1,5 +1,13 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {VictoryBar, VictoryChart, VictoryAxis, VictoryTooltip, VictoryVoronoiContainer} from 'victory-native';
@@ -97,7 +105,9 @@ const HomeScreen = ({navigation}) => {
   const [stats, setStats] = useState('week');
   const [status, setStatus] = useState('true');
   return (
-    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+    <View
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
       <KeyboardAvoidingScrollView>
         <Header openDrawer={navigation.openDrawer} />
         <Image
@@ -244,7 +254,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     alignSelf: 'center',
     marginTop: 30,
-    marginBottom: 70,
+    marginBottom: 0,
     width: '60%',
     height: 100,
     resizeMode: 'stretch',
@@ -261,7 +271,7 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     marginHorizontal: '10%',
-    marginVertical: 10,
+    marginVertical: 0,
     color: '#202020',
     fontWeight: 'bold',
     fontSize: 30,

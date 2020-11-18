@@ -19,6 +19,12 @@ target 'traceApp' do
 
   pod 'RNSound', :path => '../node_modules/react-native-sound'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'traceAppTests' do
     inherit! :complete
     # Pods for testing
@@ -35,7 +41,7 @@ target 'traceApp' do
 end
 
 target 'traceApp-tvOS' do
-  # Pods for traceApp-tvOS
+  # Pods for traceapp-tvOS
 
   target 'traceApp-tvOSTests' do
     inherit! :search_paths

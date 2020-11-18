@@ -1,183 +1,176 @@
-import React, {Component} from 'react';
-import {
-    View,
-    Text,
-    StyleSheet
-  } from 'react-native';
-// import {
-//     LineChart,
-//     BarChart,
-//     PieChart,
-//     ProgressChart,
-//     ContributionGraph,
-//     StackedBarChart
-//   } from "react-native-chart-kit";
-import PureChart from 'react-native-pure-chart';
-  //const screenWidth = Dimensions.get("window").width;
-  export default RTPlot=()=>{
-    let sampleData = [
-      {
-        data:[ {x: '34:44.0', y: 44061},
-        {x: '34:44.0', y: 44062},
-        {x: '34:44.1', y: 44062},
-        {x: '34:44.1', y: 64079},
-        {x: '34:44.1', y: 44092},
-        {x: '34:44.1', y: 14093},
-        {x: '34:44.1', y: 44117},
-        {x: '34:44.2', y: 44117},
-        {x: '34:44.2', y: 34117},
-        {x: '34:44.3', y: 24117},], color:'red'
-      }
-  ]
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity,Text } from 'react-native';
+import Plotly from 'react-native-plotly';
+import { onDisconnect, stopTransaction, updateMetric } from '../actions';
+import {connect} from 'react-redux';
+
+function mapStateToProps(state){
+  return{
+    pnn50: state.DATA['pnn50'],
+    hrv: state.DATA['hrv'],
+    metrics: state.BLE['metrics'],
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  updateMetric: () => dispatch(updateMetric()),
+  stopTransaction: ID => dispatch(stopTransaction(ID)),
+})
+
+RTPlot=(props)=> {
+
  
-   return( 
-    <View>
-      <PureChart height={190} data={sampleData}  width={'50%'} type='line' backgroundColor={'#ffffff'} 
-      /> 
-      <View style={styles.colorKey}>
-        <View style={styles.colorKeyRow}>
-            <Text>- X Axis: Time </Text>
-          </View>
-          <View style={styles.colorKeyRow}>
-            <Text>- Y Axis: PPG </Text>
-          </View>
 
-        </View>
-      </View>
-    // <PinchZoomView>
+  //setPlot(){     
+    // console.log("Started Timer");
+    // let newRealtimeData = [...this.state.realtimeData];
+    // //setInterval(() => {
+    // if(newRealtimeData[0].y.length>5){
+    //   newRealtimeData[0].y.push(Math.floor(Math.random() * 10) + 1);
+    //   console.log("y second"+newRealtimeData[0].y);
+    //   newRealtimeData[0].y.shift();
+    //   newRealtimeData[0].x.push(this.state.count+1);
+    //   newRealtimeData[0].x.shift();
+    //   console.log("x second"+newRealtimeData[0].x);       
+    //   this.setState({
+    //     realtimeData: newRealtimeData,
+    //     count: this.state.count+1
+    //   });
+    // }
+    // else{
+    //   newRealtimeData[0].y.push(newRealtimeData[0].x.length + 1);
+    //   newRealtimeData[0].x.push(this.state.count+1);
+    //   console.log("x first"+newRealtimeData[0].x);
+    //   console.log("y first"+newRealtimeData[0].y);
+    //   this.setState({
+    //     realtimeData: newRealtimeData,
+    //     count: this.state.count+1
+    //   });
+    // }
+ // }, 2000);
   
-  // <LineChart
-  //   data={{
-  //     labels: [ 
-    //   '34:44.0',
-  //     '34:44.0',
-  //     '34:44.1',
-  //     '34:44.1',
-  //     '34:44.1',
-  //     '34:44.1',
-  //     '34:44.1'],
-  //     datasets: [
-  //       {
-  //         data: [44061, 44062, 44062, 44079, 44092, 44093, 44117
-           
-  //         ]
-  //       }
-  //     ]
-  //   }}
-  //  // width={Dimensions.get("window").width} // from react-native
-  //   height={170}
-  //   width={400}
-  //   //yAxisLabel="Days"
-  //   //yAxisSuffix=""
-  //   yAxisInterval={1} // optional, defaults to 1
-  //   yAxisLabel={'PPG'}
-  //   chartConfig={{
-  //     backgroundColor: "#000000",
-  //     backgroundGradientFrom: "#ff1111",
-  //     backgroundGradientTo: "#ff6666",
-  //     decimalPlaces: 1, // optional, defaults to 2dp
-  //     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  //     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  //     style: {
-  //       borderRadius: 16
-  //     },
-  //     propsForDots: {
-  //       r: "4",
-  //       strokeWidth: "2",
-  //       stroke: "#ffffff"
-  //     }
-  //   }}
-  //   bezier
-  //   style={{
-  //     marginVertical: '1%',
-  //     marginHorizontal:'5%',
-  //     width:'90%',
-      
-  //    // marginLeft: '5%',
-  //    // marginRight:'5%',
-  //     alignItems:'center',
-  //     borderRadius: 16
-  //   }}
-  // />
-// </PinchZoomView>
-)
+//}
 
+// handleTimer(){
+//   const interval =setInterval(() => {
+//     console.log(this.state.check);
+//     this.setPlot();
+//   }, 2000);
+//   if (this.state.check==false){
+//     clearInterval(interval);
+//   }
+// }
+
+const [isHRV, setHRV] = useState(props.hrv);
+// useEffect(() => {
+//   // setInterval(() => {
+//   //   setHR(props.data[1])
+//   //   setIBI(props.data[2])
+//   //   setSkinTemp(props.data[8])
+//   //   setPAMP(props.data[3])
+//   //   setDAMP(props.data[4])
+//   //   setACC(props.data[9])
+//   // }, 2000);
+//   setHRV(props.hrv)
+// },[props.hrv])
+  const [isData, setData]= useState([
+      {
+        // type: "scatter",
+        // mode: "lines+points",
+        x: [1, 2, 3],
+        y: [1,2,3],
+        // marker: { color: "#ff0000" },
+        // line: { shape: "spline" }
+      }
+    ]);
+   const [isCount, setCount]=useState(0); 
+   const [isNewData, setNewData] =useState(isData);
+    setPlot=()=>{
+      console.log("Started Timer");
+     
+      if(isNewData[0].y.length>5){
+        isNewData[0].y.push(isHRV);
+        console.log("y second"+isNewData[0].y);
+        isNewData[0].y.shift();
+        isNewData[0].x.push(isCount);
+        isNewData[0].x.shift();
+        console.log("x second"+isNewData[0].x);       
+        setData(isNewData);
+        setCount(isCount+1);    
+      }
+      else{
+        isNewData[0].y.push(isHRV);
+        isNewData[0].x.push(isCount);
+        console.log("x first"+isNewData[0].x);
+        console.log("y first"+isNewData[0].y);
+        setData(isNewData);
+        setCount(isCount+1);  
+      }
   }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#ffffff',
-    },
-    backgroundImage: {
-      alignSelf: 'center',
-      marginTop: 30,
-      marginBottom: 70,
-      width: '60%',
-      height: 100,
-      resizeMode: 'stretch',
-    },
-    inputFields: {
-      backgroundColor: '#FFFFFF',
-      marginHorizontal: '10%',
-      marginVertical: 10,
-      padding: 10,
-      fontWeight: 'bold',
-      opacity: 0.4,
-      borderRadius: 3,
-    },
-    title: {
-      alignSelf: 'center',
-      marginHorizontal: '10%',
-      marginVertical: 10,
-      color: '#202020',
-      fontWeight: 'bold',
-      fontSize: 30,
-    },
-    button: {
-      //alignSelf: 'center',
-      //width: '60%',
-      alignItems: 'center',
-      marginHorizontal: '10%',
-      marginVertical: 10,
-      padding: 10,
-      borderRadius: 20,
-      backgroundColor: '#ff0000',
-    },
-    buttonText: {
-      color: '#FFFFFF',
-      fontWeight: 'bold',
-    },
-    buttonRow: {
-      flexDirection: 'row',
-    },
-    chartRow: {
-      width: '100%',
-    },
-    chart: {
-      flex: 1,
-      height: 300,
-      width: '80%',
-    },
-    hidden: {
-      display: 'none',
-    },
-    calendar: {
-      flex: 1,
-    },
-    colorKey: {
-      flex: 1,
-      alignSelf: 'center',
-      margin: 0,
-      paddingTop: 20,
-      paddingBottom: 40,
-    },
-    colorKeyRow: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-  
-      //alignItems: 'left',
-    },
-  });
-  
+  const onStart = async () => {
+    props.updateMetric();
+   // setPlot();
+  }
+
+  const onStop = async () => {
+    console.log('Cancelling transaction...')
+    props.stopTransaction(transactionID)
+  }
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.chartRow}>
+        <TouchableOpacity style={styles.button} onPress={() => onStart()}>
+            <Text>Start Plot</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => onStop()}>
+            <Text>Stop Plot</Text>
+          </TouchableOpacity>
+        <Text>{props.hrv}</Text>
+          <Plotly 
+            style={{ width: "100%", height: "100%" }}
+            useResizeHandler={true}
+            data={isData}
+            // layout={layout}
+            // frames={frames}
+            onInitialized={ (figure) =>this.setState(figure) }
+            onUpdate={ (figure) =>  this.setState(figure) }
+            enableFullPlotly={true}        
+          />
+        </View>
+      </View>
+    );
+  }
+  export default connect(mapStateToProps, mapDispatchToProps) (RTPlot)
+
+const styles = StyleSheet.create({
+  buttonRow: {
+    flexDirection: 'row'
+  },
+  chartRow: {
+    flex: 1,
+  },
+  container: {
+    flex:1,
+    paddingTop: 20,
+    width: 400,
+    backgroundColor: '#fff',
+  },
+  button: {
+    //alignSelf: 'center',
+    //width: '60%',
+    alignItems: 'center',
+    marginHorizontal: '10%',
+    marginVertical: 3,
+    width: '40%',
+    paddingVertical:6,
+    borderRadius: 20,
+    backgroundColor: '#ff2222',
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+});

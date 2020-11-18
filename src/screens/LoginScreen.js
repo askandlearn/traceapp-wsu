@@ -41,8 +41,9 @@ const LoginScreen = (props) => {
         </View>
         <TextInput
           style={styles.inputFields}
-          label="Email"
-          placeholder="Email"
+          label="Username"
+          placeholder="Username"
+          autoCapitalize='none'
           value={email}
           onChangeText={(val) => setEmail(val)}
         />
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginTop: '25%',
+    marginTop: '5%',
   },
   backgroundImage: {
     alignSelf: 'center',

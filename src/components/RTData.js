@@ -59,6 +59,7 @@ const RTData = (props) => {
     //   setDAMP(props.data[4])
     //   setACC(props.data[9])
     // }, 2000);
+   
     setPN(props.pnn50)
     setHRV(props.hrv)
   },[props.hrv,props.pnn50])
@@ -119,9 +120,9 @@ const RTData = (props) => {
       {/* SECOND ROW */}
       <View
         style={styles.row}>
-        <Text style={styles.valueTitle}> pNN50</Text>
+        <Text style={styles.valueTitle}>   pNN50</Text>
         <Text style={styles.valueTitle}>Skin Temp</Text>
-        <Text style={styles.valueTitle}> PAMP</Text>
+        <Text style={styles.valueTitle}>   PAMP</Text>
       </View>
       <View
         style={styles.row}>
@@ -133,7 +134,6 @@ const RTData = (props) => {
           }}>
           <Text style={styles.valueText}>{isPN}</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.valueButton}
           onPress={() => {
@@ -155,9 +155,9 @@ const RTData = (props) => {
       {/* THIRD ROW */}
       <View
         style={styles.row}>
-        <Text style={styles.valueTitle}> DAMP</Text>
-      
-        <Text style={styles.valueTitle}> DIF</Text>
+        <Text style={styles.valueTitle}>    DAMP</Text>
+        <Text style={styles.valueTitle}>       DIF</Text>
+        <Text style={styles.valueTitle}>  ACC_X</Text>
       </View>
       <View
         style={styles.row}>
@@ -168,9 +168,7 @@ const RTData = (props) => {
             setModalVisible(true);
           }}>
           <Text style={styles.valueText}>{props.metrics[4]}</Text>
-        </TouchableOpacity>
-
-        
+        </TouchableOpacity> 
         <TouchableOpacity
           style={styles.valueButton}
           onPress={() => {
@@ -179,14 +177,6 @@ const RTData = (props) => {
           }}>
           <Text style={styles.valueText}>0</Text>
         </TouchableOpacity>
-      </View>
-      {/* FOURTH ROW */}
-      <View
-        style={styles.row}>
-        <Text style={styles.valueTitle}> ACC_X</Text>
-      </View>
-      <View
-        style={styles.row}>
         <TouchableOpacity
           style={styles.valueButton}
           onPress={() => {
@@ -230,24 +220,24 @@ const RTData = (props) => {
             </Text>
             <Text style={{fontWeight: 'bold'}}>
               {isBiometric == 1
-                ? isHR
+                ? props.metrics[1]
                 : isBiometric == 2
-                ? isIBI
+                ? props.metrics[2]
                 : isBiometric == 3
                 ? isHRV
                 : isBiometric == 4
                 ? isPN
                 : isBiometric == 5
-                ? isSkinTemp
+                ?props.metrics[8]
                 : isBiometric == 6
-                ? isPAMP
+                ? props.metrics[3]
                 : isBiometric == 7
-                ? isDAMP
+                ? props.metrics[4]
                 : isBiometric == 8
                 ? isCBF
                 : isBiometric == 9
                 ? isDIF
-                : isACC}
+                : props.metrics[9]}
               {'\n'}
             </Text>
             <Text>

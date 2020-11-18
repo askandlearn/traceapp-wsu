@@ -62,14 +62,17 @@ const RealTimeScreen = (props) => {
     })
   }
 
-  
+  var interval;
   const onStart = async () => {
+
     props.updateMetric();
+
   }
 
   const onStop = async () => {
     console.log('Cancelling transaction...')
-    props.stopTransaction(transactionID)
+    props.stopTransaction(transactionID);
+  
   }
 
   return (
@@ -81,7 +84,6 @@ const RealTimeScreen = (props) => {
          {/* <Button
          title='Show Value'
          onPress={() => console.log(isStart)}/> */}
-        {/* <RTTimer ></RTTimer>  */}
         <TouchableOpacity style={styles.button} onPress={() => onStart()}>
             <Text>Start Plot</Text>
           </TouchableOpacity>
@@ -91,16 +93,11 @@ const RealTimeScreen = (props) => {
     {/* sendData={this.testTimer} */}
         <View style={styles.NavBarDivider}/>
         {/* <Swiper style={styles.wrapper} showsButtons loop={false} autoplay={false}> */}
-        <View testID="Data" style={styles.slide1}>
-          <Text style={styles.slideTitles}>Biometric Data by Numbers</Text>
+        <View testID="Data" style={styles.wrapper}>
+          {/* <Text style={styles.slideTitles}>Biometric Data by Numbers</Text> */}
           <RTData></RTData>
         </View>
-        {/* <View style={styles.NavBarDivider} /> */}
-        {/* <View testID="Plot" style={styles.slide2}>
-        <Text style={styles.slideTitles}>Biometric Data by Plot</Text>
-         <Plot ></Plot>
-        </View>
-        </Swiper> */}
+
       </ScrollView> 
     </View>
   );

@@ -289,6 +289,15 @@ export const onDisconnect = () => {
         })
     }
 }
+//disconnect device
+export const disconnectDevice = () => {
+    return (dispatch, getState, DeviceManager) => {
+        DeviceManager.cancelDeviceConnection(deviceID).catch(err => {
+            console.log('disconnectDevice',err.message)
+        })
+        dispatch(deviceDisconnected()) //updates status and isConnected. 
+    }
+}
 //testing purposes for recordings
 export const updateRecordings = (username) => {
     return (dispatch) => {

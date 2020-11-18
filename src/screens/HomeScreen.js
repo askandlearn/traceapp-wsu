@@ -138,7 +138,7 @@ const HomeScreen = ({navigation}) => {
               samples={1}
               // labels={"Fair"}
               style={{
-                data: {stroke: "yellow"}
+                data: {stroke: "yellow", strokeDasharray: "5,5", strokeWidth: 1},
               }}
             />
             <VictoryLine
@@ -146,7 +146,7 @@ const HomeScreen = ({navigation}) => {
               samples={1}
               // lables={["","Good"]}
               style={{
-                data: {stroke: "green"}
+                data: {stroke: "green", strokeDasharray: "5,5", strokeWidth: 1}
               }}
             />
             <VictoryBar

@@ -86,7 +86,8 @@ var calData = {};
 for(const i in calDate) {
   calData.[calDate[i].date] =  {
     textColor: calDate[i].score > 70 || calDate[i].score < 40 && calDate[i].score != 0 ? 'white' : 'black',
-    color: calDate[i].score > 70 ? 'green': calDate[i].score >= 40 ? 'yellow' : calDate[i].score > 0 ? 'red' : 'white',
+    color: calDate[i].score > 70 ? 'rgba(0,150,0,.8)': calDate[i].score >= 40 ? 'rgba(255,255,0,.6)' : calDate[i].score > 0 ? 'rgba(255,0,0,.8)' : 'white',
+    opacity: .4,
     startingDay: true,
     endingDay: true,
   }
@@ -138,7 +139,7 @@ const HomeScreen = ({navigation}) => {
               samples={1}
               // labels={"Fair"}
               style={{
-                data: {stroke: "#F7EF00", strokeDasharray: "4,4", strokeWidth: 1},
+                data: {stroke: "#F7EF00", strokeDasharray: "12,6", strokeWidth: 2},
               }}
             />
             <VictoryLine
@@ -146,7 +147,7 @@ const HomeScreen = ({navigation}) => {
               samples={1}
               // lables={["","Good"]}
               style={{
-                data: {stroke: "#00C019", strokeDasharray: "5,5", strokeWidth: 1}
+                data: {stroke: "#00C019", strokeDasharray: "6,6", strokeWidth: 1}
               }}
             />
             <VictoryBar

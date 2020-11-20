@@ -95,10 +95,10 @@ const RealTimeScreen = (props) => {
          title='Show Value'
          onPress={() => console.log(isStart)}/> */}
         <TouchableOpacity style={styles.button} onPress={() => onStart()}>
-            <Text>Start Plot</Text>
+            <Text style={styles.buttonText}>Start</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => onStop()}>
-            <Text>Stop Plot</Text>
+            <Text style={styles.buttonText}>Stop</Text>
           </TouchableOpacity> 
     {/* sendData={this.testTimer} */}
         <View style={styles.NavBarDivider}/>
@@ -194,7 +194,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
-    padding: 10,
+    paddingHorizontal: 20,
+    paddingVertical:10,
     borderRadius: 20,
     backgroundColor: '#ff0000',
     shadowColor: '#000000',

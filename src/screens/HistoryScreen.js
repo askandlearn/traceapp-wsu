@@ -93,18 +93,23 @@ const HistoryScreen = (props) => {
     return(
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
+            
             <FlatList 
                 ListHeaderComponent={
+                    <KeyboardAvoidingScrollView>
                     <View>
                         <Header openDrawer={props.navigation.openDrawer} />
                         <Text style={styles.title}>Recording History</Text>
                     </View>
+                    </KeyboardAvoidingScrollView>
                 }
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={session => session.pk.toString()}
             />
+           
             <Loading loading={loading}/>
+            
         </View>
     )
 }
@@ -132,27 +137,29 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 5,
         //backgroundColor: '#242852'
-        backgroundColor: '#445092'
+        //backgroundColor: '#445092'
+        backgroundColor: '#dddddd',
+        borderColor: '#242852'
     },
     SessionTitle: {
         fontSize: 15,
-        color: 'white',
-        fontWeight: 'bold'
+        color: 'black',
+       // fontWeight: 'bold'
     },
     TitleContent: {
         fontSize: 17,
-        color: 'white',
+        color: 'black',
         //fontWeight: 'bold'
     },
     DataFileTitle: {
         fontSize: 15,
-        color: 'white',
+        color: 'black',
         //fontWeight: 'bold',
 
     },
     content: {
         fontSize: 17,
-        color: 'white',
+        color: 'black',
         textAlign: 'center',
         alignSelf: 'center',
         //marginHorizontal: '10%',
@@ -160,14 +167,14 @@ const styles = StyleSheet.create({
     },
     DescriptionContent: {
         fontSize: 17,
-        color: 'white',
+        color: 'black',
         flex: 1,
        // flexWrap: 'wrap',
         //marginHorizontal: '10%',
     },
     DataFileContent: {
         fontSize: 15,
-        color: 'black',
+        color: '#2127c4',
         textAlign: 'center',
         alignSelf: 'center',
         borderBottomWidth: 1

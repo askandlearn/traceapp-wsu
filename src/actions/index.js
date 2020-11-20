@@ -1,83 +1,16 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import { Platform } from 'react-native';
 import atob from '../utils/atob';
+import { 
+    changeStatus, 
+    connectedDevice,
+    deviceDisconnected,
+    updatedMetrics,
+    updatedPNN50,
+    updatedHRV,
+    addRecording  } from './actionCreators';
 
 var RNFS = require('react-native-fs');
-
-//======================================== ACTION CREATORS ======================================
-/**
- * Returns an updated state value
- * Called in connectDevice()
- * 
- * @returns {state} connectedDevice: device, isConnected: true
- */
-export const connectedDevice = (device) => ({
-    type: "CONNECT",
-    connectedDevice: device,
-    isConnected: true
-});
-/**
- * Returns an updated state value
- * 
- * @returns {state} status: newStatus
- */
-export const changeStatus = (status) => ({
-    type: "CHANGE_STATUS",
-    status: status
-});
-/**
- * Returns an updated state value
- * Called in onDisconnect() 
- * 
- * @returns {state} status: newStatus
- */
-export const deviceDisconnected = () => ({
-    type: "DISCONNECTED",
-    isConnected: false,
-    status: 'Disconnected',
-    connectDevice: undefined
-})
-/**
- * Returns an updated state value
- * Called in updateMetrics()
- * 
- * @returns {state} metrics: [metrics]
- */
-export const updatedMetrics = (metrics) => ({
-    type: 'UPDATE_METRIC',
-    metrics: metrics
-})
-/**
- * Returns an updated state value for DataReducer
- * Called in updateMetrics()
- * 
- * @returns {state} pnn50: newValue
- */
-export const updatedPNN50 = (value) => ({
-    type:'UPDATE_PNN50',
-    pnn50: value
-})
-/**
- * Returns an updated state value for DataReducer
- * Called in updateMetrics()
- * 
- * @returns {state} hrv: newValue
- */
-export const updatedHRV = (value) => ({
-    type:'UPDATE_HRV',
-    hrv: value
-})
-/**
- * Returns an updated state value for BleReducer
- * Called in updateMetrics()
- * 
- * @returns {state} records: [..., newRecording]
- */
-export const addRecording = (username, recording) => ({
-    type:'ADD_RECORDING',
-    user: username,
-    newRecording: recording
-})
-//====================================================END=============================================
 
 //==========================================CONSTANTS=================================================
 // device constants
@@ -85,7 +18,7 @@ const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb'
 // For Android const deviceID = 'AB:89:67:45:11:FF'
 
 //For iOS
-const deviceID = 'A0524966-65F3-A409-C6D1-20ED628ED43A'
+const deviceID = Platform.OS === 'ios' ? 'A0524966-65F3-A409-C6D1-20ED628ED43A':'AB:89:67:45:11:FF'
 
 //transaction id for monitoring data
 const transactionID = 'monitor_metrics'

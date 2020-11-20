@@ -246,7 +246,7 @@ const ProfileScreen = (props) => {
   //        Close Modal (bday)
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const changeModalViewBirthdate = () => {
-    setShowModalBirthdate(false);
+    setShowModalDate(false);
     saveChanges();
 
   }
@@ -602,7 +602,7 @@ const styles = StyleSheet.create({
      alignSelf: 'center',
      textAlign: 'right',
      color: 'black',
-    marginHorizontal: '10%',
+    //marginHorizontal: '5%',
     //paddingLeft: 45,
     flex: 1,
   },
@@ -644,7 +644,7 @@ const styles = StyleSheet.create({
   contentBorder: {
     borderBottomColor: 'gainsboro', 
     borderBottomWidth: 1,
-    width: 300,
+    width: 350,
     //paddingHorizontal: .6
   },
   modalView:{
@@ -705,9 +705,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 80,
     borderRadius: 20,
     //backgroundColor: '#445092',
-    backgroundColor: '#ff3333',
+    backgroundColor: '#ff0000',
     shadowColor: '#000000',
-    shadowOffset: {width: 1, height: 2},
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
@@ -722,9 +722,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 80,
     borderRadius: 20,
    // backgroundColor: '#445092',
-    backgroundColor: '#ff3333',
+    backgroundColor: '#ff0000',
     shadowColor: '#000000',
-    shadowOffset: {width: 1, height: 2},
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,

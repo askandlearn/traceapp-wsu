@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Animated, Button } from 'react-native'
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 //require module
 var RNFS = require('react-native-fs');
@@ -15,6 +16,7 @@ const SyncDataScreen = props => {
     return (
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
+            <KeyboardAvoidingScrollView>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => props.navigation.pop()}>
                 <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
@@ -22,6 +24,7 @@ const SyncDataScreen = props => {
             </View>
             <Text style={styles.title}>Recordings</Text>
             <Text style={{margin: 10}}>In construction... </Text>
+            </KeyboardAvoidingScrollView>
         </View>
     )
 }

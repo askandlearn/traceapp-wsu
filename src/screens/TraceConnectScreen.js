@@ -16,6 +16,7 @@ import { sleep } from '../utils/sleep';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //redux functions
+//
 import {disconnectDevice, startScan} from '../actions';
 import {connect} from 'react-redux';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';

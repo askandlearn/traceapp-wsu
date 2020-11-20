@@ -1,5 +1,5 @@
 /*This is an Example of Timer/Stopwatch in React Native */
-import React, { Component,useRef, useEffect } from 'react';
+import React, { Component,useRef, useEffect, useState } from 'react';
 //import React in our project
 
 import { StyleSheet, Animated,Text, View, TouchableOpacity } from 'react-native';
@@ -10,49 +10,48 @@ import { Stopwatch } from 'react-native-stopwatch-timer';
 //importing library to use Stopwatch and Timer
 
 
-export default class RTStopwatch extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      stopwatchStart: false,
-      stopwatchReset: false,
-    };
-    this.toggleStopwatch = this.toggleStopwatch.bind(this);
+export default  RTStopwatch=()=>{
+
+  const [isStart, setStart]= useState(false);
+  const [isReset, setReset]= useState(false);
+  // toggleStopwatch = toggleStopwatch.bind(this);
+  // resetStopwatch = resetStopwatch.bind(this);
+  this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
+  toggleStopwatch=()=> {
+    
+    setStart(!isStart);
+    console.log(!isStart)
+    setReset(false);
+    //this.props.setIsStart(!this.state.stopwatchStart);
+    // console.log(this.props.setIsStart);
   }
-  toggleStopwatch() {
-    this.setState({stopwatchStart: !this.state.stopwatchStart, stopwatchReset: false});
+  resetStopwatch=()=>{
+    setStart(false);
+    setReset(true);
+  }
+  getFormattedTime=(time)=>{
+    currentTime = time;
   }
  
-  resetStopwatch() {
-    this.setState({stopwatchStart: false, stopwatchReset: true});
-  }
-  getFormattedTime(time) {
-    this.currentTime = time;
-  }
-
-  render() {
-    
-    
     return (
         <View style={styles.container}>
             <Stopwatch laps 
             secs 
-            start={this.state.stopwatchStart}
-            reset={this.state.stopwatchReset}
+            start={isStart}
+            reset={isReset}
             options={options}
-            getTime={this.getFormattedTime} />
+            getTime={getFormattedTime} />
           <View style={{flexDirection:'row', marginHorizontal:'15%'}}>
-          <TouchableOpacity onPress={this.toggleStopwatch} style={styles.button}>
+          <TouchableOpacity onPress={toggleStopwatch} style={styles.button}>
             <Text style={styles.buttonText}>
-            {!this.state.stopwatchStart ? "Start" : "Stop"}
+            {!isStart ? "Start" : "Stop"}
             </Text>
           </TouchableOpacity>
           </View>
         </View> 
     );
   }
-}
 
 const handleTimerComplete = () => alert('Custom Completion Function');
 

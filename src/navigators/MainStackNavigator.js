@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import React from 'react';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {CusomDrawerComponent} from '../components/CustomDrawerComponent';
 
 //Import screens
@@ -22,10 +22,10 @@ import LiveScreen from '../screens/RealTimeScreen';
 import RealTimeScreen from '../screens/RealTimeScreen';
 import ChangePasswordScreen from '../screens/ChangePassword';
 import { SettingStackNavigator } from './SettingStackNavigator';
+import HistoryScreen from '../screens/HistoryScreen';
 
 
 const MainStack = createDrawerNavigator();
-
 
 export function MainStackNavigator() {
   return(
@@ -39,6 +39,7 @@ export function MainStackNavigator() {
             {/* <MainStack.Screen name={'TraceConnect'} component={TraceConnect}/> */}
             <MainStack.Screen name={'HRV'} component={HRVScreen}/>
             <MainStack.Screen name={'Live'} component={LiveScreen}/>
+            <MainStack.Screen name={'History'} component={HistoryScreen}/>
             <MainStack.Screen name={'Realtime'} component={RealTimeScreen}/>
         </MainStack.Navigator>
   )

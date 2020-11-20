@@ -12,9 +12,18 @@ target 'traceApp' do
 
   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
 
+
+  pod 'GoogleSignIn', '~> 5.0.2'
+
   pod 'RNSoundPlayer', :path => '../node_modules/react-native-sound-player'
 
   pod 'RNSound', :path => '../node_modules/react-native-sound'
+
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
   target 'traceAppTests' do
     inherit! :complete
@@ -32,7 +41,7 @@ target 'traceApp' do
 end
 
 target 'traceApp-tvOS' do
-  # Pods for traceApp-tvOS
+  # Pods for traceapp-tvOS
 
   target 'traceApp-tvOSTests' do
     inherit! :search_paths

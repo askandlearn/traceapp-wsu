@@ -1,33 +1,71 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Platform,
+  ImageBackground,
+} from 'react-native';
+import Header from '../components/Header-Component';
+import SensorsComponent from '../components/SensorsComponent';
+import { Loading } from '../components/Loading-Component';
+import { sleep } from '../utils/sleep';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import HealthDashboard from './HealthDashboardScreen';
-import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
-const TraceConnectScreen = ({navigation}) => {
+//redux functions
+//
+import {disconnectDevice, startScan} from '../actions';
+import {connect} from 'react-redux';
+import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
+
+function mapStateToProps(state){
+  return{
+    isConnected : state.BLE['isConnected'],
+    status: state.BLE['status']
+  };
+}
+
+const mapDispatchToProps = dispatch => ({
+  startScan: () => dispatch(startScan()),
+  disconnectDevice: () => dispatch(disconnectDevice())
+})
+
+
+const TraceConnectScreen = props => {
+
+  const [loading, setLoading] = useState(false)
+
+  const onConnect = () => {
+    if(props.isConnected){
+      props.disconnectDevice();
+    }
+    else{
+      props.startScan();
+    }
+  }
+
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-      <KeyboardAvoidingScrollView>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.pop()}>
+        <TouchableOpacity onPress={() => props.navigation.pop()}>
           <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
         </TouchableOpacity>
       </View>
-      <Image
-        style={styles.backgroundImage}
-        source={require('../images/TraceBio-Black.png')}
-      />
       <Text style={styles.title}>Connect Your TRACE Device</Text>
-      <Image
-        style={styles.deviceImage}
-        source={require('../images/Trace-3DTransparent.png')}
-      />
-      <TouchableOpacity title="Connect" onPress={null} style={styles.button}>
-        <Text style={styles.buttonText} onPress={saveChanges}>
-          CONNECT
-        </Text>
+      <TouchableOpacity
+        title="On Connect"
+        style={styles.button}
+        onPress={onConnect}>
+        <Text style={styles.buttonText}>{props.isConnected ? 'Disconnect' : 'Start Scan'}</Text>
       </TouchableOpacity>
-      </KeyboardAvoidingScrollView>
+      <Text>Connection status: {props.status}</Text>
+      <View style={[styles.bluetooth, {backgroundColor: props.isConnected ? '#ff0000':'gray'}]}>
+        <Icon style={{alignSelf:'center'}} name="bluetooth" size={50} color='white'/>
+        {/* <Pulse/> */}
+      </View>
     </View>
   );
 };
@@ -36,31 +74,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
-  },
-  backgroundImage: {
-    alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 70,
-    width: '60%',
-    height: 100,
-    resizeMode: 'stretch',
-  },
-  deviceImage: {
-    alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 70,
-    width: 150,
-    height: 150,
-    //resizeMode: 'stretch',
-  },
-  inputFields: {
-    backgroundColor: '#FFFFFF',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    padding: 10,
-    fontWeight: 'bold',
-    opacity: 0.4,
-    borderRadius: 3,
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
   },
   title: {
     alignSelf: 'center',
@@ -72,8 +88,8 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   button: {
-    //alignSelf: 'center',
-    //width: '60%',
+    // alignSelf: 'center',
+    width: '60%',
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
@@ -85,6 +101,18 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  bluetooth:{
+    marginTop: 80,
+    borderWidth: 0,
+    padding: 5,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    alignContent: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'gray'
+    
+  },
   header: {
     width: '100%',
     height: 60,
@@ -95,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TraceConnectScreen;
+export default connect(mapStateToProps,mapDispatchToProps) (TraceConnectScreen);

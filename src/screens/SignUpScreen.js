@@ -10,8 +10,9 @@ import {
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import * as Animatable from 'react-native-animatable';
+import Google from '../components/Google-Component'
 import {AuthContext} from '../contexts/AuthContext';
-import { Loading } from '../components/Loading-Component';
+import {Loading} from '../components/Loading-Component';
 
 //Create the Sign Up Page
 
@@ -41,7 +42,6 @@ const SignUpScreen = (props) => {
     isSamePassword: true,
     isFilled: false,
   });
-
 
   const display = () => {
     console.log(firstName);
@@ -253,7 +253,7 @@ const SignUpScreen = (props) => {
           style={styles.button}
           onPress={async () => {
             try {
-              setLoading(true)
+              setLoading(true);
               await register(
                 email,
                 password,
@@ -262,7 +262,7 @@ const SignUpScreen = (props) => {
                 birthdate,
                 props.navigation.navigate,
               );
-              setLoading(false)
+              setLoading(false);
             } catch (error) {
               console.log('Error: ' + error.message);
             }
@@ -276,6 +276,7 @@ const SignUpScreen = (props) => {
           </View>
           <View style={styles.horizantalLine} />
         </View>
+        <Google height={48} width={300} text={'Sign up with Google'}/>
         <View style={[styles.bottomContainer]}>
           <View style={styles.flexContainer}>
             <Text style={styles.otherText}>Already a member?</Text>
@@ -289,7 +290,7 @@ const SignUpScreen = (props) => {
           </View>
         </View>
       </KeyboardAvoidingScrollView>
-      <Loading loading={loading}/>
+      <Loading loading={loading} />
     </View>
   );
 };
@@ -311,6 +312,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     marginBottom: '15%',
+    marginTop: 10
   },
   nameContainer: {
     // marginHorizontal:'10%',

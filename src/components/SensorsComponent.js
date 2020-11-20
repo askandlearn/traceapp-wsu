@@ -5,16 +5,19 @@
 //Device Info = 180A
 //Model Number String = 2A24
 //PNP ID (2A50)
-import React, {Component} from 'react';
+
+/*Consider taking the NotifyUUID given from the console log and using making a NotifyUUID
+variable and a ServiceUUID variable. This will allow you to remove 2 promises. */
+import React, {Component, useState} from 'react';
 import {Platform, View, Text} from 'react-native';
 import {BleManager, Characteristic} from 'react-native-ble-plx';
 import {FlatList} from 'react-native-gesture-handler';
 import {cursorContainerMixin} from 'victory-native';
 
 export default class SensorsComponent extends Component {
-  constructor() {
+  constructor(manager) {
     super();
-    this.manager = new BleManager();
+    this.manager = manager;
     this.state = {
       info: '',
       vcnlCurrent: 0,
@@ -39,28 +42,12 @@ export default class SensorsComponent extends Component {
     this.id = '';
   }
 
-  serviceUUID(num) {
-    return this.prefixUUID + num + '0' + this.suffixUUID;
-  }
-
-  notifyUUID(num) {
-    return this.prefixUUID + num + '1' + this.suffixUUID;
-  }
-
-  writeUUID(num) {
-    return this.prefixUUID + num + '2' + this.suffixUUID;
-  }
-
   info(message) {
     this.setState({info: message});
   }
 
   error(message) {
     this.setState({info: 'ERROR: ' + message});
-  }
-
-  updateValue(key, value) {
-    this.setState({values: {...this.state.values, [key]: value}});
   }
 
   convertData(base64) {
@@ -164,20 +151,23 @@ export default class SensorsComponent extends Component {
             return device.discoverAllServicesAndCharacteristics();
           })
           .then((device) => {
-            this.info('Reterning services');
-            var heartBeatService = this.manager.servicesForDevice(device.id);
-            return heartBeatService;
+            this.info('Returning services');
+            var services = this.manager.servicesForDevice(device.id);
+            return services;
           })
-          .then((heartBeatService) => {
+          .then((services) => {
             this.info('Returning characteristics');
             var characteristicService = this.manager.characteristicsForDevice(
               device.id,
-              heartBeatService[0].uuid,
+              services[0].uuid,
             );
+            console.log(services[0].uuid);
             return characteristicService;
           })
-          .then((characteristicService) => {
-            this.info('returning values');
+          .then((characteristicService) => {            
+            console.log(characteristicService[0].uuid);
+            /*Consider taking the NotifyUUID given from the console log and using making a NotifyUUID
+            variable and a ServiceUUID variable. This will allow you to remove 2 promises. */
             characteristicService[0].monitor((error, characteristic) => {
               if (error) {
                 this.error(error.message);
@@ -195,32 +185,18 @@ export default class SensorsComponent extends Component {
     });
   }
 
-  render() {
+  /*render() {
     return (
       <View>
         <Text>{this.state.info}</Text>
-        <Text>Time: {this.state.time}</Text>
-        <Text>Heart Rate: {this.state.bpm}</Text>
-        <Text>Vcnl Current: {this.state.vcnlCurrent}</Text>
-        <Text>Skin Temp: {this.state.skinTemp}C</Text>
-        <Text>IBI: {this.state.ibi}</Text>
-        <Text>Pamp: {this.state.pamp}</Text>
-        <Text>Damp: {this.state.damp}</Text>
-        <Text>HRV: {this.state.hrv}</Text>
-        <Text>CBF: {this.state.cbf}</Text>
-        <Text>HRV PNN 50: {this.state.hrv_pnn50}</Text>
-        <Text>PPG: {this.state.ppg}</Text>
-        <Text>Dig Out: {this.state.digOut}</Text>
-        <Text>Acceleraometer: {this.state.accelX}</Text>
-        <Text>State Diff: {this.state.diff}</Text>
       </View>
     );
-  }
+  }*/
 }
 
-const chars =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 const atob = (input = '') => {
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
   let str = input.replace(/[=]+$/, '');
   let output = '';
 
@@ -241,3 +217,20 @@ const atob = (input = '') => {
 
   return output;
 };
+
+/*
+<Text>Time: {this.state.time}</Text>
+<Text>Heart Rate: {this.state.bpm}</Text>
+<Text>Vcnl Current: {this.state.vcnlCurrent}</Text>
+<Text>Skin Temp: {this.state.skinTemp}C</Text>
+<Text>IBI: {this.state.ibi}</Text>
+<Text>Pamp: {this.state.pamp}</Text>
+<Text>Damp: {this.state.damp}</Text>
+<Text>HRV: {this.state.hrv}</Text>
+<Text>CBF: {this.state.cbf}</Text>
+<Text>HRV PNN 50: {this.state.hrv_pnn50}</Text>
+<Text>PPG: {this.state.ppg}</Text>
+<Text>Dig Out: {this.state.digOut}</Text>
+<Text>Acceleraometer: {this.state.accelX}</Text>
+<Text>State Diff: {this.state.diff}</Text>
+*/

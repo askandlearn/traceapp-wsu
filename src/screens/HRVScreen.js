@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Modal,
   Alert,
   Platform,
+  Button
 } from 'react-native';
 
 import Header from '../components/Header-Component';
@@ -24,19 +25,21 @@ var check = false;
 const HRVScreen = ({navigation}, props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
+
   const handleCheck = (checkedId) => {
     this.setState({checkedId});
   };
 
+
   return (
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
-      <Header openDrawer={navigation.openDrawer} />
-      <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
-        <View >{check && <SensorAlert />}</View>
-        <Timer />
-        <View style={styles.NavBarDivider} />
-        <Swiper
+        <Header openDrawer={navigation.openDrawer} />
+        <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
+        <View>{check && <SensorAlert />}</View>
+        {/* <Timer /> */}
+   
+        {/* <Swiper
           style={styles.wrapper}
           showButtons={true}
           loop={false}
@@ -105,10 +108,14 @@ const HRVScreen = ({navigation}, props) => {
               </TouchableOpacity>
             </View>
           </View>
-        </Swiper>
-        <View style={styles.NavBarDivider} />
+        </Swiper> */}
+        {/* <View style={styles.NavBarDivider} /> */}
+        <View style={styles.wrapper}>
+        <View style={styles.slide1}>
         <Plot />
-        </KeyboardAvoidingScrollView>
+        </View>
+        </View>
+      </KeyboardAvoidingScrollView>
     </View>
   );
 };
@@ -186,25 +193,37 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     marginVertical: 10,
   },
-  wrapper: {
-    // flex:1,
-    height: 300,
-    //backgroundColor: '#9DD6EB'
+  // wrapper: {
+  //   // flex:1,
+  //   height: 300,
+  //   //backgroundColor: '#9DD6EB'
 
-    //opacity:0.4,
-    backgroundColor: '#ffffff',
+  //   //opacity:0.4,
+  //   backgroundColor: '#ffffff',
+  // },
+  // slide1: {
+  //   //flex: 1,
+  //   height: '80%',
+  //   //paddingVertical:'10%',
+  //   paddingHorizontal: '10%',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   color: '#000000',
+  //   fontSize: 20,
+
+  //   //textAlign:'center',
+  // },
+  wrapper: {
+    height:650,
+    backgroundColor:'#ffffff', 
   },
   slide1: {
-    //flex: 1,
-    height: '80%',
-    //paddingVertical:'10%',
-    paddingHorizontal: '10%',
+    height:'100%',
+   // paddingHorizontal:'10%',
     justifyContent: 'center',
     alignItems: 'center',
     color: '#000000',
     fontSize: 20,
-
-    //textAlign:'center',
   },
   slide2: {
     // flex: 1,

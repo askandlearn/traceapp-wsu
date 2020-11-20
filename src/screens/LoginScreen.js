@@ -11,9 +11,11 @@ import {
   Platform,
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import Google from '../components/Google-Component'
 import {set} from 'react-native-reanimated';
 import {Loading} from '../components/Loading-Component';
 import {AuthContext} from '../contexts/AuthContext';
+
 
 const logo = '../images/TraceBio-White.png';
 
@@ -24,8 +26,8 @@ const LoginScreen = (props) => {
         to login without inputting anything, null values will passed onto the php script and then the database. The script
         does not know how to handle null values.
     */
-  const [email, setEmail] = useState('test@email.com');
-  const [password, setPassword] = useState('pass123');
+  const [email, setEmail] = useState('brianna');
+  const [password, setPassword] = useState('tracewsu!');
   const [loading, setLoading] = useState(false);
 
   const {login} = useContext(AuthContext);
@@ -39,8 +41,9 @@ const LoginScreen = (props) => {
         </View>
         <TextInput
           style={styles.inputFields}
-          label="Email"
-          placeholder="Email"
+          label="Username"
+          placeholder="Username"
+          autoCapitalize='none'
           value={email}
           onChangeText={(val) => setEmail(val)}
         />
@@ -87,6 +90,7 @@ const LoginScreen = (props) => {
           </View>
           <View style={styles.horizantalLine} />
         </View>
+        <Google height={48} width={340} text={'Sign in with Google'}/>
         <View style={[styles.bottomContainer]}>
           <View style={styles.flexContainer}>
             <Text style={styles.otherText}>Not a member?</Text>
@@ -120,7 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginTop: '25%',
+    marginTop: '5%',
   },
   backgroundImage: {
     alignSelf: 'center',

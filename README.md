@@ -11,9 +11,9 @@
     Companion app to the TRACE biosensor
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/askandlearn/traceapp-wsu/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/askandlearn/traceapp-wsu/issues">Request Feature</a>
   </p>
 </p>
 

@@ -101,6 +101,7 @@ Setting up the development environment -----> https://reactnative.dev/docs/envir
 npx react-native run-android
 ```
 3. The project wil begin to build. This may take serval minutes.
+
 * If any build errors occur regarding gradle, open a new terminal to the root directory
 ```sh
 cd android

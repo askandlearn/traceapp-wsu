@@ -34,6 +34,8 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#running-on-android">Running on Android</a></li>
+        <li><a href="#running-on-ios">Running on iOS</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -49,7 +51,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This is a project that was proposed by Dr Amar Basu, a faculty advisor for Electrical and Biomedical Engineering department of Wayne State University. The objetive of this project was to develop a cross platform app that will be used to perform at-home medical diagnostics with the TRACE wearable biosensor. 
+This is a project that was proposed by Dr. Amar Basu, a faculty advisor for Electrical and Biomedical Engineering department of Wayne State University. The objetive of this project was to develop a cross platform app that will be used to perform at-home medical diagnostics with the TRACE wearable biosensor. 
 
 More information about the TRACE wearable biosensor can be found at: https://microfluidics.wayne.edu/index.html
 

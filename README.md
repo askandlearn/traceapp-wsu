@@ -95,23 +95,23 @@ Setting up the development environment -----> https://reactnative.dev/docs/envir
    ```
 ### Running on Android
 1. In a terminal, make sure the directory matches the full path to the root of the project and start the metro bundler
-  ```sh
-  npx react-native start
-  ```
+   ```sh
+   npx react-native start
+    ```
 2. Open another terminal to your root project directory and launch the Android emulator
-```sh
-npx react-native run-android
-```
+   ```sh
+    npx react-native run-android
+   ```
 3. The project wil begin to build. This may take serval minutes.
 
 * If any build errors occur regarding gradle, open a new terminal to the root directory
-```sh
-cd android
-```
+    ```sh
+     cd android
+    ```
 
-```sh
-gradlew clean
-```
+    ```sh
+    gradlew clean
+    ```
 
 ### Running on iOS
 

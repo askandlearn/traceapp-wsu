@@ -15,6 +15,7 @@ import Google from '../components/Google-Component'
 import {set} from 'react-native-reanimated';
 import {Loading} from '../components/Loading-Component';
 import {AuthContext} from '../contexts/AuthContext';
+import * as Animatable from 'react-native-animatable';
 
 
 const logo = '../images/TraceBio-White.png';
@@ -32,6 +33,53 @@ const LoginScreen = (props) => {
 
   const {login} = useContext(AuthContext);
 
+  //Validation flags
+  const [validation_flags, setValidationFlags] = useState({
+    isValidUsername: true,
+    isValidPassword: true,
+  });
+
+//Make sure username field is not empty
+const handleEmail = (val)=>{
+  //Its not empty, set flag to true
+  if(val.trim().length > 0){
+    console.log('Username field is filled')
+    setValidationFlags({
+      ...validation_flags,
+      isValidUsername:true
+    });
+  }
+  //It's  empty, set flag to false
+  else{
+    console.log('Username field is empty')
+    setValidationFlags({
+      ...validation_flags,
+      isValidUsername: false
+    });
+  }
+}
+
+//Make sure password field is not empty
+const handlePassword = (val) =>{
+  //Its not empty, set flags to true
+  if(val.trim().length > 0){
+    console.log('Password field is filled')
+    setValidationFlags({
+      ...validation_flags,
+      isValidPassword: true
+    });
+  }
+  //It's empty, set flag to false
+  else{
+    console.log('Password field is empty')
+    setValidationFlags({
+      ...validation_flags,
+      isValidPassword: false
+    });
+  }
+}
+ 
+
   return (
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
@@ -46,7 +94,17 @@ const LoginScreen = (props) => {
           autoCapitalize='none'
           value={email}
           onChangeText={(val) => setEmail(val)}
+          onEndEditing={(e) => handleEmail(e.nativeEvent.text)}
         />
+          {/* Insert validation prompt */}
+          {validation_flags.isValidUsername ? false : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMessage}>
+              Field cannot be empty
+            </Text>
+          </Animatable.View>
+        )}
+        {/* End of validation prompt */}
         <TextInput
           style={styles.inputFields}
           label="Password"
@@ -54,7 +112,17 @@ const LoginScreen = (props) => {
           value={password}
           secureTextEntry
           onChangeText={(val) => setPassword(val)}
+          onEndEditing={(e) => handlePassword(e.nativeEvent.text)}
         />
+            {/* Insert validation prompt */}
+            {validation_flags.isValidPassword ? false : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMessage}>
+              Field cannot be empty
+            </Text>
+          </Animatable.View>
+        )}
+        {/* End of validation prompt */}
         <TouchableOpacity
           title="Submit"
           style={styles.button}
@@ -193,6 +261,7 @@ const styles = StyleSheet.create({
     color: 'blue',
     marginLeft: 5,
   },
+
 });
 
 export default LoginScreen;

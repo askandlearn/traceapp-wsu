@@ -22,6 +22,7 @@ import GenderMenu from '../components/DropdownGenderMenu';
 import HealthGoals from '../components/HealthGoals';
 import HeightPicker from '../components/HeightPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
+import * as Animatable from 'react-native-animatable';
 
 const ProfileScreen = (props) => {
   /*
@@ -69,6 +70,7 @@ const ProfileScreen = (props) => {
   const [checkValidations, setCheckValidations] = useState({
 
     diffzip: false,
+    validZipLength: true,
     diffHeight: false,
     diffWeight: false,
     diffBirthdate: false,
@@ -94,16 +96,28 @@ const ProfileScreen = (props) => {
       //If no changes made to zip
       if(val === user.zip || val === ''){
         console.log('No changes made to zip')
+        setCheckValidations({
+          ...checkValidations,
+          validZipLength: true
+        });
       }
       //Changes have been made to zip
       else{
         //If the zip is not exactly 5 numbers
         if (val.length != 5){
           console.log('Invalid Zip length')
+          setCheckValidations({
+            ...checkValidations,
+            validZipLength: false
+          });
       }
       //Zip length is valid, update successful
       else{
         console.log('Zip has been updated')
+        setCheckValidations({
+          ...checkValidations,
+          validZipLength: true
+        });
       }
 
       }
@@ -371,11 +385,21 @@ const ProfileScreen = (props) => {
               onChangeText={(zip) => setCurrentUser({...currentUser, zip: zip})}
               onEndEditing={(e) => checkzip(e.nativeEvent.text)}/>
               <View style={{paddingTop: 15}}/>
+               {/* Insert validation prompt */}
+        {checkValidations.validZipLength ? false : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMessage}>
+              Zip code must be 5 numbers
+            </Text>
+          </Animatable.View>
+        )}
+        {/* End of validation prompt */}
               <Text style={styles.buttonContainer}
               onPress={()=> {changeModalViewZip()}}>Submit</Text>
             </View>
           </Modal>
         <Text style={styles.content} onPress={()=> {setShowModal(!showModal)}}>{currentUser.zip}</Text>
+       
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           
@@ -731,6 +755,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
    
+  },
+  errorMessage: {
+    marginHorizontal: '10%',
+    position: 'relative',
+    color: 'red',
   },
 
 });

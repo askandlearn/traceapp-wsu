@@ -18,16 +18,17 @@ const headers = [
 ]
 
 const data = [
-    "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0"
+    "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0\n",
+    "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0\n",
+    "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0\n",
+    "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0\n",
+    "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0\n"
 ]
 
 const ModalScreen = ({ navigation, route }) => {
     const {file} = route.params;
     const [content,setContent] = useState('')
+    const [body, setBody] = useState(data.toLocaleString())
 
     var path = RNFS.DocumentDirectoryPath + '/' + file;
 
@@ -69,6 +70,9 @@ const ModalScreen = ({ navigation, route }) => {
                 keyExtractor={item => item}
             />
         </View>
+        <View style={styles.body}>
+            <Text style={styles.bodyText}>{body}</Text>
+        </View>
       </View>
     );
 }
@@ -86,6 +90,14 @@ const styles = StyleSheet.create({
         padding: 2,
         // borderColor: 'red',
         // borderWidth: 1
+    },
+    body: {
+        borderWidth: 0,
+        borderColor: 'black',
+        height: '100%'
+    },
+    bodyText: {
+        padding: 2
     }
 })
 

@@ -16,7 +16,6 @@ import Header from '../components/Header-Component';
 import RTTimer from '../components/RTTimer';
 import RTData from '../components/RTData';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-//import SensorAlert from '../components/ConnectToSensorAlert';
 import Swiper from 'react-native-swiper';
 import Plot from '../components/RTPlot';
 

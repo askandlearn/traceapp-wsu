@@ -10,7 +10,6 @@ import {
   ImageBackground,
 } from 'react-native';
 import Header from '../components/Header-Component';
-import SensorsComponent from '../components/SensorsComponent';
 import { Loading } from '../components/Loading-Component';
 import { sleep } from '../utils/sleep';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

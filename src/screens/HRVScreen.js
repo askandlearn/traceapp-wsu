@@ -15,7 +15,6 @@ import {
 import Header from '../components/Header-Component';
 import Timer from '../components/HRVTimer';
 import Animate from '../components/HRVSurvey';
-import SensorAlert from '../components/ConnectToSensorAlert';
 import Swiper from 'react-native-swiper';
 import Plot from '../components/Plot';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';

@@ -54,34 +54,32 @@ const HistoryScreen = (props) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    //upon inital render
-    useEffect(() => {
-        const getData = async () => {
-            try{
-                const url = 'http://134.209.76.190:8000/api/Recording'
-                const config = {
-                    headers: {'Authorization':`Token ${user.token}`},
-                    timeout: 2000   //two seconds timeout
-                }
-                
-                const data = await Axios.get(url, config).then(res => res.data).catch(err => {
-                    console.log(err.code);
-                    console.log(err.message)
-                })
-                
-                setData(data.results)
-                setLoading(false)
+    const getData = async () => {
+        try{
+            const url = 'http://134.209.76.190:8000/api/Recording'
+            const config = {
+                headers: {'Authorization':`Token ${user.token}`},
+                timeout: 2000   //two seconds timeout
             }
-            catch(err){
-                setLoading(false);
-                alert('Error getting recordings')
+            
+            const data = await Axios.get(url, config).then(res => res.data).catch(err => {
+                console.log(err.code);
                 console.log(err.message)
-            }
+            })
+            
+            setData(data.results)
+            setLoading(false)
         }
+        catch(err){
+            setLoading(false);
+            alert('Error getting recordings')
+            console.log(err.message)
+        }
+    }
 
-    
+    //upon inital render
+    useEffect(() => {    
         getData();
-
         // console.log(data[0].pk)
     },[])
 

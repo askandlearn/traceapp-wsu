@@ -79,7 +79,7 @@ To get a local copy up and running follow these simple example steps.
 This project is built on top of the React Native framework. 
 * React Native - https://reactnative.dev/
 
-To set up the developement environment in order to run a React Native project, please following the instructions on the official React Native at the link below:
+To set up the React Native developement environment, please following the instructions on the official React Native websitre at the link below:
 
 Setting up the development environment -----> https://reactnative.dev/docs/environment-setup
 

@@ -71,8 +71,7 @@ In order to ensure that this application runs on both Android and iOS, it was bu
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To get started, follow the instructions below which detail the necessary stack required to run the application on your local machine.
 
 ### Prerequisites
 

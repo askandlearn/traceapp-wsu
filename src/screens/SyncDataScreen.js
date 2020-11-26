@@ -36,11 +36,9 @@ const SyncDataScreen = props => {
 
     const renderItem = (prop) => {
         return(
-            <ScrollView>
-                <TouchableOpacity onPress={() => props.navigation.navigate('FileModal', {file: prop.item})}>
-                    <Recording recording={prop.item}/>
-                </TouchableOpacity>
-            </ScrollView>
+            <TouchableOpacity onPress={() => props.navigation.navigate('FileModal', {file: prop.item})}>
+                <Recording recording={prop.item}/>
+            </TouchableOpacity>
         )
     }
 

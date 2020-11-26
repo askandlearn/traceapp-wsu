@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useState, useContext, useLayoutEffect} from 'react';
 import {View, Text, Button, ScrollView, StyleSheet, FlatList} from 'react-native';
 
 //require module
@@ -19,38 +19,6 @@ const headers = [
 
 const data = [
     "789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.048,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.049,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.050,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.051,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.052,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.054,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.055,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.056,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.057,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.058,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.059,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.060,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.061,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.062,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.063,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.064,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.065,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.066,35,1702,1005,147,44093,-8,0,26,-1,915.0",
-    "789.066,35,1702,1005,147,44093,-8,0,26,-1,9152.0",
-    "789.066,35,1702,1005,147,44073,-8,0,26,-1,915.0",
-    "789.066,35,1702,1005,147,44093,-8,0,26,-1,9121.0",
-    "789.066,35,1702,21005,147,44093,-8,0,26,-1,915.0",
-    "Hello world",
-    "Hello worjlskdjf",
-    "AKJSdlka",
-    "jasldalkds",
-    "alskjdlkasjdlkasjdlksajd",
-    "lakjsdlkajslkdli",
-    "oioio",
-    "qwhkj",
-    "a","b","d"
 ]
 
 const ModalScreen = ({ navigation, route }) => {
@@ -82,17 +50,16 @@ const ModalScreen = ({ navigation, route }) => {
         }
     }, [])
 
+
     const renderHeader = ({item}) => {
         return (
             <Text style={styles.metric}>{item}, </Text>
         )
     }
 
-    const renderBody = ({item}) => {
+    const renderBody = (prop) => {
         return(
-            <ScrollView>
-                <Text style={styles.bodyText}>{item}</Text>
-            </ScrollView>
+             <Text style={styles.bodyText}>{prop.item}</Text>
         )
     }
 
@@ -108,7 +75,7 @@ const ModalScreen = ({ navigation, route }) => {
         </View>
         <View style={styles.body}>
             <FlatList
-                data={body}
+                data={data}
                 renderItem={renderBody}
                 keyExtractor={item => item}
             />
@@ -119,7 +86,7 @@ const ModalScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     container:{
-        flex: 1
+        flex: 1,
     },
     header: {
         borderBottomColor: 'black',
@@ -128,6 +95,10 @@ const styles = StyleSheet.create({
     metric: {
         margin: 0,
         padding: 2,
+        fontWeight: 'bold',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        width: '100%'
         // borderColor: 'red',
         // borderWidth: 1
     },

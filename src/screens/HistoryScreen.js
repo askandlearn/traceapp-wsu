@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, Linking, FlatList, Platform, ScrollView} from 'react-native';
+import React, {useEffect, useState, useContext, useCallback} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Image, Linking, FlatList, Platform, ScrollView, RefreshControl} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Axios from 'axios';
@@ -53,6 +53,12 @@ const HistoryScreen = (props) => {
     const user = useContext(UserContext);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+    
+    const onRefresh = useCallback(() => {
+        setRefreshing(true)
+    })
+
 
     const getData = async () => {
         try{
@@ -69,29 +75,34 @@ const HistoryScreen = (props) => {
             
             setData(data.results)
             setLoading(false)
+            setRefreshing(false)
         }
         catch(err){
             setLoading(false);
+            setRefreshing(false);
             alert('Error getting recordings')
             console.log(err.message)
         }
     }
 
     //upon inital render
-    useEffect(() => {    
-        getData();
+    useEffect(() => {  
+        const fetch = async () => {
+            await getData()
+        }  
+        fetch();
         // console.log(data[0].pk)
-    },[])
+    },[refreshing])
 
     const renderItem = ({item}) => {
         // console.log()
         return <Item session={item}></Item>
     }
 
+
     return(
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-            
             <FlatList 
                 ListHeaderComponent={
                     <KeyboardAvoidingScrollView>
@@ -104,6 +115,9 @@ const HistoryScreen = (props) => {
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={session => session.pk.toString()}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                }
             />
            
             <Loading loading={loading}/>

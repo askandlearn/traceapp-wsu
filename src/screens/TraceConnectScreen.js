@@ -62,7 +62,6 @@ const TraceConnectScreen = props => {
       <Text>Connection status: {props.status}</Text>
       <View style={[styles.bluetooth, {backgroundColor: props.isConnected ? '#ff0000':'gray'}]}>
         <Icon style={{alignSelf:'center'}} name="bluetooth" size={50} color='white'/>
-        {/* <Pulse/> */}
       </View>
     </View>
   );

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Animated, Button, FlatList, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Animated, Button, FlatList, SafeAreaView, ScrollView } from 'react-native'
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
@@ -24,17 +24,28 @@ const Recording = ({recording}) => {
     )
 }
 
-const DATA = [
-    'Trace-1.txt','Trace-2.txt','Trace-3.txt'
-  ];
+// const DATA = [
+//     'Trace-1.txt','Trace-2.txt','Trace-3.txt'
+// ];
 
 const SyncDataScreen = props => {
+
+    const [DATA, setDATA] = useState([
+        'Trace-1.txt','Trace-2.txt','Trace-3.txt','Trace-4.txt'
+      ])
+
     const renderItem = (prop) => {
         return(
-            <TouchableOpacity onPress={() => props.navigation.navigate('FileModal', {file: prop.item})}>
-                <Recording recording={prop.item}/>
-            </TouchableOpacity>
+            <ScrollView>
+                <TouchableOpacity onPress={() => props.navigation.navigate('FileModal', {file: prop.item})}>
+                    <Recording recording={prop.item}/>
+                </TouchableOpacity>
+            </ScrollView>
         )
+    }
+
+    const remove = (index) => {
+        setDATA(DATA.filter(item => DATA.indexOf(item) != index))
     }
 
     return (
@@ -56,14 +67,12 @@ const SyncDataScreen = props => {
                 renderItem={renderItem}
                 keyExtractor={item => item}
                 ListFooterComponent={
-                    <View>
-                        <Button
-                            title='Get File'
-                            disabled={true}
-                        />
-                    </View>
+                    <View style={{marginBottom: 80}}/>
                 }
             />
+            <TouchableOpacity onPress={() => remove(DATA.length-1)} style={styles.button}>
+                <Text style={styles.buttonText}>Sync</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -93,16 +102,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 20,
       },
-      recording: {
-          borderBottomColor: 'black',
-          borderWidth: 0.5,
-          margin: 0,
-          padding: 15,
-          flexDirection: "row",
-      },
-      file: {
-          fontWeight: 'bold',
-      }
+    recording: {
+        borderBottomColor: 'black',
+        borderWidth: 0.5,
+        margin: 0,
+        padding: 15,
+        flexDirection: "row",
+    },
+    file: {
+        fontWeight: 'bold',
+    },
+    button: {
+        alignSelf: 'center',
+        width: '50%',
+        alignItems: 'center',
+        marginHorizontal: '10%',
+        marginVertical: 20,
+        padding: 10,
+        borderRadius: 20,
+        backgroundColor: '#ff0000',
+        position: 'absolute',
+        bottom: 10,
+    },
+    buttonText: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+    }
 })
 
 export default connect(mapStateToProps,null) (SyncDataScreen);

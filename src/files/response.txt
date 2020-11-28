@@ -1,0 +1,113 @@
+{
+    "config": {
+        "adapter": [Function xhrAdapter
+        ],
+        "data": {
+            "_parts": [Array
+            ]
+        },
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Token dc3de18974937d82f735d88debe0206a1f64b35e"
+        },
+        "maxBodyLength": -1,
+        "maxContentLength": -1,
+        "method": "post",
+        "timeout": 0,
+        "transformRequest": [
+            [Function transformRequest
+            ]
+        ],
+        "transformResponse": [
+            [Function transformResponse
+            ]
+        ],
+        "url": "http://134.209.76.190:8000/api/Recording",
+        "validateStatus": [Function validateStatus
+        ],
+        "xsrfCookieName": "XSRF-TOKEN",
+        "xsrfHeaderName": "X-XSRF-TOKEN"
+    },
+    "data": {
+        "app_hardware": "Moto G5S",
+        "app_os": "Android",
+        "app_os_version": "9.0",
+        "app_version": "1.12",
+        "comments": "",
+        "datafile": "http://134.209.76.190:8000/TraceData/test_1L2Y7KN.txt",
+        "description": "OTC 3X with BP.  1st one captured transient: 1: 95/57/42, 121/46/81, 99/55/54",
+        "device_firmware": "1.02",
+        "device_sn": "2",
+        "device_type": "HRM-AA",
+        "highlight": false,
+        "label": "OTC",
+        "pk": 713,
+        "start_time": "2020-11-02T14:50:05Z"
+    },
+    "headers": {
+        "allow": "GET, POST, HEAD, OPTIONS",
+        "content-length": "406",
+        "content-type": "application/json",
+        "date": "Sat, 28 Nov 2020 09:03:05 GMT",
+        "referrer-policy": "same-origin",
+        "server": "WSGIServer/0.2 CPython/3.8.5",
+        "vary": "Accept, Cookie",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+    },
+    "request": {
+        "DONE": 4,
+        "HEADERS_RECEIVED": 2,
+        "LOADING": 3,
+        "OPENED": 1,
+        "UNSENT": 0,
+        "_aborted": false,
+        "_cachedResponse": undefined,
+        "_hasError": false,
+        "_headers": {
+            "accept": "application/json",
+            "authorization": "Token dc3de18974937d82f735d88debe0206a1f64b35e"
+        },
+        "_incrementalEvents": false,
+        "_lowerCaseResponseHeaders": {
+            "allow": "GET, POST, HEAD, OPTIONS",
+            "content-length": "406",
+            "content-type": "application/json",
+            "date": "Sat, 28 Nov 2020 09:03:05 GMT",
+            "referrer-policy": "same-origin",
+            "server": "WSGIServer/0.2 CPython/3.8.5",
+            "vary": "Accept, Cookie",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY"
+        },
+        "_method": "POST",
+        "_perfKey": "network_XMLHttpRequest_http://134.209.76.190:8000/api/Recording",
+        "_requestId": null,
+        "_response": "{\"pk\":713,\"start_time\":\"2020-11-02T14:50:05Z\",\"datafile\":\"http://134.209.76.190:8000/TraceData/test_1L2Y7KN.txt\",\"label\":\"OTC\",\"description\":\"OTC 3X with BP.  1st one captured transient: 1: 95/57/42, 121/46/81, 99/55/54\",\"comments\":\"\",\"highlight\":false,\"device_type\":\"HRM-AA\",\"device_sn\":\"2\",\"device_firmware\":\"1.02\",\"app_version\":\"1.12\",\"app_hardware\":\"Moto G5S\",\"app_os\":\"Android\",\"app_os_version\":\"9.0\"}",
+        "_responseType": "",
+        "_sent": true,
+        "_subscriptions": [],
+        "_timedOut": false,
+        "_trackingName": "unknown",
+        "_url": "http://134.209.76.190:8000/api/Recording",
+        "readyState": 4,
+        "responseHeaders": {
+            "Allow": "GET, POST, HEAD, OPTIONS",
+            "Content-Length": "406",
+            "Content-Type": "application/json",
+            "Date": "Sat, 28 Nov 2020 09:03:05 GMT",
+            "Referrer-Policy": "same-origin",
+            "Server": "WSGIServer/0.2 CPython/3.8.5",
+            "Vary": "Accept, Cookie",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY"
+        },
+        "responseURL": "http://134.209.76.190:8000/api/Recording",
+        "status": 201,
+        "timeout": 0,
+        "upload": {},
+        "withCredentials": true
+    },
+    "status": 201,
+    "statusText": undefined
+}

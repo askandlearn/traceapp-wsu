@@ -74,7 +74,7 @@ export const scan = () => {
             if (error) {
                 console.log(error);
             }
-            if(device.name === 'TRACE'){
+            if(device && device.name === 'TRACE'){
                 dispatch(connectDevice(device));
             }
         });
@@ -235,16 +235,17 @@ export const disconnectDevice = () => {
 export const updateRecordings = (username) => {
     return (dispatch) => {
         var curDate = new Date();
-        var filename = "Trace-".concat(
-            curDate.getFullYear().toString(),
-            (curDate.getMonth() + 1).toString().padStart(2, "0"),
-            curDate.getDate().toString().padStart(2, "0"),
-            "-",
-            curDate.getHours().toString().padStart(2, "0"),
-            curDate.getMinutes().toString().padStart(2, "0"),
-            curDate.getSeconds().toString().padStart(2, "0"),
-            ".txt"
-        );
+        // var filename = "Trace-".concat(
+        //     curDate.getFullYear().toString(),
+        //     (curDate.getMonth() + 1).toString().padStart(2, "0"),
+        //     curDate.getDate().toString().padStart(2, "0"),
+        //     "-",
+        //     curDate.getHours().toString().padStart(2, "0"),
+        //     curDate.getMinutes().toString().padStart(2, "0"),
+        //     curDate.getSeconds().toString().padStart(2, "0"),
+        //     ".txt"
+        // );
+        var filename = 'test.txt'
         var path = RNFS.DocumentDirectoryPath + `/${filename}`
         const data =`
 SensorTime,HR,IBI,PAMP,DAMP,PPG,DIF,DIG,ST,AccX,PVW,PVWD1

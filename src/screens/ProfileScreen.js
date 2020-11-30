@@ -338,7 +338,7 @@ const ProfileScreen = (props) => {
              visible={showModalDate}
              onRequestClose={() => {console.log('Closed birthdate text input window');}}
           >
-             <View style={styles.modalView}>
+             <KeyboardAvoidingView style={styles.modalView}>
              <Text style={styles.modalContentTitle}>Birthdate:</Text>
              <TextInput
               value={currentUser.birthdate}
@@ -352,7 +352,7 @@ const ProfileScreen = (props) => {
               <View style={{paddingTop: 15}}/>
               <Text style={styles.buttonContainer}
               onPress={()=> {changeModalViewBirthdate()}}>Submit</Text>
-             </View>
+             </KeyboardAvoidingView>
           </Modal>
           <Text style={styles.content} onPress={()=> {setShowModalDate(!showModalDate)}}>{currentUser.birthdate}</Text>
           </TouchableOpacity>
@@ -690,8 +690,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     margin: 65,
-    marginTop: 170,
-    marginBottom: 100,
+    marginTop: 50,
+    marginBottom: 50,
     //height: '30%',
     
   },

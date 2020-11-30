@@ -194,10 +194,9 @@ const ProfileScreen = (props) => {
       let intYear = parseInt(year, 10);
       let intDay = parseInt(day, 10);
       let intMonth = parseInt(month, 10);
-      
 
       console.log('INT CONVERTED YEAR')
-      console.log(intYear)
+      console.log("intYear: " + intYear)
         //If the month entered is invalid
         if(intMonth < 1 || intMonth > 12){
           console.log('Month entered is an invalid number')
@@ -265,11 +264,17 @@ const ProfileScreen = (props) => {
 
   }
 
+  const setBirthdate = (birthDate) => {
+    const [month, day, year] = birthDate.split('/');
+    var apiDate = (year + "-" + month + "-" + day);
+    console.log(apiDate);
+    //setCurrentUser({...currentUser, birthdate: apiDate});
+  }
+
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        SAVE CHANGES
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const saveChanges = async () => {
-    console.log(currentUser)
     console.log('Calling update')
     try{
       await update(currentUser);

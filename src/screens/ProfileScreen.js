@@ -58,8 +58,10 @@ const ProfileScreen = (props) => {
   const [gender, editGender]  = useState(() => {if (user.gender) {return user.gender;} else {return '';}});
 */
 //Create instance of current user
-  const [currentUser, setCurrentUser] = useState(user)
-
+  const [year, month, day] = user.birthdate.split('-');
+  const profileDate = (month + "/" + day + "/" + year);
+  user.birthdate = profileDate;  
+  const [currentUser, setCurrentUser] = useState(user);
   //Create instance of state change variables
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(true);
@@ -262,13 +264,6 @@ const ProfileScreen = (props) => {
     setShowModalDate(false);
     saveChanges();
 
-  }
-
-  const setBirthdate = (birthDate) => {
-    const [month, day, year] = birthDate.split('/');
-    var apiDate = (year + "-" + month + "-" + day);
-    console.log(apiDate);
-    //setCurrentUser({...currentUser, birthdate: apiDate});
   }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

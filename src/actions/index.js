@@ -18,7 +18,7 @@ const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb'
 // For Android const deviceID = 'AB:89:67:45:11:FF'
 
 //For iOS
-const deviceID = Platform.OS === 'ios' ? 'A0524966-65F3-A409-C6D1-20ED628ED43A':'AB:89:67:45:11:FF'
+let deviceID = Platform.OS === 'ios' ? 'A0524966-65F3-A409-C6D1-20ED628ED43A':'AB:89:67:45:11:FF'
 
 //transaction id for monitoring data
 const transactionID = 'monitor_metrics'
@@ -142,6 +142,9 @@ export const updateMetric = () => {
         var path = RNFS.DocumentDirectoryPath + '/test.txt';    //testing purposes
 
         // console.log('path:',path);   //debugging purposes
+
+        //set deviceID
+        deviceID = state.BLE.connectedDevice.id ? state.BLE.connectedDevice.id : deviceID
         
         DeviceManager.isDeviceConnected(deviceID).then(val => {
             if(val){

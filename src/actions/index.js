@@ -8,7 +8,8 @@ import {
     updatedMetrics,
     updatedPNN50,
     updatedHRV,
-    addRecording  } from './actionCreators';
+    addRecording,  
+    setBusy} from './actionCreators';
 
 var RNFS = require('react-native-fs');
 
@@ -155,11 +156,14 @@ export const updateMetric = () => {
                 
             }
         }).then(services => {
-            console.log('services',services); //debugging purposes
+            // console.log('services',services); //debugging purposes
             dispatch(changeStatus('Getting custom characteristics'))
             return DeviceManager.characteristicsForDevice(deviceID,serviceUUID)
         }).then(characteristics => {
-            console.log('characteristics',characteristics);   //debugging purposes
+            // console.log('characteristics',characteristics);   //debugging purposes
+
+            console.log('Monitoring...')
+            dispatch(setBusy(true))
             
             const subscription = characteristics[0].monitor((err, characteristics)=>{
                 if(err){
@@ -175,8 +179,8 @@ export const updateMetric = () => {
                     // PAMP lsb, PAMP msb, DAMP lsb, DAMP msb,
                     // ppg lsb, ppg msb, diff lsb, diff msb, digital out,
                     // time lsb to msb in ticks (4 bytes) ]
-                    const metrics = parseData(characteristics.value, dispatch)
-                    dispatch(updatedMetrics(metrics))
+                    parseData(characteristics.value, dispatch)
+                    // dispatch(updatedMetrics(metrics))
                     //write to a text file
                     // writeToFile(path, metrics)
                 }
@@ -195,6 +199,7 @@ export const updateMetric = () => {
 export const stopTransaction = (ID) => {
     return (dispatch, getState, DeviceManager) => {
         DeviceManager.cancelTransaction(ID)
+        dispatch(setBusy(false))
     }
 }
 
@@ -365,18 +370,18 @@ const parseData = (base64, dispatch) => {
       dif,
       digOut,
       skinTemp,
-      accelX,
-      "\n",
+      accelX
     ];
-    console.log('stats',stats)
-    return stats
+    // console.log('stats',stats)
+    dispatch(updatedMetrics(stats))
+    
 }
 
 //reference: https://github.com/itinance/react-native-fs#Examples
 const writeToFile = (path,metrics) => {
     RNFS.exists(path).then((exists) => {
         if(exists){
-          RNFS.write(path,metrics.toString(),-1,'utf8').then(success => {
+          RNFS.write(path,metrics.toString() + '\n',-1,'utf8').then(success => {
             console.log('FILE APPENDED')
           }).catch(err => {
             console.log(err.message)

@@ -29,7 +29,7 @@ export const deviceDisconnected = () => ({
     type: "DISCONNECTED",
     isConnected: false,
     status: 'Disconnected',
-    connectDevice: undefined
+    connectedDevice: {}
 })
 /**
  * Returns an updated state value
@@ -71,4 +71,14 @@ export const addRecording = (username, recording) => ({
     type:'ADD_RECORDING',
     user: username,
     newRecording: recording
+})
+/**
+ * Returns an updated state value for BleReducer
+ * Called in updateMetrics()
+ * 
+ * @returns {state} busy: [..., busy]
+ */
+export const setBusy = (val) => ({
+    type: 'SET_BUSY',
+    busy: val
 })

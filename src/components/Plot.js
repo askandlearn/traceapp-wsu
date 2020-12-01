@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
   pnn50: state.DATA['pnn50'],
   hrv: state.DATA['hrv'],
   connectedDevice: state.BLE['connectedDevice'],
-  metrics: state.BLE['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  busy: state.BLE['busy']
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -37,7 +37,7 @@ ASTPlot=(props)=> {
 
  var d = new Date();
   setPlot=()=>{
-    console.log("Started Timer");
+    // console.log("Started Timer");
    
     if(isNewData[0].y.length>100){
       isNewData[0].y.push(props.hrv);
@@ -93,7 +93,7 @@ const config={
     return (     
       <View style={styles.container}>
       <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
-      <TouchableOpacity style={styles.button} onPress={() => onStart()}>
+      <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => onStop()}>

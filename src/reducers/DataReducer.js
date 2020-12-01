@@ -1,6 +1,7 @@
 const initialState = {
     pnn50: 0,
-    hrv: 0
+    hrv: 0,
+    metrics: new Array(11).fill(0)
 }
 
 const DataReducer = (state = initialState, action) => {
@@ -14,6 +15,11 @@ const DataReducer = (state = initialState, action) => {
             return{
                 ...state,
                 hrv: action.hrv
+            };
+        case 'UPDATE_METRIC':
+            return{
+                ...state,
+                metrics: action.metrics
             }
         default:
             return state

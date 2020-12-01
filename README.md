@@ -55,6 +55,7 @@ This is a project that was proposed by Dr. Amar Basu, a faculty advisor for Elec
 
 More information about the TRACE wearable biosensor can be found at: https://microfluidics.wayne.edu/index.html
 
+
 ### Built With
 
 In order to ensure that this application runs on both Android and iOS, it was built upon React Native and the following libraries:
@@ -78,7 +79,7 @@ To get started, follow the instructions below which detail the necessary stack r
 This project is built on top of the React Native framework. 
 * React Native - https://reactnative.dev/
 
-To set up the React Native developement environment, please following the instructions on the official React Native websitre at the link below:
+To set up the React Native developement environment, please follow the instructions on the official React Native website at the link below:
 
 Setting up the development environment -----> https://reactnative.dev/docs/environment-setup
 
@@ -88,12 +89,12 @@ Setting up the development environment -----> https://reactnative.dev/docs/envir
    ```sh
    git clone https://github.com/askandlearn/traceapp-wsu
    ```
-2. Install NPM packages
+2. Install the NPM packages after navigating to the project directory
    ```sh
    npm install
    ```
 ### Running on Android
-1. In a terminal, make sure the directory matches the full path to the root of the project and start the metro bundler
+1. In a terminal, make sure the directory matches the full path to the root of the project, then start the metro bundler using the following command
    ```sh
    npx react-native start
     ```
@@ -103,17 +104,34 @@ Setting up the development environment -----> https://reactnative.dev/docs/envir
    ```
 3. The project will begin to build. This may take serval minutes.
 
-* If any build errors occur regarding gradle, open a new terminal to the root directory
+* If any build errors occur regarding gradle, open a new terminal to the root directory and navigate to the Android folder within the project by doing the following
     ```sh
      cd android
     ```
-
+Next, run the command below
     ```sh
     gradlew clean
     ```
 
 ### Running on iOS
+1. In a terminal, make sure the directory matches the full path to the root of the project, then start the metro bundler using the following command
+   ```sh
+   npm react-native start
+    ```
+2. Open another terminal to your root project directory and launch the iOS emulator
+   ```sh
+    npm react-native run-ios
+   ```
+3. The project will begin to build. This may take serval minutes.
 
+* If any build errors occur, open a new terminal to the root directory and navigate to the iOS folder within the project by doing the following
+    ```sh
+     cd ios
+    ```
+Next, run the command below
+    ```sh
+    pod install
+    ```
 <!-- USAGE EXAMPLES -->
 ## Usage
 

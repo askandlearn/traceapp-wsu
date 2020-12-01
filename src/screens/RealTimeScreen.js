@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -25,6 +25,8 @@ import { sleep } from '../utils/sleep';
 import AsyncStorage from '@react-native-community/async-storage';
 import {UserContext} from '../contexts/UserContext';
 import axios from 'axios';
+import Toast from 'react-native-simple-toast';
+import { usePrevious } from '../hooks/usePrevious';
 
 //require module
 var RNFS = require('react-native-fs');
@@ -40,7 +42,8 @@ const mapStateToProps = state => ({
   hrv: state.DATA['hrv'],
   connectedDevice: state.BLE['connectedDevice'],
   metrics: state.BLE['metrics'], //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
-  recordings: state.BLE['recordings']
+  recordings: state.BLE['recordings'],
+  isConnected : state.BLE['isConnected']
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -50,6 +53,21 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const RealTimeScreen = (props) => {
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+
+    showToast()
+  }, [isConnected])
+  //End Toast
+
 
   const user = useContext(UserContext)
   const [content,setContent] = useState()

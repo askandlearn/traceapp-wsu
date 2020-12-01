@@ -7,6 +7,9 @@ import { UserContext } from '../contexts/UserContext';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Loading } from '../components/Loading-Component';
 
+import Toast from 'react-native-simple-toast';
+import {connect} from 'react-redux';
+import { usePrevious } from '../hooks/usePrevious';
 
 
 //data list
@@ -48,7 +51,31 @@ const Item = ({session}) => {
 )}
 
 
+//redux states to props
+function mapStateToProps(state){
+    return{
+      isConnected : state.BLE['isConnected'],
+    };
+}
+
+
 const HistoryScreen = (props) => {
+
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+
+    showToast()
+  }, [isConnected])
+  //End Toast
+
 
     const user = useContext(UserContext);
     const [data, setData] = useState([]);
@@ -193,4 +220,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default HistoryScreen;
+export default connect(mapStateToProps, null) (HistoryScreen);

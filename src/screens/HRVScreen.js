@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -18,12 +18,38 @@ import Animate from '../components/HRVSurvey';
 import Swiper from 'react-native-swiper';
 import Plot from '../components/Plot';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import Toast from 'react-native-simple-toast';
+import {connect} from 'react-redux';
+import { usePrevious } from '../hooks/usePrevious';
 
 var check = false;
 
-const HRVScreen = ({navigation}, props) => {
+function mapStateToProps(state){
+  return{
+    isConnected : state.BLE['isConnected'],
+    status: state.BLE['status']
+  };
+}
+
+
+
+const HRVScreen = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+
+    showToast()
+  }, [isConnected])
+  //End Toast
 
   const handleCheck = (checkedId) => {
     this.setState({checkedId});
@@ -33,7 +59,7 @@ const HRVScreen = ({navigation}, props) => {
   return (
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
-        <Header openDrawer={navigation.openDrawer} />
+        <Header openDrawer={props.navigation.openDrawer} />
         <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
         <View>{check && <SensorAlert />}</View>
         {/* <Timer /> */}
@@ -119,7 +145,7 @@ const HRVScreen = ({navigation}, props) => {
   );
 };
 
-export default HRVScreen;
+export default connect(mapStateToProps, null) (HRVScreen);
 
 const styles = StyleSheet.create({
   container: {

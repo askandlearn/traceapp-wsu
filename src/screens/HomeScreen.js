@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,10 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';
 import {Calendar} from 'react-native-calendars';
 import { withOrientation } from 'react-navigation';
+
+import Toast from 'react-native-simple-toast';
+import {connect} from 'react-redux';
+import { usePrevious } from '../hooks/usePrevious';
 
 const date = new Date();
 //newRealtimeData[0].y.shift();
@@ -102,7 +106,30 @@ const sharedAxisStyles = {
   },
 };
 
-const HomeScreen = ({navigation}) => {
+//redux states to props
+function mapStateToProps(state){
+  return{
+    isConnected : state.BLE['isConnected'],
+  };
+}
+
+
+const HomeScreen = (props) => {
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+
+    showToast()
+  }, [isConnected])
+  //End Toast
+
   const [stats, setStats] = useState('week');
   const [status, setStatus] = useState('true');
   return (
@@ -110,7 +137,7 @@ const HomeScreen = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <KeyboardAvoidingScrollView>
-        <Header openDrawer={navigation.openDrawer} />
+        <Header openDrawer={props.navigation.openDrawer} />
         <Image
           style={styles.backgroundImage}
           source={require('../images/TraceBio-Black.png')}
@@ -345,4 +372,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default connect(mapStateToProps, null) (HomeScreen);

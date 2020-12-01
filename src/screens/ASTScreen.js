@@ -81,10 +81,39 @@ import Swiper from 'react-native-swiper';
 import Plot from '../components/ASTPlot';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
+import Toast from 'react-native-simple-toast';
+import {connect} from 'react-redux';
+import { usePrevious } from '../hooks/usePrevious';
+
+//redux states to props
+function mapStateToProps(state){
+  return{
+    isConnected : state.BLE['isConnected'],
+  };
+}
+
+
 var check = false;
 
-const ASTScreen = ({navigation}, props) => {
+const ASTScreen = (props) => {
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+
+    showToast()
+  }, [isConnected])
+  //End Toast
+
+
   const [modalVisible, setModalVisible] = useState(false);
+
 
 
   const handleCheck = (checkedId) => {
@@ -95,7 +124,7 @@ const ASTScreen = ({navigation}, props) => {
   return (
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
-        <Header openDrawer={navigation.openDrawer} />
+        <Header openDrawer={props.navigation.openDrawer} />
         <Text style={styles.title}>Active StandUp Test (AST)</Text>
         <View>{check && <SensorAlert />}</View>
         {/* <Timer /> */}
@@ -112,7 +141,7 @@ const ASTScreen = ({navigation}, props) => {
   );
 };
 
-export default ASTScreen;
+export default connect(mapStateToProps, null) (ASTScreen);
 
 const styles = StyleSheet.create({
   container: {

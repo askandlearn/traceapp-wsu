@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { Platform } from 'react-native';
+import { batch } from 'react-redux';
 import atob from '../utils/atob';
 import { 
     changeStatus, 
@@ -164,6 +165,7 @@ export const updateMetric = () => {
 
             console.log('Monitoring...')
             dispatch(setBusy(true))
+            var counter = 0
             
             const subscription = characteristics[0].monitor((err, characteristics)=>{
                 if(err){
@@ -179,10 +181,80 @@ export const updateMetric = () => {
                     // PAMP lsb, PAMP msb, DAMP lsb, DAMP msb,
                     // ppg lsb, ppg msb, diff lsb, diff msb, digital out,
                     // time lsb to msb in ticks (4 bytes) ]
-                    parseData(characteristics.value, dispatch)
-                    // dispatch(updatedMetrics(metrics))
+                    //Convert from base 64 to byte array
+                    //Taken from Dr. Amar Basu parsing function in traceapp-cordova
+                    var binary_string = atob(characteristics.value);
+                    var len = binary_string.length;
+                    var data = new Uint8Array(len);
+                    for (var i = 0; i < len; i++) {
+                        data[i] = binary_string.charCodeAt(i);
+                    }
+
+                    var vcnlCurrent  = data[0];
+                    var bpm = data[1];
+                    var skinTemp  = data[2];
+                    if (data[2] & 0x80) {
+                    skinTemp = -((~skinTemp & 0xff) + 1);
+                    } // Two's complement
+                    skinTemp = 25 + skinTemp/4;
+                    var accelX = data[3];
+                    if (data[3] & 0x80) {
+                    accelX = -((~accelX & 0xff) + 1);
+                    } // Two's complement
+                    var ibi  = (data[5] << 8) + data[4];
+                    var pamp  = (data[7] << 8) + data[6];
+                    var damp  = (data[9] << 8) + data[8]; // data[8];
+                    var ppg  = (data[11] << 8) + data[10];
+                    var dif ;
+                    if (data[13] & 0x80) {
+                    dif = -((~dif & 0xff) + 1);
+                    } // Two's complement
+                    var digOut  = data[14];
+                    var curTime  =
+                        ((data[18] << 24) + (data[17] << 16) + (data[16] << 8) + data[15]) *
+                        9.846e-6;
+                    var deltaT = curTime - values_p.time_p;
+
+                    // Do these updates only at the beginning of each beat
+                    if (values_p.digOut_p == 0 && digOut == 1) {
+                        var hrv = ibi - values_p.ibi_p;
+                        values_p.ibi_p = ibi;
+
+                        // manage the hrv fifo and calculate pnn50
+                        values_p.hrv_fifo.push(hrv);
+                        if (values_p.hrv_fifo.length > 100) {
+                            values_p.hrv_fifo.shift();
+                        }
+                        const reducer = (accumulator, currentValue) => accumulator + (currentValue >=50);
+                        var pnn50 = values_p.hrv_fifo.reduce(reducer, 0)/values_p.hrv_fifo.length;
+                        //   console.log('pnn50',pnn50.toFixed(3))
+
+                        // call dispatch and update pnn50 and hrv
+                        dispatch(updatedHRV(hrv))
+                        dispatch(updatedPNN50(pnn50.toFixed(3)))
+                    }
+
+                    values_p.time_p = curTime
+                    values_p.digOut_p = digOut
+                    // Log the data
+                    var stats = [
+                    curTime.toFixed(3),
+                    bpm,
+                    ibi,
+                    pamp,
+                    damp,
+                    ppg,
+                    dif,
+                    digOut,
+                    skinTemp,
+                    accelX
+                    ];
+                    // console.log('stats',stats)
+                    
+                    if (values_p.digOut_p == 0 && digOut == 1){dispatch(updatedMetrics(stats))}
+
                     //write to a text file
-                    // writeToFile(path, metrics)
+                    writeToFile(path, stats)
                 }
             }, transactionID)
 
@@ -301,80 +373,6 @@ const reset = () => {
         digOut_p: 0, // Previous value of digital Out
         hrv_fifo: [], // HRV-fifo, length 100, used to calculate pnn50
     }
-}
-
-//Taken from Dr. Amar Basu parsing function in traceapp-cordova
-const parseData = (base64, dispatch) => {
-    //Convert from base 64 to byte array
-    var binary_string = atob(base64);
-    var len = binary_string.length;
-    var data = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
-        data[i] = binary_string.charCodeAt(i);
-    }
-
-    var vcnlCurrent  = data[0];
-    var bpm = data[1];
-    var skinTemp  = data[2];
-    if (data[2] & 0x80) {
-      skinTemp = -((~skinTemp & 0xff) + 1);
-    } // Two's complement
-    skinTemp = 25 + skinTemp/4;
-    var accelX = data[3];
-    if (data[3] & 0x80) {
-      accelX = -((~accelX & 0xff) + 1);
-    } // Two's complement
-    var ibi  = (data[5] << 8) + data[4];
-    var pamp  = (data[7] << 8) + data[6];
-    var damp  = (data[9] << 8) + data[8]; // data[8];
-    var ppg  = (data[11] << 8) + data[10];
-    var dif ;
-    if (data[13] & 0x80) {
-      dif = -((~dif & 0xff) + 1);
-    } // Two's complement
-    var digOut  = data[14];
-    var curTime  =
-        ((data[18] << 24) + (data[17] << 16) + (data[16] << 8) + data[15]) *
-        9.846e-6;
-    var deltaT = curTime - values_p.time_p;
-
-    // Do these updates only at the beginning of each beat
-    if (values_p.digOut_p == 0 && digOut == 1) {
-      var hrv = ibi - values_p.ibi_p;
-      values_p.ibi_p = ibi;
-
-      // manage the hrv fifo and calculate pnn50
-      values_p.hrv_fifo.push(hrv);
-      if (values_p.hrv_fifo.length > 100) {
-        values_p.hrv_fifo.shift();
-      }
-      const reducer = (accumulator, currentValue) => accumulator + (currentValue >=50);
-      var pnn50 = values_p.hrv_fifo.reduce(reducer, 0)/values_p.hrv_fifo.length;
-    //   console.log('pnn50',pnn50.toFixed(3))
-
-      // call dispatch and update pnn50 and hrv
-      dispatch(updatedHRV(hrv))
-      dispatch(updatedPNN50(pnn50.toFixed(3)))
-    }
-
-    values_p.time_p = curTime
-    values_p.digOut_p = digOut
-    // Log the data
-    var stats = [
-      curTime.toFixed(3),
-      bpm,
-      ibi,
-      pamp,
-      damp,
-      ppg,
-      dif,
-      digOut,
-      skinTemp,
-      accelX
-    ];
-    // console.log('stats',stats)
-    dispatch(updatedMetrics(stats))
-    
 }
 
 //reference: https://github.com/itinance/react-native-fs#Examples

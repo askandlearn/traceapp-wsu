@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 const mapStateToProps = state => ({
   pnn50: state.DATA['pnn50'],
   hrv: state.DATA['hrv'],
+  metrics: state.DATA['metrics'],
   connectedDevice: state.BLE['connectedDevice'],
   busy: state.BLE['busy']
 })

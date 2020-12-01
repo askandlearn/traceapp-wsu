@@ -45,6 +45,7 @@ const ProfileScreen = (props) => {
   const [showModal, setShowModal] = useState(false); //zip
   const [showModalDate, setShowModalDate] = useState(false); //birthdate
   const [showModalGender, setShowModalGender] = useState(false); //gender
+  const [showModalName, setShowModalName] = useState(false); //name (first + last)
 
 
 
@@ -68,7 +69,8 @@ const ProfileScreen = (props) => {
 
 //Create validation variables; default value: false
   const [checkValidations, setCheckValidations] = useState({
-
+    validFirstName: true,
+    validLastName: true,
     diffzip: false,
     validZipLength: true,
     diffHeight: false,
@@ -78,16 +80,79 @@ const ProfileScreen = (props) => {
 
  
   //Initialize avatar with the user initials 
+  /*
   const initialzeAvatarText = () => {
+    
     if (user) {
+    
       const [first, last] = user.name.split(' ');
       return first[0] + last[0];
     } else {
       return '';
     }
   };
+  */
+
+ const initialzeAvatarText = () =>{
+   if(user.first_name && user.last_name){
+     const first_name = user.first_name;
+     const last_name = user.last_name;
+     return first_name[0] + last_name[0];
+   }
+   else{
+     return '';
+   }
+ }
   const [initials, setInitials] = useState(initialzeAvatarText());
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//       VALIDATE FIRST NAME
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const checkFirstName = (val) =>{
+    //Check if name is valid
+   if(val.trim().length > 0){
+     //Not empty, flag is true
+     console.log('Name is valid')
+     setCheckValidations({
+       ...checkValidations,
+       validFirstName: true,
+     })
+   }
+   else{
+     //Empty, flag is false
+     console.log('Name is not valid');
+     setCheckValidations({
+       ...checkValidations,
+       validFirstName: false,
+     })
+   }
+
+    
+  }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//       VALIDATE LAST NAME
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const checkLastName = (val) =>{
+  //Check if name is valid
+ if(val.trim().length > 0){
+   //Not empty, flag is true
+   console.log('Name is valid')
+   setCheckValidations({
+     ...checkValidations,
+     validLastName: true,
+   })
+ }
+ else{
+   //Empty, flag is false
+   console.log('Name is not valid');
+   setCheckValidations({
+     ...checkValidations,
+     validLastName: false,
+   })
+ }
+
+  
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //       VALIDATE ZIP CODE
@@ -239,6 +304,18 @@ const ProfileScreen = (props) => {
 
     }
   }
+
+  //console.log(user.firstName)
+  //console.log(user.name)
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (name)
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const changeModalViewName = () => {
+    setShowModalName(false);
+    saveChanges();
+
+  }
+
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        Close Modal (zip)
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -314,13 +391,67 @@ const ProfileScreen = (props) => {
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
             <TextInput    
-              value={currentUser.name}
+              value={currentUser.username}
               editable={false}
               style={styles.name}/>
           </View>
           {/*       ~~~~~~  Add section title back later ~~~~~~
           <Text style={styles.profileCategory}>Basic Info:</Text>
             */}
+            <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}>
+            <Text style={styles.contentTitle}>Name: </Text>
+            <Modal
+             animationType="slide"
+             transparent={true}
+             visible={showModalName}
+             onRequestClose={() => {console.log('Closed name text input window');}}
+           >
+            <View style={styles.modalView}>
+            <Text style={styles.modalContentTitle}>Name:</Text>
+             <Text style={styles.modalContentFLName}>First Name:</Text>
+            <TextInput
+              placeholder='Name'
+              value={currentUser.first_name}
+              editable={true}
+              style={styles.textInput}
+              onChangeText={(first_name) => setCurrentUser({...currentUser, first_name: first_name})}
+              onEndEditing={(e) => checkFirstName(e.nativeEvent.text)}/>
+               {/* Insert validation prompt */}
+        {checkValidations.validFirstName ? false : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMessage}>
+              Field cannot be empty
+            </Text>
+          </Animatable.View>
+        )}
+        {/* End of validation prompt */}
+        <Text style={styles.modalContentFLName}>Last Name:</Text>
+            <TextInput
+              placeholder='Name'
+              value={currentUser.last_name}
+              editable={true}
+              style={styles.textInput}
+              onChangeText={(last_name) => setCurrentUser({...currentUser, last_name: last_name})}
+              onEndEditing={(e) => checkLastName(e.nativeEvent.text)}/>
+               {/* Insert validation prompt */}
+        {checkValidations.validLastName ? false : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMessage}>
+              Field cannot be empty
+            </Text>
+          </Animatable.View>
+        )}
+        {/* End of validation prompt */}
+              <View style={{paddingTop: 15}}/>
+              <Text style={styles.buttonContainer}
+              onPress={()=> {changeModalViewName()}}>Submit</Text>
+              </View>
+              </Modal>
+          <Text style={styles.content} onPress={()=> {setShowModalName(!showModalName)}}>{currentUser.first_name} {currentUser.last_name}</Text>
+          </TouchableOpacity>
+          <View style={styles.contentBorder} />
+          <TouchableOpacity style={styles.horizontal}></TouchableOpacity>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
@@ -699,6 +830,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 22,
     textAlign: 'center',
+    color: 'black',
+    paddingBottom: 20,
+    paddingTop: 5,
+    letterSpacing: 2.5,
+  },
+  modalContentFLName:{
+    //fontWeight: 'bold',
+    fontSize: 17,
+    //textAlign: 'center',
     color: 'black',
     paddingBottom: 20,
     paddingTop: 5,

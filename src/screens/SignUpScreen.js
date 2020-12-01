@@ -18,13 +18,17 @@ import {Loading} from '../components/Loading-Component';
 
 const logo = '../images/TraceBio-White.png';
 
+//Create variable instances for each required field
+
 const SignUpScreen = (props) => {
+  const [username, setUsername] = userState(' ');
   const [firstName, setFirstName] = useState('Mo');
   const [lastName, setLastName] = useState('Ha');
   const [birthdate, setBirthdate] = useState('1999-12-10');
   const [email, setEmail] = useState('test@email.com');
   const [password, setPassword] = useState('pass123');
   const [confirmPass, setConfirmPass] = useState('pass123');
+  
 
   //export context
   const {register} = useContext(AuthContext);
@@ -34,6 +38,7 @@ const SignUpScreen = (props) => {
 
   //Validation flags
   const [validation_flags, setValidationFlags] = useState({
+    isValidUsername: true,
     isValidFirstName: true,
     isValidLastName: true,
     isValidEmail: true,
@@ -43,7 +48,9 @@ const SignUpScreen = (props) => {
     isFilled: false,
   });
 
+  //Console log each variable for error handling
   const display = () => {
+    console.log(username);
     console.log(firstName);
     console.log(lastName);
     console.log(birthdate);
@@ -51,7 +58,24 @@ const SignUpScreen = (props) => {
     console.log(password);
   };
 
-  //Validation handling functions start here
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ // Validation handling functions start here
+ //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ //Username
+  const handleUsername = (val) => {
+    if (val.trim().length > 0) {
+      setValidationFlags({
+        ...validation_flags,
+        isValidUsername: true,
+      });
+    } else {
+      setValidationFlags({
+        ...validation_flags,
+        isValidUsername: false,
+      });
+    }
+  };
+  //Firstname
   const handleFirst = (val) => {
     if (val.trim().length > 0) {
       setValidationFlags({
@@ -65,7 +89,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Lastname
   const handleLast = (val) => {
     if (val.trim().length > 0) {
       setValidationFlags({
@@ -79,7 +103,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Email
   const handleEmail = (val) => {
     var pattern = new RegExp(
       /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i,
@@ -96,7 +120,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Birthdate
   const handleDate = (val) => {
     const [year, month, day] = val.split('-');
 
@@ -120,7 +144,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Password
   const handlePassword = (val) => {
     if (val.length < 8) {
       setValidationFlags({
@@ -134,7 +158,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Confirm password
   const handleConfirmPassword = (val) => {
     setConfirmPass(val);
     if (password === val) {
@@ -149,7 +173,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Page display starts here
   return (
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
@@ -157,6 +181,20 @@ const SignUpScreen = (props) => {
           <Image style={styles.backgroundImage} source={require(logo)} />
           <Text style={styles.title}>Sign up to get started!</Text>
         </View>
+        <TextInput
+          style={styles.inputFields}
+          placeholder="username"
+          value={username}
+          onChangeText={(val) => setUsername(val)}
+          onEndEditing={(e) => handleUsername(e.nativeEvent.text)}
+        />
+        {/* Insert validation prompt */}
+        {validation_flags.isValidUsername ? null : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMessage}>Field cannot be empty</Text>
+          </Animatable.View>
+        )}
+        {/* End of validation prompt */}
         <TextInput
           style={styles.inputFields}
           placeholder="Firstname"
@@ -201,6 +239,7 @@ const SignUpScreen = (props) => {
           </Animatable.View>
         )}
         {/* End of validation prompt */}
+        {/*         REMOVE BIRTHDATE FOR NOW}
         <TextInput
           style={styles.inputFields}
           placeholder="Birthdate (yyyy-mm-dd)"
@@ -209,6 +248,7 @@ const SignUpScreen = (props) => {
           onEndEditing={(e) => handleDate(e.nativeEvent.text)}
         />
         {/* Insert validation prompt */}
+        {/*}
         {validation_flags.isValidBirthdate ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMessage}>
@@ -255,6 +295,7 @@ const SignUpScreen = (props) => {
             try {
               setLoading(true);
               await register(
+                username,
                 email,
                 password,
                 firstName,

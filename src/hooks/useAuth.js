@@ -86,7 +86,9 @@ export function useAuth(){
                 token: token,
                 username: results.username,
                 email: results.email,
-                name: results.first_name + ' ' + results.last_name,
+                first_name: results.first_name,
+                last_name: results.last_name,
+                //name: results.first_name + ' ' + results.last_name,
                 birthdate: results.profile.birthdate,
                 gender: results.profile.sex,
                 zip: results.profile.zip,
@@ -179,6 +181,10 @@ export function useAuth(){
         var apiDate = (year + "-" + month + "-" + day);
         const response = await axios.patch(url, {
             email: user.email,
+            
+            first_name: user.first_name,
+            last_name: user.last_name,
+            
             profile:{
                 birthdate: apiDate,
                 sex: user.gender,
@@ -195,7 +201,9 @@ export function useAuth(){
                 token: user.token,
                 username: results.username,
                 email: results.email,
-                name: results.first_name + ' ' + results.last_name,
+                first_name: results.first_name,
+                last_name: results.last_name,
+                //name: results.first_name + ' ' + results.last_name,
                 birthdate: results.profile.birthdate,
                 gender: results.profile.sex,
                 zip: results.profile.zip,

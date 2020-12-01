@@ -73,11 +73,11 @@ const ProfileScreen = (props) => {
   const [checkValidations, setCheckValidations] = useState({
     validFirstName: true,
     validLastName: true,
-    diffzip: false,
+    //diffzip: false,
     validZipLength: true,
-    diffHeight: false,
-    diffWeight: false,
-    diffBirthdate: false,
+    //diffHeight: false,
+    //diffWeight: false,
+    validBirthdate: true,
   })
 
  
@@ -112,7 +112,7 @@ const ProfileScreen = (props) => {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const checkFirstName = (val) =>{
     //Check if name is valid
-   if(val.trim().length > 0){
+   if(val.trim().length > 0 && val.trim().length < 150){
      //Not empty, flag is true
      console.log('Name is valid')
      setCheckValidations({
@@ -136,7 +136,9 @@ const ProfileScreen = (props) => {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const checkLastName = (val) =>{
   //Check if name is valid
- if(val.trim().length > 0){
+ if(val.trim().length > 0 && val.trim().length < 150){
+  //Make sure alphabetical characters only
+
    //Not empty, flag is true
    console.log('Name is valid')
    setCheckValidations({
@@ -177,15 +179,16 @@ const checkLastName = (val) =>{
             ...checkValidations,
             validZipLength: false
           });
-      }
+        }
+      
       //Zip length is valid, update successful
-      else{
-        console.log('Zip has been updated')
-        setCheckValidations({
-          ...checkValidations,
-          validZipLength: true
-        });
-      }
+         else{
+           console.log('Zip has been updated')
+           setCheckValidations({
+             ...checkValidations,
+              validZipLength: true
+           });
+          }
 
       }
   }
@@ -235,24 +238,54 @@ const checkLastName = (val) =>{
   //        VALIDATE BIRTHDATE
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const checkBirthdate = (val) =>{
+    //Make sure the user entered exactly 10 characters
+    if(val.trim().length === 10){
+
     //If no changes made to birthdate
     if(val === user.birthdate || val === ''){
       console.log('No changes made to birthdate')
+      //Update validation flag
+      setCheckValidations({
+        ...checkValidations,
+        validBirthdate: true
+      });
     }
     //Changes have been made for birthdate
     else{
       //Make sure birthdate has been entered in the 
       //correct format: {mm/dd/yyy}
+      //Use try/catch block for safety
 
       //Split date into three variables
-      const [month, day, year] = val.split('/');
-
-    
+      try{
+        const [month, day, year] = val.split('/');
+        //Update validation flag
+        setCheckValidations({
+          ...checkValidations,
+          validBirthdate: true
+        });
+      }
+      //Catch error if split was unsuccessful
+      catch (e){
+        console.log('Error: cannot split birthdate string because val.split('/') was fatal')
+        //Update validation flag
+        setCheckValidations({
+          ...checkValidations,
+          validBirthdate: false
+        });
+        
+      }
+     
 
       //Make sure month, day, year are all defined and of the correct length
-      if (year === undefined || month === undefined || day === undefined || year.length < 4 ||
-        year.length > 4 || month.length !== 2 || day.length !== 2 ) {
+      if (year === undefined || month === undefined || day === undefined || year.length !== 4
+         || month.length !== 2 || day.length !== 2 ) {
         console.log('Error: Birthdate entry is invalid.')
+        //Update validation flag
+        setCheckValidations({
+          ...checkValidations,
+          validBirthdate: false
+        });
       }
       //Month, day, year are all defined and are the correct length
       else{
@@ -267,14 +300,29 @@ const checkLastName = (val) =>{
         //If the month entered is invalid
         if(intMonth < 1 || intMonth > 12){
           console.log('Month entered is an invalid number')
+          //Update validation flag
+        setCheckValidations({
+          ...checkValidations,
+          validBirthdate: false
+        });
         }
         //If the day entered is invalid
         else if(intDay <1 || intDay > 31){ 
           console.log('Day entered is an invalid number')
+          //Update validation flag
+        setCheckValidations({
+          ...checkValidations,
+          validBirthdate: false
+        });
         }
         //If the year entered is invalid
         else if( intYear > 2020 || intYear < 1920){
           console.log('Year entered is invalid')
+          //Update validation flag
+           setCheckValidations({
+              ...checkValidations,
+              validBirthdate: false
+           });
         }
         //Month/Day/Year is in the correct format
         else{
@@ -283,18 +331,40 @@ const checkLastName = (val) =>{
             //Make sure february has a valid day
             if(((intYear % 4) == 0 && intDay > 29) || (intDay > 28) ){
               console.log('Day entered is invalid for the month')
+
+              //Update validation flag
+              setCheckValidations({
+                ...checkValidations,
+                validBirthdate: false
+              });
             }
           }
           //If month is jan/mar/may/jul/aug/oct/dec and day > 31
           else if ((intMonth == 1 || intMonth == 3 || intMonth == 5 || intMonth == 7 ||
             intMonth === 8 || intMonth == 10 || intMonth == 12) && intDay > 31){
               console.log('Day cannot be more than 31 for the month')
+              //Update validation flag
+              setCheckValidations({
+                 ...checkValidations,
+                 validBirthdate: false
+              });
             }
             //Default months left are sept/april/june/november. Make sure day !> 30
             else if(intDay > 30){
               console.log('Day cannot be more than 30 for the month')
+              //Update validation flag
+             setCheckValidations({
+               ...checkValidations,
+              validBirthdate: false
+        });
             }
             else{ //Birthday is valid!
+              //Update validation flag
+               setCheckValidations({
+                 ...checkValidations,
+                  validBirthdate: true
+                });
+
               console.log('Birthdate has been updated')
               console.log(currentUser.birthdate)
 
@@ -305,6 +375,14 @@ const checkLastName = (val) =>{
 
     }
   }
+  else{
+    console.log('Error: birthdate string must be exactly 10 characters')
+    setCheckValidations({
+      ...checkValidations,
+      validBirthdate: false
+    });
+  }
+}
 
   //console.log(user.firstName)
   //console.log(user.name)
@@ -480,6 +558,15 @@ const checkLastName = (val) =>{
               onChangeText={(birthdate) => setCurrentUser({...currentUser, birthdate: birthdate})}
               onEndEditing={(e) => checkBirthdate(e.nativeEvent.text)}
                 />
+              {/* Insert validation prompt */}
+              {checkValidations.validBirthdate ? false : (
+               <Animatable.View animation="fadeInLeft" duration={500}>
+                <Text style={styles.errorMessage}>
+                  Must use 'MM/DD/YYYY' format
+                </Text>
+             </Animatable.View>
+             )}
+             {/* End of validation prompt */}
               <View style={{paddingTop: 15}}/>
               <Text style={styles.buttonContainer}
               onPress={()=> {changeModalViewBirthdate()}}>Submit</Text>
@@ -515,7 +602,6 @@ const checkLastName = (val) =>{
               style={styles.textInput}
               onChangeText={(zip) => setCurrentUser({...currentUser, zip: zip})}
               onEndEditing={(e) => checkzip(e.nativeEvent.text)}/>
-              <View style={{paddingTop: 15}}/>
                {/* Insert validation prompt */}
         {checkValidations.validZipLength ? false : (
           <Animatable.View animation="fadeInLeft" duration={500}>
@@ -525,6 +611,7 @@ const checkLastName = (val) =>{
           </Animatable.View>
         )}
         {/* End of validation prompt */}
+            <View style={{paddingTop: 15}}/>
               <Text style={styles.buttonContainer}
               onPress={()=> {changeModalViewZip()}}>Submit</Text>
             </View>
@@ -837,12 +924,12 @@ const styles = StyleSheet.create({
   },
   modalContentFLName:{
     //fontWeight: 'bold',
-    fontSize: 17,
-    //textAlign: 'center',
+    fontSize: 15,
+    textAlign: 'left',
     color: 'black',
-    paddingBottom: 20,
-    paddingTop: 5,
-    letterSpacing: 2.5,
+    paddingBottom: 5,
+    paddingTop: 25,
+    //letterSpacing: 2.5,
   },
   textInput: {
     marginHorizontal: '10%',
@@ -865,7 +952,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
-    padding: 10,
+    padding: 15,
     paddingHorizontal: 80,
     borderRadius: 20,
     //backgroundColor: '#445092',

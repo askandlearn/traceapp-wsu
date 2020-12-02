@@ -12,7 +12,7 @@ import {
 const Header = ({openDrawer}) => (
   <View style={styles.header}>
     <TouchableOpacity onPress={() => openDrawer()}>
-      <Icon name="menu" size={30} paddingVertical={50} />
+      <Icon name="menu" size={30} paddingVertical={50}/>
     </TouchableOpacity>
     <Text style={{width: 45}} />
   </View>

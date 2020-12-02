@@ -47,8 +47,8 @@ const ProfileScreen = (props) => {
   const [showModalGender, setShowModalGender] = useState(false); //gender
   const [showModalName, setShowModalName] = useState(false); //name (first + last)
 
-
-
+  
+  
   /*
   const [name, editName] = useState(() => {if (user.name) {return user.name;} else {return '';}});
   const [email, setEmail] = useState(() => {if (user.email) {return user.email;} else {return '';}});
@@ -58,11 +58,16 @@ const ProfileScreen = (props) => {
   const [weight, editWeight] = useState(() => {if (user.weight) {return user.weight;} else {return '';}});
   const [gender, editGender]  = useState(() => {if (user.gender) {return user.gender;} else {return '';}});
 */
-//Create instance of current user
-  const [year, month, day] = user.birthdate.split('-');
-  const profileDate = (month + "/" + day + "/" + year);
+
+
+  //Handle birthdate format change from the api
+  const [api_year, api_month, api_day] = user.birthdate.split('-');
+  const profileDate = (api_month + "/" + api_day + "/" + api_year);
   user.birthdate = profileDate;  
-  const [currentUser, setCurrentUser] = useState(user);
+  
+//Create instance of current user
+const [currentUser, setCurrentUser] = useState(user);
+
   //Create instance of state change variables
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(true);
@@ -253,69 +258,62 @@ const checkLastName = (val) =>{
     else{
       //Make sure birthdate has been entered in the 
       //correct format: {mm/dd/yyy}
-      //Use try/catch block for safety
 
+      //Use test the date against a regular expression for safety before spliting
+      var validDate = /^((0?[1-9]|1[012])[/](0?[1-9]|[12][0-9]|3[01])[/](19|20)?[0-9]{2})*$/;
+
+      if(validDate.test(val)){
+        //If the date is in the valid format, continue testing
+          //Update validation flag
+             
       //Split date into three variables
-      try{
-        const [month, day, year] = val.split('/');
-        //Update validation flag
-        setCheckValidations({
-          ...checkValidations,
-          validBirthdate: true
-        });
-      }
-      //Catch error if split was unsuccessful
-      catch (e){
-        console.log('Error: cannot split birthdate string because val.split('/') was fatal')
-        //Update validation flag
-        setCheckValidations({
-          ...checkValidations,
-          validBirthdate: false
-        });
-        
-      }
-     
+      const [month, day, year] = val.split('/');
 
       //Make sure month, day, year are all defined and of the correct length
       if (year === undefined || month === undefined || day === undefined || year.length !== 4
          || month.length !== 2 || day.length !== 2 ) {
         console.log('Error: Birthdate entry is invalid.')
         //Update validation flag
-        setCheckValidations({
-          ...checkValidations,
-          validBirthdate: false
-        });
+          setCheckValidations({
+            ...checkValidations,
+           validBirthdate: false
+          });
       }
       //Month, day, year are all defined and are the correct length
       else{
+        //Convert month/day/year to an int and store it in a new variable
+        let intYear = parseInt(year, 10);
+        let intDay = parseInt(day, 10);
+        let intMonth = parseInt(month, 10);
 
-          //Convert month/day/year to an int and store it in a new variable
-      let intYear = parseInt(year, 10);
-      let intDay = parseInt(day, 10);
-      let intMonth = parseInt(month, 10);
+        //Create new date variable to handle age minimum
+        let CurrentDate = new Date();
+        let CurrentYear = CurrentDate.getFullYear();
+        let intCurrentYear = parseInt(CurrentYear, 10);
+        let validBirthYear = intCurrentYear-10; //Must be a minimum of 10 years old
+        
 
-      console.log('INT CONVERTED YEAR')
-      console.log("intYear: " + intYear)
+      
         //If the month entered is invalid
         if(intMonth < 1 || intMonth > 12){
           console.log('Month entered is an invalid number')
           //Update validation flag
-        setCheckValidations({
-          ...checkValidations,
-          validBirthdate: false
-        });
+           setCheckValidations({
+             ...checkValidations,
+              validBirthdate: false
+           });
         }
         //If the day entered is invalid
         else if(intDay <1 || intDay > 31){ 
           console.log('Day entered is an invalid number')
           //Update validation flag
-        setCheckValidations({
-          ...checkValidations,
-          validBirthdate: false
+           setCheckValidations({
+            ...checkValidations,
+            validBirthdate: false
         });
         }
         //If the year entered is invalid
-        else if( intYear > 2020 || intYear < 1920){
+        else if( intYear > validBirthYear || intYear < 1920){
           console.log('Year entered is invalid')
           //Update validation flag
            setCheckValidations({
@@ -371,6 +369,16 @@ const checkLastName = (val) =>{
         }
       }
 
+      }
+      else{
+        console.log('Error: cannot split birthdate string because it is not in the correct format')
+        //Update validation flag
+        setCheckValidations({
+          ...checkValidations,
+          validBirthdate: false
+        });
+      }
+     
 
     }
   }
@@ -381,6 +389,7 @@ const checkLastName = (val) =>{
       validBirthdate: false
     });
   }
+
 }
 
   //console.log(user.firstName)
@@ -491,6 +500,7 @@ const checkLastName = (val) =>{
               placeholder='Name'
               value={currentUser.first_name}
               editable={true}
+              maxLength={150}
               style={styles.textInput}
               onChangeText={(first_name) => setCurrentUser({...currentUser, first_name: first_name})}
               onEndEditing={(e) => checkFirstName(e.nativeEvent.text)}/>
@@ -508,6 +518,7 @@ const checkLastName = (val) =>{
               placeholder='Name'
               value={currentUser.last_name}
               editable={true}
+              maxLength={150}
               style={styles.textInput}
               onChangeText={(last_name) => setCurrentUser({...currentUser, last_name: last_name})}
               onEndEditing={(e) => checkLastName(e.nativeEvent.text)}/>
@@ -554,8 +565,9 @@ const checkLastName = (val) =>{
              <TextInput
               value={currentUser.birthdate}
               placeholder='mm/dd/yyyy (optional)'
+              maxLength={10}
               placeholderTextColor="#a1a2a6"
-              editable={isEditable}
+              editable={true}
               style={styles.textInput}
               onChangeText={(birthdate) => setCurrentUser({...currentUser, birthdate: birthdate})}
               onEndEditing={(e) => checkBirthdate(e.nativeEvent.text)}
@@ -600,7 +612,7 @@ const checkLastName = (val) =>{
                keyboardType='number-pad'
                maxLength={5}
               value={currentUser.zip}
-              editable={isEditable}
+              editable={true}
               style={styles.textInput}
               onChangeText={(zip) => setCurrentUser({...currentUser, zip: zip})}
               onEndEditing={(e) => checkzip(e.nativeEvent.text)}/>

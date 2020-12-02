@@ -105,9 +105,9 @@ const [currentUser, setCurrentUser] = useState(user);
 
  const initialzeAvatarText = () =>{
    if(user.first_name && user.last_name){
-     const first_name = user.first_name;
-     const last_name = user.last_name;
-     return first_name[0] + last_name[0];
+     const first = user.first_name;
+     const last = user.last_name;
+     return first[0] + last[0];
    }
    else{
      return '';

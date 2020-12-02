@@ -23,6 +23,11 @@ import HealthGoals from '../components/HealthGoals';
 import HeightPicker from '../components/HeightPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as Animatable from 'react-native-animatable';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+
+
+
 
 const ProfileScreen = (props) => {
   /*
@@ -59,14 +64,15 @@ const ProfileScreen = (props) => {
   const [gender, editGender]  = useState(() => {if (user.gender) {return user.gender;} else {return '';}});
 */
 
-
   //Handle birthdate format change from the api
   const [api_year, api_month, api_day] = user.birthdate.split('-');
   const profileDate = (api_month + "/" + api_day + "/" + api_year);
   user.birthdate = profileDate;  
   
+  
 //Create instance of current user
 const [currentUser, setCurrentUser] = useState(user);
+
 
   //Create instance of state change variables
   const [changeText, setChangeText] = useState('Edit');
@@ -78,10 +84,7 @@ const [currentUser, setCurrentUser] = useState(user);
   const [checkValidations, setCheckValidations] = useState({
     validFirstName: true,
     validLastName: true,
-    //diffzip: false,
     validZipLength: true,
-    //diffHeight: false,
-    //diffWeight: false,
     validBirthdate: true,
   })
 
@@ -124,6 +127,7 @@ const [currentUser, setCurrentUser] = useState(user);
        ...checkValidations,
        validFirstName: true,
      })
+
    }
    else{
      //Empty, flag is false
@@ -142,7 +146,6 @@ const [currentUser, setCurrentUser] = useState(user);
 const checkLastName = (val) =>{
   //Check if name is valid
  if(val.trim().length > 0 && val.trim().length < 150){
-  //Make sure alphabetical characters only
 
    //Not empty, flag is true
    console.log('Name is valid')
@@ -161,8 +164,7 @@ const checkLastName = (val) =>{
  }
 
   
-}
-
+} 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //       VALIDATE ZIP CODE
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -394,26 +396,42 @@ const checkLastName = (val) =>{
 
   //console.log(user.firstName)
   //console.log(user.name)
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //        Close Modal (name)
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (name) [Via Submit]
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const changeModalViewName = () => {
-    setShowModalName(false);
-    saveChanges();
+
+    //If both first + last name are valid, allow submit
+    if(checkValidations.validFirstName && checkValidations.validLastName){
+      setShowModalName(false);
+      saveChanges();
+    }
+    //If both are not valid, disable submit until valid
+    else{
+      setShowModalName(true);
+    }
 
   }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //        Close Modal (zip)
+  //        Close Modal (zip) [Via Submit]
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const changeModalViewZip = () => {
-    setShowModal(false);
-    saveChanges();
+
+    //If zip is valid, allow the user to submit changes
+    if(checkValidations.validZipLength){
+     setShowModal(false);
+     saveChanges();
+    }
+    //If not valid, disable submit until valid
+    else{
+      setShowModal(true);
+    }
 
   }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //        Close Modal (gender)
+  //        Close Modal (gender) [Via Submit]
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const changeModalViewGender = () => {
     setShowModalGender(false);
@@ -421,14 +439,66 @@ const checkLastName = (val) =>{
 
   }
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //        Close Modal (bday)
+  //        Close Modal (bday) [Via Submit]
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const changeModalViewBirthdate = () => {
-    setShowModalDate(false);
-    saveChanges();
+
+    //If the birthdate is valid, allow submit
+    if(checkValidations.validBirthdate){
+      setShowModalDate(false);
+      saveChanges();
+    }
+    //If not valid, disable submit until valid
+    else{
+      setShowModalDate(true);
+    }
 
   }
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (name) [via X]
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const closeModalName = () =>{
 
+    //Discard any changes before closing
+    currentUser.first_name = user.first_name;
+    currentUser.last_name = user.last_name;
+
+    //Close the modal
+    setShowModalName(false);
+  }
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (bday) [via X]
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const closeModalBirthdate = () =>{
+    
+    //Discard any changes before closing
+    currentUser.birthdate = user.birthdate;
+
+    //Close the modal
+    setShowModalDate(false);
+  }
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (zip) [via X]
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const closeModalZip = () =>{
+
+    //Discard any changes before closing
+    currentUser.zip = user.zip;
+
+    //Close the modal
+    setShowModal(false);
+  }
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //        Close Modal (gender) [via X]
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const closeModalGender = () =>{
+
+    //Discard any changes before closing
+    currentUser.gender = user.gender;
+
+    //Close modal
+    setShowModalGender(false);
+  }
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        SAVE CHANGES
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -476,10 +546,13 @@ const checkLastName = (val) =>{
         </View>
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
+            <Text style={styles.name}>{currentUser.username}</Text>
+            {/* remove
             <TextInput    
               value={currentUser.username}
               editable={false}
               style={styles.name}/>
+  */}
           </View>
           {/*       ~~~~~~  Add section title back later ~~~~~~
           <Text style={styles.profileCategory}>Basic Info:</Text>
@@ -494,6 +567,10 @@ const checkLastName = (val) =>{
              onRequestClose={() => {console.log('Closed name text input window');}}
            >
             <View style={styles.modalView}>
+            <TouchableOpacity onPress={()=>closeModalName()}>
+                <Icon name='close-box-outline' size={30} alignSelf="flex-start" ></Icon>
+                </TouchableOpacity>
+                <View style={styles.modalContent}>
             <Text style={styles.modalContentTitle}>Name:</Text>
              <Text style={styles.modalContentFLName}>First Name:</Text>
             <TextInput
@@ -532,8 +609,9 @@ const checkLastName = (val) =>{
         )}
         {/* End of validation prompt */}
               <View style={{paddingTop: 15}}/>
-              <Text style={styles.buttonContainer}
+              <Text style={[styles.buttonContainer, {backgroundColor: (checkValidations.validFirstName && checkValidations.validLastName)  ? '#ff0000' : '#4c4c4c'}]}
               onPress={()=> {changeModalViewName()}}>Submit</Text>
+              </View>
               </View>
               </Modal>
           <Text style={styles.content} onPress={()=> {setShowModalName(!showModalName)}}>{currentUser.first_name} {currentUser.last_name}</Text>
@@ -561,6 +639,10 @@ const checkLastName = (val) =>{
              onRequestClose={() => {console.log('Closed birthdate text input window');}}
           >
              <KeyboardAvoidingView style={styles.modalView}>
+             <TouchableOpacity onPress={()=>closeModalBirthdate()}>
+                <Icon name='close-box-outline' size={30} alignSelf="flex-start" ></Icon>
+                </TouchableOpacity>
+                <View style={styles.modalContent}>
              <Text style={styles.modalContentTitle}>Birthdate:</Text>
              <TextInput
               value={currentUser.birthdate}
@@ -582,8 +664,9 @@ const checkLastName = (val) =>{
              )}
              {/* End of validation prompt */}
               <View style={{paddingTop: 15}}/>
-              <Text style={styles.buttonContainer}
+              <Text style={[styles.buttonContainer, {backgroundColor: checkValidations.validBirthdate  ? '#ff0000' : '#4c4c4c'}]}
               onPress={()=> {changeModalViewBirthdate()}}>Submit</Text>
+              </View>
              </KeyboardAvoidingView>
           </Modal>
           <Text style={styles.content} onPress={()=> {setShowModalDate(!showModalDate)}}>{currentUser.birthdate}</Text>
@@ -604,6 +687,10 @@ const checkLastName = (val) =>{
           onRequestClose={() => {console.log('Closed zip text input window');}}
           >
             <View style={styles.modalView}>
+              <TouchableOpacity onPress={()=>closeModalZip()}>
+                <Icon name='close-box-outline' size={30} alignSelf="flex-start" ></Icon>
+                </TouchableOpacity>
+            <View style={styles.modalContent}>
               <Text style={styles.modalContentTitle}>Zip:</Text>
               <TextInput
               placeholder='Zip'
@@ -626,8 +713,9 @@ const checkLastName = (val) =>{
         )}
         {/* End of validation prompt */}
             <View style={{paddingTop: 15}}/>
-              <Text style={styles.buttonContainer}
+              <Text style={[styles.buttonContainer, {backgroundColor: checkValidations.validZipLength  ? '#ff0000' : '#4c4c4c'}]}
               onPress={()=> {changeModalViewZip()}}>Submit</Text>
+              </View>
             </View>
           </Modal>
         <Text style={styles.content} onPress={()=> {setShowModal(!showModal)}}>{currentUser.zip}</Text>
@@ -698,6 +786,10 @@ const checkLastName = (val) =>{
           onRequestClose={() => {console.log('Closed gender text input window');}}
           >
             <View style={styles.modalView}>
+            <TouchableOpacity onPress={()=>closeModalGender()}>
+                <Icon name='close-box-outline' size={30} alignSelf="flex-start" ></Icon>
+                </TouchableOpacity>
+                <View style={styles.modalContent}>
               <Text style={styles.modalContentTitle}>Gender:</Text>
               <DropDownPicker
                 items={[
@@ -720,7 +812,7 @@ const checkLastName = (val) =>{
               <Text 
               style={styles.buttonContainerGender}
               onPress={()=> {changeModalViewGender()}}>Submit</Text>
-               
+               </View>
             </View>
           </Modal>
         <Text style={styles.content} onPress={()=> {setShowModalGender(!showModalGender)}}>{currentUser.gender}</Text>
@@ -838,7 +930,8 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 30,
     fontWeight: '600',
-    padding: 20,
+    //paddingTop: 5,
+    paddingBottom: 25,
     alignSelf: 'center',
     color:'black',
     fontStyle: 'italic',
@@ -914,8 +1007,8 @@ const styles = StyleSheet.create({
   },
   modalView:{
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    //alignItems: 'center',
+    //justifyContent: 'center',
     backgroundColor: '#ffffff',
     padding: 10,
     //paddingVertical: 10,
@@ -935,6 +1028,13 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     //height: '30%',
     
+  },
+  modalContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 60
+    //padding: 10,
+    //marginTop:50,
   },
   modalContentTitle:{
     fontWeight: 'bold',
@@ -979,7 +1079,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 80,
     borderRadius: 20,
     //backgroundColor: '#445092',
-    backgroundColor: '#ff0000',
+    //backgroundColor: '#ff0000',
     shadowColor: '#000000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
@@ -1011,6 +1111,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     color: 'red',
   },
+
 
 });
 

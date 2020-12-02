@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Button, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Button, Text, TouchableOpacity, Image, Dimensions, Modal, TouchableHighlight } from 'react-native';
 import Plotly from 'react-native-plotly';
 import { onDisconnect, stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 const mapStateToProps = state => ({
   hrv: state.DATA['hrv'],
@@ -122,7 +123,21 @@ const [layout, setLayout]=useState({
 
 const config={
   displaylogo:false,
-  responsive:true
+  responsive:true,
+  toImageButtonOptions: {
+    format: 'png', // one of png, svg, jpeg, webp
+    filename: 'custom_image',
+    height: 500,
+    width: 700,
+    scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+  },
+   modeBarStyle: {
+        orientation: 'h',
+        bgcolor: 'rgba(0 ,0 ,0 ,0.9)',
+        //iconColor: 'rgba(0, 31, 95, 0.3)',
+        //logoColor: 'rgba(0, 31, 95, 0.3)',
+        //position: 
+    },
 }
   swapData = () => {
     if (isData[0].name=== 'HR') {
@@ -143,6 +158,8 @@ const config={
   update = (_, { data, layout, config }, plotly) => {
     plotly.react(data, layout, config);
   };
+  const screenWidth = Dimensions.get('window').width;
+  
     return (
       <View style={styles.container}>
         <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
@@ -153,7 +170,8 @@ const config={
           <Text style={styles.buttonText}>Stop</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.buttonRow}>
+      
+        <View style={styles.buttonRow}>
           <Button onPress={() =>swapData()} title="Swap Data" />
         </View>
         <View style={styles.chartRow}>
@@ -188,6 +206,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  modalContainer:{
+    width: '97%',
+    height: '100%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 25
+  },
+  slide1: {
+    //height:'100%',
+    //paddingHorizontal:'2%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#000000',
+    fontSize: 20,
+  },
+  slide1Text: {
+    color: '#000000',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  note: {
+    color: '#000000',
+    fontSize: 10,
+    // marginVertical:50,
+  },
   button: {
     alignItems: 'center',
     marginHorizontal: '10%',
@@ -206,4 +250,31 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  modalButton:{
+    marginTop:10
+  },
+  centeredView: {
+    height: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: '10%',
+  },
+  modalView: {
+    margin: 10,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 15,
+    paddingTop: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+
+  },
+
 });

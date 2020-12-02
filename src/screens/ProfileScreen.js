@@ -180,8 +180,7 @@ const checkLastName = (val) =>{
             validZipLength: false
           });
         }
-      
-      //Zip length is valid, update successful
+
          else{
            console.log('Zip has been updated')
            setCheckValidations({
@@ -533,10 +532,13 @@ const checkLastName = (val) =>{
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Email: </Text>
+          <Text style={styles.contentEmail}>{user.email}</Text>
+            {/*     Remove TextInput for email because it should not be edited
             <TextInput
               value={user.email}
               editable={false}
               style={styles.content}/>
+        */}
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
@@ -840,6 +842,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content:{
+    fontSize: 17,
+     alignSelf: 'center',
+     textAlign: 'right',
+     color: 'black',
+    //marginHorizontal: '5%',
+    //paddingLeft: 45,
+    flex: 1,
+  },
+  contentEmail:{
     fontSize: 17,
      alignSelf: 'center',
      textAlign: 'right',

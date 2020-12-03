@@ -310,12 +310,13 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginTop: 50,
+    //marginHorizontal: '10%',
+    marginTop: 40,
     color: '#202020',
     fontWeight: 'bold',
     fontSize: 30,
-    paddingBottom: 30,
+    paddingBottom: 20,
+    textAlign:'center'
   },
   button: {
     //alignSelf: 'center',

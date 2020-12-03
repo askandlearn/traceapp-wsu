@@ -12,9 +12,9 @@ import {
 const Header = ({openDrawer}) => (
   <View style={styles.header}>
     <TouchableOpacity onPress={() => openDrawer()}>
-      <Icon name="menu" size={30} paddingVertical={50} />
+      <Icon name="menu" size={30} paddingVertical={50} color='white' />
     </TouchableOpacity>
-    <Text style={{width: 45}} />
+    <Text style={{width: 45}}></Text>
   </View>
 );
 
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     padding: Platform.OS === 'ios' ? 20 : 10,
+    backgroundColor: '#ff0000'
   },
   backgroundImage: {
     alignSelf: 'center',

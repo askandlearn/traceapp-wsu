@@ -136,8 +136,8 @@ const HomeScreen = (props) => {
     <View
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
+      <Header openDrawer={props.navigation.openDrawer} />
       <KeyboardAvoidingScrollView>
-        <Header openDrawer={props.navigation.openDrawer} />
         <Image
           style={styles.backgroundImage}
           source={require('../images/TraceBio-Black.png')}
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   chart: {
     flex: 1,
     height: 300,
-    width: '100%',
+    width: '95%',
   },
   hidden: {
     display: 'none',

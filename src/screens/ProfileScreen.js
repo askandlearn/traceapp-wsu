@@ -17,10 +17,6 @@ import {useAuth} from '../hooks/useAuth';
 import {UserContext} from '../contexts/UserContext';
 import {AuthContext} from '../contexts/AuthContext';
 import { useScreens } from 'react-native-screens';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import GenderMenu from '../components/DropdownGenderMenu';
-import HealthGoals from '../components/HealthGoals';
-import HeightPicker from '../components/HeightPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import Toast from 'react-native-simple-toast';
@@ -320,8 +316,8 @@ const ProfileScreen = (props) => {
     <View
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
+      <Header openDrawer={props.navigation.openDrawer} />
       <KeyboardAvoidingScrollView>
-        <Header openDrawer={props.navigation.openDrawer} />
         <View style={styles.header} />
         <View style={styles.avatar}>
           <Text style={styles.avatar_text}>{initials}</Text>
@@ -462,7 +458,7 @@ const ProfileScreen = (props) => {
           </TouchableOpacity>
         */}
           <View style={styles.contentBorder}/>
-          <View style={{flexDirection: "row"}}>
+          <View style={styles.horizontal}>
             <Text style={styles.contentTitleGender}>Gender: </Text>
             <Modal
           animationType="slide"
@@ -500,19 +496,6 @@ const ProfileScreen = (props) => {
 
           </View>
           <View style={styles.contentBorder} />
-          {/*
-
-            wellness goals not in the api schema
-
-          <View style={{flexDirection: "row"}}>
-          <Text style={styles.contentTitleGender}>Wellness Goals:</Text>
-          <View style={{flex: 0.2}}/>
-          <View style={{alignSelf: 'center'}}>
-          <HealthGoals></HealthGoals>
-          </View>
-          </View>
-          <View style={styles.contentBorder}/>
-        */}
           <View style={{paddingVertical: 40}}></View>
           {/*}
           <Button
@@ -652,6 +635,7 @@ const styles = StyleSheet.create({
   horizontal: {
     flexDirection: 'row',
     alignContent: 'center',
+    marginHorizontal: 5
   },
   save: {
     //come back to style the save button

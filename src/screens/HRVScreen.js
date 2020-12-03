@@ -58,8 +58,8 @@ const HRVScreen = (props) => {
 
   return (
     <View style={styles.container}>
+      <Header openDrawer={props.navigation.openDrawer} />
       <KeyboardAvoidingScrollView>
-        <Header openDrawer={props.navigation.openDrawer} />
         <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
         <View>{check && <SensorAlert />}</View>
         {/* <Timer /> */}
@@ -174,12 +174,13 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginVertical: 10,
+    //marginHorizontal: '10%',
+    marginVertical: 4,
     color: '#202020',
     fontWeight: 'bold',
     fontSize: 30,
-    paddingBottom: 30,
+    paddingBottom: 20,
+    textAlign:'center'
   },
   button: {
     alignItems: 'center',

@@ -43,13 +43,13 @@ const mapStateToProps = state => ({
   connectedDevice: state.BLE['connectedDevice'],
   metrics: state.BLE['metrics'], //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
   recordings: state.BLE['recordings'],
-  isConnected : state.BLE['isConnected']
+  isConnected : state.BLE['isConnected'],
+  busy: state.BLE['busy']
 })
 
 const mapDispatchToProps = dispatch => ({
   updateMetric: () => dispatch(updateMetric()),
   stopTransaction: ID => dispatch(stopTransaction(ID)),
-  addRecording: (username) => dispatch(updateRecordings(username))
 })
 
 const RealTimeScreen = (props) => {
@@ -170,28 +170,22 @@ const RealTimeScreen = (props) => {
   
   }
 
-  const pressed = () => {
-    props.addRecording(user.username)
-  }
-
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}>
-      <ScrollView>
-         <Header openDrawer={props.navigation.openDrawer} />
-         <Text style={styles.title}>Real-Time Data</Text>
-         {/* <Button
-         title='Show Value'
-         onPress={() => console.log(isStart)}/> */}
-        <TouchableOpacity style={styles.button} onPress={() => pressed()}>
+        <Header openDrawer={props.navigation.openDrawer}/>
+        <ScrollView>
+        <Text style={styles.title}>Real-Time Data</Text>
+        <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
             <Text style={styles.buttonText}>Start</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => console.log(props.recordings)}>
-            <Text style={styles.buttonText}>Get</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => upload()}>
-            <Text style={styles.buttonText}>Upload</Text>
-          </TouchableOpacity>  
+          <TouchableOpacity style={styles.button} onPress={() => onStop()}>
+            <Text style={styles.buttonText}>Stop</Text>
+          </TouchableOpacity> 
+        <View testID="Data" style={styles.wrapper}>
+          {/* <Text style={styles.slideTitles}>Biometric Data by Numbers</Text> */}
+          <RTData></RTData>
+        </View>
       </ScrollView> 
     </View>
   );
@@ -232,13 +226,13 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    //marginHorizontal: '10%',
-    marginVertical: 4,
-    color: '#202020',
-    fontWeight: 'bold',
-    fontSize: 30,
-    paddingBottom: 10,
-    textAlign: 'center',
+        //marginHorizontal: '10%',
+        marginVertical: 4,
+        color: '#202020',
+        fontWeight: 'bold',
+        fontSize: 30,
+        paddingBottom: 20,
+        textAlign:'center'
   },
   valueTitle: {
     fontWeight: 'bold',

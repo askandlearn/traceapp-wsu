@@ -119,7 +119,7 @@ const HistoryScreen = (props) => {
         }  
         fetch();
         // console.log(data[0].pk)
-    },[refreshing])
+    },[refreshing]) //anytime screen is pulled down
 
     const renderItem = ({item}) => {
         // console.log()
@@ -130,11 +130,11 @@ const HistoryScreen = (props) => {
     return(
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
+            <Header openDrawer={props.navigation.openDrawer} />
             <FlatList 
                 ListHeaderComponent={
                     <KeyboardAvoidingScrollView>
                     <View>
-                        <Header openDrawer={props.navigation.openDrawer} />
                         <Text style={styles.title}>Recording History</Text>
                     </View>
                     </KeyboardAvoidingScrollView>
@@ -177,28 +177,29 @@ const styles = StyleSheet.create({
         padding: 5,
         //backgroundColor: '#242852'
         //backgroundColor: '#445092'
-        backgroundColor: '#dddddd',
-        borderColor: '#242852'
+        // backgroundColor: '#000030',
+        backgroundColor: 'black',   
+        borderColor: 'white'
     },
     SessionTitle: {
         fontSize: 15,
-        color: 'black',
+        color: 'white',
        // fontWeight: 'bold'
     },
     TitleContent: {
         fontSize: 17,
-        color: 'black',
+        color: 'white',
         //fontWeight: 'bold'
     },
     DataFileTitle: {
         fontSize: 15,
-        color: 'black',
+        color: 'white',
         //fontWeight: 'bold',
 
     },
     content: {
         fontSize: 17,
-        color: 'black',
+        color: 'white',
         textAlign: 'center',
         alignSelf: 'center',
         //marginHorizontal: '10%',
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
     },
     DescriptionContent: {
         fontSize: 17,
-        color: 'black',
+        color: 'white',
         flex: 1,
        // flexWrap: 'wrap',
         //marginHorizontal: '10%',

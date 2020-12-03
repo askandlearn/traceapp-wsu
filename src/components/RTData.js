@@ -23,7 +23,7 @@ const mapStateToProps = state => ({
   pnn50: state.DATA['pnn50'],
   hrv: state.DATA['hrv'],
   connectedDevice: state.BLE['connectedDevice'],
-  metrics: state.BLE['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  metrics: state.DATA['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
 })
 
 const mapDispatchToProps = dispatch => ({

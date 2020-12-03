@@ -67,9 +67,8 @@ export const updatedHRV = (value) => ({
  * 
  * @returns {state} records: [..., newRecording]
  */
-export const addRecording = (username, recording) => ({
+export const addRecording = (recording) => ({
     type:'ADD_RECORDING',
-    user: username,
     newRecording: recording
 })
 /**

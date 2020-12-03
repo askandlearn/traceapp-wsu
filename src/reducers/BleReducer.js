@@ -4,7 +4,7 @@ const initialState = {
   connectedDevice: {},
   isConnected: false,
   busy: false,
-  recordings: {user: undefined, recordings: []}
+  recordings: []  //string array to hold recordings
 }
 
 const bleReducer = (state = initialState, action) => {
@@ -37,7 +37,7 @@ const bleReducer = (state = initialState, action) => {
     case 'ADD_RECORDING':
       return{
         ...state,
-        recordings: {user: action.user, recordings:[...state.recordings.recordings,action.newRecording]}
+        recordings: [...state.recordings,action.newRecording] //deep copy of the array, new value is added at the ended of the array
       }
     default:
       return state;

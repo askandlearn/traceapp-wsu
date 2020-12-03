@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
   hrv: state.DATA['hrv'],
   connectedDevice: state.BLE['connectedDevice'],
   metrics: state.DATA['metrics'], //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
-  busy: state.BLE['busy']
+  busy: state.BLE['busy'],
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -48,7 +48,7 @@ const transactionID = 'monitor_metrics'
   const [isNewPAMP, setNewPAMP]=useState(isPAMP);
 
   var d = new Date();
-  setPlot=()=>{
+  const setPlot=()=>{
     // console.log("Started Timer");
    
     if(isNewData[0].y.length>15){
@@ -141,7 +141,7 @@ const config={
     }
   };
 
-  update = (_, { data, layout, config }, plotly) => {
+  const update = (_, { data, layout, config }, plotly) => {
     plotly.react(data, layout, config);
   };
     return (

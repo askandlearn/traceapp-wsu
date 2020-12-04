@@ -13,6 +13,7 @@ import HeightPicker from '../components/HeightPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import SettingsList from 'react-native-settings-list';
 
 
 
@@ -596,7 +597,7 @@ const checkLastName = (val) =>{
                  <Text style={styles.errorMessage}> Field cannot be empty </Text>
               </Animatable.View>)}
               {/* End of validation prompt */}
-              
+
         <Text style={styles.modalContentFLName}>Last Name:</Text>
             <TextInput
               placeholder='Name'
@@ -823,9 +824,9 @@ const checkLastName = (val) =>{
             </View>
           </Modal>
         <Text style={styles.content} onPress={()=> {setShowModalGender(!showModalGender)}}>{currentUser.gender}</Text>
-
           </View>
           <View style={styles.contentBorder} />
+       
           {/*
 
             wellness goals not in the api schema
@@ -944,8 +945,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
+
+    //alignItems: 'center',
+    //justifyContent: 'center',
     ...Platform.select({
       ios: {paddingTop: 50},
     }),
@@ -958,6 +960,7 @@ const styles = StyleSheet.create({
     //marginHorizontal: '5%',
     //paddingLeft: 45,
     flex: 1,
+   // backgroundColor: 'white',
   },
   contentBirthdate: {
     fontSize: 17,

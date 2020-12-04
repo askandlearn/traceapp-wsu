@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     color: '#202020',
     fontWeight: 'bold',
     fontSize: 30,
-    paddingBottom: 10,
+    paddingBottom: 20,
     textAlign: 'center',
   },
   valueTitle: {

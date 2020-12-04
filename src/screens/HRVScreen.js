@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     color: '#202020',
     fontWeight: 'bold',
     fontSize: 25,
-   // paddingBottom: 30,
+    paddingBottom: 20,
   },
   button: {
     alignItems: 'center',

@@ -183,79 +183,83 @@
 // export default Time;
 //const {useState, useEffect} = React;
 //Refactor
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 
 import {StyleSheet, Animated, Text, View, Button} from 'react-native';
-export default class Timer extends Component {
-    state = {
-        minutes: 1,
-        seconds: 0,
-        startDisabled: true,
-        stopDisabled: false
-    }
+const Timer = () => {
     
-    constructor( props ) {
+    const [minutes, setMinutes] = useState(0);
+    const [seconds, setSeconds] = useState(10);
+    const [startDisabled, setStartDisabled] = useState(true);
+    const [stopDisabled, setStopDisabled] = useState(false);
+    const[timer, setTimer] = useState(null);
+    var tempSeconds = seconds;
+    var tempMinutes = minutes;
+    var counter = 0;
+    
+   /* constructor( props ) {
       super( props );
 
       this.onButtonStart = this.onButtonStart.bind(this);
       this.onButtonStop = this.onButtonStop.bind(this);
       this.onButtonClear = this.onButtonClear.bind(this);
       this.start = this.start.bind(this);
-  }
+  }*/
 
-    start() {
+    const start = () => {
       let timer = setInterval(() => {
-            const { seconds, minutes } = this.state
+           
 
-            if (seconds > 0) {
-                this.setState(({ seconds }) => ({
-                    seconds: seconds - 1
-                }))
+            if (tempSeconds > 0) {
+                console.log("thing");
+                tempSeconds = tempSeconds - 1
+                setSeconds(tempSeconds);             
             }
-            if (seconds === 0) {
-                if (minutes === 0) {
+            if (tempSeconds === 0) {
+                if (tempMinutes === 0) {
                     clearInterval(timer)
                 } else {
-                    this.setState(({ minutes }) => ({
-                        minutes: minutes - 1,
-                        seconds: 59
-                    }))
+                    tempMinutes = tempMinutes - 1;
+                    tempSeconds =59
+                    setMinutes(tempMinutes);
+                    setSeconds(tempSeconds);
                 }
             } 
+            counter = counter + 1;
+            console.log("thing", seconds, minutes, counter);
         }, 1000);
-        this.setState({timer});
+        setTimer(timer);
     }
 
-    onButtonStart() {
-      this.start();
-      this.setState({startDisabled: true, stopDisabled: false});
-  }
-  onButtonStop() {
-      clearInterval(this.state.timer);
-      this.setState({startDisabled: false, stopDisabled: true});
-  }
-  onButtonClear() {
-      this.setState({
-        minutes: 1,
-        seconds: 0,
-      });
-  }
-
-    render() {
-        const { minutes, seconds } = this.state
-        return (
-            <View>
-              <Text style={{justifyContent:'center', alignSelf:'center'}}>
-                { minutes === 0 && seconds === 0
-                    ? <Text>Busted!</Text>
-                    : <Text>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
-                }
-              </Text>
-              <Button title="Start"  onPress={()=>this.onButtonStart()}></Button>
-                    <Button title="Stop" onPress={()=>this.onButtonStop()}></Button>
-                    <Button title="Clear" onPress={()=>this.onButtonClear()}></Button>
-            </View>
-        )
+    const onButtonStart = () => {
+      start();
+      setStartDisabled(true);
+      setStopDisabled(false);
     }
+
+    const onButtonStop = () => {
+        clearInterval(timer);
+        setStartDisabled(false);
+        setStopDisabled(true);    }
+  
+    const onButtonClear = () => {
+        setMinutes(3);
+        setSeconds(0);
+    }
+
+    return (
+        <View>
+            <Text style={{justifyContent:'center', alignSelf:'center'}}>
+            { minutes === 0 && seconds === 0
+                ? <Text>Busted!</Text>
+                : <Text>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
+            }
+            </Text>
+            <Button title="Start"  onPress={()=>onButtonStart()}></Button>
+                <Button title="Stop" onPress={()=>onButtonStop()}></Button>
+                <Button title="Clear" onPress={()=>onButtonClear()}></Button>
+        </View>
+    )
 }
 
+export default Timer;

@@ -152,9 +152,8 @@ class StopWatch extends Component {
     state = {
         timer: null,
         counter: '00',
-        miliseconds: '00',
-        minutes:'00',
-        hours:'00',
+        //miliseconds: '00',
+        minute: 0, second: 0,
         startDisabled: true,
         stopDisabled: false
     }
@@ -172,36 +171,17 @@ class StopWatch extends Component {
     start() {
         var self = this;
         let timer = setInterval(() => {
-            var num = (Number(this.state.miliseconds) + 1).toString(),
-                count = this.state.counter,
-                minute=this.state.minutes,
-                hour=this.state.hours;
-            //To be tested below 
-            if( Number(this.state.miliseconds) == 59 ) { 
-                count = (Number(this.state.counter) + 1).toString();
-                num = '00';
-            }
-            else if(Number(this.state.counter) == 5 ){
-              minute= (Number(this.state.minutes) + 1).toString();
-              num = '00';
-              count='00';
-            }
-            else if (Number(this.state.minutes) == 3 ){
-              hour= (Number(this.state.hours) + 1).toString();
-              minute='00';
-              num = '00';
-              count='00';
-            }
-            self.setState({
-                counter: count.length == 1 ? '0'+count : count,
-                miliseconds: num.length == 1 ? '0'+num : num,
-                minutes: minute.length==1?'0'+minute : minute,
-                hours: hour.length==1?'0'+hour : hour,
-
-            });
-        }, 0);
+          this.setState((state, props) => {
+            return {
+              minute: state.second == 59 ? state.minute + 1 : state.minute,
+              second: state.second == 59 ? 0 : state.second + 1
+            };
+          });
+        }, 1000);
         this.setState({timer});
-    }
+      }
+        
+    
     onButtonStart() {
         this.start();
         this.setState({startDisabled: true, stopDisabled: false});
@@ -214,9 +194,8 @@ class StopWatch extends Component {
         this.setState({
             timer: null,
             counter: '00',
-            miliseconds: '00',
-            minutes:'00',
-            hours: '00'
+            second: '00',
+            minute:'00'
         });
     }
     render() {
@@ -224,8 +203,10 @@ class StopWatch extends Component {
             <View>
 
                  <Text style={{justifyContent:'center', alignSelf:'center'}}>
-                   {this.state.hours}:{this.state.minutes}:
-                   {this.state.counter}</Text>
+                 {this.state.minute < 10 ? "0" + this.state.minute : this.state.minute}:{this
+          .state.second < 10
+          ? "0" + this.state.second
+        : this.state.second}</Text>
                 
                     <Button title="Start"  onPress={()=>this.onButtonStart()}></Button>
                     <Button title="Stop" onPress={()=>this.onButtonStop()}></Button>

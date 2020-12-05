@@ -37,7 +37,7 @@ const HRVScreen = ({navigation}, props) => {
         <Header openDrawer={navigation.openDrawer} />
         <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
         <View>{check && <SensorAlert />}</View>
-        {/* <Timer /> */}
+        <Timer />
    
         {/* <Swiper
           style={styles.wrapper}

@@ -75,7 +75,7 @@ import {
 } from 'react-native';
 
 import Header from '../components/Header-Component';
-import Timer from '../components/HRVTimer';
+import Timer from '../components/Timer';
 import Animate from '../components/HRVSurvey';
 import SensorAlert from '../components/ConnectToSensorAlert';
 import Swiper from 'react-native-swiper';
@@ -99,7 +99,7 @@ const ASTScreen = ({navigation}, props) => {
         <Header openDrawer={navigation.openDrawer}></Header>
         <Text style={styles.title}>Active StandUp Test (AST)</Text>
         <View>{check && <SensorAlert />}</View>
-        {/* <Timer /> */}
+        <Timer />
    
         <View>
         <Modal

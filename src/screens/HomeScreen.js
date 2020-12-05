@@ -111,10 +111,12 @@ const HomeScreen = ({navigation}) => {
       style={styles.container}>
       <KeyboardAvoidingScrollView>
         <Header openDrawer={navigation.openDrawer} />
+        {/*}
         <Image
           style={styles.backgroundImage}
           source={require('../images/TraceBio-Black.png')}
         />
+  */}
         <Text style={styles.title}>Health Dashboard</Text>
         <DropDownPicker
           items={[
@@ -283,12 +285,12 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginTop: 50,
+    //marginHorizontal: '10%',
+    //marginTop: 50,
     color: '#202020',
     fontWeight: 'bold',
     fontSize: 30,
-    paddingBottom: 30,
+    paddingBottom: 20,
   },
   button: {
     //alignSelf: 'center',

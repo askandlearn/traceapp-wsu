@@ -10,39 +10,52 @@ import {
 } from 'react-native';
 
 const Header = ({openDrawer}) => (
+  <View style={{paddingBottom: 20}}>
   <View style={styles.header}>
-    <TouchableOpacity onPress={() => openDrawer()}>
-      <Icon name="menu" size={30} paddingVertical={50}/>
+    <TouchableOpacity style={{flexDirection: 'row'}}
+     onPress={() => openDrawer()}>
+      <Icon name="menu" size={35} paddingVertical={50} color='white'/>
+      <Image
+          style={styles.backgroundImage}
+          source={require('../images/TraceBio-White.png')}
+        />
     </TouchableOpacity>
     <Text style={{width: 45}} />
   </View>
+  </View>
+  
 );
 
 const styles = StyleSheet.create({
   header: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+   //justifyContent: 'space-between',
+    alignItems: 'flex-start',
     paddingHorizontal: 20,
     padding: Platform.OS === 'ios' ? 20 : 10,
+    backgroundColor: '#242852',
+
   },
   backgroundImage: {
     alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 70,
-    width: '60%',
-    height: 100,
+   // justifyContent: 'space-between',
+   // marginTop: 30,
+    //marginBottom: 70,
+    width: '20%',
+    height: 35,
     resizeMode: 'stretch',
+    paddingLeft: 120,
+    marginLeft: 90,
   },
-  title: {
-    alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    color: '#202020',
+  text:{
+    color: 'white',
     fontWeight: 'bold',
-    fontSize: 30,
-  },
+    fontSize: 18,
+    alignSelf: 'center',
+    marginLeft: 10,
+  }
+
 });
 
 export default Header;

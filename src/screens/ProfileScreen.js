@@ -1,16 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  Button,
-  KeyboardAvoidingView,
-  Platform,
-  Modal,
-} from 'react-native';
+import {View,Text,StyleSheet,TouchableOpacity,Image,TextInput,Button,KeyboardAvoidingView,Platform,Modal,} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {useAuth} from '../hooks/useAuth';
@@ -24,6 +13,7 @@ import HeightPicker from '../components/HeightPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import SettingsList from 'react-native-settings-list';
 
 
 
@@ -70,14 +60,15 @@ const ProfileScreen = (props) => {
   user.birthdate = profileDate;  
   
   
-//Create instance of current user
-const [currentUser, setCurrentUser] = useState(user);
+  //Create instance of current user
+  const [currentUser, setCurrentUser] = useState(user);
 
 
   //Create instance of state change variables
   const [changeText, setChangeText] = useState('Edit');
   const [isEditable, editEditable] = useState(true);
   const [showDate, setShowDate] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
 
 //Create validation variables; default value: false
@@ -87,6 +78,8 @@ const [currentUser, setCurrentUser] = useState(user);
     validZipLength: true,
     validBirthdate: true,
   })
+
+
 
  
   //Initialize avatar with the user initials 
@@ -499,6 +492,20 @@ const checkLastName = (val) =>{
     //Close modal
     setShowModalGender(false);
   }
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         UPDATE STATE OF DRAWER (Gender ddp)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  const updateGenderDrawerState = (bool) =>{
+
+     /*Accepts a boolean value passed from the 
+    drop down picker that reflects the state
+    of the drawer (open/closed) */
+
+    setDrawerOpen(bool);
+
+
+
+  }
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        SAVE CHANGES
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -533,6 +540,9 @@ const checkLastName = (val) =>{
     */
   };
 
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    USER INTERFACE
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
   return (
     <View
@@ -582,14 +592,12 @@ const checkLastName = (val) =>{
               onChangeText={(first_name) => setCurrentUser({...currentUser, first_name: first_name})}
               onEndEditing={(e) => checkFirstName(e.nativeEvent.text)}/>
                {/* Insert validation prompt */}
-        {checkValidations.validFirstName ? false : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMessage}>
-              Field cannot be empty
-            </Text>
-          </Animatable.View>
-        )}
-        {/* End of validation prompt */}
+               {checkValidations.validFirstName ? false : (
+               <Animatable.View animation="fadeInLeft" duration={500}>
+                 <Text style={styles.errorMessage}> Field cannot be empty </Text>
+              </Animatable.View>)}
+              {/* End of validation prompt */}
+
         <Text style={styles.modalContentFLName}>Last Name:</Text>
             <TextInput
               placeholder='Name'
@@ -805,10 +813,10 @@ const checkLastName = (val) =>{
             justifyContent: 'flex-start',
           }}
           dropDownStyle={{backgroundColor: '#fafafa'}}
-          onChangeItem={(item) =>
-            setCurrentUser({...currentUser, gender: item.value})
-          }/>
-              <View style={{paddingTop: 150}}/>
+          onOpen={()=>updateGenderDrawerState(true)}
+          onClose={()=>updateGenderDrawerState(false)}
+          onChangeItem={(item) => setCurrentUser({...currentUser, gender: item.value})}/>
+              <View style={{paddingTop: drawerOpen ? 150 : 15}}/>
               <Text 
               style={styles.buttonContainerGender}
               onPress={()=> {changeModalViewGender()}}>Submit</Text>
@@ -816,9 +824,9 @@ const checkLastName = (val) =>{
             </View>
           </Modal>
         <Text style={styles.content} onPress={()=> {setShowModalGender(!showModalGender)}}>{currentUser.gender}</Text>
-
           </View>
           <View style={styles.contentBorder} />
+       
           {/*
 
             wellness goals not in the api schema
@@ -848,59 +856,10 @@ const checkLastName = (val) =>{
   );
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
-  },
-  backgroundImage: {
-    alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 70,
-    width: '60%',
-    height: 100,
-    resizeMode: 'stretch',
-  },
-  inputFields: {
-    backgroundColor: '#FFFFFF',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    padding: 10,
-    fontWeight: 'bold',
-    opacity: 0.4,
-    borderRadius: 3,
-  },
-  title: {
-    alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    color: '#202020',
-    fontWeight: 'bold',
-    fontSize: 30,
-  },
-  button: {
-    //alignSelf: 'center',
-    //width: '60%',
-    alignItems: 'center',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: '#ff0000',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-  header: {
-    //backgroundColor: '#ff0000',
-    //height: 200
-  },
   avatar: {
     flex: 1,
     justifyContent: 'center',
@@ -923,153 +882,27 @@ const styles = StyleSheet.create({
     textShadowColor: '#656885',
     textShadowRadius: 50,
   },
+  backgroundImage: {
+    alignSelf: 'center',
+    marginTop: 30,
+    marginBottom: 70,
+    width: '60%',
+    height: 100,
+    resizeMode: 'stretch',
+  },
   body: {
     //marginTop: 100,
     alignSelf: 'center',
   },
-  name: {
-    fontSize: 30,
-    fontWeight: '600',
-    //paddingTop: 5,
-    paddingBottom: 25,
-    alignSelf: 'center',
-    color:'black',
-    fontStyle: 'italic',
-  },
-  contentBirthdate: {
-    fontSize: 17,
-    alignSelf: 'center',
-    textAlign: 'right',
-    color: 'black',
-    //margin: 10,
-   marginHorizontal: '10%',
-    //marginVertical: 5,
-    flex: 1,
-  },
-  content:{
-    fontSize: 17,
-     alignSelf: 'center',
-     textAlign: 'right',
-     color: 'black',
-    //marginHorizontal: '5%',
-    //paddingLeft: 45,
-    flex: 1,
-  },
-  contentEmail:{
-    fontSize: 17,
-     alignSelf: 'center',
-     textAlign: 'right',
-     color: 'black',
-    //marginHorizontal: '5%',
-    //paddingLeft: 45,
-    flex: 1,
-  },
-  contentTitle: {
-    margin: 10,
-    fontSize: 17,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    alignSelf: 'center',
-  },
-  contentTitleGender: {
-    margin: 10,
-    fontSize: 17,
-    fontWeight: 'bold',
-    textAlign: 'left',
-
-  },
-  horizontal: {
-    flexDirection: 'row',
-    alignContent: 'center',
-  },
-  save: {
-    //come back to style the save button
-    //marginTop: 10,
+  button: {
+    //alignSelf: 'center',
+    //width: '60%',
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
     padding: 10,
     borderRadius: 20,
     backgroundColor: '#ff0000',
-  },
-  profileCategory: {
-    fontSize: 15,
-    //fontWeight: 'bold',
-    paddingBottom: 10,
-    color: 'black',
-
-  },
-  contentBorder: {
-    borderBottomColor: 'gainsboro', 
-    borderBottomWidth: 1,
-    width: 350,
-    //paddingHorizontal: .6
-  },
-  modalView:{
-    flex: 1,
-    //alignItems: 'center',
-    //justifyContent: 'center',
-    backgroundColor: '#ffffff',
-    padding: 10,
-    //paddingVertical: 10,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: 'gainsboro',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    margin: 65,
-    marginTop: 50,
-    marginBottom: 50,
-    //height: '30%',
-    
-  },
-  modalContent: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 60
-    //padding: 10,
-    //marginTop:50,
-  },
-  modalContentTitle:{
-    fontWeight: 'bold',
-    fontSize: 22,
-    textAlign: 'center',
-    color: 'black',
-    paddingBottom: 20,
-    paddingTop: 5,
-    letterSpacing: 2.5,
-  },
-  modalContentFLName:{
-    //fontWeight: 'bold',
-    fontSize: 15,
-    textAlign: 'left',
-    color: 'black',
-    paddingBottom: 5,
-    paddingTop: 25,
-    //letterSpacing: 2.5,
-  },
-  textInput: {
-    marginHorizontal: '10%',
-    marginVertical: 5,
-    width: '80%',
-    height: 50,
-    padding: 13,
-    fontWeight: 'bold',
-    borderColor: 'rgba(0, 0, 0, .4)',
-    borderWidth: 1,
-    color: 'rgba(0, 0, 0, 1)',
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    shadowColor: '#000000',
-    shadowOffset: {width: 1, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
-    borderRadius: 20,
   },
   buttonContainer:{
     alignItems: 'center',
@@ -1104,15 +937,188 @@ const styles = StyleSheet.create({
     elevation: 1,
     color: 'white',
     fontWeight: 'bold',
-   
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+
+    //alignItems: 'center',
+    //justifyContent: 'center',
+    ...Platform.select({
+      ios: {paddingTop: 50},
+    }),
+  },
+  content:{
+    fontSize: 17,
+     alignSelf: 'center',
+     textAlign: 'right',
+     color: 'black',
+    //marginHorizontal: '5%',
+    //paddingLeft: 45,
+    flex: 1,
+   // backgroundColor: 'white',
+  },
+  contentBirthdate: {
+    fontSize: 17,
+    alignSelf: 'center',
+    textAlign: 'right',
+    color: 'black',
+    //margin: 10,
+   marginHorizontal: '10%',
+    //marginVertical: 5,
+    flex: 1,
+  },
+  contentBorder: {
+    borderBottomColor: 'gainsboro', 
+    borderBottomWidth: 1,
+    width: 350,
+    //paddingHorizontal: .6
+  },
+  contentEmail:{
+    fontSize: 17,
+     alignSelf: 'center',
+     textAlign: 'right',
+     color: 'black',
+    //marginHorizontal: '5%',
+    //paddingLeft: 45,
+    flex: 1,
+  },
+  contentTitle: {
+    margin: 10,
+    fontSize: 17,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignSelf: 'center',
+  },
+  contentTitleGender: {
+    margin: 10,
+    fontSize: 17,
+    fontWeight: 'bold',
+    textAlign: 'left',
+
   },
   errorMessage: {
     marginHorizontal: '10%',
     position: 'relative',
     color: 'red',
   },
+  horizontal: {
+    flexDirection: 'row',
+    alignContent: 'center',
+  },
+  inputFields: {
+    backgroundColor: '#FFFFFF',
+    marginHorizontal: '10%',
+    marginVertical: 10,
+    padding: 10,
+    fontWeight: 'bold',
+    opacity: 0.4,
+    borderRadius: 3,
+  },
+  modalContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 60
+    //padding: 10,
+    //marginTop:50,
+  },
+  modalContentFLName:{
+    //fontWeight: 'bold',
+    fontSize: 15,
+    textAlign: 'left',
+    color: 'black',
+    paddingBottom: 5,
+    paddingTop: 25,
+    //letterSpacing: 2.5,
+  },
+  modalContentTitle:{
+    fontWeight: 'bold',
+    fontSize: 22,
+    textAlign: 'center',
+    color: 'black',
+    paddingBottom: 20,
+    paddingTop: 5,
+    letterSpacing: 2.5,
+  },
+  modalView:{
+    flex: 1,
+    //alignItems: 'center',
+    //justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    padding: 10,
+    //paddingVertical: 10,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: 'gainsboro',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    margin: 65,
+    marginTop: 50,
+    marginBottom: 50,
+    //height: '30%',
+    
+  },
+  name: {
+    fontSize: 30,
+    fontWeight: '600',
+    //paddingTop: 5,
+    paddingBottom: 25,
+    alignSelf: 'center',
+    color:'black',
+    fontStyle: 'italic',
+  },
+  profileCategory: {
+    fontSize: 15,
+    //fontWeight: 'bold',
+    paddingBottom: 10,
+    color: 'black',
 
-
+  },
+  save: {
+    //come back to style the save button
+    //marginTop: 10,
+    alignItems: 'center',
+    marginHorizontal: '10%',
+    marginVertical: 10,
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: '#ff0000',
+  },
+  textInput: {
+    marginHorizontal: '10%',
+    marginVertical: 5,
+    width: '80%',
+    height: 50,
+    padding: 13,
+    fontWeight: 'bold',
+    borderColor: 'rgba(0, 0, 0, .4)',
+    borderWidth: 1,
+    color: 'rgba(0, 0, 0, 1)',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    shadowColor: '#000000',
+    shadowOffset: {width: 1, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    borderRadius: 20,
+  },
+  title: {
+    alignSelf: 'center',
+    marginHorizontal: '10%',
+    marginVertical: 10,
+    color: '#202020',
+    fontWeight: 'bold',
+    fontSize: 30,
+  },
 });
 
 export default ProfileScreen;

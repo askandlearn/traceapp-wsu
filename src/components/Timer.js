@@ -188,14 +188,12 @@ import React, { Component, useState } from 'react'
 import {StyleSheet, Animated, Text, View, Button} from 'react-native';
 const Timer = () => {
     
-    const [minutes, setMinutes] = useState(0);
-    const [seconds, setSeconds] = useState(10);
+    const [minutes, setMinutes] = useState(3);
+    const [seconds, setSeconds] = useState(0);
     const [startDisabled, setStartDisabled] = useState(true);
     const [stopDisabled, setStopDisabled] = useState(false);
     const[timer, setTimer] = useState(null);
-    var tempSeconds = seconds;
-    var tempMinutes = minutes;
-    var counter = 0;
+
     
    /* constructor( props ) {
       super( props );
@@ -207,6 +205,8 @@ const Timer = () => {
   }*/
 
     const start = () => {
+      var tempSeconds = seconds;
+      var tempMinutes = minutes;
       let timer = setInterval(() => {
            
 
@@ -220,13 +220,11 @@ const Timer = () => {
                     clearInterval(timer)
                 } else {
                     tempMinutes = tempMinutes - 1;
-                    tempSeconds =59
+                    tempSeconds = 59;
                     setMinutes(tempMinutes);
                     setSeconds(tempSeconds);
                 }
             } 
-            counter = counter + 1;
-            console.log("thing", seconds, minutes, counter);
         }, 1000);
         setTimer(timer);
     }
@@ -240,12 +238,10 @@ const Timer = () => {
     const onButtonStop = () => {
         clearInterval(timer);
         setStartDisabled(false);
-        setStopDisabled(true);    }
-  
-    const onButtonClear = () => {
+        setStopDisabled(true);    
         setMinutes(3);
         setSeconds(0);
-    }
+      }
 
     return (
         <View>
@@ -256,8 +252,7 @@ const Timer = () => {
             }
             </Text>
             <Button title="Start"  onPress={()=>onButtonStart()}></Button>
-                <Button title="Stop" onPress={()=>onButtonStop()}></Button>
-                <Button title="Clear" onPress={()=>onButtonClear()}></Button>
+            <Button title="Stop" onPress={()=>onButtonStop()}></Button>
         </View>
     )
 }

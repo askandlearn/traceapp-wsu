@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     padding: Platform.OS === 'ios' ? 20 : 10,
-    backgroundColor: '#ff0000'
+    // backgroundColor: '#ff0000'
+    backgroundColor: '#000030'
   },
   backgroundImage: {
     alignSelf: 'center',

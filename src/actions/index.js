@@ -10,7 +10,9 @@ import {
     updatedPNN50,
     updatedHRV,
     addRecording,  
-    setBusy} from './actionCreators';
+    setBusy,
+    addSync,
+    removeSync} from './actionCreators';
 
 var RNFS = require('react-native-fs');
 
@@ -100,24 +102,28 @@ export const connectDevice = (device) => {
         device.connect().then((device) => {
             // dispatch(changeStatus("Discovering"));
             let characteristics = device.discoverAllServicesAndCharacteristics()
-            console.log("characteristics:", characteristics); //debugging purposes
+            // console.log("characteristics:", characteristics); //debugging purposes
             return characteristics;
         }).then((device) => {
             // dispatch(changeStatus("Getting services"));
-            console.log('device',device); //debugging purposes
+            // console.log('device',device); //debugging purposes
             dispatch(connectedDevice(device))
             dispatch(changeStatus('Connected'))
             return device
         }, (error) => {
-            dispatch(changeStatus(error.message))
+            // dispatch(changeStatus(error.message))
             console.log("SCAN", error.message);
         })
     }
 }
 /**
- * Get metrics
+ * Get metrics of a connected device
+ *
+ * @param {number=} timeout a timeout
+ * @param {string} [label=NONE] test label that is calling the function
+ * @return {void} monitors until stopTransaction() is called
  */
-export const updateMetric = (timeout) => {
+export const updateMetric = (timeout, label = 'NONE') => {
     return (dispatch, getState, DeviceManager) => {
 
         //reset previous values from last call
@@ -141,15 +147,17 @@ export const updateMetric = (timeout) => {
             ".txt"
           );
         // console.log('filename',filename);    //debugging purposes
-
-        var path = RNFS.DocumentDirectoryPath + '/' + filename;
+        var path = RNFS.DocumentDirectoryPath + '/' + filename; //this path will be passed to write file function
         // var path = RNFS.DocumentDirectoryPath + '/test.txt';    //testing purposes
-
         // console.log('path:',path);   //debugging purposes
-
-        //set deviceID
+        //set deviceID, default ID is the prototype we are working with
+        //set variable to add as a current recording
+        const recording = {
+            start_time: curDate.toISOString(), 
+            label: label, 
+            file: filename
+        }
         deviceID = state.BLE.connectedDevice.id ? state.BLE.connectedDevice.id : deviceID
-        
         DeviceManager.isDeviceConnected(deviceID).then(val => {
             if(val){
                 // dispatch(changeStatus('Returning services'))
@@ -170,7 +178,7 @@ export const updateMetric = (timeout) => {
             dispatch(setBusy(true))
 
             //save the text file name
-            dispatch(addRecording(filename))
+            dispatch(addRecording(recording))
 
             var init = 0
             var totalT = 0
@@ -241,8 +249,8 @@ export const updateMetric = (timeout) => {
                     // Do these updates only at the beginning of each beat
 
                     //hrv and pnn
-                    var hrv = 0
-                    var pnn50 = 0
+                    var hrv
+                    var pnn50
                     if (values_p.digOut_p == 0 && digOut == 1) {
                         console.log(parseFloat((totalT - prevDispatch).toFixed(3)))
                         hrv = ibi - values_p.ibi_p;
@@ -256,6 +264,7 @@ export const updateMetric = (timeout) => {
                         const reducer = (accumulator, currentValue) => accumulator + (currentValue >=50);
                         pnn50 = values_p.hrv_fifo.reduce(reducer, 0)/values_p.hrv_fifo.length;
                         //   console.log('pnn50',pnn50.toFixed(3))
+                        // 1)
                         // dispatch(updatedHRV(hrv))
                         // dispatch(updatedPNN50(pnn50.toFixed(3)))
                     }
@@ -279,18 +288,24 @@ export const updateMetric = (timeout) => {
                     if (parseFloat((totalT - prevDispatch).toFixed(3)) >= 0.500 ){
                         console.log('dispatched')
                         prevDispatch = totalT.toFixed(3)   //update prevDispatch to current total time
-
-                        batch(() => {
-                            dispatch(updatedMetrics(stats))
-                            dispatch(updatedHRV(hrv))
-                            dispatch(updatedPNN50(pnn50.toFixed(3)))
-                        })
-
+                        // 1)
                         // dispatch(updatedMetrics(stats))
+
+                        // 2)
+                        if(hrv && pnn50){
+                            batch(() => {
+                                dispatch(updatedMetrics(stats))
+                                dispatch(updatedHRV(hrv))
+                                dispatch(updatedPNN50(pnn50.toFixed(3)))
+                            })
+                        }
+                        else{
+                            dispatch(updatedMetrics(stats))
+                        }
                     }
 
                     //write to a text file
-                    // writeToFile(path, stats)
+                    writeToFile(path, stats)
                 }
             }, transactionID)
 
@@ -309,6 +324,7 @@ export const updateMetric = (timeout) => {
  */
 export const stopTransaction = (ID) => {
     return (dispatch, getState, DeviceManager) => {
+
         DeviceManager.cancelTransaction(ID)
         dispatch(setBusy(false))
     }
@@ -326,7 +342,6 @@ export const onDisconnect = () => {
 
             //stop any ongoing test
             dispatch(stopTransaction(transactionID))
-
             DeviceManager.onStateChange((state) => {
                 if (state === 'PoweredOn') {
                     console.log('Attempting to reconnect')
@@ -338,7 +353,6 @@ export const onDisconnect = () => {
                 }
                 else{
                     console.log('Bluetooth is not on')
-
                 }
             }, true)
         })
@@ -347,7 +361,6 @@ export const onDisconnect = () => {
 //disconnect device
 export const disconnectDevice = () => {
     return (dispatch, getState, DeviceManager) => {
-        
         DeviceManager.cancelDeviceConnection(deviceID).then(() => {
             DeviceManager.stopDeviceScan(); //stops the device disconnect listener
         }).catch(err => {
@@ -360,7 +373,6 @@ export const disconnectDevice = () => {
 //stop scan
 export const stopScan = () => {
     return (dispatch, getState, DeviceManager) => {
-        
         DeviceManager.stopDeviceScan()
         dispatch(changeStatus('disconnected')) //updates status and isConnected. 
     }
@@ -387,6 +399,13 @@ const reset = () => {
 }
 
 //reference: https://github.com/itinance/react-native-fs#Examples
+/**
+ * Write/Append to text file
+ *
+ * @param {string} path absolute path to a text file
+ * @param {string[]} metrics array containing the metrics
+ * @return {void} writes/appends to text file
+ */
 const writeToFile = (path,metrics) => {
     RNFS.exists(path).then((exists) => {
         if(exists){

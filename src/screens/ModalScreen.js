@@ -23,7 +23,7 @@ const data = [
 
 const ModalScreen = ({ navigation, route }) => {
     const {file} = route.params;
-    const [content,setContent] = useState('')
+    const [content,setContent] = useState([])
     const [body, setBody] = useState(data)
 
     var path = RNFS.DocumentDirectoryPath + '/' + file;
@@ -33,7 +33,9 @@ const ModalScreen = ({ navigation, route }) => {
         console.log('PATHFILE:',path)
         RNFS.readFile(path).then(res => {
           console.log("FILE READ SUCCESSFULLY")
-          setContent(res)
+          let arr = res.split('\n')
+          arr.splice(0,1)
+          setContent(arr)
         }).catch(err => {
           console.log(err.message,err.code)
         })
@@ -44,8 +46,8 @@ const ModalScreen = ({ navigation, route }) => {
     }
 
     useEffect(() => {
-        // read();
-        console.log(route.params.file)
+        read();
+        // console.log(route.params.file)
         return () => {
         }
     }, [])
@@ -58,8 +60,12 @@ const ModalScreen = ({ navigation, route }) => {
     }
 
     const renderBody = (prop) => {
+        const body = prop.item
+        let split = body.split(',')
+
+
         return(
-             <Text style={styles.bodyText}>{prop.item}</Text>
+             <Text style={styles.bodyText}>{parseFloat(split[0]).toFixed(2)}, {split[1]}, {split[2]}, {split[3]}, {split[4]}, {split[5]}, {split[5]}, {split[6]}, {split[7]}, {split[8]}, {split[9]}</Text>
         )
     }
 
@@ -74,8 +80,8 @@ const ModalScreen = ({ navigation, route }) => {
             />
         </View>
         <View style={styles.body}>
-            <FlatList
-                data={data}
+        <FlatList
+                data={content}
                 renderItem={renderBody}
                 keyExtractor={item => item}
             />
@@ -105,7 +111,7 @@ const styles = StyleSheet.create({
     body: {
         borderWidth: 0,
         borderColor: 'black',
-        height: '100%'
+        height: '100%',
     },
     bodyText: {
         padding: 2

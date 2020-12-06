@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, TouchableOpacity,Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity,Text, Dimensions, Linking } from 'react-native';
 import Plotly from 'react-native-plotly';
 import { onDisconnect, stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
@@ -20,6 +20,9 @@ const mapDispatchToProps = dispatch => ({
 const transactionID = 'monitor_metrics'
 
 ASTPlot=(props)=> {
+
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
 
   const [isData, setData]= useState([
     {
@@ -85,11 +88,11 @@ update = (_, { data, layout, config, }, plotly) => {
 const layout={
   title: 'HRV vs Time',
   showlegend:true,
-  
+  width: windowWidth + 18,
 }
 const config={
   displaylogo:false,
-  responsive:true
+  responsive:true,
 }
     return (     
       <View style={styles.container}>

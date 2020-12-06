@@ -11,6 +11,7 @@ import {
   Modal,
   Dimensions,
   Platform,
+  TextInput,
 } from 'react-native';
 import Header from '../components/Header-Component';
 import RTTimer from '../components/RTTimer';
@@ -27,6 +28,7 @@ import {UserContext} from '../contexts/UserContext';
 import axios from 'axios';
 import Toast from 'react-native-simple-toast';
 import { usePrevious } from '../hooks/usePrevious';
+import ModalComponent from '../components/Modal-Component';
 
 //require module
 var RNFS = require('react-native-fs');
@@ -48,7 +50,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateMetric: () => dispatch(updateMetric()),
+  updateMetric: (timeout, label) => dispatch(updateMetric(timeout, label)),
   stopTransaction: ID => dispatch(stopTransaction(ID)),
 })
 
@@ -71,81 +73,6 @@ const RealTimeScreen = (props) => {
 
   const user = useContext(UserContext)
   const [content,setContent] = useState()
-  var path = RNFS.DocumentDirectoryPath + '/test.txt';
-
-  const example = {
-    "start_time": "2020-11-02T14:50:05Z",
-    "label": "OTC",
-    "description": "OTC 3X with BP.  1st one captured transient: 1: 95/57/42, 121/46/81, 99/55/54",
-    "comments": "",
-    "highlight": false,
-    "device_type": "HRM-AA",
-    "device_sn": "2",
-    "device_firmware": "1.02",
-    "app_version": "1.12",
-    "app_hardware": "Moto G5S",
-    "app_os": "Android",
-    "app_os_version": "9.0"
-  }
-  //reference: https://stackoverflow.com/questions/56235286/react-native-post-form-data-with-object-and-file-in-it-using-axios
-  //reference: https://stackoverflow.com/questions/61585437/how-to-send-post-request-with-files-in-react-native-android
-  //file type: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
-
-  const upload = async () => {
-    var datafile = {
-      uri: 'file://' + path,  //for android 'file://' needs to be appended to the uri. not sure if this is the same case for iOS. wiil need to test
-      type: 'text/plain',
-      name: 'test.txt'
-    }
-    // console.log('In upload...')
-    const formData = new FormData()
-    formData.append("start_time","2020-11-02T14:50:05Z")
-    formData.append("label","OTC")
-    formData.append("description","OTC 3X with BP.  1st one captured transient: 1: 95/57/42, 121/46/81, 99/55/54")
-    formData.append('datafile',datafile)
-    formData.append("comments","")
-    formData.append("highlight",false)
-    formData.append("device_type","HRM-AA")
-    formData.append("device_sn","2")
-    formData.append("device_firmware","1.02")
-    formData.append("app_version","1.12")
-    formData.append("app_hardware","Moto G5S")
-    formData.append("app_os","Android")
-    formData.append("app_os_version","9.0")
-
-    //debugging purposes
-    // console.log('FORMDATA object appended to')
-    // console.log(formData)
-
-    //axios request
-    try {
-      const response = await axios({
-        url: 'http://134.209.76.190:8000/api/Recording',
-        method: 'POST',
-        data: formData,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-          'Authorization':`Token ${user.token}`
-        }
-      }).catch(err => {
-        console.log('error',err.code)
-        console.log('error',err.message)
-      })
-      
-      //if there is a network error, response will be null. in this case, it will be caught and the application won't crash
-      //if response is successful, the accepted status is 201 - CREATED
-      if(response.status == 201){
-        console.log('SUCCESS',response.status)
-        // console.log(response)
-      }
-      else{
-        console.log('FAILURE',response.status)
-      }
-    } catch (error) {
-      console.log('TRY..CATCH',error.message)
-    }
-  }
 
   const read = () => {
     //read the file
@@ -160,28 +87,30 @@ const RealTimeScreen = (props) => {
 
   var interval;
   const onStart = async () => {
-    props.updateMetric();
+    props.updateMetric(undefined, 'RT');
 
   }
 
   const onStop = async () => {
     console.log('Cancelling transaction...')
     props.stopTransaction(transactionID);
-  
+    setVisible(true)
   }
+  const [visible, setVisible] = useState(false)
 
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}>
         <Header openDrawer={props.navigation.openDrawer}/>
+        <ModalComponent visible={visible} setVisible={setVisible}/>
         <ScrollView>
         <Text style={styles.title}>Real-Time Data</Text>
         <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
-            <Text style={styles.buttonText}>Start</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => onStop()}>
-            <Text style={styles.buttonText}>Stop</Text>
-          </TouchableOpacity> 
+          <Text style={styles.buttonText}>Start</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || !props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy}>
+          <Text style={styles.buttonText}>Stop</Text>
+        </TouchableOpacity> 
         <View testID="Data" style={styles.wrapper}>
           {/* <Text style={styles.slideTitles}>Biometric Data by Numbers</Text> */}
           <RTData></RTData>

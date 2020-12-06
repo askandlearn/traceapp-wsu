@@ -4,7 +4,7 @@ const initialState = {
   connectedDevice: {},
   isConnected: false,
   busy: false,
-  recordings: []  //string array to hold recordings
+  currRecording: {start_time: '', label: '', file: ''}  //string to hold current recording
 }
 
 const bleReducer = (state = initialState, action) => {
@@ -37,7 +37,12 @@ const bleReducer = (state = initialState, action) => {
     case 'ADD_RECORDING':
       return{
         ...state,
-        recordings: [...state.recordings,action.newRecording] //deep copy of the array, new value is added at the ended of the array
+        currRecording: action.newRecording
+      }
+    case 'REMOVE_RECORDING':
+      return{
+        ...state,
+        currRecording: ''
       }
     default:
       return state;

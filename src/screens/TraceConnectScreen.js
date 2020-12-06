@@ -64,7 +64,7 @@ const TraceConnectScreen = props => {
         title="On Connect"
         style={styles.button}
         onPress={onConnect}>
-        <Text style={styles.buttonText}>{props.isConnected ? 'Disconnect' : props.status === 'Scanning' ? 'Stop Scan' : 'Start Scan'}</Text>
+        <Text style={styles.buttonText}>{props.isConnected ? 'Disconnect' : props.status === 'Scanning' || props.status === 'Connecting'  ? 'Stop Scan' : 'Start Scan'}</Text>
       </TouchableOpacity>
       <Text>Connection status: {props.status}</Text>
       <View style={[styles.bluetooth, {backgroundColor: props.isConnected ? '#ff0000':'gray'}]}>

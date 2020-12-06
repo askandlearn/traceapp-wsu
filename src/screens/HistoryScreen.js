@@ -6,7 +6,6 @@ import Axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Loading } from '../components/Loading-Component';
-
 import Toast from 'react-native-simple-toast';
 import {connect} from 'react-redux';
 import { usePrevious } from '../hooks/usePrevious';

@@ -3,13 +3,20 @@ import { StyleSheet, Text, View, TouchableOpacity, Animated, Button, FlatList, S
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import { removeSync } from '../actions/actionCreators';
+import { sleep } from '../utils/sleep';
 
 //require module
 var RNFS = require('react-native-fs');
 
 const mapStateToProps = state => ({
-    recordings: state.BLE.recordings.recordings
+    recordings: state.UNSYNCED.unsynced.files
 })
+
+const mapDispatchToProps = dispatch => ({
+    remove: () => dispatch(removeSync())
+})
+  
 
 const Recording = ({recording}) => {    
     return (
@@ -24,16 +31,7 @@ const Recording = ({recording}) => {
     )
 }
 
-// const DATA = [
-//     'Trace-1.txt','Trace-2.txt','Trace-3.txt'
-// ];
-
 const SyncDataScreen = props => {
-
-    const [DATA, setDATA] = useState([
-        'Trace-1.txt','Trace-2.txt','Trace-3.txt','Trace-4.txt'
-      ])
-
     const renderItem = (prop) => {
         return(
             <TouchableOpacity onPress={() => props.navigation.navigate('FileModal', {file: prop.item})}>
@@ -42,8 +40,8 @@ const SyncDataScreen = props => {
         )
     }
 
-    const remove = (index) => {
-        setDATA(DATA.filter(item => DATA.indexOf(item) != index))
+    const remove = () => {
+        props.remove()
     }
 
     return (
@@ -53,22 +51,22 @@ const SyncDataScreen = props => {
                 ListHeaderComponent={
                     <View>
                         <View style={styles.header}>
-                        <TouchableOpacity onPress={() => props.navigation.pop()}>
-                        <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
-                        </TouchableOpacity>
+                            <TouchableOpacity onPress={() => props.navigation.pop()}>
+                                <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+                            </TouchableOpacity>
                         </View>
                         <Text style={styles.title}>Recordings</Text>
                     </View>
                 }
                 // data={props.recordings}
-                data = {DATA}
+                data = {props.recordings}
                 renderItem={renderItem}
                 keyExtractor={item => item}
                 ListFooterComponent={
                     <View style={{marginBottom: 80}}/>
                 }
             />
-            <TouchableOpacity onPress={() => remove(DATA.length-1)} style={styles.button}>
+            <TouchableOpacity onPress={() => remove()} style={styles.button}>
                 <Text style={styles.buttonText}>Sync</Text>
             </TouchableOpacity>
         </View>
@@ -128,4 +126,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps,null) (SyncDataScreen);
+export default connect(mapStateToProps,mapDispatchToProps) (SyncDataScreen);

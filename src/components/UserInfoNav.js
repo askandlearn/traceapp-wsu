@@ -25,6 +25,7 @@ export default UserInfo = () => {
   //console.log(user);
 
   //split name to get initials for avatar
+  /*
   const initialzeAvatarText = () => {
     if (user) {
       const [first, last] = user.name.split(' ');
@@ -33,7 +34,17 @@ export default UserInfo = () => {
       return '';
     }
   };
-
+*/
+const initialzeAvatarText = () =>{
+  if(user.first_name && user.last_name){
+    const first_name = user.first_name;
+    const last_name = user.last_name;
+    return first_name[0] + last_name[0];
+  }
+  else{
+    return '';
+  }
+}
   const [initials] = useState(initialzeAvatarText());
 
   return (

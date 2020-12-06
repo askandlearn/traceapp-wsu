@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  ScrollView,
+  TouchableHighlight,
   Modal,
   Alert,
   Platform,
@@ -62,7 +62,7 @@ const HRVScreen = (props) => {
       <KeyboardAvoidingScrollView>
         <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
         <View>{check && <SensorAlert />}</View>
-        {/* <Timer /> */}
+        <Timer />
    
         {/* <Swiper
           style={styles.wrapper}
@@ -135,6 +135,70 @@ const HRVScreen = (props) => {
           </View>
         </Swiper> */}
         {/* <View style={styles.NavBarDivider} /> */}
+        <View>
+        <Modal
+        propagateSwipe
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+        >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <Text style={{fontWeight: 'bold', marginBottom:10}}>HRV Instructions</Text>
+            <KeyboardAvoidingScrollView>
+              <View style= {styles.modalContainer}>
+              <View style={styles.slide2}>
+                <Text style={styles.slide1Text}>Welcome to the Heart Rate Variability screen. This helps Trace
+              analyze important data regarding your heart rate dynamics.{"\n"}</Text>
+              
+                <Text styles={styles.note}>NOTE: Before begining a recording session, make sure you are
+              comfortably sitting up straight. Once the session begins, relax
+              and breathe deeply. You may begin and end the test whenever you
+              are ready, but make sure you run the rest for at least a few
+              minutes!{"\n"}{"\n"}</Text>
+              </View>
+              <View  style={styles.slide2}>
+              <Text style={styles.steps}> 1. Situate yourself into a comfortable sitting position. Make sure
+              your back is straight.{'\n'}
+              {'\n'}2. When you are ready, press the 'Start' button on the timer
+              above.{"\n"}
+              </Text>  
+              </View>
+              <View  style={styles.slide2}>
+                <Text style={styles.steps}>3.Try to stay still and breate deeply.{'\n'}
+              {'\n'}
+              4.When you are ready to conclude the session, press 'Stop'.{"\n"}</Text>
+              </View>
+              <View style={styles.slide2}>
+              <Text style={styles.steps}>5. Now, fill out the survey. {'\n'}</Text>
+              </View>
+              </View>
+            </KeyboardAvoidingScrollView>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}>
+              <Text style={styles.buttonText}>Okay</Text>
+            </TouchableOpacity>
+          </View>
+          
+        </View>
+      </Modal>
+
+      <TouchableHighlight
+        style={styles.button}
+        onPress={() => {
+          setModalVisible(true);
+        }}
+      >
+        <Text style={styles.textStyle}>Show Instructions</Text>
+      </TouchableHighlight>
+        
+        </View>
         <View style={styles.wrapper}>
         <View style={styles.slide1}>
         <Plot />
@@ -320,5 +384,31 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  modalContainer:{
+    width: '97%',
+    height: '100%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 25
+  },
+  slide2: {
+    //height:'100%',
+    //paddingHorizontal:'2%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#000000',
+    fontSize: 20,
+  },
+  slide1Text: {
+    color: '#000000',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  note: {
+    color: '#000000',
+    fontSize: 10,
+    // marginVertical:50,
   },
 });

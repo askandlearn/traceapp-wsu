@@ -54,87 +54,12 @@ const HRVScreen = (props) => {
   const handleCheck = (checkedId) => {
     this.setState({checkedId});
   };
-
-
+  
   return (
     <View style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
       <KeyboardAvoidingScrollView>
         <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
-        <View>{check && <SensorAlert />}</View>
-        <Timer />
-   
-        {/* <Swiper
-          style={styles.wrapper}
-          showButtons={true}
-          loop={false}
-          autoplay={false}>
-          <View testID="Hello" style={styles.slide1}>
-            <Text style={styles.slide1Text}>
-              Welcome to the Heart Rate Variability screen. This helps Trace
-              analyze important data regarding your heart rate dynamics.{'\n'}{' '}
-            </Text>
-
-            <Text style={styles.note}>
-              NOTE: Before begining a recording session, make sure you are
-              comfortably sitting up straight. Once the session begins, relax
-              and breathe deeply. You may begin and end the test whenever you
-              are ready, but make sure you run the rest for at least a few
-              minutes!
-            </Text>
-          </View>
-          <View testID="Beautiful" style={styles.slide2}>
-            <Text style={styles.steps}>
-              1. Situate yourself into a comfortable sitting position. Make sure
-              your back is straight.{'\n'}
-              {'\n'}2. When you are ready, press the 'Start' button on the timer
-              above.
-            </Text>
-          </View>
-
-          <View testID="Simple" style={styles.slide3}>
-            <Text style={styles.steps}>
-              3.Try to stay still and breate deeply.{'\n'}
-              {'\n'}
-              4.When you are ready to conclude the session, press 'Stop'.
-            </Text>
-          </View>
-          <View testID="Slide4" style={styles.slide3}>
-            <Text style={styles.steps}>
-              5. Now, fill out the survey. {'\n'}
-            </Text>
-            <View style={styles.centeredView}>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClode={() => {
-                  Alert.alert('Modal has been closed.');
-                }}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <Animate />
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        setModalVisible(!modalVisible);
-                      }}>
-                      <Text style={styles.buttonText}>SUBMIT</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </Modal>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  setModalVisible(true);
-                }}>
-                <Text style={styles.buttonText}>Take Survey</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Swiper> */}
-        {/* <View style={styles.NavBarDivider} /> */}
         <View>
         <Modal
         propagateSwipe

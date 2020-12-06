@@ -66,7 +66,7 @@ const ModalComponent = (props) => {
           name: file    //name of test file
         }
 
-        const example = {
+        const session = {
             "start_time": start_time,
             "label": label,
             "description": description,
@@ -81,7 +81,7 @@ const ModalComponent = (props) => {
             "app_os": app_os,
             "app_os_version": app_os_version
         }
-        console.log(example)
+        console.log(session)
         // console.log('In upload...')
         const formData = new FormData()
         formData.append("start_time",start_time)

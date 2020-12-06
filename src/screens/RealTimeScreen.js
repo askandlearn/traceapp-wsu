@@ -14,7 +14,6 @@ import {
   TextInput,
 } from 'react-native';
 import Header from '../components/Header-Component';
-import RTTimer from '../components/RTTimer';
 import RTData from '../components/RTData';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Swiper from 'react-native-swiper';
@@ -72,20 +71,7 @@ const RealTimeScreen = (props) => {
 
 
   const user = useContext(UserContext)
-  const [content,setContent] = useState()
 
-  const read = () => {
-    //read the file
-    console.log('PATHFILE:',path)
-    RNFS.readFile(path).then(res => {
-      console.log("FILE READ SUCCESSFULLY")
-      setContent(res)
-    }).catch(err => {
-      console.log(err.message,err.code)
-    })
-  }
-
-  var interval;
   const onStart = async () => {
     props.updateMetric(undefined, 'RT');
 
@@ -112,7 +98,6 @@ const RealTimeScreen = (props) => {
           <Text style={styles.buttonText}>Stop</Text>
         </TouchableOpacity> 
         <View testID="Data" style={styles.wrapper}>
-          {/* <Text style={styles.slideTitles}>Biometric Data by Numbers</Text> */}
           <RTData></RTData>
         </View>
       </ScrollView> 

@@ -67,8 +67,8 @@ const TraceConnectScreen = props => {
         <Text style={styles.buttonText}>{props.isConnected ? 'Disconnect' : props.status === 'Scanning' || props.status === 'Connecting'  ? 'Stop Scan' : 'Start Scan'}</Text>
       </TouchableOpacity>
       <Text>Connection status: {props.status}</Text>
-      <View style={[styles.bluetooth, {backgroundColor: props.isConnected ? '#ff0000':'gray'}]}>
-        <Icon style={{alignSelf:'center'}} name="bluetooth" size={50} color='white'/>
+      <View style={[styles.bluetooth]}>
+        <Image source={require('../images/Trace-3DTransparent.png')} />
       </View>
     </View>
   );
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 30,
     paddingBottom: 30,
+    textAlign: 'center'
   },
   button: {
     // alignSelf: 'center',
@@ -114,7 +115,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignContent: 'center',
     justifyContent: 'center',
-    backgroundColor: 'gray'
+    // backgroundColor: 'gray'
+    borderColor: 'black',
+    borderWidth: 1
     
   },
   header: {

@@ -4,6 +4,7 @@ import Plotly from 'react-native-plotly';
 import { onDisconnect, stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import Timer from './Timer';
 
 const mapStateToProps = state => ({
   hrv: state.DATA['hrv'],
@@ -163,8 +164,9 @@ const config={
   
     return (
       <View style={styles.container}>
-        <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
-      <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
+      <Timer/>
+      <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => onStop()}>

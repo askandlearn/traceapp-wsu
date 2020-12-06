@@ -3,12 +3,13 @@ import { StyleSheet, View, TouchableOpacity,Text, Dimensions, Linking } from 're
 import Plotly from 'react-native-plotly';
 import { onDisconnect, stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
+import ModalComponent from './Modal-Component';
 
 const mapStateToProps = state => ({
   pnn50: state.DATA['pnn50'],
   hrv: state.DATA['hrv'],
   metrics: state.DATA['metrics'],
-  connectedDevice: state.BLE['connectedDevice'],
+  isConnected : state.BLE['isConnected'],
   busy: state.BLE['busy']
 })
 
@@ -19,7 +20,7 @@ const mapDispatchToProps = dispatch => ({
 
 const transactionID = 'monitor_metrics'
 
-ASTPlot=(props)=> {
+ASTPlot = (props) => {
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
@@ -39,8 +40,8 @@ ASTPlot=(props)=> {
  const [isCount, setCount]=useState(0); 
  const [isNewData, setNewData] =useState(isData);
 
- var d = new Date();
-  setPlot=()=>{
+  var d = new Date();
+  const setPlot=()=>{
     // console.log("Started Timer");
    
     if(isNewData[0].y.length>100){
@@ -65,45 +66,46 @@ ASTPlot=(props)=> {
   var plot;
   const onStart = async () => {
     props.updateMetric();
-   // plot=setInterval(() => {
-      //setPlot();
-    //}, 5000);
   }
 
   useEffect(()=>{
     setPlot();
   },[props.hrv])
 
-const onStop = async () => {
-  console.log('Cancelling transaction...')
-  props.stopTransaction(transactionID);
-  //var currentTimeInSeconds=Math.floor(Date.now()/1000)
-  
-  //console.log()
- // clearInterval(plot);
-}
-update = (_, { data, layout, config, }, plotly) => {
-  plotly.react(data, layout, config);
-};
-const layout={
-  title: 'HRV vs Time',
-  showlegend:true,
-  width: windowWidth + 18,
-}
-const config={
-  displaylogo:false,
-  responsive:true,
-}
-    return (     
+  const onStop = async () => {
+    console.log('Cancelling transaction...')
+    props.stopTransaction(transactionID);
+    setVisible(true)
+
+  }
+  const update = (_, { data, layout, config, }, plotly) => {
+    plotly.react(data, layout, config);
+  };
+  const layout={
+    title: 'HRV vs Time',
+    showlegend:true,
+    width: windowWidth + 18,
+  }
+  const config={
+    displaylogo:false,
+    responsive:true,
+  }
+
+  const [visible, setVisible] = useState(false)
+  const {isConnected} = props
+
+
+
+  return (     
       <View style={styles.container}>
+      <ModalComponent visible={visible} setVisible={setVisible}/>
       <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
-      <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => onStop()}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || !props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy}>
           <Text style={styles.buttonText}>Stop</Text>
-        </TouchableOpacity>
-     
+        </TouchableOpacity> 
       </View>
         <View style={styles.chartRow}>
           <Plotly
@@ -119,9 +121,11 @@ const config={
         </View>
       </View>
     
-    );
-  }
-  export default connect(mapStateToProps, mapDispatchToProps) (ASTPlot);
+  );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (ASTPlot);
+
 const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row'

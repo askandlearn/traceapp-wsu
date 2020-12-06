@@ -80,9 +80,9 @@ const ProfileScreen = (props) => {
 */
 
   //Handle birthdate format change from the api
-  const [api_year, api_month, api_day] = user.birthdate.split('-');
-  const profileDate = (api_month + "/" + api_day + "/" + api_year);
-  user.birthdate = profileDate;  
+  // const [api_year, api_month, api_day] = user.birthdate.split('-');
+  // const profileDate = (api_month + "/" + api_day + "/" + api_year);
+  // user.birthdate = profileDate;  
   
   
   //Create instance of current user

@@ -10,12 +10,11 @@ import {
 } from 'react-native';
 
 const Header = ({openDrawer}) => (
-  <View style={{paddingBottom: 20}}>
+  <View style={{paddingBottom: 0}}>
   <View style={styles.header}>
     <TouchableOpacity onPress={() => openDrawer()}>
       <Icon name="menu" size={30} paddingVertical={50} color='white' />
     </TouchableOpacity>
-    <Text style={{width: 45}}></Text>
   </View>
   </View>
   

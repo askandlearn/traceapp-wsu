@@ -127,8 +127,6 @@ const ASTScreen = (props) => {
       <KeyboardAvoidingScrollView>
         <Text style={styles.title}>Active StandUp Test {'\n'}(AST)</Text>
         <View>{check && <SensorAlert />}</View>
-        <Timer />
-   
         <View>
         <Modal
         propagateSwipe
@@ -136,7 +134,7 @@ const ASTScreen = (props) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
+          setModalVisible(false)
         }}
         >
         <View style={styles.centeredView}>
@@ -179,10 +177,8 @@ const ASTScreen = (props) => {
               <Text style={styles.buttonText}>Okay</Text>
             </TouchableOpacity>
           </View>
-          
         </View>
       </Modal>
-
       <TouchableHighlight
         style={styles.button}
         onPress={() => {
@@ -191,7 +187,6 @@ const ASTScreen = (props) => {
       >
         <Text style={styles.textStyle}>Show Instructions</Text>
       </TouchableHighlight>
-        
         </View>
         {/* <View style={styles.NavBarDivider} /> */}
         <View style={styles.wrapper}>

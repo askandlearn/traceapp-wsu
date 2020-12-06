@@ -410,14 +410,14 @@ const writeToFile = (path,metrics) => {
     RNFS.exists(path).then((exists) => {
         if(exists){
           RNFS.write(path,metrics.toString() + '\n',-1,'utf8').then(success => {
-            console.log('FILE APPENDED')
+            // console.log('FILE APPENDED')
           }).catch(err => {
             console.log(err.message)
           })
         }
         else{
           RNFS.writeFile(path, headers.toString(), 'utf8').then((success) => {
-            console.log("FILE WRITTEN")
+            // console.log("FILE WRITTEN")
           }).catch((err) => {
             console.log(err.message);
           })

@@ -65,11 +65,20 @@ export const updatedHRV = (value) => ({
  * Returns an updated state value for BleReducer
  * Called in updateMetrics()
  * 
- * @returns {state} records: [..., newRecording]
+ * @returns {state} currRecording: currRecording
  */
 export const addRecording = (recording) => ({
     type:'ADD_RECORDING',
     newRecording: recording
+})
+/**
+ * Sets currRecording to empty string
+ * Called in Modal-Component.js
+ * 
+ * @returns {state} currRecording: ''
+ */
+export const removeRecording = () => ({
+    type:'REMOVE_RECORDING'
 })
 /**
  * Returns an updated state value for BleReducer
@@ -81,3 +90,24 @@ export const setBusy = (val) => ({
     type: 'SET_BUSY',
     busy: val
 })
+/**
+ * Adds unsynced file to unsynced state
+ * Called in stopTransaction()
+ * 
+ * @returns {state} unsynced: {user, files:[...files,newFile]}
+ */
+export const addSync = (user, file) => ({
+    type: 'ADD_SYNC',
+    user: user,
+    file: file
+})
+/**
+ * Remove unsynced file
+ * 
+ * 
+ * @returns {state} unsynced: {user, files:[files-1]}
+ */
+export const removeSync = () => ({
+    type: 'REMOVE_SYNC'
+})
+

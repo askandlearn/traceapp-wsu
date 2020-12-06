@@ -8,7 +8,8 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 const mapStateToProps = state => ({
   hrv: state.DATA['hrv'],
   connectedDevice: state.BLE['connectedDevice'],
-  metrics: state.BLE['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  metrics: state.DATA['metrics'], //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  busy: state.BLE['busy'],
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -48,8 +49,8 @@ const transactionID = 'monitor_metrics'
   const [isNewPAMP, setNewPAMP]=useState(isPAMP);
 
   var d = new Date();
-  setPlot=()=>{
-    console.log("Started Timer");
+  const setPlot=()=>{
+    // console.log("Started Timer");
    
     if(isNewData[0].y.length>15){
       isNewData[0].y.push(props.metrics[1]);
@@ -68,7 +69,7 @@ const transactionID = 'monitor_metrics'
      setHR(isNewData);
     }
   }
-  setPAMPVal=()=>{
+  const setPAMPVal=()=>{
     console.log("Started PAMP");
    
     if(isNewPAMP[0].y.length>15){
@@ -139,7 +140,7 @@ const config={
         //position: 
     },
 }
-  swapData = () => {
+ const swapData = () => {
     if (isData[0].name=== 'HR') {
       setData(isPAMP);
       setLayout({
@@ -155,7 +156,7 @@ const config={
     }
   };
 
-  update = (_, { data, layout, config }, plotly) => {
+  const update = (_, { data, layout, config }, plotly) => {
     plotly.react(data, layout, config);
   };
   const screenWidth = Dimensions.get('window').width;
@@ -163,7 +164,7 @@ const config={
     return (
       <View style={styles.container}>
         <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
-      <TouchableOpacity style={styles.button} onPress={() => onStart()}>
+      <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => onStop()}>
@@ -189,7 +190,8 @@ const config={
     );
   }
 
-  export default connect(mapStateToProps, mapDispatchToProps) (App);
+export default connect(mapStateToProps, mapDispatchToProps) (App);
+
 const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row'

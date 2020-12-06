@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, TouchableOpacity,Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity,Text, Dimensions, Linking } from 'react-native';
 import Plotly from 'react-native-plotly';
 import { onDisconnect, stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
@@ -7,8 +7,9 @@ import {connect} from 'react-redux';
 const mapStateToProps = state => ({
   pnn50: state.DATA['pnn50'],
   hrv: state.DATA['hrv'],
+  metrics: state.DATA['metrics'],
   connectedDevice: state.BLE['connectedDevice'],
-  metrics: state.BLE['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  busy: state.BLE['busy']
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -19,6 +20,9 @@ const mapDispatchToProps = dispatch => ({
 const transactionID = 'monitor_metrics'
 
 ASTPlot=(props)=> {
+
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
 
   const [isData, setData]= useState([
     {
@@ -37,7 +41,7 @@ ASTPlot=(props)=> {
 
  var d = new Date();
   setPlot=()=>{
-    console.log("Started Timer");
+    // console.log("Started Timer");
    
     if(isNewData[0].y.length>100){
       isNewData[0].y.push(props.hrv);
@@ -84,16 +88,16 @@ update = (_, { data, layout, config, }, plotly) => {
 const layout={
   title: 'HRV vs Time',
   showlegend:true,
-  
+  width: windowWidth + 18,
 }
 const config={
   displaylogo:false,
-  responsive:true
+  responsive:true,
 }
     return (     
       <View style={styles.container}>
       <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
-      <TouchableOpacity style={styles.button} onPress={() => onStart()}>
+      <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => onStop()}>

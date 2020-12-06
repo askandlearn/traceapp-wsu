@@ -1,12 +1,14 @@
-import React, {useEffect, useState, useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, Linking, FlatList, Platform, ScrollView} from 'react-native';
+import React, {useEffect, useState, useContext, useCallback} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Image, Linking, FlatList, Platform, ScrollView, RefreshControl} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Loading } from '../components/Loading-Component';
-
+import Toast from 'react-native-simple-toast';
+import {connect} from 'react-redux';
+import { usePrevious } from '../hooks/usePrevious';
 
 
 //data list
@@ -48,57 +50,90 @@ const Item = ({session}) => {
 )}
 
 
+//redux states to props
+function mapStateToProps(state){
+    return{
+      isConnected : state.BLE['isConnected'],
+    };
+}
+
+
 const HistoryScreen = (props) => {
+
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+
+    showToast()
+  }, [isConnected])
+  //End Toast
+
 
     const user = useContext(UserContext);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+    
+    const onRefresh = useCallback(() => {
+        setRefreshing(true)
+    })
+
+
+    const getData = async () => {
+        try{
+            const url = 'http://134.209.76.190:8000/api/Recording'
+            const config = {
+                headers: {'Authorization':`Token ${user.token}`},
+                timeout: 2000   //two seconds timeout
+            }
+            
+            const data = await Axios.get(url, config).then(res => res.data).catch(err => {
+                console.log(err.code);
+                console.log(err.message)
+            })
+            
+            setData(data.results)
+            setLoading(false)
+            setRefreshing(false)
+        }
+        catch(err){
+            setLoading(false);
+            setRefreshing(false);
+            alert('Error getting recordings')
+            console.log(err.message)
+        }
+    }
 
     //upon inital render
-    useEffect(() => {
-        const getData = async () => {
-            try{
-                const url = 'http://134.209.76.190:8000/api/Recording'
-                const config = {
-                    headers: {'Authorization':`Token ${user.token}`},
-                    timeout: 2000   //two seconds timeout
-                }
-                
-                const data = await Axios.get(url, config).then(res => res.data).catch(err => {
-                    console.log(err.code);
-                    console.log(err.message)
-                })
-                
-                setData(data.results)
-                setLoading(false)
-            }
-            catch(err){
-                setLoading(false);
-                alert('Error getting recordings')
-                console.log(err.message)
-            }
-        }
-
-    
-        getData();
-
+    useEffect(() => {  
+        const fetch = async () => {
+            await getData()
+        }  
+        fetch();
         // console.log(data[0].pk)
-    },[])
+    },[refreshing]) //anytime screen is pulled down
 
     const renderItem = ({item}) => {
         // console.log()
         return <Item session={item}></Item>
     }
 
+
     return(
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-            
+            <Header openDrawer={props.navigation.openDrawer} />
             <FlatList 
                 ListHeaderComponent={
                     <KeyboardAvoidingScrollView>
                     <View>
-                        <Header openDrawer={props.navigation.openDrawer} />
                         <Text style={styles.title}>Recording History</Text>
                     </View>
                     </KeyboardAvoidingScrollView>
@@ -106,6 +141,9 @@ const HistoryScreen = (props) => {
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={session => session.pk.toString()}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                }
             />
            
             <Loading loading={loading}/>
@@ -136,10 +174,16 @@ const styles = StyleSheet.create({
         margin: 5,
         borderRadius: 5,
         padding: 5,
-        //backgroundColor: '#242852'
-        //backgroundColor: '#445092'
-        backgroundColor: '#dddddd',
-        borderColor: '#242852'
+        // backgroundColor: '#242852',
+        // backgroundColor: '#445092',
+        // backgroundColor: '#000030',
+        // backgroundColor: 'black',   
+        borderColor: '#000030',
+        shadowColor: 'red',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.2,
+        elevation: 4,
+
     },
     SessionTitle: {
         fontSize: 15,
@@ -181,4 +225,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default HistoryScreen;
+export default connect(mapStateToProps, null) (HistoryScreen);

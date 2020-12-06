@@ -12,15 +12,10 @@ import {
 const Header = ({openDrawer}) => (
   <View style={{paddingBottom: 20}}>
   <View style={styles.header}>
-    <TouchableOpacity style={{flexDirection: 'row'}}
-     onPress={() => openDrawer()}>
-      <Icon name="menu" size={35} paddingVertical={50} color='white'/>
-      <Image
-          style={styles.backgroundImage}
-          source={require('../images/TraceBio-White.png')}
-        />
+    <TouchableOpacity onPress={() => openDrawer()}>
+      <Icon name="menu" size={30} paddingVertical={50} color='white' />
     </TouchableOpacity>
-    <Text style={{width: 45}} />
+    <Text style={{width: 45}}></Text>
   </View>
   </View>
   
@@ -34,6 +29,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: 20,
     padding: Platform.OS === 'ios' ? 20 : 10,
+    // backgroundColor: '#ff0000'
+    // backgroundColor: '#000030'
     backgroundColor: '#242852',
 
   },

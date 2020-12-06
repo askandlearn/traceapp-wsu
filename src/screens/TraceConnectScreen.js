@@ -10,14 +10,12 @@ import {
   ImageBackground,
 } from 'react-native';
 import Header from '../components/Header-Component';
-import SensorsComponent from '../components/SensorsComponent';
 import { Loading } from '../components/Loading-Component';
 import { sleep } from '../utils/sleep';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //redux functions
-//
-import {disconnectDevice, startScan} from '../actions';
+import {disconnectDevice, startScan, stopScan} from '../actions';
 import {connect} from 'react-redux';
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
 
@@ -30,7 +28,8 @@ function mapStateToProps(state){
 
 const mapDispatchToProps = dispatch => ({
   startScan: () => dispatch(startScan()),
-  disconnectDevice: () => dispatch(disconnectDevice())
+  disconnectDevice: () => dispatch(disconnectDevice()),
+  stopScan: () => dispatch(stopScan())
 })
 
 
@@ -43,7 +42,13 @@ const TraceConnectScreen = props => {
       props.disconnectDevice();
     }
     else{
-      props.startScan();
+      if(props.status === 'Scanning'){
+        console.log('Stopping scan..')
+        props.stopScan();
+      }
+      else{
+        props.startScan();
+      }
     }
   }
 
@@ -59,12 +64,11 @@ const TraceConnectScreen = props => {
         title="On Connect"
         style={styles.button}
         onPress={onConnect}>
-        <Text style={styles.buttonText}>{props.isConnected ? 'Disconnect' : 'Start Scan'}</Text>
+        <Text style={styles.buttonText}>{props.isConnected ? 'Disconnect' : props.status === 'Scanning' || props.status === 'Connecting'  ? 'Stop Scan' : 'Start Scan'}</Text>
       </TouchableOpacity>
       <Text>Connection status: {props.status}</Text>
       <View style={[styles.bluetooth, {backgroundColor: props.isConnected ? '#ff0000':'gray'}]}>
         <Icon style={{alignSelf:'center'}} name="bluetooth" size={50} color='white'/>
-        {/* <Pulse/> */}
       </View>
     </View>
   );

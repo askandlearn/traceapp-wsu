@@ -29,7 +29,7 @@ export const deviceDisconnected = () => ({
     type: "DISCONNECTED",
     isConnected: false,
     status: 'Disconnected',
-    connectDevice: undefined
+    connectedDevice: {}
 })
 /**
  * Returns an updated state value
@@ -65,10 +65,49 @@ export const updatedHRV = (value) => ({
  * Returns an updated state value for BleReducer
  * Called in updateMetrics()
  * 
- * @returns {state} records: [..., newRecording]
+ * @returns {state} currRecording: currRecording
  */
-export const addRecording = (username, recording) => ({
+export const addRecording = (recording) => ({
     type:'ADD_RECORDING',
-    user: username,
     newRecording: recording
 })
+/**
+ * Sets currRecording to empty string
+ * Called in Modal-Component.js
+ * 
+ * @returns {state} currRecording: ''
+ */
+export const removeRecording = () => ({
+    type:'REMOVE_RECORDING'
+})
+/**
+ * Returns an updated state value for BleReducer
+ * Called in updateMetrics()
+ * 
+ * @returns {state} busy: [..., busy]
+ */
+export const setBusy = (val) => ({
+    type: 'SET_BUSY',
+    busy: val
+})
+/**
+ * Adds unsynced file to unsynced state
+ * Called in stopTransaction()
+ * 
+ * @returns {state} unsynced: {user, files:[...files,newFile]}
+ */
+export const addSync = (user, file) => ({
+    type: 'ADD_SYNC',
+    user: user,
+    file: file
+})
+/**
+ * Remove unsynced file
+ * 
+ * 
+ * @returns {state} unsynced: {user, files:[files-1]}
+ */
+export const removeSync = () => ({
+    type: 'REMOVE_SYNC'
+})
+

@@ -6,10 +6,6 @@ import {useAuth} from '../hooks/useAuth';
 import {UserContext} from '../contexts/UserContext';
 import {AuthContext} from '../contexts/AuthContext';
 import { useScreens } from 'react-native-screens';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import GenderMenu from '../components/DropdownGenderMenu';
-import HealthGoals from '../components/HealthGoals';
-import HeightPicker from '../components/HeightPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,7 +15,36 @@ import SettingsList from 'react-native-settings-list';
 
 
 
+import Toast from 'react-native-simple-toast';
+import {connect} from 'react-redux';
+import { usePrevious } from '../hooks/usePrevious';
+
+
+//redux states to props
+function mapStateToProps(state){
+  return{
+    isConnected : state.BLE['isConnected'],
+  };
+}
+
 const ProfileScreen = (props) => {
+
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+
+    showToast()
+  }, [isConnected])
+  //End Toast
+
+
   /*
     props that should be passed when calling this screen
     name:
@@ -548,8 +573,8 @@ const checkLastName = (val) =>{
     <View
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
+      <Header openDrawer={props.navigation.openDrawer} />
       <KeyboardAvoidingScrollView>
-        <Header openDrawer={props.navigation.openDrawer} />
         <View style={styles.header} />
         <View style={styles.avatar}>
           <Text style={styles.avatar_text}>{initials}</Text>
@@ -785,7 +810,7 @@ const checkLastName = (val) =>{
           </TouchableOpacity>
         */}
           <View style={styles.contentBorder}/>
-          <View style={{flexDirection: "row"}}>
+          <View style={styles.horizontal}>
             <Text style={styles.contentTitleGender}>Gender: </Text>
             <Modal
           animationType="slide"
@@ -1009,6 +1034,7 @@ const styles = StyleSheet.create({
   horizontal: {
     flexDirection: 'row',
     alignContent: 'center',
+    marginHorizontal: 5
   },
   inputFields: {
     backgroundColor: '#FFFFFF',
@@ -1121,4 +1147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default connect(mapStateToProps, null) (ProfileScreen);

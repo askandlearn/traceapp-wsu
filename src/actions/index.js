@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
+import { batch } from 'react-redux';
 import atob from '../utils/atob';
 import { 
     changeStatus, 
@@ -8,7 +9,10 @@ import {
     updatedMetrics,
     updatedPNN50,
     updatedHRV,
-    addRecording  } from './actionCreators';
+    addRecording,  
+    setBusy,
+    addSync,
+    removeSync} from './actionCreators';
 
 var RNFS = require('react-native-fs');
 
@@ -18,7 +22,7 @@ const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb'
 // For Android const deviceID = 'AB:89:67:45:11:FF'
 
 //For iOS
-const deviceID = Platform.OS === 'ios' ? 'A0524966-65F3-A409-C6D1-20ED628ED43A':'AB:89:67:45:11:FF'
+let deviceID = Platform.OS === 'ios' ? 'A0524966-65F3-A409-C6D1-20ED628ED43A':'AB:89:67:45:11:FF'
 
 //transaction id for monitoring data
 const transactionID = 'monitor_metrics'
@@ -51,14 +55,16 @@ export const startScan = () => {
         //console.log("thunk startScan: ", DeviceManager);
         const subscription = DeviceManager.onStateChange((state) => {
             if (state === 'PoweredOn') {
+                dispatch(onDisconnect())
                 dispatch(scan());
             }
             else{
-                dispatch(changeStatus('Bluetooth is not on'))
+                // dispatch(changeStatus('Bluetooth is not on'))
+                alert('Bluetooth is not on')
+                dispatch(stopScan())
             }
         }, true);
 
-        dispatch(onDisconnect())
       };
 }
 /**
@@ -74,7 +80,7 @@ export const scan = () => {
             if (error) {
                 console.log(error);
             }
-            if(device.name === 'TRACE'){
+            if(device && device.name === 'TRACE'){
                 dispatch(connectDevice(device));
             }
         });
@@ -94,26 +100,30 @@ export const connectDevice = (device) => {
         dispatch(changeStatus("Connecting"));
         DeviceManager.stopDeviceScan()
         device.connect().then((device) => {
-            dispatch(changeStatus("Discovering"));
+            // dispatch(changeStatus("Discovering"));
             let characteristics = device.discoverAllServicesAndCharacteristics()
-            console.log("characteristics:", characteristics); //debugging purposes
+            // console.log("characteristics:", characteristics); //debugging purposes
             return characteristics;
         }).then((device) => {
-            dispatch(changeStatus("Getting services"));
-            console.log('device',device); //debugging purposes
+            // dispatch(changeStatus("Getting services"));
+            // console.log('device',device); //debugging purposes
             dispatch(connectedDevice(device))
             dispatch(changeStatus('Connected'))
             return device
         }, (error) => {
-            dispatch(changeStatus(error.message))
+            // dispatch(changeStatus(error.message))
             console.log("SCAN", error.message);
         })
     }
 }
 /**
- * Get metrics
+ * Get metrics of a connected device
+ *
+ * @param {number=} timeout a timeout
+ * @param {string} [label=NONE] test label that is calling the function
+ * @return {void} monitors until stopTransaction() is called
  */
-export const updateMetric = () => {
+export const updateMetric = (timeout, label = 'NONE') => {
     return (dispatch, getState, DeviceManager) => {
 
         //reset previous values from last call
@@ -137,26 +147,42 @@ export const updateMetric = () => {
             ".txt"
           );
         // console.log('filename',filename);    //debugging purposes
-
-        // var path = RNFS.DocumentDirectoryPath + '/' + filename;
-        var path = RNFS.DocumentDirectoryPath + '/test.txt';    //testing purposes
-
+        var path = RNFS.DocumentDirectoryPath + '/' + filename; //this path will be passed to write file function
+        // var path = RNFS.DocumentDirectoryPath + '/test.txt';    //testing purposes
         // console.log('path:',path);   //debugging purposes
-        
+        //set deviceID, default ID is the prototype we are working with
+        //set variable to add as a current recording
+        const recording = {
+            start_time: curDate.toISOString(), 
+            label: label, 
+            file: filename
+        }
+        deviceID = state.BLE.connectedDevice.id ? state.BLE.connectedDevice.id : deviceID
         DeviceManager.isDeviceConnected(deviceID).then(val => {
             if(val){
-                dispatch(changeStatus('Returning services'))
+                // dispatch(changeStatus('Returning services'))
                 return DeviceManager.servicesForDevice(deviceID)
             }else{
-                dispatch(changeStatus('Device is not connected'))
+                // dispatch(changeStatus('Device is not connected'))
+                alert('Device is not connected')
                 
             }
         }).then(services => {
-            console.log('services',services); //debugging purposes
-            dispatch(changeStatus('Getting custom characteristics'))
+            // console.log('services',services); //debugging purposes
+            // dispatch(changeStatus('Getting custom characteristics'))
             return DeviceManager.characteristicsForDevice(deviceID,serviceUUID)
         }).then(characteristics => {
-            console.log('characteristics',characteristics);   //debugging purposes
+            // console.log('characteristics',characteristics);   //debugging purposes
+
+            console.log('Monitoring...')
+            dispatch(setBusy(true))
+
+            //save the text file name
+            dispatch(addRecording(recording))
+
+            var init = 0
+            var totalT = 0
+            var prevDispatch = 0
             
             const subscription = characteristics[0].monitor((err, characteristics)=>{
                 if(err){
@@ -172,15 +198,122 @@ export const updateMetric = () => {
                     // PAMP lsb, PAMP msb, DAMP lsb, DAMP msb,
                     // ppg lsb, ppg msb, diff lsb, diff msb, digital out,
                     // time lsb to msb in ticks (4 bytes) ]
-                    const metrics = parseData(characteristics.value, dispatch)
-                    dispatch(updatedMetrics(metrics))
+                    //Convert from base 64 to byte array
+                    //Taken from Dr. Amar Basu parsing function in traceapp-cordova
+                    var binary_string = atob(characteristics.value);
+                    var len = binary_string.length;
+                    var data = new Uint8Array(len);
+                    for (var i = 0; i < len; i++) {
+                        data[i] = binary_string.charCodeAt(i);
+                    }
+
+                    var vcnlCurrent  = data[0];
+                    var bpm = data[1];
+                    var skinTemp  = data[2];
+                    if (data[2] & 0x80) {
+                    skinTemp = -((~skinTemp & 0xff) + 1);
+                    } // Two's complement
+                    skinTemp = 25 + skinTemp/4;
+                    var accelX = data[3];
+                    if (data[3] & 0x80) {
+                    accelX = -((~accelX & 0xff) + 1);
+                    } // Two's complement
+                    var ibi  = (data[5] << 8) + data[4];
+                    var pamp  = (data[7] << 8) + data[6];
+                    var damp  = (data[9] << 8) + data[8]; // data[8];
+                    var ppg  = (data[11] << 8) + data[10];
+                    var dif ;
+                    if (data[13] & 0x80) {
+                    dif = -((~dif & 0xff) + 1);
+                    } // Two's complement
+                    var digOut  = data[14];
+                    var curTime  =
+                        ((data[18] << 24) + (data[17] << 16) + (data[16] << 8) + data[15]) *
+                        9.846e-6;
+                    var deltaT = parseFloat(curTime.toFixed(3) - values_p.time_p.toFixed(3));
+
+
+                    // =========================================================
+
+                    if(init === 0){
+                        init = parseFloat(curTime.toFixed(3))
+                    }
+
+                    totalT = parseFloat(curTime.toFixed(3) - init.toFixed(3))
+                    console.log('totalT',totalT.toFixed(3)) 
+                    // ===========================================================
+                    
+                    //copy values
+                    var digOutP_cpy = values_p.digOut_p
+                    var digOut_cpy = digOut
+                    // Do these updates only at the beginning of each beat
+
+                    //hrv and pnn
+                    var hrv
+                    var pnn50
+                    if (values_p.digOut_p == 0 && digOut == 1) {
+                        console.log(parseFloat((totalT - prevDispatch).toFixed(3)))
+                        hrv = ibi - values_p.ibi_p;
+                        values_p.ibi_p = ibi;
+
+                        // manage the hrv fifo and calculate pnn50
+                        values_p.hrv_fifo.push(hrv);
+                        if (values_p.hrv_fifo.length > 100) {
+                            values_p.hrv_fifo.shift();
+                        }
+                        const reducer = (accumulator, currentValue) => accumulator + (currentValue >=50);
+                        pnn50 = values_p.hrv_fifo.reduce(reducer, 0)/values_p.hrv_fifo.length;
+                        //   console.log('pnn50',pnn50.toFixed(3))
+                        // 1)
+                        // dispatch(updatedHRV(hrv))
+                        // dispatch(updatedPNN50(pnn50.toFixed(3)))
+                    }
+
+                    values_p.time_p = curTime
+                    values_p.digOut_p = digOut
+                    // Log the data
+                    var stats = [
+                    curTime.toFixed(3),
+                    bpm,
+                    ibi,
+                    pamp,
+                    damp,
+                    ppg,
+                    dif,
+                    digOut,
+                    skinTemp,
+                    accelX
+                    ];
+                    // console.log('stats',stats)
+                    if (parseFloat((totalT - prevDispatch).toFixed(3)) >= 0.500 ){
+                        console.log('dispatched')
+                        prevDispatch = totalT.toFixed(3)   //update prevDispatch to current total time
+                        // 1)
+                        // dispatch(updatedMetrics(stats))
+
+                        // 2)
+                        if(hrv && pnn50){
+                            batch(() => {
+                                dispatch(updatedMetrics(stats))
+                                dispatch(updatedHRV(hrv))
+                                dispatch(updatedPNN50(pnn50.toFixed(3)))
+                            })
+                        }
+                        else{
+                            dispatch(updatedMetrics(stats))
+                        }
+                    }
+
                     //write to a text file
-                    // writeToFile(path, metrics)
+                    writeToFile(path, stats)
                 }
             }, transactionID)
 
             // Cancel after specified amount of time
-            //setTimeout(() => DeviceManager.cancelTransaction(transactionID),10000)
+            // run only if timeout is specified then run timeout ==> this is purely for the ast page which the time is 3 minutes (180000 milliseconds)
+            if(timeout){
+                setTimeout(() => dispatch(stopTransaction(transactionID)), timeout)
+            }
         }, (err) => {
             console.log('UPDATE', err.message)
         })
@@ -191,7 +324,9 @@ export const updateMetric = () => {
  */
 export const stopTransaction = (ID) => {
     return (dispatch, getState, DeviceManager) => {
+
         DeviceManager.cancelTransaction(ID)
+        dispatch(setBusy(false))
     }
 }
 
@@ -205,6 +340,8 @@ export const onDisconnect = () => {
             console.log('Connection lost')
             dispatch(deviceDisconnected())
 
+            //stop any ongoing test
+            dispatch(stopTransaction(transactionID))
             DeviceManager.onStateChange((state) => {
                 if (state === 'PoweredOn') {
                     console.log('Attempting to reconnect')
@@ -216,7 +353,6 @@ export const onDisconnect = () => {
                 }
                 else{
                     console.log('Bluetooth is not on')
-
                 }
             }, true)
         })
@@ -225,56 +361,22 @@ export const onDisconnect = () => {
 //disconnect device
 export const disconnectDevice = () => {
     return (dispatch, getState, DeviceManager) => {
-        DeviceManager.cancelDeviceConnection(deviceID).catch(err => {
+        DeviceManager.cancelDeviceConnection(deviceID).then(() => {
+            DeviceManager.stopDeviceScan(); //stops the device disconnect listener
+        }).catch(err => {
             console.log('disconnectDevice',err.message)
         })
         dispatch(deviceDisconnected()) //updates status and isConnected. 
     }
 }
-//testing purposes for recordings
-export const updateRecordings = (username) => {
-    return (dispatch) => {
-        var curDate = new Date();
-        var filename = "Trace-".concat(
-            curDate.getFullYear().toString(),
-            (curDate.getMonth() + 1).toString().padStart(2, "0"),
-            curDate.getDate().toString().padStart(2, "0"),
-            "-",
-            curDate.getHours().toString().padStart(2, "0"),
-            curDate.getMinutes().toString().padStart(2, "0"),
-            curDate.getSeconds().toString().padStart(2, "0"),
-            ".txt"
-        );
-        var path = RNFS.DocumentDirectoryPath + `/${filename}`
-        const data =`
-,DateTime,Time,SensorTime,HR,IBI,PAMP,DAMP,PPG,DIF,DIG,ST,AccX,PVW,PVWD1
-0,2020-10-17 09:34:44.000,0.0,788.927,35,1702,1005,147,44061,0,0,26,0,947.0,
-1,2020-10-17 09:34:44.040,0.04,788.967,35,1702,1005,147,44062,2,0,26,-1,946.0,-1.0
-2,2020-10-17 09:34:44.060,0.06,788.987,35,1702,1005,147,44078,-4,0,27,-1,930.0,-16.0
-3,2020-10-17 09:34:44.080,0.08,789.007,35,1702,1005,147,44079,-4,0,26,0,929.0,-1.0
-4,2020-10-17 09:34:44.100,0.1,789.027,35,1702,1005,147,44092,-7,0,26,-1,916.0,-13.0
-5,2020-10-17 09:34:44.120,0.12,789.047,35,1702,1005,147,44093,-8,0,26,-1,915.0,-1.0
-6,2020-10-17 09:34:44.140,0.14,789.067,35,1702,1005,147,44117,-10,0,26,0,891.0,-24.0
-7,2020-10-17 09:34:44.160,0.16,789.087,35,1702,1005,147,44121,-11,0,26,0,887.0,-4.0
-8,2020-10-17 09:34:44.181,0.181,789.108,35,1702,1005,147,44140,-12,0,26,0,868.0,-19.0
-9,2020-10-17 09:34:44.201,0.201,789.128,35,1702,1005,147,44155,-15,0,26,-1,853.0,-15.0
-10,2020-10-17 09:34:44.221,0.221,789.148,35,1702,1005,147,44180,-16,0,26,0,828.0,-25.0
-`
-        
-        // write the file
-        RNFS.writeFile(path, data, 'utf8')
-        .then((success) => {
-            console.log('FILE WRITTEN!');
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });
-        // const session_name = username + '_' + filename
-        dispatch(addRecording(username,filename))
-        // console.log('sesion name',session_name)
+
+//stop scan
+export const stopScan = () => {
+    return (dispatch, getState, DeviceManager) => {
+        DeviceManager.stopDeviceScan()
+        dispatch(changeStatus('disconnected')) //updates status and isConnected. 
     }
 }
-//=====================================================END=============================================
 
 //==============================================HELPER FUNCTIONS=======================================
 //helper function for reading 
@@ -283,6 +385,7 @@ let values_p = {
     ibi_p: 0, // Previous value of interbeat interval acquired from BLE sensor
     digOut_p: 0, // Previous value of digital Out
     hrv_fifo: [], // HRV-fifo, length 100, used to calculate pnn50
+    deltaT_p: 0 //to calculate total change in time
 }
 //reset will be called before on each time monitor is called
 const reset = () => {
@@ -291,88 +394,22 @@ const reset = () => {
         ibi_p: 0, // Previous value of interbeat interval acquired from BLE sensor
         digOut_p: 0, // Previous value of digital Out
         hrv_fifo: [], // HRV-fifo, length 100, used to calculate pnn50
+        deltaT_p: 0
     }
-}
-
-//Taken from Dr. Amar Basu parsing function in traceapp-cordova
-const parseData = (base64, dispatch) => {
-    //Convert from base 64 to byte array
-    var binary_string = atob(base64);
-    var len = binary_string.length;
-    var data = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
-        data[i] = binary_string.charCodeAt(i);
-    }
-
-    var vcnlCurrent  = data[0];
-    var bpm = data[1];
-    var skinTemp  = data[2];
-    if (data[2] & 0x80) {
-      skinTemp = -((~skinTemp & 0xff) + 1);
-    } // Two's complement
-    skinTemp = 25 + skinTemp/4;
-    var accelX = data[3];
-    if (data[3] & 0x80) {
-      accelX = -((~accelX & 0xff) + 1);
-    } // Two's complement
-    var ibi  = (data[5] << 8) + data[4];
-    var pamp  = (data[7] << 8) + data[6];
-    var damp  = (data[9] << 8) + data[8]; // data[8];
-    var ppg  = (data[11] << 8) + data[10];
-    var dif ;
-    if (data[13] & 0x80) {
-      dif = -((~dif & 0xff) + 1);
-    } // Two's complement
-    var digOut  = data[14];
-    var curTime  =
-        ((data[18] << 24) + (data[17] << 16) + (data[16] << 8) + data[15]) *
-        9.846e-6;
-    var deltaT = curTime - values_p.time_p;
-
-    // Do these updates only at the beginning of each beat
-    if (values_p.digOut_p == 0 && digOut == 1) {
-      var hrv = ibi - values_p.ibi_p;
-      values_p.ibi_p = ibi;
-
-      // manage the hrv fifo and calculate pnn50
-      values_p.hrv_fifo.push(hrv);
-      if (values_p.hrv_fifo.length > 100) {
-        values_p.hrv_fifo.shift();
-      }
-      const reducer = (accumulator, currentValue) => accumulator + (currentValue >=50);
-      var pnn50 = values_p.hrv_fifo.reduce(reducer, 0)/values_p.hrv_fifo.length;
-    //   console.log('pnn50',pnn50.toFixed(3))
-
-      // call dispatch and update pnn50 and hrv
-      dispatch(updatedHRV(hrv))
-      dispatch(updatedPNN50(pnn50.toFixed(3)))
-    }
-
-    values_p.time_p = curTime
-    values_p.digOut_p = digOut
-    // Log the data
-    var stats = [
-      curTime.toFixed(3),
-      bpm,
-      ibi,
-      pamp,
-      damp,
-      ppg,
-      dif,
-      digOut,
-      skinTemp,
-      accelX,
-      "\n",
-    ];
-    console.log('stats',stats)
-    return stats
 }
 
 //reference: https://github.com/itinance/react-native-fs#Examples
+/**
+ * Write/Append to text file
+ *
+ * @param {string} path absolute path to a text file
+ * @param {string[]} metrics array containing the metrics
+ * @return {void} writes/appends to text file
+ */
 const writeToFile = (path,metrics) => {
     RNFS.exists(path).then((exists) => {
         if(exists){
-          RNFS.write(path,metrics.toString(),-1,'utf8').then(success => {
+          RNFS.write(path,metrics.toString() + '\n',-1,'utf8').then(success => {
             console.log('FILE APPENDED')
           }).catch(err => {
             console.log(err.message)

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,12 +11,12 @@ import {
   Modal,
   Dimensions,
   Platform,
+  TextInput,
 } from 'react-native';
 import Header from '../components/Header-Component';
 import RTTimer from '../components/RTTimer';
 import RTData from '../components/RTData';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-//import SensorAlert from '../components/ConnectToSensorAlert';
 import Swiper from 'react-native-swiper';
 import Plot from '../components/RTPlot';
 
@@ -25,6 +25,10 @@ import { onDisconnect, stopTransaction, updateMetric , updateRecordings} from '.
 import { sleep } from '../utils/sleep';
 import AsyncStorage from '@react-native-community/async-storage';
 import {UserContext} from '../contexts/UserContext';
+import axios from 'axios';
+import Toast from 'react-native-simple-toast';
+import { usePrevious } from '../hooks/usePrevious';
+import ModalComponent from '../components/Modal-Component';
 
 //require module
 var RNFS = require('react-native-fs');
@@ -40,21 +44,34 @@ const mapStateToProps = state => ({
   hrv: state.DATA['hrv'],
   connectedDevice: state.BLE['connectedDevice'],
   metrics: state.BLE['metrics'], //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
-  recordings: state.BLE['recordings']
+  recordings: state.BLE['recordings'],
+  isConnected : state.BLE['isConnected'],
+  busy: state.BLE['busy']
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateMetric: () => dispatch(updateMetric()),
+  updateMetric: (timeout, label) => dispatch(updateMetric(timeout, label)),
   stopTransaction: ID => dispatch(stopTransaction(ID)),
-  addRecording: (username) => dispatch(updateRecordings(username))
 })
 
 const RealTimeScreen = (props) => {
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
 
-  var path = RNFS.DocumentDirectoryPath + '/test.txt';
+    showToast()
+  }, [isConnected])
+  //End Toast
 
-  const user = useContext(UserContext);
 
+  const user = useContext(UserContext)
   const [content,setContent] = useState()
 
   const read = () => {
@@ -70,44 +87,34 @@ const RealTimeScreen = (props) => {
 
   var interval;
   const onStart = async () => {
-
-    props.updateMetric();
+    props.updateMetric(undefined, 'RT');
 
   }
 
   const onStop = async () => {
     console.log('Cancelling transaction...')
     props.stopTransaction(transactionID);
-  
+    setVisible(true)
   }
-
-  const pressed = () => {
-    props.addRecording(user.username)
-  }
+  const [visible, setVisible] = useState(false)
 
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}>
-      <ScrollView>
-         <Header openDrawer={props.navigation.openDrawer} />
-         <Text style={styles.title}>Real-Time Data</Text>
-         {/* <Button
-         title='Show Value'
-         onPress={() => console.log(isStart)}/> */}
-        <TouchableOpacity style={styles.button} onPress={() => onStart()}>
-            <Text style={styles.buttonText}>Start</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => onStop()}>
-            <Text style={styles.buttonText}>Stop</Text>
-          </TouchableOpacity> 
-    {/* sendData={this.testTimer} */}
-        <View style={styles.NavBarDivider}/>
-        {/* <Swiper style={styles.wrapper} showsButtons loop={false} autoplay={false}> */}
+        <Header openDrawer={props.navigation.openDrawer}/>
+        <ModalComponent visible={visible} setVisible={setVisible}/>
+        <ScrollView>
+        <Text style={styles.title}>Real-Time Data</Text>
+        <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
+          <Text style={styles.buttonText}>Start</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || !props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy}>
+          <Text style={styles.buttonText}>Stop</Text>
+        </TouchableOpacity> 
         <View testID="Data" style={styles.wrapper}>
           {/* <Text style={styles.slideTitles}>Biometric Data by Numbers</Text> */}
           <RTData></RTData>
         </View>
-
       </ScrollView> 
     </View>
   );
@@ -148,13 +155,13 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    //marginHorizontal: '10%',
-    marginVertical: 4,
-    color: '#202020',
-    fontWeight: 'bold',
-    fontSize: 30,
-    paddingBottom: 20,
-    textAlign: 'center',
+        //marginHorizontal: '10%',
+        marginVertical: 4,
+        color: '#202020',
+        fontWeight: 'bold',
+        fontSize: 30,
+        paddingBottom: 20,
+        textAlign:'center'
   },
   valueTitle: {
     fontWeight: 'bold',

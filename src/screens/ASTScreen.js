@@ -77,15 +77,43 @@ import {
 import Header from '../components/Header-Component';
 import Timer from '../components/Timer';
 import Animate from '../components/HRVSurvey';
-import SensorAlert from '../components/ConnectToSensorAlert';
 import Swiper from 'react-native-swiper';
 import Plot from '../components/ASTPlot';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
+import Toast from 'react-native-simple-toast';
+import {connect} from 'react-redux';
+import { usePrevious } from '../hooks/usePrevious';
+
+//redux states to props
+function mapStateToProps(state){
+  return{
+    isConnected : state.BLE['isConnected'],
+  };
+}
+
+
 var check = false;
 
-const ASTScreen = ({navigation}, props) => {
+const ASTScreen = (props) => {
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+
+    showToast()
+  }, [isConnected])
+  //End Toast
+
+
   const [modalVisible, setModalVisible] = useState(false);
+
 
 
   const handleCheck = (checkedId) => {
@@ -95,9 +123,9 @@ const ASTScreen = ({navigation}, props) => {
   //const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.container}>
+      <Header openDrawer={props.navigation.openDrawer} />
       <KeyboardAvoidingScrollView>
-        <Header openDrawer={navigation.openDrawer}></Header>
-        <Text style={styles.title}>Active StandUp Test (AST)</Text>
+        <Text style={styles.title}>Active StandUp Test {'\n'}(AST)</Text>
         <View>{check && <SensorAlert />}</View>
         <Timer />
    
@@ -176,7 +204,7 @@ const ASTScreen = ({navigation}, props) => {
   );
 };
 
-export default ASTScreen;
+export default connect(mapStateToProps, null) (ASTScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -205,14 +233,13 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    justifyContent:'center',
-    alignItems:'center',
-   // marginHorizontal: '10%',
-    //marginVertical: 10,
+    //marginHorizontal: '10%',
+    marginVertical: 4,
     color: '#202020',
     fontWeight: 'bold',
-    fontSize: 25,
-   paddingBottom: 20,
+    fontSize: 30,
+    paddingBottom: 20,
+    textAlign:'center'
   },
   button: {
     alignItems: 'center',

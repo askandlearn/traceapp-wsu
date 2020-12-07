@@ -112,9 +112,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignContent: 'center',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
+    // ...Platform.select({
+    //   ios: {paddingTop: 50},
+    // }),
   },
   //   valueContainer:{
   //     marginVertical:'-2%',

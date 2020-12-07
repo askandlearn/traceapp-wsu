@@ -140,9 +140,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
+    // ...Platform.select({
+    //   ios: {paddingTop: 50},
+    // }),
   },
   backgroundImage: {
     alignSelf: 'center',

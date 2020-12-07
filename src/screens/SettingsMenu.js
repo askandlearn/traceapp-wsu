@@ -27,18 +27,9 @@ const SettingsMenu = (props) => {
     <View
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{backgroundColor: '#f1f1f2', flex: 1}}>
-      <KeyboardAvoidingScrollView>
         <Header openDrawer={props.navigation.openDrawer} />
-        <View
-          style={{
-            borderBottomWidth: 1,
-            backgroundColor: '#f1f1f2',
-            borderColor: '#f1f1f2',
-          }}>
-          {/* <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>     */}
-          {/*<Text style={styles.title}>Settings</Text> */}
-        </View>
-        <View style={{backgroundColor: '#f1f1f2', flex: 1}}>
+      <KeyboardAvoidingScrollView>
+        
           <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
             <SettingsList.Header headerStyle={{marginTop: 15}} />
             <SettingsList.Item
@@ -54,7 +45,7 @@ const SettingsMenu = (props) => {
             />
             <SettingsList.Item title="Sync My Data" onPress={() => props.navigation.navigate('SyncData')} />
           </SettingsList>
-        </View>
+        
       </KeyboardAvoidingScrollView>
     </View>
   );
@@ -64,20 +55,12 @@ const SettingsMenu = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: '#f1f1f2', flex: 1,
     ...Platform.select({
-      ios: {paddingTop: 50},
+      ios: {marginTop: 20},
     }),
   },
-  backgroundImage: {
-    alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 70,
-    width: '60%',
-    height: 100,
-    resizeMode: 'stretch',
-  },
+ 
   inputFields: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: '10%',

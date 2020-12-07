@@ -287,9 +287,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     //alignItems: 'center',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
+    // ...Platform.select({
+    //   ios: {paddingTop: 50},
+    // }),
   },
   backgroundImage: {
     alignSelf: 'center',

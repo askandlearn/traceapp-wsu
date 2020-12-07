@@ -13,7 +13,7 @@ const Header = ({openDrawer}) => (
   <View style={{paddingBottom: 0}}>
   <View style={styles.header}>
     <TouchableOpacity onPress={() => openDrawer()}>
-      <Icon name="menu" size={30} paddingVertical={50} color='white' />
+      <Icon name="menu" size={35} paddingVertical={50} color='white' />
     </TouchableOpacity>
   </View>
   </View>
@@ -27,7 +27,9 @@ const styles = StyleSheet.create({
    //justifyContent: 'space-between',
     alignItems: 'flex-start',
     //paddingHorizontal: 20,
-    padding: Platform.OS === 'ios' ? 20 : 10,
+    padding: Platform.OS === 'ios' ? 15 : 10,
+    paddingTop:Platform.OS === 'ios' ? 45 : 10,
+  
     // backgroundColor: '#ff0000'
     // backgroundColor: '#000030'
     backgroundColor: '#242852',

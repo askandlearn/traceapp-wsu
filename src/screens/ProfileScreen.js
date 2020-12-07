@@ -973,9 +973,9 @@ const styles = StyleSheet.create({
 
     //alignItems: 'center',
     //justifyContent: 'center',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
+    // ...Platform.select({
+    //   ios: {paddingTop: 50},
+    // }),
   },
   content:{
     fontSize: 17,

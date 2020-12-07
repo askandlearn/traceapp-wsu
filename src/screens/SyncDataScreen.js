@@ -144,6 +144,7 @@ const SyncDataScreen = props => {
     return (
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
+             <KeyboardAvoidingScrollView>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => props.navigation.pop()}>
                     <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
@@ -163,6 +164,8 @@ const SyncDataScreen = props => {
                     <View style={{marginBottom: 80}}/>
                 }
             />
+           
+            </KeyboardAvoidingScrollView>
             <TouchableOpacity onPress={() => remove()} style={styles.button}>
                 <Text style={styles.buttonText}>Sync</Text>
             </TouchableOpacity>
@@ -210,7 +213,7 @@ const styles = StyleSheet.create({
         width: '50%',
         alignItems: 'center',
         marginHorizontal: '10%',
-        marginVertical: 20,
+        marginVertical: 30,
         padding: 10,
         borderRadius: 20,
         backgroundColor: '#ff0000',

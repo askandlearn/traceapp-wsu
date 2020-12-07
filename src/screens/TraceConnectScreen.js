@@ -68,8 +68,9 @@ const TraceConnectScreen = props => {
       </TouchableOpacity>
       <Text>Connection status: {props.status}</Text>
       <View style={[styles.bluetooth]}>
-        <Image source={require('../images/Trace-3DTransparent.png')} />
+        <Image source={require('../images/Trace-3DTransparent.png')} style={styles.deviceImage}/>
       </View>
+      <View style={[styles.blinker, {backgroundColor: props.isConnected ? 'green' : 'red'}]}/>
     </View>
   );
 };
@@ -110,14 +111,14 @@ const styles = StyleSheet.create({
     marginTop: 80,
     borderWidth: 0,
     padding: 5,
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 150,
     borderRadius: 50,
     alignContent: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'gray'
+    // backgroundColor: 'gray',
     borderColor: 'black',
-    borderWidth: 1
+    // borderWidth: 1
     
   },
   header: {
@@ -127,6 +128,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
+  },
+  deviceImage: {
+    alignSelf: 'center',
+    width: 200,
+    height: 200
+  },
+  blinker:{
+    marginTop: 40,
+    borderWidth: 0,
+    padding: 5,
+    width: 20,
+    height: 20,
+    borderRadius: 50,
+    alignContent: 'center',
+    // backgroundColor: 'gray',
+    borderColor: 'black',
+    // borderWidth: 1
+    backgroundColor: 'green'
   },
 });
 

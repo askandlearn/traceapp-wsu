@@ -9,7 +9,7 @@ export default UserInfo = () => {
 
   const [name] = useState(() => {
     if (user) {
-      return user.name;
+      return user.first_name + ' ' + user.last_name;
     } else {
       return '';
     }

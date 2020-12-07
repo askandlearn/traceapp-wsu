@@ -58,7 +58,7 @@ const HRVScreen = (props) => {
   return (
     <View style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
-      <KeyboardAvoidingScrollView>
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
         <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
         <View>
         <Modal
@@ -137,6 +137,9 @@ const HRVScreen = (props) => {
 export default connect(mapStateToProps, null) (HRVScreen);
 
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:60,
+  },
   container: {
     flex: 1,
     backgroundColor: '#ffffff',

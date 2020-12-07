@@ -124,7 +124,7 @@ const ASTScreen = (props) => {
   return (
     <View style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
-      <KeyboardAvoidingScrollView>
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
         <Text style={styles.title}>Active StandUp Test {'\n'}(AST)</Text>
         <View>{check && <SensorAlert />}</View>
         <View>
@@ -201,6 +201,9 @@ const ASTScreen = (props) => {
 export default connect(mapStateToProps, null) (ASTScreen);
 
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:60,
+  },
   container: {
     flex: 1,
     backgroundColor: '#ffffff',

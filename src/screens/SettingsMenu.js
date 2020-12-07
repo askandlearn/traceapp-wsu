@@ -28,7 +28,7 @@ const SettingsMenu = (props) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{backgroundColor: '#f1f1f2', flex: 1}}>
         <Header openDrawer={props.navigation.openDrawer} />
-      <KeyboardAvoidingScrollView>
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
         
           <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
             <SettingsList.Header headerStyle={{marginTop: 15}} />
@@ -54,8 +54,12 @@ const SettingsMenu = (props) => {
 };
 
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:80
+  },
   container: {
-    backgroundColor: '#f1f1f2', flex: 1,
+    backgroundColor: '#f1f1f2', 
+    flex: 1,
     ...Platform.select({
       ios: {marginTop: 20},
     }),

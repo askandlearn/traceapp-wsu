@@ -574,7 +574,7 @@ const checkLastName = (val) =>{
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
-      <KeyboardAvoidingScrollView>
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
         <View style={styles.header} />
         <View style={styles.avatar}>
           <Text style={styles.avatar_text}>{initials}</Text>
@@ -885,6 +885,9 @@ const checkLastName = (val) =>{
               STYLE SHEET
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:50
+  },
   avatar: {
     flex: 1,
     justifyContent: 'center',
@@ -970,7 +973,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-
+    
     //alignItems: 'center',
     //justifyContent: 'center',
     // ...Platform.select({

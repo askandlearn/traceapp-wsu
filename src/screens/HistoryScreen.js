@@ -130,9 +130,9 @@ const HistoryScreen = (props) => {
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
             <Header openDrawer={props.navigation.openDrawer} />
-            <FlatList 
+            <FlatList style={styles.bodyMain}
                 ListHeaderComponent={
-                    <KeyboardAvoidingScrollView>
+                    <KeyboardAvoidingScrollView >
                     <View>
                         <Text style={styles.title}>Recording History</Text>
                     </View>
@@ -153,11 +153,13 @@ const HistoryScreen = (props) => {
 }
 
 const styles = StyleSheet.create({
+    bodyMain:{
+        marginTop:60,
+      },
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
         alignContent:'center',
-    
       },
     title:{
         alignSelf: 'center',

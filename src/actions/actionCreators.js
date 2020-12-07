@@ -96,10 +96,11 @@ export const setBusy = (val) => ({
  * 
  * @returns {state} unsynced: {user, files:[...files,newFile]}
  */
-export const addSync = (user, file) => ({
+export const addSync = (user, file, info) => ({
     type: 'ADD_SYNC',
     user: user,
-    file: file
+    file: file,
+    info: info
 })
 /**
  * Remove unsynced file

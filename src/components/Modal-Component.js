@@ -32,7 +32,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     remove: () => dispatch(removeRecording()),
-    add: (user, file) => dispatch(addSync(user, file))
+    add: (user, file, info) => dispatch(addSync(user, file, info))
 })
 
 
@@ -76,7 +76,7 @@ const ModalComponent = (props) => {
             "device_type": "HRM-AA",
             "device_sn": "2",
             "device_firmware": "1.02",
-            "app_version": '1.00', //currently hard-coded
+            "app_version": '1.00', //needs to be 1.00
             "app_hardware": app_hardware,
             "app_os": app_os,
             "app_os_version": app_os_version
@@ -93,7 +93,7 @@ const ModalComponent = (props) => {
         formData.append("device_type","HRM-AA")
         formData.append("device_sn","2")    //need a way to get this info
         formData.append("device_firmware","1.02")   //need a way to get this info
-        formData.append("app_version", "1.00") //bad request when getting the app_version 
+        formData.append("app_version", "1.00") //needs to be to be the hundreth value
         formData.append("app_hardware", app_hardware)
         formData.append("app_os", app_os)
         formData.append("app_os_version", app_os_version)
@@ -142,13 +142,13 @@ const ModalComponent = (props) => {
           }
           else{
             console.log('FAILURE',response.status)
-            props.add(user.username, file)
-            alert('Failure')
+            props.add(user.username, file, session)
+            alert('Unable to sync. Please sync manually.')
           }
         } catch (error) {
           console.log('TRY..CATCH',error.message)
-          props.add(user.username, file)
-          alert('Faiuledres')
+          props.add(user.username, file, session)
+          alert('Unable to sync. Please sync manually.')
         } finally {
           setComment('')
           setDescription('')

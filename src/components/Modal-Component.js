@@ -76,7 +76,7 @@ const ModalComponent = (props) => {
             "device_type": "HRM-AA",
             "device_sn": "2",
             "device_firmware": "1.02",
-            "app_version": app_version,
+            "app_version": '1.0', //currently hard-coded
             "app_hardware": app_hardware,
             "app_os": app_os,
             "app_os_version": app_os_version
@@ -84,16 +84,16 @@ const ModalComponent = (props) => {
         console.log(session)
         // console.log('In upload...')
         const formData = new FormData()
-        formData.append("start_time",start_time)
+        formData.append("start_time","2020-11-02T14:50:05Z")
         formData.append("label",label)
-        formData.append("description",description)
+        formData.append("description","description")
         formData.append('datafile',datafile)
         formData.append("comments",comment)
         formData.append("highlight",false)
         formData.append("device_type","HRM-AA")
         formData.append("device_sn","2")    //need a way to get this info
         formData.append("device_firmware","1.02")   //need a way to get this info
-        formData.append("app_version", app_version)
+        formData.append("app_version", "1.0") //bad request when getting the app_version 
         formData.append("app_hardware", app_hardware)
         formData.append("app_os", app_os)
         formData.append("app_os_version", app_os_version)
@@ -147,6 +147,9 @@ const ModalComponent = (props) => {
         } catch (error) {
           console.log('TRY..CATCH',error.message)
           props.add(user.username, file)
+        } finally {
+          setComment('')
+          setDescription('')
         }
     }
     

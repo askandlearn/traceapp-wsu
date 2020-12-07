@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateMetric: () => dispatch(updateMetric()),
+  updateMetric: (timeout, label) => dispatch(updateMetric(timeout, label)),
   stopTransaction: ID => dispatch(stopTransaction(ID)),
 })
 
@@ -65,7 +65,7 @@ ASTPlot = (props) => {
   }
   var plot;
   const onStart = async () => {
-    props.updateMetric();
+    props.updateMetric(undefined, 'HRV');
   }
 
   useEffect(()=>{
@@ -89,6 +89,7 @@ ASTPlot = (props) => {
   const config={
     displaylogo:false,
     responsive:true,
+    modeBarButtonsToRemove: ['toImage','lasso2d']
   }
 
   const [visible, setVisible] = useState(false)

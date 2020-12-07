@@ -14,7 +14,7 @@ export function SyncDataStackNavigator(){
             <SyncDataStack.Screen name="FileModal" component={ModalScreen} options={({route,navigation}) => ({
                 title: route.params.file,
                 headerStyle: {
-                    backgroundColor: '#ff0000',
+                    backgroundColor: '#242852',
                 },
                 headerTintColor: '#fff',
                 headerTitleStyle: {

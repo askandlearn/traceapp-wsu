@@ -26,31 +26,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
    //justifyContent: 'space-between',
     alignItems: 'flex-start',
-    paddingHorizontal: 20,
+    //paddingHorizontal: 20,
     padding: Platform.OS === 'ios' ? 20 : 10,
     // backgroundColor: '#ff0000'
     // backgroundColor: '#000030'
     backgroundColor: '#242852',
 
   },
-  backgroundImage: {
-    alignSelf: 'center',
-   // justifyContent: 'space-between',
-   // marginTop: 30,
-    //marginBottom: 70,
-    width: '20%',
-    height: 35,
-    resizeMode: 'stretch',
-    paddingLeft: 120,
-    marginLeft: 90,
-  },
-  text:{
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 18,
-    alignSelf: 'center',
-    marginLeft: 10,
-  }
+  
+  
 
 });
 

@@ -5,12 +5,15 @@ import { onDisconnect, stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Timer from './Timer';
+import { usePrevious } from '../hooks/usePrevious';
+import ModalComponent from '../components/Modal-Component';
 
 const mapStateToProps = state => ({
   hrv: state.DATA['hrv'],
   connectedDevice: state.BLE['connectedDevice'],
   metrics: state.DATA['metrics'], //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
-  busy: state.BLE['busy'],
+  isConnected : state.BLE['isConnected'],
+  busy: state.BLE['busy']
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -22,6 +25,38 @@ const mapDispatchToProps = dispatch => ({
 const transactionID = 'monitor_metrics'
 
  App =(props)=>{
+  const {isConnected} = props
+ // const prev = usePrevious(isConnected)
+    const [minutes, setMinutes] = useState(3);
+    const [seconds, setSeconds] = useState(0);
+    const [startDisabled, setStartDisabled] = useState(true);
+    const [stopDisabled, setStopDisabled] = useState(false);
+    const[timer, setTimer] = useState(null);
+
+    const start = () => {
+      var tempSeconds = seconds;
+      var tempMinutes = minutes;
+      let timer = setInterval(() => {
+            if (tempSeconds > 0) {
+                console.log("thing");
+                tempSeconds = tempSeconds - 1
+                setSeconds(tempSeconds);             
+            }
+            if (tempSeconds === 0) {
+                if (tempMinutes === 0) {
+                    clearInterval(timer)
+                } else {
+                    tempMinutes = tempMinutes - 1;
+                    tempSeconds = 59;
+                    setMinutes(tempMinutes);
+                    setSeconds(tempSeconds);
+                }
+            } 
+        }, 1000);
+        setTimer(timer);
+    }
+
+    
   const [isHR, setHR]= useState([
     {
       // type: "scatter",
@@ -53,7 +88,7 @@ const transactionID = 'monitor_metrics'
   const setPlot=()=>{
     // console.log("Started Timer");
    
-    if(isNewData[0].y.length>15){
+    if(isNewData[0].y.length>100){
       isNewData[0].y.push(props.metrics[1]);
       //console.log("y second"+isNewData[0].y);
       isNewData[0].y.shift();
@@ -73,7 +108,7 @@ const transactionID = 'monitor_metrics'
   const setPAMPVal=()=>{
     console.log("Started PAMP");
    
-    if(isNewPAMP[0].y.length>15){
+    if(isNewPAMP[0].y.length>100){
       isNewPAMP[0].y.push(props.metrics[3]);
       //console.log("y second"+isNewData[0].y);
       isNewPAMP[0].y.shift();
@@ -92,6 +127,12 @@ const transactionID = 'monitor_metrics'
   }
   const onStart = async () => {
     props.updateMetric();
+    if(isConnected===true)
+    {
+      start();
+      setStartDisabled(true);
+      setStopDisabled(false);
+    }
    // plot=setInterval(() => {
       //setPlot();
     //}, 5000);
@@ -110,10 +151,16 @@ const onStop = async () => {
   console.log('Cancelling transaction...')
   props.stopTransaction(transactionID);
   //var currentTimeInSeconds=Math.floor(Date.now()/1000)
-  
+  setVisible(true)
+  clearInterval(timer);
+        setStartDisabled(false);
+        setStopDisabled(true);    
+        setMinutes(3);
+        setSeconds(0);
   //console.log()
  // clearInterval(plot);
 }
+const [visible, setVisible] = useState(false)
 const [layout, setLayout]=useState({
   title: 'HR vs Time',
   showlegend:true 
@@ -122,7 +169,9 @@ const [layout, setLayout]=useState({
 //   title: 'PAMP vs Time',
 //   showlegend:true 
 // })
-
+if (minutes===0 && seconds===0){
+  onStop();
+}
 const config={
   displaylogo:false,
   responsive:true,
@@ -164,12 +213,20 @@ const config={
   
     return (
       <View style={styles.container}>
-      <Timer/>
+        <ModalComponent visible={visible} setVisible={setVisible}/>
+      {/* <Timer/> */}
+      <Text style={{justifyContent:'center', alignSelf:'center'}}>
+            { minutes === 0 && seconds === 0
+                ? <Text>Busted!</Text>
+                : <Text>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
+            }
+            </Text>
       <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
+        
         <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => onStop()}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || !props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy}>
           <Text style={styles.buttonText}>Stop</Text>
         </TouchableOpacity>
       </View>

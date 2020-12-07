@@ -135,8 +135,7 @@ const ASTScreen = (props) => {
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(false)
-        }}
-        >
+        }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
           <Text style={{fontWeight: 'bold', marginBottom:10}}>AST Instructions</Text>

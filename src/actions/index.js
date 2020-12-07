@@ -265,8 +265,8 @@ export const updateMetric = (timeout, label = 'NONE') => {
                         pnn50 = values_p.hrv_fifo.reduce(reducer, 0)/values_p.hrv_fifo.length;
                         //   console.log('pnn50',pnn50.toFixed(3))
                         // 1)
-                        // dispatch(updatedHRV(hrv))
-                        // dispatch(updatedPNN50(pnn50.toFixed(3)))
+                        dispatch(updatedHRV(hrv))
+                        dispatch(updatedPNN50(pnn50.toFixed(3)))
                     }
 
                     values_p.time_p = curTime
@@ -289,19 +289,19 @@ export const updateMetric = (timeout, label = 'NONE') => {
                         console.log('dispatched')
                         prevDispatch = totalT.toFixed(3)   //update prevDispatch to current total time
                         // 1)
-                        // dispatch(updatedMetrics(stats))
+                        dispatch(updatedMetrics(stats))
 
                         // 2)
-                        if(hrv && pnn50){
-                            batch(() => {
-                                dispatch(updatedMetrics(stats))
-                                dispatch(updatedHRV(hrv))
-                                dispatch(updatedPNN50(pnn50.toFixed(3)))
-                            })
-                        }
-                        else{
-                            dispatch(updatedMetrics(stats))
-                        }
+                        // if(hrv && pnn50){
+                        //     batch(() => {
+                        //         dispatch(updatedMetrics(stats))
+                        //         dispatch(updatedHRV(hrv))
+                        //         dispatch(updatedPNN50(pnn50.toFixed(3)))
+                        //     })
+                        // }
+                        // else{
+                        //     dispatch(updatedMetrics(stats))
+                        // }
                     }
 
                     //write to a text file

@@ -194,22 +194,11 @@ const Timer = () => {
     const [stopDisabled, setStopDisabled] = useState(false);
     const[timer, setTimer] = useState(null);
 
-    
-   /* constructor( props ) {
-      super( props );
-
-      this.onButtonStart = this.onButtonStart.bind(this);
-      this.onButtonStop = this.onButtonStop.bind(this);
-      this.onButtonClear = this.onButtonClear.bind(this);
-      this.start = this.start.bind(this);
-  }*/
 
     const start = () => {
       var tempSeconds = seconds;
       var tempMinutes = minutes;
       let timer = setInterval(() => {
-           
-
             if (tempSeconds > 0) {
                 console.log("thing");
                 tempSeconds = tempSeconds - 1

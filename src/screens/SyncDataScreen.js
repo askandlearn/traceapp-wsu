@@ -48,7 +48,6 @@ const SyncDataScreen = props => {
     const [LAST, setLast] = useState(props.recordings.length - 1)
 
     const remove = () => {
-        // console.log(props.recordings[LAST])
         upload(props.recordings[LAST])
         // props.remove()
 
@@ -65,7 +64,7 @@ const SyncDataScreen = props => {
         var path = RNFS.DocumentDirectoryPath + '/' + file;
 
         //get saved session info
-        const sesssion = props.info[LAST]
+        const session = props.info[LAST]
         const {start_time, label, description, comment} = session
 
 
@@ -81,7 +80,6 @@ const SyncDataScreen = props => {
             type: 'text/plain',
             name: file    //name of test file
         }
-
         // console.log('In upload...')
         const formData = new FormData()
         formData.append("start_time",start_time)
@@ -128,8 +126,9 @@ const SyncDataScreen = props => {
             //if response is successful, the accepted status is 201 - CREATED
             if(response.status == 201){
                 console.log('SUCCESS',response.status)
-                setLast(LAST-1)
-                props.remove()
+                // setLast(LAST-1)
+                // props.remove()
+                alert('Success')
             }
             else{
                 console.log('FAILURE',response.status)

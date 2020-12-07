@@ -21,13 +21,13 @@ const logo = '../images/TraceBio-White.png';
 //Create variable instances for each required field
 
 const SignUpScreen = (props) => {
-  const [username, setUsername] = userState(' ');
-  const [firstName, setFirstName] = useState('Mo');
-  const [lastName, setLastName] = useState('Ha');
-  const [birthdate, setBirthdate] = useState('1999-12-10');
-  const [email, setEmail] = useState('test@email.com');
-  const [password, setPassword] = useState('pass123');
-  const [confirmPass, setConfirmPass] = useState('pass123');
+  const [username, setUsername] = useState('testuser');
+  const [firstName, setFirstName] = useState('Mohammed');
+  const [lastName, setLastName] = useState('Hamza');
+  const [birthdate, setBirthdate] = useState();
+  const [email, setEmail] = useState('mohammza@gmail.com');
+  const [password, setPassword] = useState('password123');
+  const [confirmPass, setConfirmPass] = useState('password123');
   
 
   //export context
@@ -45,7 +45,6 @@ const SignUpScreen = (props) => {
     isValidBirthdate: true,
     isValidPassword: true,
     isSamePassword: true,
-    isFilled: false,
   });
 
   //Console log each variable for error handling
@@ -173,6 +172,27 @@ const SignUpScreen = (props) => {
       });
     }
   };
+
+  const submit = async () => {
+    try {
+      if(!(username && firstName && lastName && email && password && confirmPass)){
+        alert('Fields cannot be blank')
+        throw 'Blank field'
+      }
+      setLoading(true);
+      const user = { username: username, first_name: firstName, last_name: lastName, email: email, password: password }
+      await register(
+        user,
+        props.navigation.navigate,
+      );
+    } catch (error) {
+      console.log('Error: ' + error);
+    } finally {
+      setLoading(false);
+    }
+      
+  }
+
 //Page display starts here
   return (
     <View style={styles.container}>
@@ -183,7 +203,7 @@ const SignUpScreen = (props) => {
         </View>
         <TextInput
           style={styles.inputFields}
-          placeholder="username"
+          placeholder="Username"
           value={username}
           onChangeText={(val) => setUsername(val)}
           onEndEditing={(e) => handleUsername(e.nativeEvent.text)}
@@ -291,23 +311,7 @@ const SignUpScreen = (props) => {
         <TouchableOpacity
           title="Submit"
           style={styles.button}
-          onPress={async () => {
-            try {
-              setLoading(true);
-              await register(
-                username,
-                email,
-                password,
-                firstName,
-                lastName,
-                birthdate,
-                props.navigation.navigate,
-              );
-              setLoading(false);
-            } catch (error) {
-              console.log('Error: ' + error.message);
-            }
-          }}>
+          onPress={() => submit()}>
           <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
         <View style={styles.flexContainer}>

@@ -122,19 +122,8 @@ export function useAuth(){
     ***************************************************/
     register: async (user, navigate) => {
         console.log('Register')
-        
-        const body = `{
-            "username": "mohammad",
-            "password": "tracewsu!",
-            "email": "mohamzza",
-            "first_name": "Mohammed",
-            "last_name": "Hamza",
-            "profile": {
-                "birthdate": null,
-                "sex": "NA",
-                "zip": ""
-            }
-        }`;
+        console.log(user)
+
         const config = {
             headers: {'Content-Type':'application/json'},
             timeout: 2000
@@ -142,17 +131,30 @@ export function useAuth(){
 
 
         const url = 'http://www.trace.bio:8000/api/User';
-        const result = await axios.post(url, body, config).then(res => res.data).catch(err => {
+        const result = await axios.post(url, {
+            "username": user.username,
+            "password": user.password,
+            "email": user.emai,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "profile": {
+                "sex": "NA"
+            }
+        }, config).catch(err => {
             console.log('Error: ' + err)
             alert('Registration failed ')
         })
 
-        console.log(result)
-        // if (result === SUCCESS_MESSAGE) {
-        //     // props.navigation.navigate('Login');
-        //     console.log('Navigate to login')
-        //     navigate('Login')
-        // }
+        if(result){
+            // console.log(result)  //debugging purposes
+            if(result.status == 201){
+                alert('Registration successful. Please sign in.')
+                navigate('Login')
+            }
+            else{
+                alert('Registration failed')
+            }
+        }
     },
 
     /**************************************************

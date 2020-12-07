@@ -137,11 +137,11 @@ const HomeScreen = (props) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
-      <KeyboardAvoidingScrollView>
-        <Image
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
+        {/* <Image
           style={styles.backgroundImage}
           source={require('../images/TraceBio-Black.png')}
-        />
+        /> */}
         <Text style={styles.title}>Health Dashboard</Text>
         <DropDownPicker
           items={[
@@ -283,20 +283,24 @@ const HomeScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:60
+  },
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
+
     //alignItems: 'center',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
+    // ...Platform.select({
+    //   ios: {paddingTop: 50},
+    // }),
   },
   backgroundImage: {
     alignSelf: 'center',
     marginTop: 30,
     marginBottom: 0,
-    width: '60%',
-    height: 100,
+    width: '50%',
+    height: 90,
     resizeMode: 'stretch',
   },
   inputFields: {

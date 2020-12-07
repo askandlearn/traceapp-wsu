@@ -87,9 +87,9 @@ const RealTimeScreen = (props) => {
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}>
-        <Header openDrawer={props.navigation.openDrawer}/>
-        <ModalComponent visible={visible} setVisible={setVisible}/>
-        <ScrollView>
+      <Header openDrawer={props.navigation.openDrawer}/>
+      <ModalComponent visible={visible} setVisible={setVisible}/>
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
         <Text style={styles.title}>Real-Time Data</Text>
         <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
@@ -99,8 +99,8 @@ const RealTimeScreen = (props) => {
         </TouchableOpacity> 
         <View testID="Data" style={styles.wrapper}>
           <RTData></RTData>
-        </View>
-      </ScrollView> 
+        </View>   
+      </KeyboardAvoidingScrollView> 
     </View>
   );
 };
@@ -108,13 +108,17 @@ const RealTimeScreen = (props) => {
 export default connect(mapStateToProps, mapDispatchToProps) (RealTimeScreen);
 
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:60,
+   
+  },
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
     alignContent: 'center',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
+    // ...Platform.select({
+    //   ios: {paddingTop: 50},
+    // }),
   },
   //   valueContainer:{
   //     marginVertical:'-2%',

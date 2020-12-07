@@ -124,7 +124,7 @@ const ASTScreen = (props) => {
   return (
     <View style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
-      <KeyboardAvoidingScrollView>
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
         <Text style={styles.title}>Active StandUp Test {'\n'}(AST)</Text>
         <View>{check && <SensorAlert />}</View>
         <View>
@@ -135,8 +135,7 @@ const ASTScreen = (props) => {
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(false)
-        }}
-        >
+        }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
           <Text style={{fontWeight: 'bold', marginBottom:10}}>AST Instructions</Text>
@@ -202,12 +201,15 @@ const ASTScreen = (props) => {
 export default connect(mapStateToProps, null) (ASTScreen);
 
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:60,
+  },
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
+    // ...Platform.select({
+    //   ios: {paddingTop: 50},
+    // }),
   },
   backgroundImage: {
     alignSelf: 'center',

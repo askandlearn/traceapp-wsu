@@ -120,29 +120,39 @@ export function useAuth(){
     /**************************************************
                     NEW USER REGISTRATION
     ***************************************************/
-    register: async (email, password, firstName, lastName, birthdate, navigate) => {
+    register: async (user, navigate) => {
         console.log('Register')
-        const SUCCESS_MESSAGE = 'User Registered Successfully!';
-        const url = 'http://192.168.1.189/PHP-API/user_registration.php';
-        const result = await axios.post(url, {
-            type: 'signup',
-            email: email,
-            password: password,
-            firstName: firstName,
-            lastName: lastName,
-            birthdate: birthdate,
+        
+        const body = `{
+            "username": "mohammad",
+            "password": "tracewsu!",
+            "email": "mohamzza",
+            "first_name": "Mohammed",
+            "last_name": "Hamza",
+            "profile": {
+                "birthdate": null,
+                "sex": "NA",
+                "zip": ""
+            }
+        }`;
+        const config = {
+            headers: {'Content-Type':'application/json'},
+            timeout: 2000
+        }
 
-        }).then(res => res.data).catch(err => {
-            console.log('Error: ' + err.message)
+
+        const url = 'http://www.trace.bio:8000/api/User';
+        const result = await axios.post(url, body, config).then(res => res.data).catch(err => {
+            console.log('Error: ' + err)
+            alert('Registration failed ')
         })
 
-        Alert.alert(result);
-        //console.log(result)
-        if (result === SUCCESS_MESSAGE) {
-            // props.navigation.navigate('Login');
-            console.log('Navigate to login')
-            navigate('Login')
-        }
+        console.log(result)
+        // if (result === SUCCESS_MESSAGE) {
+        //     // props.navigation.navigate('Login');
+        //     console.log('Navigate to login')
+        //     navigate('Login')
+        // }
     },
 
     /**************************************************

@@ -13,7 +13,8 @@ import axios from 'axios';
 var RNFS = require('react-native-fs');
 
 const mapStateToProps = state => ({
-    recordings: state.UNSYNCED.unsynced.files
+    recordings: state.UNSYNCED.unsynced.files,
+    info: state.UNSYNCED.unsynced.info,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -63,6 +64,10 @@ const SyncDataScreen = props => {
         //get file path
         var path = RNFS.DocumentDirectoryPath + '/' + file;
 
+        //get saved session info
+        const sesssion = props.info[LAST]
+        const {start_time, label, description, comment} = session
+
 
         //get all the device information
         const app_version = DeviceInfo.getVersion()
@@ -77,58 +82,23 @@ const SyncDataScreen = props => {
             name: file    //name of test file
         }
 
-        // const session = {
-        //     "start_time": start_time,
-        //     "label": label,
-        //     "description": description,
-        //     "datafile": datafile,
-        //     "comments": comment,
-        //     "highlight": false,
-        //     "device_type": "HRM-AA",
-        //     "device_sn": "2",
-        //     "device_firmware": "1.02",
-        //     "app_version": app_version,
-        //     "app_hardware": app_hardware,
-        //     "app_os": app_os,
-        //     "app_os_version": app_os_version
-        // }
-
         // console.log('In upload...')
         const formData = new FormData()
-        // formData.append("start_time","2020-11-02T14:50:05Z")
-        // formData.append("label",label)
-        // formData.append("description","description")
-        // formData.append('datafile',datafile)
-        // formData.append("comments",comment)
-        // formData.append("highlight",false)
-        // formData.append("device_type","HRM-AA")
-        // formData.append("device_sn","2")    //need a way to get this info
-        // formData.append("device_firmware","1.02")   //need a way to get this info
-        // formData.append("app_version", app_version)
-        // formData.append("app_hardware", app_hardware)
-        // formData.append("app_os", app_os)
-        // formData.append("app_os_version", app_os_version)
-
-        
-        // Working example
-        const start_time = new Date();
-        formData.append("start_time",start_time.toISOString())
-        formData.append("label","TEST")
-        formData.append("description","")
+        formData.append("start_time",start_time)
+        formData.append("label",label)
+        formData.append("description",description)
         formData.append('datafile',datafile)
-        formData.append("comments","Test comment...")
+        formData.append("comments",comment)
         formData.append("highlight",false)
         formData.append("device_type","HRM-AA")
-        formData.append("device_sn","2")
-        formData.append("device_firmware","1.02")
-        formData.append("app_version","1.12")
-        // formData.append("app_hardware","Moto G5S")
-        // formData.append("app_os","Android")
-        // formData.append("app_os_version","9.0")
-        // formData.append("app_version", app_version)
+        formData.append("device_sn","2")    //need a way to get this info
+        formData.append("device_firmware","1.02")   //need a way to get this info
+        formData.append("app_version", "1.00")  
         formData.append("app_hardware", app_hardware)
         formData.append("app_os", app_os)
         formData.append("app_os_version", app_os_version)
+
+    
     
         //debugging purposes
         // console.log('FORMDATA object appended to')
@@ -162,10 +132,12 @@ const SyncDataScreen = props => {
                 props.remove()
             }
             else{
-            console.log('FAILURE',response.status)
+                console.log('FAILURE',response.status)
+                alert('Unable to sync. Please try again later.')
             }
         } catch (error) {
             console.log('TRY..CATCH',error.message)
+            alert('Unable to sync. Please try again later.')
             // props.add(user.username, file)
         }
     }

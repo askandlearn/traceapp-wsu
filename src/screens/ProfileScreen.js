@@ -608,14 +608,15 @@ const checkLastName = (val) =>{
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
-      <KeyboardAvoidingScrollView style={styles.bodyMain}>
+      
         <View style={styles.header} />
         <View style={styles.avatar}>
           <Text style={styles.avatar_text}>{initials}</Text>
         </View>
+        
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
-            <Text style={styles.name}>{currentUser.username}</Text>
+            <Text style={styles.name} >{currentUser.username}</Text>
             {/* remove
             <TextInput    
               value={currentUser.username}
@@ -626,6 +627,7 @@ const checkLastName = (val) =>{
           {/*       ~~~~~~  Add section title back later ~~~~~~
           <Text style={styles.profileCategory}>Basic Info:</Text>
             */}
+            <KeyboardAvoidingScrollView style={styles.bodyMain}>
             <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Name: </Text>
@@ -789,69 +791,15 @@ const checkLastName = (val) =>{
        
           </TouchableOpacity>
           <View style={styles.contentBorder} />
-          
-
-
-            {/*
-            City/State to be removed??
-            
-            
-            <Text style={styles.contentTitle}>City: </Text>
-            <TextInput
-              placeholder='City (optional)'
-              placeholderTextColor="#a1a2a6"
-              textContentType='addressCity'
-              style={styles.content}
-              />
-          </TouchableOpacity>
-          <View style={styles.contentBorder} />
-          <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>State: </Text>
-            <TextInput
-              placeholder='State (optional)'
-              placeholderTextColor="#a1a2a6"
-              textContentType='addressState'
-              style={styles.content}/>
-          </TouchableOpacity>
-          <View style={styles.contentBorder} />
-          <TouchableOpacity style={styles.horizontal}>
-          */}
-
-          {/* Height/Weight are not in the api schema
-
-
-          <View style={styles.contentBorder} />
-          <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>Height (cm): </Text>
-            <TextInput
-              placeholder='Height (optional)'
-              placeholderTextColor="#a1a2a6"
-              value={currentUser.height}
-              editable={isEditable}
-              style={styles.content}
-              onChangeText={(height) => setCurrentUser({...currentUser, height: height})}/>
-          </TouchableOpacity>
-          <View style={styles.contentBorder} />
-          <TouchableOpacity style={styles.horizontal}>
-            <Text style={styles.contentTitle}>Weight (lbs): </Text>
-            <TextInput
-              placeholder='Weight (optional)'
-              placeholderTextColor="#a1a2a6"  
-              value={currentUser.weight}
-              editable={isEditable}
-              style={styles.content}
-              onChangeText={(weight) => setCurrentUser({...currentUser, weight: weight})}/>
-          </TouchableOpacity>
-        */}
           <View style={styles.contentBorder}/>
           <View style={styles.horizontal}>
             <Text style={styles.contentTitleGender}>Gender: </Text>
             <Modal
-          animationType="slide"
-          transparent={true}
-          visible={showModalGender}
-          onRequestClose={() => {console.log('Closed gender text input window');}}
-          >
+              animationType="slide"
+              transparent={true}
+              visible={showModalGender}
+              onRequestClose={() => {console.log('Closed gender text input window');}}
+              >
             <View style={styles.modalView}>
             <TouchableOpacity onPress={()=>closeModalGender()}>
                 <Icon name='close-box-outline' size={30} alignSelf="flex-start" ></Icon>
@@ -885,7 +833,7 @@ const checkLastName = (val) =>{
         <Text style={styles.content} onPress={()=> {setShowModalGender(!showModalGender)}}>{currentUser.gender}</Text>
           </View>
           <View style={styles.contentBorder} />
-       
+          </KeyboardAvoidingScrollView>
           {/*
 
             wellness goals not in the api schema
@@ -908,8 +856,9 @@ const checkLastName = (val) =>{
             onPress={saveChanges}
           />
       */}
+      
         </View>
-      </KeyboardAvoidingScrollView>
+      
       <View style={{marginTop: 20}} />
     </View>
   );
@@ -923,7 +872,7 @@ const styles = StyleSheet.create({
     marginTop:50
   },
   avatar: {
-    flex: 1,
+    //flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: 150,
@@ -931,23 +880,29 @@ const styles = StyleSheet.create({
     borderRadius: 100 / 2,
     borderWidth: 4,
     borderColor: 'white',
-    marginBottom: 10,
+    //marginBottom: 10,
     alignSelf: 'center',
     // position: 'absolute',
-    marginTop: 25,
+    marginTop: 100,
     backgroundColor: '#242852',
+    shadowColor: '#000000',
+    shadowOffset: {width: 3, height: 3},
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
+    elevation: 1,
   },
   avatar_text: {
     alignSelf: 'center',
     fontSize: 75,
     color: 'white',
-    textShadowColor: '#656885',
-    textShadowRadius: 50,
+    //textShadowColor: '#656885',
+    //textShadowRadius: 50,
+    backgroundColor: '#242852',
   },
   backgroundImage: {
     alignSelf: 'center',
     marginTop: 30,
-    marginBottom: 70,
+    //marginBottom: 70,
     width: '60%',
     height: 100,
     resizeMode: 'stretch',
@@ -982,6 +937,7 @@ const styles = StyleSheet.create({
     elevation: 1,
     color: 'white',
     fontWeight: 'bold',
+    
   },
   buttonContainerGender:{
     alignItems: 'center',
@@ -1022,6 +978,7 @@ const styles = StyleSheet.create({
     //marginHorizontal: '5%',
     //paddingLeft: 45,
     flex: 1,
+    
    // backgroundColor: 'white',
   },
   contentBirthdate: {
@@ -1033,11 +990,13 @@ const styles = StyleSheet.create({
    marginHorizontal: '10%',
     //marginVertical: 5,
     flex: 1,
+    
   },
   contentBorder: {
     borderBottomColor: 'gainsboro', 
     borderBottomWidth: 1,
     width: 350,
+    paddingVertical:5
     //paddingHorizontal: .6
   },
   contentEmail:{
@@ -1047,6 +1006,7 @@ const styles = StyleSheet.create({
      color: 'black',
     //marginHorizontal: '5%',
     //paddingLeft: 45,
+    
     flex: 1,
   },
   contentTitle: {
@@ -1071,7 +1031,8 @@ const styles = StyleSheet.create({
   horizontal: {
     flexDirection: 'row',
     alignContent: 'center',
-    marginHorizontal: 5
+    marginHorizontal: 5,
+    
   },
   inputFields: {
     backgroundColor: '#FFFFFF',
@@ -1081,6 +1042,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     opacity: 0.4,
     borderRadius: 3,
+    
   },
   modalContent: {
     justifyContent: 'center',
@@ -1139,6 +1101,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color:'black',
     fontStyle: 'italic',
+    textTransform:'capitalize',
+    marginTop:10,
   },
   profileCategory: {
     fontSize: 15,

@@ -215,12 +215,12 @@ const config={
       <View style={styles.container}>
         <ModalComponent visible={visible} setVisible={setVisible}/>
       {/* <Timer/> */}
-      <Text style={{justifyContent:'center', alignSelf:'center'}}>
+      <View style={styles.timer}>
             { minutes === 0 && seconds === 0
-                ? <Text>Busted!</Text>
-                : <Text>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
+                ? <Text>Test Completed</Text>
+                : <Text style={{fontSize:30, alignSelf:'center', color:'#242852'}}>{minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
             }
-            </Text>
+            </View>
       <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
         
         <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
@@ -260,6 +260,8 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   container: {
+
+    //backgroundColor:'#242852', 
     //paddingTop: 5,
     width: '100%',
     height: '100%',
@@ -337,5 +339,22 @@ const styles = StyleSheet.create({
     elevation: 5,
 
   },
+  timer:{
+    justifyContent:'center', 
+    alignSelf:'center', 
+    alignContent:'center',
+    paddingVertical: 5,
+    paddingHorizontal:15,
+    height:110,
+    width:110,
+    borderRadius: 60,
+    borderWidth:5,
+    borderColor:'#242852',
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 1,
+  }
 
 });

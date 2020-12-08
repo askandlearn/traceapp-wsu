@@ -28,6 +28,7 @@ const SettingsMenu = (props) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{backgroundColor: '#f1f1f2', flex: 1}}>
         <Header openDrawer={props.navigation.openDrawer} />
+        <Text style={styles.title}>Settings</Text>
       <KeyboardAvoidingScrollView style={styles.bodyMain}>
         
           <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
@@ -55,13 +56,14 @@ const SettingsMenu = (props) => {
 
 const styles = StyleSheet.create({
   bodyMain:{
-    marginTop:80
+    marginTop:25,
+    paddingTop:30
   },
   container: {
     backgroundColor: '#f1f1f2', 
     flex: 1,
     ...Platform.select({
-      ios: {marginTop: 20},
+      ios: {marginTop: 10},
     }),
   },
  
@@ -76,11 +78,29 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    color: '#202020',
+    //marginHorizontal: '10%',
+    //marginVertical: 4,
+    color: '#242852',
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 37,
+    //paddingBottom: ,
+    //paddingLeft:15,
+    marginTop:25,
+    paddingTop:65,
+   
+    //textAlign:'center',
+    shadowColor: '#000000',
+    shadowOffset: {width: .5, height: 1},
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 
+        //'CourierNewPS-BoldMT'
+        'AppleSDGothicNeo-Bold'
+      },
+    }),
   },
   button: {
     //alignSelf: 'center',

@@ -18,12 +18,18 @@ const Header = ({openDrawer}) => (
   // </View>
   // </View>
   
-      <View style={{ backgroundColor: '#242852', height: 80 }}>
+      <View style={{ backgroundColor: '#242852', height: 70,  }}>
+        
         <Svg
-          height="120%"
+          height="190%"
           width="100%"
           viewBox="0 0 1440 320"
-          style={{ position: 'absolute', top: 50 }}
+          style={{ position: 'absolute', top: 25, 
+          shadowColor: '#000000',
+          shadowOffset: {width: 2, height: 3},
+          shadowOpacity: 0.4,
+          shadowRadius: 3,
+          elevation: 1, }}
         >
           
           <Path
@@ -38,6 +44,10 @@ const Header = ({openDrawer}) => (
         <TouchableOpacity onPress={() => openDrawer()} style={styles.icon}>
             <Icon name="menu" size={40} paddingVertical={50} color='white' />
           </TouchableOpacity>
+        
+          {/* <View style={{flexDirection:'row', }}>
+          <Text style={{color:'white', paddingTop:5,  textAlign:'center'}}>TRACE Bio</Text>
+          </View> */}
       </View>
   
   
@@ -46,9 +56,9 @@ const Header = ({openDrawer}) => (
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    flexDirection: 'row',
+    //flexDirection: 'row',
    //justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    //alignItems: 'flex-start',
     //paddingHorizontal: 20,
     padding: Platform.OS === 'ios' ? 15 : 10,
     paddingTop:Platform.OS === 'ios' ? 45 : 10,
@@ -60,7 +70,12 @@ const styles = StyleSheet.create({
   },
   icon:{
    paddingLeft:20,
-   paddingTop:50
+   paddingTop:40,
+   shadowColor: '#000000',
+    shadowOffset: {width: 1, height: 2},
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 1,
   }
   
 

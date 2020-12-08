@@ -58,8 +58,16 @@ const HRVScreen = (props) => {
   return (
     <View style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
+      <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
+      <TouchableHighlight
+        style={styles.instructionButton}
+        onPress={() => {
+          setModalVisible(true);
+        }}
+      >
+        <Text style={styles.textStyle}>Show Instructions</Text>
+      </TouchableHighlight>
       <KeyboardAvoidingScrollView style={styles.bodyMain}>
-        <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
         <View>
         <Modal
         propagateSwipe
@@ -114,14 +122,7 @@ const HRVScreen = (props) => {
         </View>
       </Modal>
 
-      <TouchableHighlight
-        style={styles.button}
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      >
-        <Text style={styles.textStyle}>Show Instructions</Text>
-      </TouchableHighlight>
+      
         
         </View>
         <View style={styles.wrapper}>
@@ -138,7 +139,7 @@ export default connect(mapStateToProps, null) (HRVScreen);
 
 const styles = StyleSheet.create({
   bodyMain:{
-    marginTop:60,
+    marginTop:20,
   },
   container: {
     flex: 1,
@@ -167,12 +168,28 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     //marginHorizontal: '10%',
-    marginVertical: 4,
-    color: '#202020',
+    //marginVertical: 4,
+    color: '#242852',
     fontWeight: 'bold',
-    fontSize: 30,
-    paddingBottom: 20,
-    textAlign:'center'
+    fontSize: 32,
+    //paddingBottom: ,
+    //paddingLeft:15,
+    marginTop:25,
+    paddingTop:65,
+   
+    //textAlign:'center',
+    shadowColor: '#000000',
+    shadowOffset: {width: .5, height: 1},
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 
+        //'CourierNewPS-BoldMT'
+        'AppleSDGothicNeo-Bold'
+      },
+    }),
   },
   button: {
     alignItems: 'center',
@@ -185,6 +202,19 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 2,
+    elevation: 1,
+  },
+  instructionButton:{
+    backgroundColor:'#242852', 
+    alignSelf:'flex-end', 
+    padding: 10, 
+    marginTop:10, 
+    marginRight:10,
+    borderRadius: 5,
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
     elevation: 1,
   },
   buttonText: {

@@ -137,12 +137,12 @@ const HomeScreen = (props) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
+      <Text style={styles.title}>Health Dashboard</Text>
       <KeyboardAvoidingScrollView style={styles.bodyMain}>
         {/* <Image
           style={styles.backgroundImage}
           source={require('../images/TraceBio-Black.png')}
         /> */}
-        <Text style={styles.title}>Health Dashboard</Text>
         <DropDownPicker
           items={[
             {label: 'Results by Week', value: 'week'},
@@ -284,7 +284,8 @@ const HomeScreen = (props) => {
 
 const styles = StyleSheet.create({
   bodyMain:{
-    marginTop:60
+    marginTop:25,
+    paddingTop:30
   },
   container: {
     flex: 1,
@@ -315,12 +316,28 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     //marginHorizontal: '10%',
-    marginTop: 40,
-    color: '#202020',
+    //marginVertical: 4,
+    color: '#242852',
     fontWeight: 'bold',
-    fontSize: 30,
-    paddingBottom: 20,
-    textAlign:'center'
+    fontSize: 37,
+    //paddingBottom: ,
+    //paddingLeft:15,
+    marginTop:25,
+    paddingTop:65,
+   
+    //textAlign:'center',
+    shadowColor: '#000000',
+    shadowOffset: {width: .5, height: 1},
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 
+        //'CourierNewPS-BoldMT'
+        'AppleSDGothicNeo-Bold'
+      },
+    }),
   },
   button: {
     //alignSelf: 'center',

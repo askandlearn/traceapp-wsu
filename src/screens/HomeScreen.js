@@ -4,8 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  Image,
   Platform,
 } from 'react-native';
 import Header from '../components/Header-Component';
@@ -14,15 +12,12 @@ import {VictoryBar, VictoryChart, VictoryAxis, VictoryTooltip, VictoryVoronoiCon
 import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';
 import {Calendar} from 'react-native-calendars';
-import { withOrientation } from 'react-navigation';
 
 import Toast from 'react-native-simple-toast';
 import {connect} from 'react-redux';
 import { usePrevious } from '../hooks/usePrevious';
 
 const date = new Date();
-//newRealtimeData[0].y.shift();
- //newRealtimeData[0].x.push(this.state.count+1);
 const strDay = (day) => {  
   switch(day){
     case 0: return 'Sun';
@@ -290,11 +285,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-
-    //alignItems: 'center',
-    // ...Platform.select({
-    //   ios: {paddingTop: 50},
-    // }),
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -315,17 +305,11 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    //marginHorizontal: '10%',
-    //marginVertical: 4,
     color: '#242852',
     fontWeight: 'bold',
     fontSize: 37,
-    //paddingBottom: ,
-    //paddingLeft:15,
     marginTop:25,
     paddingTop:65,
-   
-    //textAlign:'center',
     shadowColor: '#000000',
     shadowOffset: {width: .5, height: 1},
     shadowOpacity: 0,
@@ -334,14 +318,11 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         fontFamily: 
-        //'CourierNewPS-BoldMT'
         'AppleSDGothicNeo-Bold'
       },
     }),
   },
   button: {
-    //alignSelf: 'center',
-    //width: '60%',
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
@@ -381,8 +362,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-
-    //alignItems: 'left',
   },
   header: {
     width: '100%',

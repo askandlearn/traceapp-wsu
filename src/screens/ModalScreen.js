@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useContext, useLayoutEffect} from 'react';
-import {View, Text, Button, ScrollView, StyleSheet, FlatList} from 'react-native';
+import React, {useEffect, useState,} from 'react';
+import {View, Text, StyleSheet, FlatList} from 'react-native';
 
 //require module
 var RNFS = require('react-native-fs');
@@ -105,8 +105,6 @@ const styles = StyleSheet.create({
         borderBottomColor: 'black',
         borderBottomWidth: 1,
         width: '100%'
-        // borderColor: 'red',
-        // borderWidth: 1
     },
     body: {
         borderWidth: 0,

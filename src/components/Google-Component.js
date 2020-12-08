@@ -9,8 +9,7 @@
  */
 
 import React from 'react';
-import {Component} from 'react';
-import {TouchableOpacity, StyleSheet, View, Text, Platform} from 'react-native';
+import {TouchableOpacity, StyleSheet, View, Text} from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -78,7 +77,6 @@ const GoogleComponent = ({height, width, text}) => {
 const styles = StyleSheet.create({
   button: {
     marginTop: 15,
-    // alignItems: 'center',
     flexDirection: 'row',
     width: 340,
     height: 48,
@@ -86,7 +84,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 5,
     alignSelf: 'center',
-    // justifyContent: 'center'
   },
   googleIcon: {},
   googleText: {

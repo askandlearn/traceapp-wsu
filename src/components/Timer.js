@@ -1,6 +1,6 @@
-import React, { Component, useState } from 'react'
+import React, {useState } from 'react'
 
-import {StyleSheet, Animated, Text, View, Button} from 'react-native';
+import {Text, View, Button} from 'react-native';
 const Timer = () => {
     
     const [minutes, setMinutes] = useState(3);

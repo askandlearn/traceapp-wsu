@@ -1,4 +1,4 @@
-import React, {Component, useState, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Alert,
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import * as Animatable from 'react-native-animatable';
@@ -290,24 +289,7 @@ const SignUpScreen = (props) => {
           </Animatable.View>
         )}
         {/* End of validation prompt */}
-        {/*         REMOVE BIRTHDATE FOR NOW}
-        <TextInput
-          style={styles.inputFields}
-          placeholder="Birthdate (yyyy-mm-dd)"
-          value={birthdate}
-          onChangeText={(val) => setBirthdate(val)}
-          onEndEditing={(e) => handleDate(e.nativeEvent.text)}
-        />
-        {/* Insert validation prompt */}
-        {/*}
-        {validation_flags.isValidBirthdate ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMessage}>
-              Format incorrect (yyyy-mm-dd){' '}
-            </Text>
-          </Animatable.View>
-        )}
-        {/* End of validation prompt */}
+
         <TextInput
           style={styles.inputFields}
           placeholder="Password"
@@ -376,7 +358,6 @@ const styles = StyleSheet.create({
   flexContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    //alignSelf:'center'
   },
   container: {
     flex: 1,
@@ -391,10 +372,8 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   nameContainer: {
-    // marginHorizontal:'10%',
     marginTop: '5%',
     justifyContent: 'space-between',
-    // alignContent:'center',
     alignSelf: 'center',
   },
   dobContainer: {
@@ -411,10 +390,7 @@ const styles = StyleSheet.create({
   },
 
   firstName: {
-    //width:'150%',
     height: 50,
-    //marginLeft: '20%',
-    // marginVertical: 5,
     padding: 13,
     marginLeft: '10%',
 
@@ -430,12 +406,10 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
   },
   lastName: {
-    //width:'150%',
     height: 50,
     marginHorizontal: '10%',
     marginVertical: 5,
     paddingVertical: 13,
-    // paddingHorizontal:'13%',
     fontWeight: 'bold',
     borderColor: 'rgba(0, 0, 0, .4)',
     borderWidth: 1,
@@ -469,7 +443,6 @@ const styles = StyleSheet.create({
     marginHorizontal: '10%',
     marginTop: '3%',
     color: '#202020',
-    // fontWeight:'bold',
     fontSize: 25,
   },
   button: {
@@ -493,7 +466,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 1,
     backgroundColor: 'black',
-    //width: '60%',
     marginHorizontal: '3%',
   },
   orOption: {
@@ -510,11 +482,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     color: 'red',
   },
-
-  // icons:{
-  //     color:'rgba(255,255,255,0.7)',
-  //     position:'absolute',
-  // }
 });
 
 export default SignUpScreen;

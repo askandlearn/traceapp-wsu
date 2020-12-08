@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, TouchableOpacity,Text, Dimensions, Linking } from 'react-native';
+import { StyleSheet, View, TouchableOpacity,Text, Dimensions} from 'react-native';
 import Plotly from 'react-native-plotly';
-import { onDisconnect, stopTransaction, updateMetric } from '../actions';
+import {stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
 import ModalComponent from './Modal-Component';
 

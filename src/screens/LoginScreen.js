@@ -1,4 +1,4 @@
-import React, {Component, useState, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -6,13 +6,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Button,
   Alert,
-  Platform,
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Google from '../components/Google-Component'
-import {set} from 'react-native-reanimated';
 import {Loading} from '../components/Loading-Component';
 import {AuthContext} from '../contexts/AuthContext';
 import * as Animatable from 'react-native-animatable';

@@ -5,19 +5,13 @@
  * @todo 
  * @author Trace Team Fall 2020.
  */
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  Button,
   TouchableOpacity,
-  Image,
-  BackgroundImage,
-  ScrollView,
   Modal,
-  Dimensions,
-  Platform,
   TextInput,
 } from 'react-native';
 import {connect} from 'react-redux';

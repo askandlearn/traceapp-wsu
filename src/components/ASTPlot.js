@@ -10,13 +10,10 @@
 
 
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Button, Text, TouchableOpacity, Image, Dimensions, Modal, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Button, Text, TouchableOpacity, Dimensions,} from 'react-native';
 import Plotly from 'react-native-plotly';
-import { onDisconnect, stopTransaction, updateMetric } from '../actions';
+import {stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
-import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import Timer from './Timer';
-import { usePrevious } from '../hooks/usePrevious';
 import ModalComponent from '../components/Modal-Component';
 
 const mapStateToProps = state => ({
@@ -37,7 +34,6 @@ const transactionID = 'monitor_metrics' //to pass into stopTransaction, not need
 
  App =(props)=>{
   const {isConnected} = props
- // const prev = usePrevious(isConnected)
     const [minutes, setMinutes] = useState(3);
     const [seconds, setSeconds] = useState(0);
     const [startDisabled, setStartDisabled] = useState(true);

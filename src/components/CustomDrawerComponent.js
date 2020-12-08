@@ -7,8 +7,8 @@
  * @author Trace Team Fall 2020.
  */
 import React, {useContext} from 'react'
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { View, StyleSheet, Text } from 'react-native';
+import {DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { View, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { AuthContext } from '../contexts/AuthContext';
 import UserInfo from '../components/UserInfoNav';
@@ -22,16 +22,6 @@ export function CusomDrawerComponent({...props}){
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                       {/* <View style={{flexDirection:'row', marginTop: 15}}>
-                            
-                            <View style={styles.avatar}>
-                                <Text style={styles.avatarText}>DA</Text>
-                            </View>
-                            <View style={{flexDirection:'column', marginLeft: 15}}>
-                                <Text style={styles.title}>Dana Abu</Text>
-                                <Text style={styles.caption}>test2@email.com</Text>
-                                </View>
-                            </View> */}
                     <UserInfo></UserInfo>
                     </View>
                     <View style={{borderBottomColor: 'black', borderBottomWidth: 2}}/>

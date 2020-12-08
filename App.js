@@ -9,7 +9,6 @@
 import React from 'react';
 import {
   createStackNavigator,
-  createAppContainer,
 } from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -33,10 +32,7 @@ import thunk from 'redux-thunk';
 import rootReducer from './src/reducers/index';
 
 //bleManager
-import { 
-  BleManager,
-  BleError 
-} from 'react-native-ble-plx';
+import { BleManager} from 'react-native-ble-plx';
 import AsyncStorage from '@react-native-community/async-storage';
 
 //Navigator
@@ -96,8 +92,6 @@ export default function () {
     );
   }
 
-  //For debuggin purpose
-  // console.log('State.user',state.user);
 
   return (
     <AuthContext.Provider value={auth}>

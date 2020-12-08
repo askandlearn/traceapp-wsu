@@ -3,11 +3,9 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 
 //Create the Welcome Page
 const WelcomeScreen = (props) => {

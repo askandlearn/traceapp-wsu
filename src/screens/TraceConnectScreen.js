@@ -1,23 +1,18 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
-  ScrollView,
   Text,
   StyleSheet,
   TouchableOpacity,
   Image,
   Platform,
-  ImageBackground,
 } from 'react-native';
-import Header from '../components/Header-Component';
-import { Loading } from '../components/Loading-Component';
-import { sleep } from '../utils/sleep';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //redux functions
 import {disconnectDevice, startScan, stopScan} from '../actions';
 import {connect} from 'react-redux';
-import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view';
+
 
 function mapStateToProps(state){
   return{
@@ -85,17 +80,11 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    //marginHorizontal: '10%',
-    //marginVertical: 4,
     color: '#242852',
     fontWeight: 'bold',
     fontSize: 30,
-    //paddingBottom: ,
-    //paddingLeft:15,
-   // marginTop:25,
     paddingTop:15,
    marginBottom:60,
-    //textAlign:'center',
     shadowColor: '#000000',
     shadowOffset: {width: .5, height: 1},
     shadowOpacity: 0,
@@ -104,7 +93,6 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         fontFamily: 
-        //'CourierNewPS-BoldMT'
         'AppleSDGothicNeo-Bold'
       },
     }),
@@ -136,10 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignContent: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'gray',
     borderColor: 'black',
-    // borderWidth: 1
-    
   },
   header: {
     width: '100%',

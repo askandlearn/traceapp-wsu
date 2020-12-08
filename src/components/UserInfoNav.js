@@ -22,19 +22,7 @@ export default UserInfo = () => {
     }
   });
 
-  //console.log(user);
-
-  //split name to get initials for avatar
-  /*
-  const initialzeAvatarText = () => {
-    if (user) {
-      const [first, last] = user.name.split(' ');
-      return first[0] + last[0];
-    } else {
-      return '';
-    }
-  };
-*/
+ 
 const initialzeAvatarText = () =>{
   if(user.first_name && user.last_name){
     const first_name = user.first_name;

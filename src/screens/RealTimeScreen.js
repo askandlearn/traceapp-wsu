@@ -3,28 +3,16 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   TouchableOpacity,
-  Image,
-  BackgroundImage,
-  ScrollView,
-  Modal,
-  Dimensions,
   Platform,
-  TextInput,
 } from 'react-native';
 import Header from '../components/Header-Component';
 import RTData from '../components/RTData';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import Swiper from 'react-native-swiper';
-import Plot from '../components/RTPlot';
 
 import {connect} from 'react-redux';
-import { onDisconnect, stopTransaction, updateMetric , updateRecordings} from '../actions';
-import { sleep } from '../utils/sleep';
-import AsyncStorage from '@react-native-community/async-storage';
+import {stopTransaction, updateMetric} from '../actions';
 import {UserContext} from '../contexts/UserContext';
-import axios from 'axios';
 import Toast from 'react-native-simple-toast';
 import { usePrevious } from '../hooks/usePrevious';
 import ModalComponent from '../components/Modal-Component';
@@ -115,16 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     alignContent: 'center',
-    // ...Platform.select({
-    //   ios: {paddingTop: 50},
-    // }),
   },
-  //   valueContainer:{
-  //     marginVertical:'-2%',
-  //     backgroundColor: '#ffffff',
-  //     alignContent:'center',
-  //   },
-
   inputFields: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: '10%',
@@ -136,17 +115,11 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    //marginHorizontal: '10%',
-    //marginVertical: 4,
     color: '#242852',
     fontWeight: 'bold',
     fontSize: 35,
-    //paddingBottom: ,
-   // paddingLeft:15,
     marginTop:25,
     paddingTop:65,
-   
-    //textAlign:'center',
     shadowColor: '#000000',
     shadowOffset: {width: .5, height: 1},
     shadowOpacity: 0,
@@ -155,7 +128,6 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         fontFamily: 
-        //'CourierNewPS-BoldMT'
         'AppleSDGothicNeo-Bold'
       },
     }),
@@ -169,12 +141,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignContent: 'center',
     justifyContent: 'center',
-    //resizeMode: 'stretch',
     paddingHorizontal: 8,
   },
   valueButton: {
     alignItems: 'center',
-    // alignContent:'center',
     justifyContent: 'center',
     marginHorizontal: '10%',
     marginBottom: '1%',
@@ -192,7 +162,6 @@ const styles = StyleSheet.create({
   },
   valueText: {
     color: '#000000',
-    //fontWeight: 'bold',
   },
   button: {
     alignItems: 'center',
@@ -246,22 +215,16 @@ const styles = StyleSheet.create({
    },
    slideTitles:{
     alignSelf: 'center',
-    //marginHorizontal: '10%',
-    //marginVertical: 50,
     color: '#202020',
     fontWeight: 'bold',
     fontSize: 30,
     textAlign: 'center',
    },
    slide2: {
-    // flex: 1,
      height:'100%',
-     //justifyContent: 'center',
      paddingVertical:'10%',
      paddingHorizontal:'10%',
      alignItems: 'center',
-    
-     //backgroundColor: '#97CAE5'
    },
 
   steps: {

@@ -1,11 +1,8 @@
-import React, {Component, useContext, useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  Image,
-  ScrollView,
   Platform,
 } from 'react-native';
 import SettingsList from 'react-native-settings-list';
@@ -34,11 +31,6 @@ const SettingsMenu = (props) => {
           <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
             <SettingsList.Header headerStyle={{marginTop: 15}} />
             <SettingsList.Item
-              title="Change Password"
-              titleInfoStyle={styles.titleInfoStyle}
-              onPress={() => props.navigation.navigate('ChangePassword')}
-            />
-            <SettingsList.Item
               title="Connect TRACE Sensor"
               titleInfo={props.isConnected ? 'Connected':'Disconnected'}
               titleInfoStyle={{color: props.isConnected ? 'green':'red'}}
@@ -51,7 +43,6 @@ const SettingsMenu = (props) => {
     </View>
   );
 
-  //this.setState({switchValue: value});
 };
 
 const styles = StyleSheet.create({
@@ -78,17 +69,11 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    //marginHorizontal: '10%',
-    //marginVertical: 4,
     color: '#242852',
     fontWeight: 'bold',
     fontSize: 37,
-    //paddingBottom: ,
-    //paddingLeft:15,
     marginTop:25,
     paddingTop:65,
-   
-    //textAlign:'center',
     shadowColor: '#000000',
     shadowOffset: {width: .5, height: 1},
     shadowOpacity: 0,
@@ -97,14 +82,11 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         fontFamily: 
-        //'CourierNewPS-BoldMT'
         'AppleSDGothicNeo-Bold'
       },
     }),
   },
   button: {
-    //alignSelf: 'center',
-    //width: '60%',
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {View, Image, StyleSheet, Animated, Easing, Text} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Image, StyleSheet, Animated} from 'react-native';
 
 export function SplashScreen() {
   const startValue = new Animated.Value(0);

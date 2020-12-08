@@ -10,21 +10,13 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   Platform,
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 const Header = ({openDrawer}) => (
-  // <View style={{paddingBottom: 0}}>
-  // <View style={styles.header}>
-  //   <TouchableOpacity onPress={() => openDrawer()} style={styles.icon}>
-  //     <Icon name="menu" size={35} paddingVertical={50} color='white' />
-  //   </TouchableOpacity>
-  // </View>
-  // </View>
+
   
       <View style={{ backgroundColor: '#242852', height: 70,  }}>
         
@@ -52,10 +44,6 @@ const Header = ({openDrawer}) => (
         <TouchableOpacity onPress={() => openDrawer()} style={styles.icon}>
             <Icon name="menu" size={40} paddingVertical={50} color='white' />
           </TouchableOpacity>
-        
-          {/* <View style={{flexDirection:'row', }}>
-          <Text style={{color:'white', paddingTop:5,  textAlign:'center'}}>TRACE Bio</Text>
-          </View> */}
       </View>
   
   
@@ -64,15 +52,8 @@ const Header = ({openDrawer}) => (
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    //flexDirection: 'row',
-   //justifyContent: 'space-between',
-    //alignItems: 'flex-start',
-    //paddingHorizontal: 20,
     padding: Platform.OS === 'ios' ? 15 : 10,
     paddingTop:Platform.OS === 'ios' ? 45 : 10,
-  
-    // backgroundColor: '#ff0000'
-    // backgroundColor: '#000030'
     backgroundColor: '#242852',
 
   },

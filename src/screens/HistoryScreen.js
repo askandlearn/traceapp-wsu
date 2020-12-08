@@ -1,10 +1,9 @@
 import React, {useEffect, useState, useContext, useCallback} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, Linking, FlatList, Platform, ScrollView, RefreshControl} from 'react-native';
+import {View, Text, StyleSheet, Linking, FlatList, Platform, RefreshControl} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Loading } from '../components/Loading-Component';
 import Toast from 'react-native-simple-toast';
 import {connect} from 'react-redux';

@@ -1,10 +1,9 @@
-import React, { useContext, useRef, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Animated, Button, FlatList, SafeAreaView, ScrollView } from 'react-native'
+import React, { useContext,useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native'
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import { removeSync } from '../actions/actionCreators';
-import { sleep } from '../utils/sleep';
 import DeviceInfo from 'react-native-device-info';  
 import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
@@ -49,14 +48,6 @@ const SyncDataScreen = props => {
 
     const remove = () => {
         upload(props.recordings[LAST])
-        // props.remove()
-
-        // const app_version = DeviceInfo.getVersion()
-        // const app_hardware = DeviceInfo.getModel()
-        // const app_os = DeviceInfo.getSystemName()
-        // const app_os_version = DeviceInfo.getSystemVersion()
-
-        // console.log(app_version);
     }
     
     const upload = async (file) => {
@@ -100,12 +91,7 @@ const SyncDataScreen = props => {
         formData.append("app_os", app_os)
         formData.append("app_os_version", app_os_version)
 
-    
-    
-        //debugging purposes
-        // console.log('FORMDATA object appended to')
-        // console.log(formData)
-    
+
         //axios request
         try {
             const response = await axios({
@@ -198,7 +184,6 @@ const styles = StyleSheet.create({
         ...Platform.select({
           ios: {
             fontFamily: 
-            //'CourierNewPS-BoldMT'
             'AppleSDGothicNeo-Bold'
           },
         }),

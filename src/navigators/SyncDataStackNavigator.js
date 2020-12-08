@@ -1,8 +1,8 @@
 import React from 'react'
-import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import SyncDataScreen from '../screens/SyncDataScreen';
 import ModalScreen from '../screens/ModalScreen';
-import { Button, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SyncDataStack = createStackNavigator();

@@ -1,15 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View,Text,StyleSheet,TouchableOpacity,Image,TextInput,Button,KeyboardAvoidingView,Platform,Modal,} from 'react-native';
+import {View,Text,StyleSheet,TouchableOpacity,TextInput,KeyboardAvoidingView,Platform,Modal,} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-import {useAuth} from '../hooks/useAuth';
 import {UserContext} from '../contexts/UserContext';
 import {AuthContext} from '../contexts/AuthContext';
-import { useScreens } from 'react-native-screens';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import SettingsList from 'react-native-settings-list';
 
 Icon.loadFont();
 
@@ -44,16 +41,7 @@ const ProfileScreen = (props) => {
   }, [isConnected])
   //End Toast
 
-
-  /*
-    props that should be passed when calling this screen
-    name:
-    DOB:
-    zip:
-    Password(?):
-    */
-
-  //avatar text
+ 
   //UserContext only has one value: user
   const user = useContext(UserContext);
   const {update} = useContext(AuthContext);
@@ -67,22 +55,6 @@ const ProfileScreen = (props) => {
   const [showModalGender, setShowModalGender] = useState(false); //gender
   const [showModalName, setShowModalName] = useState(false); //name (first + last)
 
-  
-  
-  /*
-  const [name, editName] = useState(() => {if (user.name) {return user.name;} else {return '';}});
-  const [email, setEmail] = useState(() => {if (user.email) {return user.email;} else {return '';}});
-  const [dob, editDOB] = useState(() => {if (user.birthdate) {return user.birthdate;} else {return '';}});
-  const [zip, editZip] = useState(() => {if (user.zip) {return user.zip;} else {return '';}});
-  const [height, editHeight] = useState(() => {if (user.height) {return user.height;} else {return '';}});
-  const [weight, editWeight] = useState(() => {if (user.weight) {return user.weight;} else {return '';}});
-  const [gender, editGender]  = useState(() => {if (user.gender) {return user.gender;} else {return '';}});
-*/
-
-  //Handle birthdate format change from the api
-  // const [api_year, api_month, api_day] = user.birthdate.split('-');
-  // const profileDate = (api_month + "/" + api_day + "/" + api_year);
-  // user.birthdate = profileDate;  
   
   
   //Create instance of current user
@@ -103,23 +75,6 @@ const ProfileScreen = (props) => {
     validZipLength: true,
     validBirthdate: true,
   })
-
-
-
- 
-  //Initialize avatar with the user initials 
-  /*
-  const initialzeAvatarText = () => {
-    
-    if (user) {
-    
-      const [first, last] = user.name.split(' ');
-      return first[0] + last[0];
-    } else {
-      return '';
-    }
-  };
-  */
 
  const initialzeAvatarText = () =>{
    if(user.first_name && user.last_name){
@@ -866,7 +821,6 @@ const styles = StyleSheet.create({
     marginTop:50
   },
   avatar: {
-    //flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: 150,
@@ -874,9 +828,7 @@ const styles = StyleSheet.create({
     borderRadius: 100 / 2,
     borderWidth: 4,
     borderColor: 'white',
-    //marginBottom: 10,
     alignSelf: 'center',
-    // position: 'absolute',
     marginTop: 100,
     backgroundColor: '#242852',
     shadowColor: '#000000',
@@ -889,20 +841,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 75,
     color: 'white',
-    //textShadowColor: '#656885',
-    //textShadowRadius: 50,
     backgroundColor: '#242852',
   },
   backgroundImage: {
     alignSelf: 'center',
     marginTop: 30,
-    //marginBottom: 70,
     width: '60%',
     height: 100,
     resizeMode: 'stretch',
   },
   body: {
-    //marginTop: 100,
     alignSelf: 'center',
   },
   button: {
@@ -927,8 +875,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal:15,
     borderRadius: 20,
-    //backgroundColor: '#445092',
-    //backgroundColor: '#ff0000',
     shadowColor: '#000000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
@@ -945,32 +891,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    
-    //alignItems: 'center',
-    //justifyContent: 'center',
-    // ...Platform.select({
-    //   ios: {paddingTop: 50},
-    // }),
   },
   content:{
     fontSize: 17,
      alignSelf: 'center',
      textAlign: 'right',
      color: 'black',
-    //marginHorizontal: '5%',
-    //paddingLeft: 45,
     flex: 1,
-    
-   // backgroundColor: 'white',
   },
   contentBirthdate: {
     fontSize: 17,
     alignSelf: 'center',
     textAlign: 'right',
     color: 'black',
-    //margin: 10,
    marginHorizontal: '10%',
-    //marginVertical: 5,
     flex: 1,
     
   },
@@ -979,15 +913,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     width: 350,
     paddingVertical:5
-    //paddingHorizontal: .6
   },
   contentEmail:{
     fontSize: 17,
      alignSelf: 'center',
      textAlign: 'right',
      color: 'black',
-    //marginHorizontal: '5%',
-    //paddingLeft: 45,
     
     flex: 1,
   },
@@ -1029,24 +960,18 @@ const styles = StyleSheet.create({
   modalContent: {
     justifyContent: 'center',
     alignItems: 'center',
-   // paddingVertical: 45
-    //padding: 10,
-    //marginTop:50,
   },
   modalBirthdate:{
     justifyContent: 'center',
     alignItems: 'center',
-   // alignSelf:'center'
    paddingTop:50
   },
   modalContentFLName:{
-    //fontWeight: 'bold',
     fontSize: 15,
     textAlign: 'left',
     color: 'black',
     paddingBottom: 5,
     paddingTop: 25,
-    //letterSpacing: 2.5,
   },
   modalContentTitle:{
     fontWeight: 'bold',
@@ -1057,10 +982,8 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     letterSpacing: 2.5,
   },
-  modalView:{
-    //flex: 1,    
-    paddingHorizontal: 35,
-    //paddingVertical: 10,   
+  modalView:{  
+    paddingHorizontal: 35,  
     justifyContent:'center'
   },
   exit:{
@@ -1090,7 +1013,6 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 30,
     fontWeight: '600',
-    //paddingTop: 5,
     paddingBottom: 25,
     alignSelf: 'center',
     color:'black',
@@ -1100,14 +1022,11 @@ const styles = StyleSheet.create({
   },
   profileCategory: {
     fontSize: 15,
-    //fontWeight: 'bold',
     paddingBottom: 10,
     color: 'black',
-
   },
   save: {
-    //come back to style the save button
-    //marginTop: 10,
+
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
@@ -1115,23 +1034,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#ff0000',
   },
-  // textInput: {
-  //   marginHorizontal: '10%',
-  //   marginVertical: 5,
-  //   width: '80%',
-  //   height: 50,
-  //   padding: 13,
-  //   fontWeight: 'bold',
-  //   borderColor: 'rgba(0, 0, 0, .4)',
-  //   borderWidth: 1,
-  //   color: 'rgba(0, 0, 0, 1)',
-  //   backgroundColor: 'rgba(255, 255, 255, 1)',
-  //   shadowColor: '#000000',
-  //   shadowOffset: {width: 1, height: 2},
-  //   shadowOpacity: 0.2,
-  //   shadowRadius: 1,
-  //   borderRadius: 20,
-  // },
+ 
   textInput: {
     width: '90%',
     marginHorizontal: '10%',

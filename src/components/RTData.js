@@ -15,7 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont();
 
-import { onDisconnect, stopTransaction, updateMetric } from '../actions';
+import {stopTransaction, updateMetric } from '../actions';
 //redux functions
 import {connect} from 'react-redux';
 

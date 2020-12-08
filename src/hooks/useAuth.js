@@ -1,5 +1,4 @@
 import React from 'react';
-import {Alert} from 'react-native';
 import { createAction } from '../utils/createAction';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
@@ -88,12 +87,9 @@ export function useAuth(){
                 email: results.email,
                 first_name: results.first_name,
                 last_name: results.last_name,
-                //name: results.first_name + ' ' + results.last_name,
                 birthdate: results.profile.birthdate,
                 gender: results.profile.sex,
                 zip: results.profile.zip,
-                height: null,   //will remove if not needed
-                weight: null,   //will remove if not needed
             }
             console.log('user:',user)
             console.log('Setting user using async...')
@@ -146,7 +142,6 @@ export function useAuth(){
         })
 
         if(result){
-            // console.log(result)  //debugging purposes
             if(result.status == 201){
                 alert('Registration successful. Please sign in.')
                 navigate('Login')
@@ -169,26 +164,7 @@ export function useAuth(){
             headers: {'Content-Type':'application/json', 'Authorization':`Token ${user.token}`},
             timeout: 2000
         }
-        //FORMAT BIRTHDATE FOR MM/DD/YYYY
-       // const [month, day, year] = user.birthdate.split('/');
-        
-        //convert to mm/dd/yy to int
-        /*
-        let intYear = parseInt(year, 10);
-      let intDay = parseInt(day, 10);
-      let intMonth = parseInt(month, 10);
-      intMonth = intMonth -1;
-
-      //Create new date object
-        var formatDate = new Date(user.birthdate);
-      
-        formatDate.setMonth(intMonth);
-        formatDate.setDate(intDay);
-        formatDate.setFullYear(intYear);
-        */
-
-        //console.log(formatDate)
-
+     
         const [month, day, year] = user.birthdate.split('/');
         var apiDate = (year + "-" + month + "-" + day);
         const response = await axios.patch(url, {
@@ -215,12 +191,9 @@ export function useAuth(){
                 email: results.email,
                 first_name: results.first_name,
                 last_name: results.last_name,
-                //name: results.first_name + ' ' + results.last_name,
                 birthdate: results.profile.birthdate,
                 gender: results.profile.sex,
                 zip: results.profile.zip,
-                height: null,   //will remove if not needed
-                weight: null,   //will remove if not needed
             }
             console.log('Setting updated...')
             await AsyncStorage.setItem('@user', JSON.stringify(updated))
@@ -232,7 +205,6 @@ export function useAuth(){
     }
 }), []);
 
-    // console.log(state.user);
     // get the @user from async storage. for session purposes
     React.useEffect(() => {
         sleep(1000).then(() => {

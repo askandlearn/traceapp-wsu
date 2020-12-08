@@ -65,7 +65,12 @@ ASTPlot = (props) => {
   }
   var plot;
   const onStart = async () => {
-    props.updateMetric(undefined, 'HRV');
+    if(isConnected) {
+      props.updateMetric(undefined, 'HRV');
+    }
+    else {
+      alert("TRACE device not connected.\n\n Connect your device and try again");
+    }
   }
 
   useEffect(()=>{

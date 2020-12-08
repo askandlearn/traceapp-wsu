@@ -179,6 +179,37 @@ const SignUpScreen = (props) => {
         alert('Fields cannot be blank')
         throw 'Blank field'
       }
+      
+      if(!validation_flags.isValidUsername || !validation_flags.isValidFirstName || !validation_flags.isValidLastName || !validation_flags.isValidEmail || !validation_flags.isValidBirthdate || !validation_flags.isValidPassword || !validation_flags.isSamePassword) {
+        if(!validation_flags.isValidUsername) {
+          alert('Invalid Username')
+          throw('Invalid Username')
+        }
+        if(!validation_flags.isValidFirstName) {
+          alert('Invalid First Name')
+          throw('Invalid Firt Name')
+        }
+        if(!validation_flags.isValidLastName) {
+          alert('Invalid Last Name')
+          throw('Invalid Last Name')
+        }
+        if(!validation_flags.isValidEmail) {
+          alert('Invalid Email')
+          throw('Invalid Email')
+        }
+        if(!validation_flags.isValidBirthdate) {
+          alert('Invalid Birthdate')
+          throw('Invalid Birthdate')
+        }
+        if(!validation_flags.isValidPassword) {
+          alert('Password must be at least 8 characters long')
+          throw('Invalid Password')
+        }
+        if(!validation_flags.isSamePassword){
+          alert('Passwords must match')
+          throw('Passwords do not match')        
+        }
+      }
       setLoading(true);
       const user = { username: username, first_name: firstName, last_name: lastName, email: email, password: password }
       await register(

@@ -130,7 +130,7 @@ export function useAuth(){
         }
 
 
-        const url = 'http://www.trace.bio:8000/api/User';
+        const url = 'http://134.209.76.190:8000/api/User';
         const result = await axios.post(url, {
             "username": user.username,
             "password": user.password,
@@ -142,7 +142,7 @@ export function useAuth(){
             }
         }, config).catch(err => {
             console.log('Error: ' + err)
-            alert('Registration failed ')
+            alert('A user with that username already exists ')
         })
 
         if(result){

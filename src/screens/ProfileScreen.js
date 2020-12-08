@@ -139,12 +139,29 @@ const ProfileScreen = (props) => {
   const checkFirstName = (val) =>{
     //Check if name is valid
    if(val.trim().length > 0 && val.trim().length < 150){
-     //Not empty, flag is true
+     //Not empty, 
+
+     //Not empty, now make sure valid characters are used 
+   //Use regular expression to test the string only contains alphabetical characters
+   var validFirst = /^[a-zA-Z]+$/;
+
+   if(validFirst.test(val)){
+     //If valid, flag is true
      console.log('Name is valid')
      setCheckValidations({
        ...checkValidations,
        validFirstName: true,
      })
+   }
+   else{
+     //Non-alphabetical characters used, flag is false
+     console.log('Name is not valid');
+     setCheckValidations({
+       ...checkValidations,
+       validFirstName: false,
+     })
+   }
+     
 
    }
    else{
@@ -162,15 +179,32 @@ const ProfileScreen = (props) => {
 //       VALIDATE LAST NAME
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const checkLastName = (val) =>{
-  //Check if name is valid
+  //Check if name length is valid
  if(val.trim().length > 0 && val.trim().length < 150){
 
-   //Not empty, flag is true
+   //Not empty, now make sure valid characters are used 
+   //Use regular expression to test the string only contains alphabetical characters
+   var validLast = /^[a-zA-Z]+$/;
+
+   if(validLast.test(val)){
+       //If valid, flag is true
    console.log('Name is valid')
    setCheckValidations({
      ...checkValidations,
      validLastName: true,
    })
+   }
+   else{
+     //The name provided contains non-alphabetical characters
+     //Flag must be set to false
+     console.log('Name is not valid');
+     setCheckValidations({
+       ...checkValidations,
+       validLastName: false,
+     })
+   }
+
+ 
  }
  else{
    //Empty, flag is false
@@ -277,7 +311,7 @@ const checkLastName = (val) =>{
     //Changes have been made for birthdate
     else{
       //Make sure birthdate has been entered in the 
-      //correct format: {mm/dd/yyy}
+      //correct format: {mm/dd/yyyy}
 
       //Use test the date against a regular expression for safety before spliting
       var validDate = /^((0?[1-9]|1[012])[/](0?[1-9]|[12][0-9]|3[01])[/](19|20)?[0-9]{2})*$/;
@@ -619,7 +653,7 @@ const checkLastName = (val) =>{
                {/* Insert validation prompt */}
                {checkValidations.validFirstName ? false : (
                <Animatable.View animation="fadeInLeft" duration={500}>
-                 <Text style={styles.errorMessage}> Field cannot be empty </Text>
+                 <Text style={styles.errorMessage}>  Only alphabetical characters are allowed. Field cannot be empty.  </Text>
               </Animatable.View>)}
               {/* End of validation prompt */}
 
@@ -636,7 +670,7 @@ const checkLastName = (val) =>{
         {checkValidations.validLastName ? false : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMessage}>
-              Field cannot be empty
+              Only alphabetical characters are allowed. Field cannot be empty. 
             </Text>
           </Animatable.View>
         )}

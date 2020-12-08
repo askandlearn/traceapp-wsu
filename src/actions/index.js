@@ -17,17 +17,34 @@ import {
 var RNFS = require('react-native-fs');
 
 //==========================================CONSTANTS=================================================
-// device constants
+/**
+ * Uuid for custom service we need to monitor to
+ * @type {string}
+ */
 const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb' 
 // For Android const deviceID = 'AB:89:67:45:11:FF'
 
-//For iOS
+/**
+ * Has default value for format. Is overridden when a device is connected
+ * 
+ * @type {string}
+ * @default {'A0524966-65F3-A409-C6D1-20ED628ED43A'}
+ * @default {'AB:89:67:45:11:FF'}
+ */
 let deviceID = Platform.OS === 'ios' ? 'A0524966-65F3-A409-C6D1-20ED628ED43A':'AB:89:67:45:11:FF'
 
-//transaction id for monitoring data
-const transactionID = 'monitor_metrics'
 
-//headers to write into text file
+/**
+ * Transaction id for monitoring data
+ * @type {string}
+ */
+const transactionID = 'monitor_metrics' 
+
+
+/**
+ * Array containing headers for the metrics
+ * @type {string[]}
+ */
 const headers = [
     "Time",
     "HR",
@@ -182,9 +199,9 @@ export const updateMetric = (timeout, label = 'NONE') => {
             //save the text file name
             dispatch(addRecording(recording))
 
-            var init = 0
-            var totalT = 0
-            var prevDispatch = 0
+            var init = 0    //will be set on first read in
+            var totalT = 0  //to measure total time passed, resets once its >= 0.500
+            var prevDispatch = 0    //used for comparison
             
             const subscription = characteristics[0].monitor((err, characteristics)=>{
                 if(err){
@@ -323,8 +340,10 @@ export const updateMetric = (timeout, label = 'NONE') => {
 }
 /**
  * Cancels any given transction with an id
+ * 
+ * @default {'monitor_metrics'}
  */
-export const stopTransaction = (ID) => {
+export const stopTransaction = (ID = 'monitor_metrics') => {
     return (dispatch, getState, DeviceManager) => {
 
         DeviceManager.cancelTransaction(ID)

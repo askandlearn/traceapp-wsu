@@ -168,19 +168,19 @@ const ModalComponent = (props) => {
                 <TextInput
                     style={{height: 70, color: 'white', borderColor: 'white', borderWidth: 1, backgroundColor: '#A4A4A4'}}
                     value={description}
-                    placeholder='Session description...'
+                    placeholder='Session description...(optional)'
                     onChangeText={text => setDescription(text)}
                     maxLength={max}
                     multiline={true}
                     textAlignVertical='top'/>
-                <Text style={{color: 'white'}}>Max character: {max}</Text>
+                <Text style={{color: 'white'}}>Max characters: {max}</Text>
                 <TextInput
                     style={{height: 50, color: 'white', borderColor: 'white', borderWidth: 1, backgroundColor: '#A4A4A4'}}
                     value={comment}
-                    placeholder='Leave a comment...'
+                    placeholder='Leave a comment...(optional)'
                     onChangeText={text => setComment(text)}
                     maxLength={max/2}/>
-                <Text style={{color: 'white'}}>Max character: {max/2}</Text>
+                <Text style={{color: 'white'}}>Max characters: {max/2}</Text>
                 <TouchableOpacity style={styles.button} onPress={() => upload()}>
                     <Text style={styles.buttonText}>SUBMIT</Text>
                 </TouchableOpacity>

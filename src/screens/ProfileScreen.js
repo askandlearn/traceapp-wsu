@@ -11,7 +11,7 @@ import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SettingsList from 'react-native-settings-list';
 
-
+Icon.loadFont();
 
 
 
@@ -559,11 +559,7 @@ const checkLastName = (val) =>{
      /*Accepts a boolean value passed from the 
     drop down picker that reflects the state
     of the drawer (open/closed) */
-
     setDrawerOpen(bool);
-
-
-
   }
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        SAVE CHANGES
@@ -617,17 +613,14 @@ const checkLastName = (val) =>{
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
             <Text style={styles.name} >{currentUser.username}</Text>
-            {/* remove
-            <TextInput    
-              value={currentUser.username}
-              editable={false}
-              style={styles.name}/>
-  */}
           </View>
+       
           {/*       ~~~~~~  Add section title back later ~~~~~~
           <Text style={styles.profileCategory}>Basic Info:</Text>
             */}
+             
             <KeyboardAvoidingScrollView style={styles.bodyMain}>
+           
             <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
             <Text style={styles.contentTitle}>Name: </Text>
@@ -637,10 +630,13 @@ const checkLastName = (val) =>{
              visible={showModalName}
              onRequestClose={() => {console.log('Closed name text input window');}}
            >
-            <View style={styles.modalView}>
+              <View style={styles.centeredView}>
+              <View style={styles.exit}>
             <TouchableOpacity onPress={()=>closeModalName()}>
-                <Icon name='close-box-outline' size={30} alignSelf="flex-start" ></Icon>
+                <Icon name='close-box-outline' size={30} alignSelf="flex-start" style={{padding:20}}></Icon>
                 </TouchableOpacity>
+            <View style={styles.modalView}>
+            <View style={{justifyContent:'center'}}>
                 <View style={styles.modalContent}>
             <Text style={styles.modalContentTitle}>Name:</Text>
              <Text style={styles.modalContentFLName}>First Name:</Text>
@@ -677,9 +673,12 @@ const checkLastName = (val) =>{
           </Animatable.View>
         )}
         {/* End of validation prompt */}
-              <View style={{paddingTop: 15}}/>
-              <Text style={[styles.buttonContainer, {backgroundColor: (checkValidations.validFirstName && checkValidations.validLastName)  ? '#ff0000' : '#4c4c4c'}]}
-              onPress={()=> {changeModalViewName()}}>Submit</Text>
+        <View style={{paddingTop: 15}}/>
+              <TouchableOpacity style={[styles.button, {backgroundColor: (checkValidations.validFirstName && checkValidations.validLastName)  ? '#ff0000' : '#4c4c4c'}]}
+              onPress={()=> {changeModalViewName()}}><Text style={styles.buttonText}>Submit</Text></TouchableOpacity>
+              </View>
+              </View>
+              </View>
               </View>
               </View>
               </Modal>
@@ -706,12 +705,17 @@ const checkLastName = (val) =>{
              transparent={true}
              visible={showModalDate}
              onRequestClose={() => {console.log('Closed birthdate text input window');}}
-          >
+            >
+            <View style={styles.centeredView}>
+              <View style={styles.exit}>
+              <TouchableOpacity onPress={()=>closeModalBirthdate()}>
+                <Icon name='close-box-outline' size={30} alignSelf='flex-start' style={{padding:20}}></Icon>
+              </TouchableOpacity>
+              
              <KeyboardAvoidingView style={styles.modalView}>
-             <TouchableOpacity onPress={()=>closeModalBirthdate()}>
-                <Icon name='close-box-outline' size={30} alignSelf="flex-start" ></Icon>
-                </TouchableOpacity>
-                <View style={styles.modalContent}>
+             
+                <View style={{justifyContent:'center'}}>
+                <View style={styles.modalBirthdate}>
              <Text style={styles.modalContentTitle}>Birthdate:</Text>
              <TextInput
               value={currentUser.birthdate}
@@ -733,10 +737,13 @@ const checkLastName = (val) =>{
              )}
              {/* End of validation prompt */}
               <View style={{paddingTop: 15}}/>
-              <Text style={[styles.buttonContainer, {backgroundColor: checkValidations.validBirthdate  ? '#ff0000' : '#4c4c4c'}]}
-              onPress={()=> {changeModalViewBirthdate()}}>Submit</Text>
+              <TouchableOpacity style={[styles.button, {backgroundColor: checkValidations.validBirthdate  ? '#ff0000' : '#4c4c4c'}]}
+              onPress={()=> {changeModalViewBirthdate()}}><Text style={styles.buttonText}>Submit</Text></TouchableOpacity>
+              </View>
               </View>
              </KeyboardAvoidingView>
+             </View>
+             </View>
           </Modal>
           <Text style={styles.content} onPress={()=> {setShowModalDate(!showModalDate)}}>{currentUser.birthdate}</Text>
           </TouchableOpacity>
@@ -755,11 +762,13 @@ const checkLastName = (val) =>{
           visible={showModal}
           onRequestClose={() => {console.log('Closed zip text input window');}}
           >
-            <View style={styles.modalView}>
+            <View style={styles.centeredView}>
+            <View style={styles.exit}>
               <TouchableOpacity onPress={()=>closeModalZip()}>
-                <Icon name='close-box-outline' size={30} alignSelf="flex-start" ></Icon>
+                <Icon name='close-box-outline' size={30} alignSelf="flex-start" style={{padding:20}}></Icon>
                 </TouchableOpacity>
-            <View style={styles.modalContent}>
+            <View style={styles.modalView}>
+              <View style={styles.modalBirthdate}>
               <Text style={styles.modalContentTitle}>Zip:</Text>
               <TextInput
               placeholder='Zip'
@@ -782,9 +791,11 @@ const checkLastName = (val) =>{
         )}
         {/* End of validation prompt */}
             <View style={{paddingTop: 15}}/>
-              <Text style={[styles.buttonContainer, {backgroundColor: checkValidations.validZipLength  ? '#ff0000' : '#4c4c4c'}]}
-              onPress={()=> {changeModalViewZip()}}>Submit</Text>
+              <TouchableOpacity style={[styles.button, {backgroundColor: checkValidations.validZipLength  ? '#ff0000' : '#4c4c4c'}]}
+              onPress={()=> {changeModalViewZip()}}><Text style={styles.buttonText}>Submit</Text></TouchableOpacity>
               </View>
+              </View>
+            </View>
             </View>
           </Modal>
         <Text style={styles.content} onPress={()=> {setShowModal(!showModal)}}>{currentUser.zip}</Text>
@@ -800,66 +811,49 @@ const checkLastName = (val) =>{
               visible={showModalGender}
               onRequestClose={() => {console.log('Closed gender text input window');}}
               >
-            <View style={styles.modalView}>
-            <TouchableOpacity onPress={()=>closeModalGender()}>
-                <Icon name='close-box-outline' size={30} alignSelf="flex-start" ></Icon>
-                </TouchableOpacity>
-                <View style={styles.modalContent}>
-              <Text style={styles.modalContentTitle}>Gender:</Text>
-              <DropDownPicker
-                items={[
-                    {label: 'Male', value: 'M'},
-                    {label: 'Female', value: 'F'},
-                    {label: 'Other', value: 'O'},
-                    {label: 'Decline to Answer', value: 'NA'},
-                ]}
-                defaultValue={currentUser.gender}
-                containerStyle={{height: 30, width: 220}}
-          style={{backgroundColor: '#fafafa'}}
-          itemStyle={{
-            justifyContent: 'flex-start',
-          }}
-          dropDownStyle={{backgroundColor: '#fafafa'}}
-          onOpen={()=>updateGenderDrawerState(true)}
-          onClose={()=>updateGenderDrawerState(false)}
-          onChangeItem={(item) => setCurrentUser({...currentUser, gender: item.value})}/>
-              <View style={{paddingTop: drawerOpen ? 150 : 15}}/>
-              <Text 
-              style={styles.buttonContainerGender}
-              onPress={()=> {changeModalViewGender()}}>Submit</Text>
-               </View>
-            </View>
+              <View style={styles.centeredView}>
+                <View style={styles.exit}>
+                <TouchableOpacity onPress={()=>closeModalGender()}>
+                    <Icon name='close-box-outline' size={30} alignSelf="flex-start" style={{padding:20}}></Icon>
+                    </TouchableOpacity>
+                    <View style={styles.modalView}>
+                    <View style={styles.modalBirthdate}>
+                  <Text style={styles.modalContentTitle}>Gender:</Text>
+                  <DropDownPicker
+                    items={[
+                        {label: 'Male', value: 'M'},
+                        {label: 'Female', value: 'F'},
+                        {label: 'Other', value: 'O'},
+                        {label: 'Prefer not to answer', value: 'NA'},
+                    ]}
+                    defaultValue={currentUser.gender}
+                    containerStyle={{height: 30, width: 220}}
+              style={{backgroundColor: '#fafafa'}}
+              itemStyle={{
+                justifyContent: 'flex-start',
+              }}
+              dropDownStyle={{backgroundColor: '#fafafa'}}
+              onOpen={()=>updateGenderDrawerState(true)}
+              onClose={()=>updateGenderDrawerState(false)}
+              onChangeItem={(item) => setCurrentUser({...currentUser, gender: item.value})}/>
+                  <View style={{paddingTop: drawerOpen ? 150 : 15}}/>
+                  <TouchableOpacity 
+                  style={styles.button}
+                  onPress={()=> {changeModalViewGender()}}><Text style={styles.buttonText}>Submit</Text></TouchableOpacity>
+                  </View>
+                  </View>
+                </View>
+            </View>    
           </Modal>
         <Text style={styles.content} onPress={()=> {setShowModalGender(!showModalGender)}}>{currentUser.gender}</Text>
           </View>
           <View style={styles.contentBorder} />
           </KeyboardAvoidingScrollView>
-          {/*
-
-            wellness goals not in the api schema
-
-          <View style={{flexDirection: "row"}}>
-          <Text style={styles.contentTitleGender}>Wellness Goals:</Text>
-          <View style={{flex: 0.2}}/>
-          <View style={{alignSelf: 'center'}}>
-          <HealthGoals></HealthGoals>
-          </View>
-          </View>
-          <View style={styles.contentBorder}/>
-        */}
           <View style={{paddingVertical: 40}}></View>
-          {/*}
-          <Button
-            title="Update"
-            color="#ff0000"
-            style={styles.save}
-            onPress={saveChanges}
-          />
-      */}
-      
         </View>
       
       <View style={{marginTop: 20}} />
+      
     </View>
   );
 };
@@ -912,21 +906,26 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   button: {
-    //alignSelf: 'center',
-    //width: '60%',
     alignItems: 'center',
     marginHorizontal: '10%',
-    marginVertical: 10,
-    padding: 10,
+    marginVertical: '3%',
+    paddingVertical: 10,
+    paddingHorizontal:15,
     borderRadius: 20,
-    backgroundColor: '#ff0000',
+    backgroundColor: '#ff2222',
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+    width:'60%'
   },
   buttonContainer:{
     alignItems: 'center',
     marginHorizontal: '10%',
-    marginVertical: 10,
-    padding: 15,
-    paddingHorizontal: 80,
+    marginVertical: '3%',
+    paddingVertical: 10,
+    paddingHorizontal:15,
     borderRadius: 20,
     //backgroundColor: '#445092',
     //backgroundColor: '#ff0000',
@@ -938,23 +937,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     
-  },
-  buttonContainerGender:{
-    alignItems: 'center',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    padding: 10,
-    paddingHorizontal: 80,
-    borderRadius: 20,
-   // backgroundColor: '#445092',
-    backgroundColor: '#ff0000',
-    shadowColor: '#000000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 1,
-    color: 'white',
-    fontWeight: 'bold',
   },
   buttonText: {
     color: '#FFFFFF',
@@ -1047,9 +1029,15 @@ const styles = StyleSheet.create({
   modalContent: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 60
+   // paddingVertical: 45
     //padding: 10,
     //marginTop:50,
+  },
+  modalBirthdate:{
+    justifyContent: 'center',
+    alignItems: 'center',
+   // alignSelf:'center'
+   paddingTop:50
   },
   modalContentFLName:{
     //fontWeight: 'bold',
@@ -1070,13 +1058,16 @@ const styles = StyleSheet.create({
     letterSpacing: 2.5,
   },
   modalView:{
-    flex: 1,
-    //alignItems: 'center',
-    //justifyContent: 'center',
+    //flex: 1,    
+    paddingHorizontal: 35,
+    //paddingVertical: 10,   
+    justifyContent:'center'
+  },
+  exit:{
+    height:'55%',
+    width:'75%',
     backgroundColor: '#ffffff',
-    padding: 10,
-    //paddingVertical: 10,
-    borderRadius: 15,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: 'gainsboro',
     shadowColor: '#000',
@@ -1087,12 +1078,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    margin: 65,
-    marginTop: 50,
-    marginBottom: 50,
-    //height: '30%',
-    
+    margin: 20,
   },
+  centeredView: {
+    height: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: '10%',
+  },
+
   name: {
     fontSize: 30,
     fontWeight: '600',
@@ -1121,22 +1115,38 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#ff0000',
   },
+  // textInput: {
+  //   marginHorizontal: '10%',
+  //   marginVertical: 5,
+  //   width: '80%',
+  //   height: 50,
+  //   padding: 13,
+  //   fontWeight: 'bold',
+  //   borderColor: 'rgba(0, 0, 0, .4)',
+  //   borderWidth: 1,
+  //   color: 'rgba(0, 0, 0, 1)',
+  //   backgroundColor: 'rgba(255, 255, 255, 1)',
+  //   shadowColor: '#000000',
+  //   shadowOffset: {width: 1, height: 2},
+  //   shadowOpacity: 0.2,
+  //   shadowRadius: 1,
+  //   borderRadius: 20,
+  // },
   textInput: {
+    width: '90%',
     marginHorizontal: '10%',
-    marginVertical: 5,
-    width: '80%',
-    height: 50,
+    marginVertical: 10,
     padding: 13,
     fontWeight: 'bold',
     borderColor: 'rgba(0, 0, 0, .4)',
     borderWidth: 1,
     color: 'rgba(0, 0, 0, 1)',
     backgroundColor: 'rgba(255, 255, 255, 1)',
+    borderRadius: 20,
     shadowColor: '#000000',
     shadowOffset: {width: 1, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 1,
-    borderRadius: 20,
   },
   title: {
     alignSelf: 'center',

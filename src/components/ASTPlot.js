@@ -24,11 +24,12 @@ const mapStateToProps = state => ({
   connectedDevice: state.BLE['connectedDevice'],
   metrics: state.DATA['metrics'], //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
   isConnected : state.BLE['isConnected'],
-  busy: state.BLE['busy']
+  busy: state.BLE['busy'],
+  currTest: state.BLE['currTest']
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateMetric: () => dispatch(updateMetric()),
+  updateMetric: (timeout, label) => dispatch(updateMetric(timeout,label)),
   stopTransaction: ID => dispatch(stopTransaction(ID)),
 })
 
@@ -139,10 +140,10 @@ const transactionID = 'monitor_metrics' //to pass into stopTransaction, not need
     }
   }
   const onStart = async () => {
-    
+    //props.updateMetric(undefined, 'AST')
     if(isConnected===true)
     {
-      props.updateMetric();
+      props.updateMetric(undefined, 'AST');
       start();
       setStartDisabled(true);
       setStopDisabled(false);
@@ -156,12 +157,16 @@ const transactionID = 'monitor_metrics' //to pass into stopTransaction, not need
   }
 
   useEffect(()=>{
-    if (isData[0].name=== 'HR') {
-     setPlot();
+    if (props.currTest ==='AST')
+    {
+
+      if (isData[0].name=== 'HR') {
+      setPlot();
     }
-    else{
-     setPAMPVal();
-    }
+      else{
+      setPAMPVal();
+      }
+  }
   },[props.hrv])
 
 const onStop = async () => {
@@ -232,7 +237,7 @@ const config={
         <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || !props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || !props.busy || props.currTest!='AST'? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy || props.currTest!='AST'}>
           <Text style={styles.buttonText}>Stop</Text>
         </TouchableOpacity>
       </View>

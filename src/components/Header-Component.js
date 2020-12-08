@@ -26,18 +26,19 @@ const Header = ({openDrawer}) => (
   // </View>
   // </View>
   
-      <View style={{ backgroundColor: '#242852', height: 70,  }}>
+      <View style={{ backgroundColor: '#242852', height: 80,  }}>
         
         <Svg
-          height="190%"
+          height="195%"
           width="100%"
           viewBox="0 0 1440 320"
-          style={{ position: 'absolute', top: 25, 
+          style={{ position: 'absolute', top: 20, 
           shadowColor: '#000000',
           shadowOffset: {width: 2, height: 3},
           shadowOpacity: 0.4,
-          shadowRadius: 3,
-          elevation: 1, }}
+          shadowRadius: 1,
+          elevation: 0, 
+        borderWidth:0}}
         >
           
           <Path

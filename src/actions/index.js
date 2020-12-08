@@ -19,6 +19,8 @@ import {
     updatedHRV,
     addRecording,  
     setBusy,
+    setCurrentTest,
+    removeCurrentTest,
     addSync,
     removeSync} from './actionCreators';
 
@@ -203,7 +205,7 @@ export const updateMetric = (timeout, label = 'NONE') => {
 
             console.log('Monitoring...')
             dispatch(setBusy(true))
-
+            dispatch(setCurrentTest(label))
             //save the text file name
             dispatch(addRecording(recording))
 
@@ -292,7 +294,8 @@ export const updateMetric = (timeout, label = 'NONE') => {
                         pnn50 = values_p.hrv_fifo.reduce(reducer, 0)/values_p.hrv_fifo.length;
                         //   console.log('pnn50',pnn50.toFixed(3))
                         // 1) dispatch stats every 0.500 ms and hrv and pnn at the change of a heartbeat
-                        dispatch(updatedHRV(hrv))
+                        
+                            dispatch(updatedHRV(hrv))
                         dispatch(updatedPNN50(pnn50.toFixed(3)))
                     }
 
@@ -316,8 +319,9 @@ export const updateMetric = (timeout, label = 'NONE') => {
                         console.log('dispatched')
                         prevDispatch = totalT.toFixed(3)   //update prevDispatch to current total time
                         // 1) dispatch stats every 0.500 ms and hrv and pnn at the change of a heartbeat
-                        dispatch(updatedMetrics(stats))
-
+                       
+                            dispatch(updatedMetrics(stats))
+                       
 
                         // 2) alternative to dispatching the states, downside to this is that the graph changes aren't as remarkeably fast
                         // if(hrv && pnn50){
@@ -357,6 +361,7 @@ export const stopTransaction = (ID = 'monitor_metrics') => {
 
         DeviceManager.cancelTransaction(ID)
         dispatch(setBusy(false))    //device is not busy anymore
+        dispatch(removeCurrentTest())
     }
 }
 
@@ -376,6 +381,9 @@ export const onDisconnect = () => {
                 if (state === 'PoweredOn') {
                     console.log('Attempting to reconnect')
                     dispatch(scan());
+                    if(!err){
+                        dispatch(stopScan())
+                    }
                     // setTimeout(() => {
                     //     DeviceManager.stopDeviceScan()
                     //     // console.log('Timed out. Try connecting from connect screen')

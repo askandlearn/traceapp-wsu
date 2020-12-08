@@ -16,7 +16,7 @@ import {Loading} from '../components/Loading-Component';
 
 //Create the Sign Up Page
 
-const logo = '../images/TraceBio-White.png';
+const logo = '../images/TraceBio-Black.png';
 
 //Create variable instances for each required field
 
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: 'white',
   },
   bottomContainer: {
     flex: 1,

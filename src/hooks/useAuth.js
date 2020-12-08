@@ -134,7 +134,7 @@ export function useAuth(){
         const result = await axios.post(url, {
             "username": user.username,
             "password": user.password,
-            "email": user.emai,
+            "email": user.email,
             "first_name": user.first_name,
             "last_name": user.last_name,
             "profile": {

@@ -79,6 +79,8 @@ export const scan = () => {
            dispatch(changeStatus("Scanning"));
             if (error) {
                 console.log(error);
+                alert(error.message);
+                dispatch(stopScan())
             }
             if(device && device.name === 'TRACE'){
                 dispatch(connectDevice(device));

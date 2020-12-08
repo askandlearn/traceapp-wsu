@@ -56,7 +56,7 @@ const TraceConnectScreen = props => {
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => props.navigation.pop()}>
-          <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+          <Icon name='arrow-left-circle' size={30} paddingVertical={50} style={{color:'#242852'}}></Icon>
         </TouchableOpacity>
       </View>
       <Text style={styles.title}>Connect Your TRACE Device</Text>
@@ -85,23 +85,43 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    color: '#202020',
+    //marginHorizontal: '10%',
+    //marginVertical: 4,
+    color: '#242852',
     fontWeight: 'bold',
     fontSize: 30,
-    paddingBottom: 30,
-    textAlign: 'center'
+    //paddingBottom: ,
+    //paddingLeft:15,
+   // marginTop:25,
+    paddingTop:15,
+   marginBottom:60,
+    //textAlign:'center',
+    shadowColor: '#000000',
+    shadowOffset: {width: .5, height: 1},
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 
+        //'CourierNewPS-BoldMT'
+        'AppleSDGothicNeo-Bold'
+      },
+    }),
   },
   button: {
-    // alignSelf: 'center',
-    width: '60%',
     alignItems: 'center',
     marginHorizontal: '10%',
-    marginVertical: 10,
+    marginVertical: '5%',
     padding: 10,
     borderRadius: 20,
     backgroundColor: '#ff0000',
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+    width:'60%'
   },
   buttonText: {
     color: '#FFFFFF',
@@ -142,9 +162,7 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 50,
     alignContent: 'center',
-    // backgroundColor: 'gray',
     borderColor: 'black',
-    // borderWidth: 1
     backgroundColor: 'green'
   },
 });

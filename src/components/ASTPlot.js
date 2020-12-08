@@ -43,6 +43,8 @@ const transactionID = 'monitor_metrics' //to pass into stopTransaction, not need
     const [startDisabled, setStartDisabled] = useState(true);
     const [stopDisabled, setStopDisabled] = useState(false);
     const[timer, setTimer] = useState(null);
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
 
     const start = () => {
       var tempSeconds = seconds;
@@ -174,7 +176,8 @@ const onStop = async () => {
 const [visible, setVisible] = useState(false) //to control the modal pop up
 const [layout, setLayout]=useState({
   title: 'HR vs Time',
-  showlegend:true 
+  showlegend:true,
+  width: windowWidth, 
 })
 // const [layout2, setLayout2]=useState({
 //   title: 'PAMP vs Time',
@@ -186,20 +189,8 @@ if (minutes===0 && seconds===0){
 const config={
   displaylogo:false,
   responsive:true,
-  toImageButtonOptions: {
-    format: 'png', // one of png, svg, jpeg, webp
-    filename: 'custom_image',
-    height: 500,
-    width: 700,
-    scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
-  },
-   modeBarStyle: {
-        orientation: 'h',
-        bgcolor: 'rgba(0 ,0 ,0 ,0.9)',
-        //iconColor: 'rgba(0, 31, 95, 0.3)',
-        //logoColor: 'rgba(0, 31, 95, 0.3)',
-        //position: 
-    },
+  modeBarButtonsToRemove: ['toImage','lasso2d'],
+
 }
  const swapData = () => {
     if (isData[0].name=== 'HR') {
@@ -309,9 +300,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     marginHorizontal: '10%',
-    marginVertical: 10,
-    paddingHorizontal: 20,
-    paddingVertical:10,
+    marginVertical: '5%',
+    padding: 10,
     borderRadius: 20,
     backgroundColor: '#ff0000',
     shadowColor: '#000000',
@@ -319,6 +309,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
+    alignSelf:'center',
+    width:'25%'
   },
   buttonText: {
     color: '#FFFFFF',
@@ -359,7 +351,7 @@ const styles = StyleSheet.create({
     height:110,
     width:110,
     borderRadius: 60,
-    borderWidth:5,
+    borderWidth:4.5,
     borderColor:'#242852',
     shadowColor: '#000000',
     shadowOffset: {width: 0, height: 2},

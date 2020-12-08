@@ -51,14 +51,6 @@ const RTData = (props) => {
   const [isACC, setACC] = useState(0);
 
   useEffect(() => {
-    // setInterval(() => {
-    //   setHR(props.data[1])
-    //   setIBI(props.data[2])
-    //   setSkinTemp(props.data[8])
-    //   setPAMP(props.data[3])
-    //   setDAMP(props.data[4])
-    //   setACC(props.data[9])
-    // }, 2000);
    
     setPN(props.pnn50)
     setHRV(props.hrv)
@@ -70,12 +62,13 @@ const RTData = (props) => {
         style={{
           alignSelf: 'center',
           flexDirection: 'row',
-          marginBottom: 10,
+          marginBottom: 20,
+          marginTop:40,
           marginHorizontal: '10%',
         }}>
         {/* <Text style={{ fontWeight:'bold'}}>Note:</Text> */}
         <Icon name="question-circle" size={18} color="#ff2222" />
-        <Text style={{fontSize: 15}}>
+        <Text style={{fontSize: 15, }}>
           {' '}
           Click on any of the values below for details
         </Text>
@@ -342,7 +335,7 @@ const styles = StyleSheet.create({
     // alignContent:'center',
     justifyContent: 'center',
     marginHorizontal: '10%',
-    marginBottom: '8%',
+    marginBottom: 60,
     //borderRadius: 20,
 
     borderBottomWidth: 1,
@@ -448,12 +441,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   row:{
-
     flexDirection: 'row',
     width: '100%',
     paddingHorizontal: 60,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: '2%',
+    //marginVertical:'2%'
   }
 });

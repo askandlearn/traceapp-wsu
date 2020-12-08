@@ -137,7 +137,7 @@ export default connect(mapStateToProps, null) (HRVScreen);
 
 const styles = StyleSheet.create({
   bodyMain:{
-    marginTop:20,
+    marginTop:15,
   },
   container: {
     flex: 1,

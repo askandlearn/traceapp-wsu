@@ -141,7 +141,7 @@ export default connect(mapStateToProps, null) (ASTScreen);
 
 const styles = StyleSheet.create({
   bodyMain:{
-    marginTop:25,
+    marginTop:15,
   },
   container: {
     flex: 1,
@@ -264,8 +264,6 @@ const styles = StyleSheet.create({
     paddingVertical: '10%',
     paddingHorizontal: '10%',
     alignItems: 'center',
-
-    //backgroundColor: '#97CAE5'
   },
   slide3: {
     // flex: 1,

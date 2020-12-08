@@ -84,7 +84,7 @@ ASTPlot = (props) => {
   const layout={
     title: 'HRV vs Time',
     showlegend:true,
-    width: windowWidth + 18,
+    width: windowWidth,
   }
   const config={
     displaylogo:false,
@@ -143,9 +143,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     marginHorizontal: '10%',
-    marginVertical: 10,
-    paddingHorizontal: 20,
-    paddingVertical:10,
+    marginVertical: '5%',
+    padding: 10,
     borderRadius: 20,
     backgroundColor: '#ff0000',
     shadowColor: '#000000',
@@ -153,6 +152,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
+    alignSelf:'center',
+    width:'25%'
   },
   buttonText: {
     color: '#FFFFFF',

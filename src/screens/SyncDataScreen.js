@@ -151,7 +151,7 @@ const SyncDataScreen = props => {
             <KeyboardAvoidingScrollView>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => props.navigation.pop()}>
-                    <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
+                    <Icon name='arrow-left-circle' style={{color:'#242852'}} size={30} paddingVertical={50}></Icon>
                 </TouchableOpacity>
             </View>
             <FlatList
@@ -183,16 +183,26 @@ const styles = StyleSheet.create({
         alignContent:'center',
     
       },
-    title:{
+      title: {
         alignSelf: 'center',
-        //marginHorizontal: '10%',
-        marginVertical: 4,
-        color: '#202020',
+        color: '#242852',
         fontWeight: 'bold',
-        fontSize: 30,
-        paddingBottom: 20,
-        textAlign:'center'
-    },
+        fontSize: 32,
+        paddingTop:15,
+        marginBottom:20,
+        shadowColor: '#000000',
+        shadowOffset: {width: .5, height: 1},
+        shadowOpacity: 0,
+        shadowRadius: 1,
+        elevation: 1,
+        ...Platform.select({
+          ios: {
+            fontFamily: 
+            //'CourierNewPS-BoldMT'
+            'AppleSDGothicNeo-Bold'
+          },
+        }),
+      },
     header: {
         width: '100%',
         height: 60,
@@ -212,17 +222,20 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     button: {
-        alignSelf: 'center',
-        width: '50%',
         alignItems: 'center',
         marginHorizontal: '10%',
-        marginVertical: 30,
+        marginVertical: '15%',
         padding: 10,
         borderRadius: 20,
         backgroundColor: '#ff0000',
-        position: 'absolute',
-        bottom: 10,
-    },
+        shadowColor: '#000000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 1,
+        width:'60%',
+        alignSelf:'center'
+      },
     buttonText: {
         color: '#FFFFFF',
         fontWeight: 'bold',

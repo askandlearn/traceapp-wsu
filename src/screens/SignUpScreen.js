@@ -21,11 +21,11 @@ const logo = '../images/TraceBio-White.png';
 //Create variable instances for each required field
 
 const SignUpScreen = (props) => {
-  const [username, setUsername] = useState('testuser');
+  const [username, setUsername] = useState('testuser4');
   const [firstName, setFirstName] = useState('Mohammed');
   const [lastName, setLastName] = useState('Hamza');
   const [birthdate, setBirthdate] = useState();
-  const [email, setEmail] = useState('mohammza@gmail.com');
+  const [email, setEmail] = useState('test@gmail.com');
   const [password, setPassword] = useState('password123');
   const [confirmPass, setConfirmPass] = useState('password123');
   

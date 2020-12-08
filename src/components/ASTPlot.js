@@ -139,12 +139,16 @@ const transactionID = 'monitor_metrics' //to pass into stopTransaction, not need
     }
   }
   const onStart = async () => {
-    props.updateMetric();
+    
     if(isConnected===true)
     {
+      props.updateMetric();
       start();
       setStartDisabled(true);
       setStopDisabled(false);
+    }
+    else {
+      alert("TRACE device not connected.\n\n Connect your device and try again");
     }
    // plot=setInterval(() => {
       //setPlot();
@@ -219,7 +223,7 @@ const config={
       {/* <Timer/> */}
       <View style={styles.timer}>
             { minutes === 0 && seconds === 0
-                ? <Text>Test Completed</Text>
+                ? <Text>Test Complete</Text>
                 : <Text style={{fontSize:30, alignSelf:'center', color:'#242852'}}>{minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
             }
             </View>

@@ -1,65 +1,3 @@
-{/* <Swiper autoplayTimeout={1} style={styles.wrapper} showsButtons loop={true} autoplay={started}>
-            { started ? null :
-              <View testID="Hello" style={styles.slide1}>
-                <Text style={styles.slide1Text}>Welcome to the Active StandUp Test. This test will provide TRACE with
-                important data regarding your blood flow dynamics.{"\n"}</Text>
-              
-                <Text styles={styles.note}>NOTE: While the test is being conducted, your TRACE device will
-                continue to run analytics. After the 3 minute mark, please make sure
-                to stand still to ensure your TRACE device performs accurate
-                diagnostics.</Text>
-              </View>
-            }
-            {done ? null :
-            <View testID="Beautiful" style={styles.slide2}>
-              <Text style={styles.steps}>1. To begin, lie flat on your back. {"\n"}
-              2. Start the timer. {"\n"}
-              </Text>
-              <Image style={styles.backgroundImage}
-              source={require('../images/figures/lyingfigure.png')}></Image>    
-            </View>
-            }
-            {done ? null : 
-            <View testID="Simple" style={styles.slide3}>
-              <Text style={styles.steps}>3. After the 3-minute timer is done, stand back up. {"\n"}</Text>
-              <Image style={{width:50, height:170, marginBottom: 60}}
-              source={require('../images/figures/standingfigure.png')}></Image> 
-            </View>
-            }
-            {!done ? null :
-            <View testID="Slide4" style={styles.slide3}>
-            <Text style={styles.steps}>4. Now, fill out the survey to complete the test. {"\n"}</Text>
-            <View style={styles.centeredView}>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-              }}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Animate></Animate>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        setModalVisible(!modalVisible);
-                      }}>
-                      <Text style={styles.buttonText}>SUBMIT</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </Modal>
-              <TouchableOpacity style={styles.button}
-              onPress={() => {
-                setModalVisible(true);
-              }}><Text style={styles.buttonText}>Take Survey</Text></TouchableOpacity>
-            </View>
-            </View>
-            }
-        </Swiper> */}
-
-//To-do: Check if can autoplay on time start
 import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
@@ -76,7 +14,6 @@ import {
 
 import Header from '../components/Header-Component';
 import Timer from '../components/Timer';
-import Animate from '../components/HRVSurvey';
 import Swiper from 'react-native-swiper';
 import Plot from '../components/ASTPlot';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';

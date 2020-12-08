@@ -1,5 +1,13 @@
+/**
+ * 
+ * @fileoverview This file defines and contains all the logic for the bluetooth connection and communication. 
+ * 
+ *
+ * 
+ * @author Trace Team Fall 2020.
+ */
+ 
 import AsyncStorage from '@react-native-community/async-storage';
-import { Alert, Platform } from 'react-native';
 import { batch } from 'react-redux';
 import atob from '../utils/atob';
 import { 
@@ -283,7 +291,7 @@ export const updateMetric = (timeout, label = 'NONE') => {
                         const reducer = (accumulator, currentValue) => accumulator + (currentValue >=50);
                         pnn50 = values_p.hrv_fifo.reduce(reducer, 0)/values_p.hrv_fifo.length;
                         //   console.log('pnn50',pnn50.toFixed(3))
-                        // 1)
+                        // 1) dispatch stats every 0.500 ms and hrv and pnn at the change of a heartbeat
                         dispatch(updatedHRV(hrv))
                         dispatch(updatedPNN50(pnn50.toFixed(3)))
                     }
@@ -307,10 +315,11 @@ export const updateMetric = (timeout, label = 'NONE') => {
                     if (parseFloat((totalT - prevDispatch).toFixed(3)) >= 0.500 ){
                         console.log('dispatched')
                         prevDispatch = totalT.toFixed(3)   //update prevDispatch to current total time
-                        // 1)
+                        // 1) dispatch stats every 0.500 ms and hrv and pnn at the change of a heartbeat
                         dispatch(updatedMetrics(stats))
 
-                        // 2)
+
+                        // 2) alternative to dispatching the states, downside to this is that the graph changes aren't as remarkeably fast
                         // if(hrv && pnn50){
                         //     batch(() => {
                         //         dispatch(updatedMetrics(stats))
@@ -326,7 +335,7 @@ export const updateMetric = (timeout, label = 'NONE') => {
                     //write to a text file
                     writeToFile(path, stats)
                 }
-            }, transactionID)
+            }, transactionID)   //transction id is optional. using it because makes it very easy to cancel with an id
 
             // Cancel after specified amount of time
             // run only if timeout is specified then run timeout ==> this is purely for the ast page which the time is 3 minutes (180000 milliseconds)
@@ -347,7 +356,7 @@ export const stopTransaction = (ID = 'monitor_metrics') => {
     return (dispatch, getState, DeviceManager) => {
 
         DeviceManager.cancelTransaction(ID)
-        dispatch(setBusy(false))
+        dispatch(setBusy(false))    //device is not busy anymore
     }
 }
 

@@ -75,23 +75,27 @@ const SyncDataScreen = props => {
         const app_os_version = DeviceInfo.getSystemVersion()
 
 
+      //reference: https://stackoverflow.com/questions/56235286/react-native-post-form-data-with-object-and-file-in-it-using-axios
+      //reference: https://stackoverflow.com/questions/61585437/how-to-send-post-request-with-files-in-react-native-android
+      //file type: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+
         var datafile = {
             uri: 'file://' + path,  //for android 'file://' needs to be appended to the uri. not sure if this is the same case for iOS. wiil need to test
-            type: 'text/plain',
+            type: 'text/plain', 
             name: file    //name of test file
         }
         // console.log('In upload...')
         const formData = new FormData()
-        formData.append("start_time",start_time)
-        formData.append("label",label)
+        formData.append("start_time",start_time)    //ISO format
+        formData.append("label",label)  //HRV, RT, or AST
         formData.append("description",description)
-        formData.append('datafile',datafile)
+        formData.append('datafile',datafile)    
         formData.append("comments",comment)
-        formData.append("highlight",false)
-        formData.append("device_type","HRM-AA")
-        formData.append("device_sn","2")    //need a way to get this info
-        formData.append("device_firmware","1.02")   //need a way to get this info
-        formData.append("app_version", "1.00")  
+        formData.append("highlight",false)  //always false for now
+        formData.append("device_type","HRM-AA") //need a way to get this info from sensor
+        formData.append("device_sn","2")    //need a way to get this info from sensor
+        formData.append("device_firmware","1.02")   //need a way to get this inform from sensor
+        formData.append("app_version", "1.00")  //the api format requires this number to to the hundreth decimal. hard-coded in for the time being
         formData.append("app_hardware", app_hardware)
         formData.append("app_os", app_os)
         formData.append("app_os_version", app_os_version)
@@ -116,7 +120,7 @@ const SyncDataScreen = props => {
             onUploadProgress: function(progressEvent){
                 var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
                 console.log(percentCompleted)
-            }
+            }   //doesn't seem to function for now
             }).catch(err => {
             console.log('error',err.code)
             console.log('error',err.message)
@@ -144,7 +148,7 @@ const SyncDataScreen = props => {
     return (
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-             <KeyboardAvoidingScrollView>
+            <KeyboardAvoidingScrollView>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => props.navigation.pop()}>
                     <Icon name='arrow-left-circle' size={30} paddingVertical={50}></Icon>
@@ -163,8 +167,7 @@ const SyncDataScreen = props => {
                 ListFooterComponent={
                     <View style={{marginBottom: 80}}/>
                 }
-            />
-           
+            />       
             </KeyboardAvoidingScrollView>
             <TouchableOpacity onPress={() => remove()} style={styles.button}>
                 <Text style={styles.buttonText}>Sync</Text>

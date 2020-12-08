@@ -1,3 +1,14 @@
+/**
+ * 
+ * @fileoverview This component is the child of ASTScreen. Contains the logic from the graph.
+ * It is also a parent component to Modal-Component
+ * 
+ *
+ * 
+ * @author Trace Team Fall 2020.
+ */
+
+
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Button, Text, TouchableOpacity, Image, Dimensions, Modal, TouchableHighlight } from 'react-native';
 import Plotly from 'react-native-plotly';
@@ -22,7 +33,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 
-const transactionID = 'monitor_metrics'
+const transactionID = 'monitor_metrics' //to pass into stopTransaction, not needed to pass in though
 
  App =(props)=>{
   const {isConnected} = props
@@ -160,7 +171,7 @@ const onStop = async () => {
   //console.log()
  // clearInterval(plot);
 }
-const [visible, setVisible] = useState(false)
+const [visible, setVisible] = useState(false) //to control the modal pop up
 const [layout, setLayout]=useState({
   title: 'HR vs Time',
   showlegend:true 

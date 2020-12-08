@@ -1,3 +1,13 @@
+/**
+ * 
+ * @fileoverview This file contains logic for google-sign in and registration. 
+ * It is a child component of both the LoginScreen and SignUpScreen
+ * 
+ *
+ * @todo Implment functionality
+ * @author Trace Team Fall 2020.
+ */
+
 import React from 'react';
 import {Component} from 'react';
 import {TouchableOpacity, StyleSheet, View, Text, Platform} from 'react-native';

@@ -1,3 +1,10 @@
+/**
+ * 
+ * @fileoverview This is the top header component. It is a child of every screen in the navigation bar
+ *
+ * @todo refactor code to use an array and flatlist. all the code is repetitive
+ * @author Trace Team Fall 2020.
+ */
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {

@@ -1,4 +1,18 @@
+/**
+ * 
+ * @fileoverview This file contains all the action creators to dispatch a case for any one of the reducers we have in our reducers folder. 
+ * All cases must be covered. Each case should have an associated 
+ * 
+ *
+ * 
+ * @author Trace Team Fall 2020.
+ */
+ 
+
+
 //======================================== ACTION CREATORS ======================================
+
+
 /**
  * Returns an updated state value
  * Called in connectDevice()

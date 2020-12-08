@@ -1,3 +1,11 @@
+/**
+ * 
+ * @fileoverview This is custom navigation drawer. It contains all the main screens and icons
+ * @package  Icon library being used is MaterialCommunityIcons
+ *
+ * @todo refactor code to use an array and flatlist. all the code is repetitive
+ * @author Trace Team Fall 2020.
+ */
 import React, {useContext} from 'react'
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { View, StyleSheet, Text } from 'react-native';

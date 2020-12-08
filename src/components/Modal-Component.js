@@ -1,3 +1,10 @@
+/**
+ * 
+ * @fileoverview This is called upon stopping of any test. This component contains all the logic for send a recording to the database
+ *
+ * @todo 
+ * @author Trace Team Fall 2020.
+ */
 import React, {useContext, useState, useEffect} from 'react';
 import {
   View,

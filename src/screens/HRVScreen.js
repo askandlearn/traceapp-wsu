@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 
 import Header from '../components/Header-Component';
-import Timer from '../components/HRVTimer';
 import Swiper from 'react-native-swiper';
 import Plot from '../components/Plot';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';

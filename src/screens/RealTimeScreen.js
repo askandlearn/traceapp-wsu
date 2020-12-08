@@ -89,8 +89,8 @@ const RealTimeScreen = (props) => {
     style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer}/>
       <ModalComponent visible={visible} setVisible={setVisible}/>
+      <Text style={styles.title}>Real-Time Data</Text>
       <KeyboardAvoidingScrollView style={styles.bodyMain}>
-        <Text style={styles.title}>Real-Time Data</Text>
         <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
@@ -109,8 +109,7 @@ export default connect(mapStateToProps, mapDispatchToProps) (RealTimeScreen);
 
 const styles = StyleSheet.create({
   bodyMain:{
-    marginTop:60,
-   
+    marginTop:35,
   },
   container: {
     flex: 1,
@@ -125,14 +124,7 @@ const styles = StyleSheet.create({
   //     backgroundColor: '#ffffff',
   //     alignContent:'center',
   //   },
-  backgroundImage: {
-    alignSelf: 'center',
-    marginTop: 10,
-    marginBottom: 70,
-    width: '60%',
-    height: 100,
-    resizeMode: 'stretch',
-  },
+
   inputFields: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: '10%',
@@ -144,13 +136,29 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-        //marginHorizontal: '10%',
-        marginVertical: 4,
-        color: '#202020',
-        fontWeight: 'bold',
-        fontSize: 30,
-        paddingBottom: 20,
-        textAlign:'center'
+    //marginHorizontal: '10%',
+    //marginVertical: 4,
+    color: '#242852',
+    fontWeight: 'bold',
+    fontSize: 35,
+    //paddingBottom: ,
+   // paddingLeft:15,
+    marginTop:25,
+    paddingTop:65,
+   
+    //textAlign:'center',
+    shadowColor: '#000000',
+    shadowOffset: {width: .5, height: 1},
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 
+        //'CourierNewPS-BoldMT'
+        'AppleSDGothicNeo-Bold'
+      },
+    }),
   },
   valueTitle: {
     fontWeight: 'bold',

@@ -130,14 +130,14 @@ const HistoryScreen = (props) => {
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
             <Header openDrawer={props.navigation.openDrawer} />
+            <Text style={styles.title}>Recording History</Text>
             <FlatList style={styles.bodyMain}
-                ListHeaderComponent={
-                    <KeyboardAvoidingScrollView >
-                    <View>
-                        <Text style={styles.title}>Recording History</Text>
-                    </View>
-                    </KeyboardAvoidingScrollView>
-                }
+                // ListHeaderComponent={
+                    
+                //     <View>
+                //         <Text style={styles.title}>Recording History</Text>
+                //     </View>
+                // }
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={session => session.pk.toString()}
@@ -145,32 +145,48 @@ const HistoryScreen = (props) => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                 }
             />
-           
+           <KeyboardAvoidingScrollView >
             <Loading loading={loading}/>
-            
+            </KeyboardAvoidingScrollView>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     bodyMain:{
-        marginTop:60,
+        marginTop:25,
       },
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
         alignContent:'center',
       },
-    title:{
+      title: {
         alignSelf: 'center',
         //marginHorizontal: '10%',
-        marginVertical: 4,
-        color: '#202020',
+        //marginVertical: 4,
+        color: '#242852',
         fontWeight: 'bold',
-        fontSize: 30,
-        paddingBottom: 20,
-        textAlign:'center'
-    },
+        fontSize: 32,
+        //paddingBottom: ,
+       // paddingLeft:15,
+        marginTop:25,
+        paddingTop:65,
+       
+        //textAlign:'center',
+        shadowColor: '#000000',
+        shadowOffset: {width: .5, height: 1},
+        shadowOpacity: 0,
+        shadowRadius: 1,
+        elevation: 1,
+        ...Platform.select({
+          ios: {
+            fontFamily: 
+            //'CourierNewPS-BoldMT'
+            'AppleSDGothicNeo-Bold'
+          },
+        }),
+      },
     card:{
         borderWidth: 2,
         margin: 5,

@@ -124,8 +124,16 @@ const ASTScreen = (props) => {
   return (
     <View style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
-      <KeyboardAvoidingScrollView style={styles.bodyMain}>
-        <Text style={styles.title}>Active StandUp Test {'\n'}(AST)</Text>
+      <Text style={styles.title}>Active StandUp Test (AST)</Text>
+      <TouchableHighlight
+        style={styles.instructionButton}
+        onPress={() => {
+          setModalVisible(true);
+        }}
+      >
+        <Text style={styles.textStyle}>Show Instructions</Text>
+      </TouchableHighlight>
+      
         <View>{check && <SensorAlert />}</View>
         <View>
         <Modal
@@ -178,16 +186,10 @@ const ASTScreen = (props) => {
           </View>
         </View>
       </Modal>
-      <TouchableHighlight
-        style={styles.button}
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      >
-        <Text style={styles.textStyle}>Show Instructions</Text>
-      </TouchableHighlight>
+     
         </View>
         {/* <View style={styles.NavBarDivider} /> */}
+        <KeyboardAvoidingScrollView style={styles.bodyMain}>
         <View style={styles.wrapper}>
         <View style={styles.slide1}>
         <Plot />
@@ -202,7 +204,7 @@ export default connect(mapStateToProps, null) (ASTScreen);
 
 const styles = StyleSheet.create({
   bodyMain:{
-    marginTop:60,
+    marginTop:25,
   },
   container: {
     flex: 1,
@@ -215,8 +217,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
     marginBottom: 70,
-    width: '60%',
-    height: 100,
+   // marginLeft:30,
+    width: '50%',
+    height: 80,
     resizeMode: 'stretch',
   },
   inputFields: {
@@ -231,24 +234,54 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     //marginHorizontal: '10%',
-    marginVertical: 4,
-    color: '#202020',
+    //marginVertical: 4,
+    color: '#242852',
     fontWeight: 'bold',
-    fontSize: 30,
-    paddingBottom: 20,
-    textAlign:'center'
+    fontSize: 32,
+    //paddingBottom: ,
+    //paddingLeft:15,
+    marginTop:25,
+    paddingTop:65,
+   
+    //textAlign:'center',
+    shadowColor: '#000000',
+    shadowOffset: {width: .5, height: 1},
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 
+        //'CourierNewPS-BoldMT'
+        'AppleSDGothicNeo-Bold'
+      },
+    }),
   },
   button: {
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: '3%',
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal:15,
     borderRadius: 20,
     backgroundColor: '#ff2222',
     shadowColor: '#000000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 2,
+    elevation: 1,
+  },
+  instructionButton:{
+    backgroundColor:'#242852', 
+    alignSelf:'flex-end', 
+    padding: 10, 
+    marginTop:10, 
+    marginRight:10,
+    borderRadius: 5,
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
     elevation: 1,
   },
   buttonText: {

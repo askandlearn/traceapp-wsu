@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch => ({
 
 const transactionID = 'monitor_metrics'
 
-HRVPlot = (props) => {
+ASTPlot = (props) => {
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;

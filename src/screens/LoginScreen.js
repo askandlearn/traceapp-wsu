@@ -18,7 +18,7 @@ import {AuthContext} from '../contexts/AuthContext';
 import * as Animatable from 'react-native-animatable';
 
 
-const logo = '../images/TraceBio-White.png';
+const logo = '../images/TraceBio-Black.png';
 
 //Create the Login Page
 const LoginScreen = (props) => {
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: 'white',
   },
   bottomContainer: {
     flex: 1,

@@ -676,13 +676,13 @@ const checkLastName = (val) =>{
               onChangeText={(zip) => setCurrentUser({...currentUser, zip: zip})}
               onEndEditing={(e) => checkzip(e.nativeEvent.text)}/>
                {/* Insert validation prompt */}
-             {checkValidations.validZipLength ? false : (
+            {/* {checkValidations.validZipLength ? false : (
             <Animatable.View animation="fadeInLeft" duration={500}>
              <Text style={styles.errorMessage}>
                Zip code entered is invalid
               </Text>
             </Animatable.View>
-           )}
+            )}*/}
               {/* End of validation prompt */}
             <View style={{paddingTop: 15}}/>
               <TouchableOpacity style={[styles.button, {backgroundColor:'#ff0000'}]}

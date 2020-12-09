@@ -62,9 +62,6 @@ const ProfileScreen = (props) => {
 
 
   //Create instance of state change variables
-  const [changeText, setChangeText] = useState('Edit');
-  const [isEditable, editEditable] = useState(true);
-  const [showDate, setShowDate] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
 
@@ -205,47 +202,6 @@ const checkLastName = (val) =>{
 
       }
   }
-
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //        VALIDATE HEIGHT
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const checkHeight = (val) =>{
-    //If no changes made to height
-    if(val === user.height || val === ''){
-      console.log('No changes made to height')
-    }
-    //Changes have been made to height
-    else{
-      console.log('Height has been updated')
-      /*
-      editHeight(val);
-      setCheckValidations({
-        ...checkValidations,
-        diffHeight: true
-      }); */
-
-    }
-  }
-
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //        VALIDATE WEIGHT
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const checkWeight = (val) =>{
-    //If no changes made to weight
-    if(val === user.weight || val===''){
-      console.log('No changes made to weight')
-    }
-    //Changes have been made to weight
-    else{
-      console.log('Weight has been updated')
-      /*
-      editWeight(val);
-      setCheckValidations({
-        ...checkValidations,
-        diffWeight: true
-      }); */
-    }
-  };
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        VALIDATE BIRTHDATE
@@ -401,8 +357,6 @@ const checkLastName = (val) =>{
 
 }
 
-  //console.log(user.firstName)
-  //console.log(user.name)
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        Close Modal (name) [Via Submit]
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -528,26 +482,6 @@ const checkLastName = (val) =>{
       console.log('Error in saveChanges():',err.message)
     }
 
-    /*
-    console.log(currentUser)
-
-    if (isEditable) {
-      //POST Request to Update DB
-      console.log('Calling update')
-      try{
-        await update(currentUser);
-      }
-      catch(err){
-        console.log('Error in saveChanges():',err.message)
-      }
-
-      setChangeText('Edit');
-      editEditable(false);
-    } else {
-      setChangeText('Save');
-      editEditable(true);
-    }
-    */
   };
 
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -559,25 +493,23 @@ const checkLastName = (val) =>{
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer} />
-      
+
+      {/*       AVATAR AND USERNAME       */}
         <View style={styles.header} />
         <View style={styles.avatar}>
           <Text style={styles.avatar_text}>{initials}</Text>
         </View>
-        
         <View style={styles.body}>
           <View style={[styles.horizontal, styles.name]}>
             <Text style={styles.name} >{currentUser.username}</Text>
           </View>
-       
-          {/*       ~~~~~~  Add section title back later ~~~~~~
-          <Text style={styles.profileCategory}>Basic Info:</Text>
-            */}
-             
             <KeyboardAvoidingScrollView style={styles.bodyMain}>
-           
             <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
+
+            
+
+      {/*       NAME (FIRST + LAST)       */}
             <Text style={styles.contentTitle}>Name: </Text>
             <Modal
              animationType="slide"
@@ -594,6 +526,8 @@ const checkLastName = (val) =>{
             <View style={{justifyContent:'center'}}>
                 <View style={styles.modalContent}>
             <Text style={styles.modalContentTitle}>Name:</Text>
+
+      {/*       FIRST NAME      */}
              <Text style={styles.modalContentFLName}>First Name:</Text>
             <TextInput
               placeholder='Name'
@@ -610,6 +544,7 @@ const checkLastName = (val) =>{
               </Animatable.View>)}
               {/* End of validation prompt */}
 
+      {/*       LAST NAME       */}
         <Text style={styles.modalContentFLName}>Last Name:</Text>
             <TextInput
               placeholder='Name'
@@ -620,14 +555,14 @@ const checkLastName = (val) =>{
               onChangeText={(last_name) => setCurrentUser({...currentUser, last_name: last_name})}
               onEndEditing={(e) => checkLastName(e.nativeEvent.text)}/>
                {/* Insert validation prompt */}
-        {checkValidations.validLastName ? false : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMessage}>
-              Only alphabetical characters are allowed. Field cannot be empty. 
-            </Text>
-          </Animatable.View>
-        )}
-        {/* End of validation prompt */}
+               {checkValidations.validLastName ? false : (
+              <Animatable.View animation="fadeInLeft" duration={500}>
+               <Text style={styles.errorMessage}>
+                  Only alphabetical characters are allowed. Field cannot be empty. 
+                </Text>
+              </Animatable.View>
+              )}
+              {/* End of validation prompt */}
         <View style={{paddingTop: 15}}/>
               <TouchableOpacity style={[styles.button, {backgroundColor: (checkValidations.validFirstName && checkValidations.validLastName)  ? '#ff0000' : '#4c4c4c'}]}
               onPress={()=> {changeModalViewName()}}><Text style={styles.buttonText}>Submit</Text></TouchableOpacity>
@@ -643,17 +578,22 @@ const checkLastName = (val) =>{
           <TouchableOpacity style={styles.horizontal}></TouchableOpacity>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
+
+
+
+
+
+      {/*      EMAIL      */}
             <Text style={styles.contentTitle}>Email: </Text>
           <Text style={styles.contentEmail}>{user.email}</Text>
-            {/*     Remove TextInput for email because it should not be edited
-            <TextInput
-              value={user.email}
-              editable={false}
-              style={styles.content}/>
-        */}
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
+
+
+
+
+      {/*      BIRTHDATE      */}
             <Text style={styles.contentTitle}>Date of Birth: </Text>
             <Modal
              animationType="slide"
@@ -682,15 +622,15 @@ const checkLastName = (val) =>{
               onChangeText={(birthdate) => setCurrentUser({...currentUser, birthdate: birthdate})}
               onEndEditing={(e) => checkBirthdate(e.nativeEvent.text)}
                 />
-              {/* Insert validation prompt */}
-              {checkValidations.validBirthdate ? false : (
-               <Animatable.View animation="fadeInLeft" duration={500}>
-                <Text style={styles.errorMessage}>
-                  Must use 'MM/DD/YYYY' format
-                </Text>
-             </Animatable.View>
-             )}
-             {/* End of validation prompt */}
+                {/* Insert validation prompt */}
+                {checkValidations.validBirthdate ? false : (
+                 <Animatable.View animation="fadeInLeft" duration={500}>
+                  <Text style={styles.errorMessage}>
+                    Must use 'MM/DD/YYYY' format
+                  </Text>
+               </Animatable.View>
+               )}
+               {/* End of validation prompt */}
               <View style={{paddingTop: 15}}/>
               <TouchableOpacity style={[styles.button, {backgroundColor: checkValidations.validBirthdate  ? '#ff0000' : '#4c4c4c'}]}
               onPress={()=> {changeModalViewBirthdate()}}><Text style={styles.buttonText}>Submit</Text></TouchableOpacity>
@@ -703,13 +643,11 @@ const checkLastName = (val) =>{
           <Text style={styles.content} onPress={()=> {setShowModalDate(!showModalDate)}}>{currentUser.birthdate}</Text>
           </TouchableOpacity>
           <View style={styles.contentBorder} />
-          {/*  ~~~~~~~~  Add section title and padding back later ~~~~~~~~~
-          <View style={{paddingBottom: 40}}/>
-          <Text style={styles.profileCategory}>Additional Info:</Text>
-          <View style={styles.contentBorder} />
-          */}
           <TouchableOpacity style={styles.horizontal}>
             
+
+
+      {/*       ZIP CODE      */}
           <Text style={styles.contentTitle}>Zip: </Text>
           <Modal
           animationType="slide"
@@ -737,14 +675,14 @@ const checkLastName = (val) =>{
               onChangeText={(zip) => setCurrentUser({...currentUser, zip: zip})}
               onEndEditing={(e) => checkzip(e.nativeEvent.text)}/>
                {/* Insert validation prompt */}
-        {checkValidations.validZipLength ? false : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMessage}>
-              Zip code must be 5 numbers
-            </Text>
-          </Animatable.View>
-        )}
-        {/* End of validation prompt */}
+             {checkValidations.validZipLength ? false : (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+             <Text style={styles.errorMessage}>
+               Zip code must be 5 numbers
+              </Text>
+            </Animatable.View>
+           )}
+              {/* End of validation prompt */}
             <View style={{paddingTop: 15}}/>
               <TouchableOpacity style={[styles.button, {backgroundColor: checkValidations.validZipLength  ? '#ff0000' : '#4c4c4c'}]}
               onPress={()=> {changeModalViewZip()}}><Text style={styles.buttonText}>Submit</Text></TouchableOpacity>
@@ -754,11 +692,14 @@ const checkLastName = (val) =>{
             </View>
           </Modal>
         <Text style={styles.content} onPress={()=> {setShowModal(!showModal)}}>{currentUser.zip}</Text>
-       
           </TouchableOpacity>
           <View style={styles.contentBorder} />
           <View style={styles.contentBorder}/>
           <View style={styles.horizontal}>
+
+
+
+      {/*       GENDER       */}
             <Text style={styles.contentTitleGender}>Gender: </Text>
             <Modal
               animationType="slide"

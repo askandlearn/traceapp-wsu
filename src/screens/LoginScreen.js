@@ -173,7 +173,11 @@ const handlePassword = (val) =>{
     </View>
   );
 };
-//All styling options created below
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   flexContainer: {
     flexDirection: 'row',

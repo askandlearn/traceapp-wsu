@@ -53,6 +53,10 @@ export function SplashScreen() {
   );
 }
 
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -353,7 +353,10 @@ const SignUpScreen = (props) => {
   );
 };
 
-//All styling options created below
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   flexContainer: {
     flexDirection: 'row',

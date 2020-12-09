@@ -127,6 +127,10 @@ const HRVScreen = (props) => {
 
 export default connect(mapStateToProps, null) (HRVScreen);
 
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   bodyMain:{
     marginTop:15,

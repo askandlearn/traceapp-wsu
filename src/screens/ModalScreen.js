@@ -90,6 +90,9 @@ const ModalScreen = ({ navigation, route }) => {
     );
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
     container:{
         flex: 1,

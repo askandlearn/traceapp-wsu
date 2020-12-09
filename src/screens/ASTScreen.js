@@ -129,6 +129,10 @@ const ASTScreen = (props) => {
 
 export default connect(mapStateToProps, null) (ASTScreen);
 
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   bodyMain:{
     marginTop:15,

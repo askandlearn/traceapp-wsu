@@ -30,7 +30,9 @@ const WelcomeScreen = (props) => {
   );
 };
 
-//All styling options created below
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,

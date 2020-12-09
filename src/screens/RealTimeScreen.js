@@ -100,6 +100,10 @@ const RealTimeScreen = (props) => {
 
 export default connect(mapStateToProps, mapDispatchToProps) (RealTimeScreen);
 
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   bodyMain:{
     marginTop:35,

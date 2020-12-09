@@ -151,6 +151,9 @@ const HistoryScreen = (props) => {
     )
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
     bodyMain:{
         marginTop:25,
@@ -162,17 +165,11 @@ const styles = StyleSheet.create({
       },
       title: {
         alignSelf: 'center',
-        //marginHorizontal: '10%',
-        //marginVertical: 4,
         color: '#242852',
         fontWeight: 'bold',
         fontSize: 32,
-        //paddingBottom: ,
-       // paddingLeft:15,
         marginTop:25,
         paddingTop:65,
-       
-        //textAlign:'center',
         shadowColor: '#000000',
         shadowOffset: {width: .5, height: 1},
         shadowOpacity: 0,
@@ -181,7 +178,6 @@ const styles = StyleSheet.create({
         ...Platform.select({
           ios: {
             fontFamily: 
-            //'CourierNewPS-BoldMT'
             'AppleSDGothicNeo-Bold'
           },
         }),
@@ -190,11 +186,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         margin: 5,
         borderRadius: 5,
-        padding: 5,
-        // backgroundColor: '#242852',
-        // backgroundColor: '#445092',
-        // backgroundColor: '#000030',
-        // backgroundColor: 'black',   
+        padding: 5, 
         borderColor: '#000030',
         shadowColor: 'red',
         shadowOffset: {width: 0, height: 1},
@@ -205,33 +197,25 @@ const styles = StyleSheet.create({
     SessionTitle: {
         fontSize: 15,
         color: 'black',
-       // fontWeight: 'bold'
     },
     TitleContent: {
         fontSize: 17,
         color: 'black',
-        //fontWeight: 'bold'
     },
     DataFileTitle: {
         fontSize: 15,
         color: 'black',
-        //fontWeight: 'bold',
-
     },
     content: {
         fontSize: 17,
         color: 'black',
         textAlign: 'center',
         alignSelf: 'center',
-        //marginHorizontal: '10%',
-        
     },
     DescriptionContent: {
         fontSize: 17,
         color: 'black',
         flex: 1,
-       // flexWrap: 'wrap',
-        //marginHorizontal: '10%',
     },
     DataFileContent: {
         fontSize: 15,

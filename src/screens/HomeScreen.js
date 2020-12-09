@@ -34,7 +34,13 @@ const strDay = (day) => {
 
 
 const calDate = [];
-var format = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+
+var thisDay=date.getDate();
+if(date.getDate() < 10){
+    var temp = "0";
+    thisDay = temp.concat(thisDay);
+  }
+var format = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + thisDay;
 calDate.push({
   date: format,
   score: Math.random() * 100,
@@ -45,6 +51,7 @@ var thisMonth = date.getMonth() + 1;
 var thisYear = date.getFullYear();
 var formatStr = '';
 for(var i = 1; i < 30; i++) {
+
   if(thisDay == 1 && thisMonth == 1){
     thisYear--;
     thisMonth = 12;

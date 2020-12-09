@@ -231,19 +231,21 @@ const checkLastName = (val) =>{
         //If the date is in the valid format, continue testing
           //Update validation flag
              
-      //Split date into three variables
-      const [month, day, year] = val.split('/');
+        //Split date into three variables
+        const [month, day, year] = val.split('/');
 
-      //Make sure month, day, year are all defined and of the correct length
-      if (year === undefined || month === undefined || day === undefined || year.length !== 4
+        //Make sure month, day, year are all defined and of the correct length
+         if (year === undefined || month === undefined || day === undefined || year.length !== 4
          || month.length !== 2 || day.length !== 2 ) {
-        console.log('Error: Birthdate entry is invalid.')
+         console.log('Error: Birthdate entry is invalid.')
+
         //Update validation flag
           setCheckValidations({
             ...checkValidations,
            validBirthdate: false
           });
       }
+
       //Month, day, year are all defined and are the correct length
       else{
         //Convert month/day/year to an int and store it in a new variable
@@ -318,7 +320,7 @@ const checkLastName = (val) =>{
              setCheckValidations({
                ...checkValidations,
               validBirthdate: false
-        });
+            });
             }
             else{ //Birthday is valid!
               //Update validation flag
@@ -329,11 +331,9 @@ const checkLastName = (val) =>{
 
               console.log('Birthdate has been updated')
               console.log(currentUser.birthdate)
-
             }
         }
       }
-
       }
       else{
         console.log('Error: cannot split birthdate string because it is not in the correct format')
@@ -343,8 +343,6 @@ const checkLastName = (val) =>{
           validBirthdate: false
         });
       }
-     
-
     }
   }
   else{
@@ -507,7 +505,7 @@ const checkLastName = (val) =>{
             <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
 
-            
+
 
       {/*       NAME (FIRST + LAST)       */}
             <Text style={styles.contentTitle}>Name: </Text>

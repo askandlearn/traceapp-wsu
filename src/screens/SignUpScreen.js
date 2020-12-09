@@ -20,13 +20,13 @@ const logo = '../images/TraceBio-Black.png';
 //Create variable instances for each required field
 
 const SignUpScreen = (props) => {
-  const [username, setUsername] = useState('testuser4');
-  const [firstName, setFirstName] = useState('Mohammed');
-  const [lastName, setLastName] = useState('Hamza');
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [birthdate, setBirthdate] = useState();
-  const [email, setEmail] = useState('test@gmail.com');
-  const [password, setPassword] = useState('password123');
-  const [confirmPass, setConfirmPass] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
   
 
   //export context
@@ -247,7 +247,7 @@ const SignUpScreen = (props) => {
         {/* End of validation prompt */}
         <TextInput
           style={styles.inputFields}
-          placeholder="Firstname"
+          placeholder="First name"
           value={firstName}
           onChangeText={(val) => setFirstName(val)}
           onEndEditing={(e) => handleFirst(e.nativeEvent.text)}
@@ -261,7 +261,7 @@ const SignUpScreen = (props) => {
         {/* End of validation prompt */}
         <TextInput
           style={styles.inputFields}
-          placeholder="Lastname"
+          placeholder="Last name"
           value={lastName}
           onChangeText={(val) => setLastName(val)}
           onEndEditing={(e) => handleLast(e.nativeEvent.text)}
@@ -330,11 +330,11 @@ const SignUpScreen = (props) => {
         <View style={styles.flexContainer}>
           <View style={styles.horizantalLine} />
           <View>
-            <Text style={styles.orOption}>Or sign up with</Text>
+            {/*<Text style={styles.orOption}>Or sign up with</Text> */}
           </View>
           <View style={styles.horizantalLine} />
         </View>
-        <Google height={48} width={300} text={'Sign up with Google'}/>
+        {/*<Google height={48} width={300} text={'Sign up with Google'}/> */}
         <View style={[styles.bottomContainer]}>
           <View style={styles.flexContainer}>
             <Text style={styles.otherText}>Already a member?</Text>

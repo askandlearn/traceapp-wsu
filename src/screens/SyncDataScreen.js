@@ -1,6 +1,4 @@
 import React, { useContext,useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native'
-import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Platform, FlatList} from 'react-native'
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'

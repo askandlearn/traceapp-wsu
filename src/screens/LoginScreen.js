@@ -24,8 +24,8 @@ const LoginScreen = (props) => {
         to login without inputting anything, null values will passed onto the php script and then the database. The script
         does not know how to handle null values.
     */
-  const [email, setEmail] = useState('brianna');
-  const [password, setPassword] = useState('tracewsu!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const {login} = useContext(AuthContext);
@@ -151,11 +151,11 @@ const handlePassword = (val) =>{
         <View style={styles.flexContainer}>
           <View style={styles.horizantalLine} />
           <View>
-            <Text style={styles.orOption}>Or sign in with</Text>
+            {/*<Text style={styles.orOption}>Or sign in with</Text> */}
           </View>
           <View style={styles.horizantalLine} />
         </View>
-        <Google height={48} width={340} text={'Sign in with Google'}/>
+       {/*} <Google height={48} width={340} text={'Sign in with Google'}/> */}
         <View style={[styles.bottomContainer]}>
           <View style={styles.flexContainer}>
             <Text style={styles.otherText}>Not a member?</Text>

@@ -3,11 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   TouchableOpacity,
-  Image,
-  BackgroundImage,
-  ScrollView,
   Modal,
   Dimensions,
   Alert,
@@ -32,9 +28,6 @@ const mapDispatchToProps = dispatch => ({
   stopTransaction: ID => dispatch(stopTransaction(ID)),
 })
 
-
-
-//const screenWidth = Dimensions.get("window").width;
 //props.data [0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
 const RTData = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -51,6 +44,8 @@ const RTData = (props) => {
   const [isDIF, setDIF] = useState(0);
   const [isACC, setACC] = useState(0);
 
+  //Get the PNN50 and HRV values
+  //The rest of the values are assigned to and displayed directly in each field
   useEffect(() => {
    if(props.currTest==='RT')
     {
@@ -69,7 +64,6 @@ const RTData = (props) => {
           marginTop:40,
           marginHorizontal: '10%',
         }}>
-        {/* <Text style={{ fontWeight:'bold'}}>Note:</Text> */}
         <Icon name="question-circle" size={18} color="#ff2222" />
         <Text style={{fontSize: 15, }}>
           {' '}
@@ -204,6 +198,7 @@ const RTData = (props) => {
         onRequestClose={() => {
           setModalVisible(false)
         }}>
+          {/* Assign each biometric to its corresponding field */}
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={{fontWeight: 'bold'}}>
@@ -251,7 +246,7 @@ const RTData = (props) => {
               {'\n'}
             </Text>
             <Text>
-              {/* I am {props.name}, and this is  */}
+              {/* Display information about each biometric value  */}
               {isBiometric == 1
                 ? 'HR refers to your Heat Rate and is measured in beats per minute. \n\nThe resting Heart Rate of an avergae adult ranges from 60-100 bpm.'
                 : isBiometric == 2
@@ -271,15 +266,6 @@ const RTData = (props) => {
                 : isBiometric == 9
                 ? 'Signal to the change of the heart rate.'
                 : 'Accelerometer signal indicating movement.'}
-
-              {/* {isBiometric==1? "Value1":  isBiometric==2? "Value2":
-                isBiometric==3? "Value3":
-                isBiometric==4? "Value4":
-                isBiometric==5? "Value5":
-                isBiometric==6? "Value6":
-                isBiometric==7? "Value7":
-                isBiometric==8? "Value8":
-                isBiometric==9? "Value9": "null"} */}
             </Text>
             <TouchableOpacity
               style={styles.button}
@@ -303,19 +289,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     alignContent: 'center',
   },
-  //   valueContainer:{
-  //     marginVertical:'-2%',
-  //     backgroundColor: '#ffffff',
-  //     alignContent:'center',
-  //   },
-  backgroundImage: {
-    alignSelf: 'center',
-    marginTop: 10,
-    marginBottom: 70,
-    width: '60%',
-    height: 100,
-    resizeMode: 'stretch',
-  },
   inputFields: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: '10%',
@@ -327,7 +300,6 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    //marginHorizontal: '10%',
     marginVertical: 4,
     color: '#202020',
     fontWeight: 'bold',
@@ -344,38 +316,29 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignContent: 'center',
     justifyContent: 'center',
-    //resizeMode: 'stretch',
     paddingHorizontal: 8,
   },
   valueButton: {
     alignItems: 'center',
-    // alignContent:'center',
     justifyContent: 'center',
     marginHorizontal: '10%',
-    marginBottom: 60,
-    //borderRadius: 20,
-
+    marginBottom: 50,
     borderBottomWidth: 1,
     width: 75,
     height: 30,
     borderColor: 'rgba(0,0,0,0.2)',
-    // backgroundColor:'rgba(255,255,255,0.7)',
-    // shadowColor: '#000000',
-    // shadowOffset: {width: 0, height: 3},
-    // shadowOpacity: 0.4,
-    // shadowRadius: 2,
     elevation: 1,
   },
   valueText: {
     color: '#000000',
     fontSize: 18,
-    //fontWeight: 'bold',
   },
   button: {
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
-    padding: 10,
+    paddingHorizontal:20,
+    paddingVertical:10,
     borderRadius: 20,
     backgroundColor: '#ff0000',
     shadowColor: '#000000',
@@ -383,43 +346,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
+    width:'60%'
   },
   buttonText: {
     color: '#ffffff',
     fontWeight: 'bold',
-  },
-  header: {
-    width: '100%',
-    height: 60,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  ASTfigure: {
-    width: 210,
-    height: 214,
-    alignSelf: 'center',
-    marginBottom: 20,
-  },
-  NavBarDivider: {
-    height: 1,
-    width: '50%',
-    backgroundColor: 'lightgray',
-    marginVertical: 10,
-  },
-  wrapper: {
-    // flex:1,
-    height: 300,
-    //backgroundColor: '#9DD6EB'
-
-    //opacity:0.4,
-    backgroundColor: '#ffffff',
-  },
-
-  steps: {
-    color: '#000000',
-    fontSize: 15,
   },
   centeredView: {
     height: '90%',
@@ -463,7 +394,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 60,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: '2%',
-    //marginVertical:'2%'
   }
 });

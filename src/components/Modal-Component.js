@@ -167,18 +167,20 @@ const ModalComponent = (props) => {
             <View style={styles.modalBox}>
                 <Text style={{fontSize: 20, color: 'white', fontWeight: 'bold', alignSelf: 'center', marginBottom: 10}}>Session Information</Text>
                 <TextInput
-                    style={{height: 70, color: 'white', borderColor: 'white', borderWidth: 1, backgroundColor: '#A4A4A4'}}
+                    style={{paddingLeft:5, height: 70, color: 'black', borderColor: 'white', borderWidth: 1, backgroundColor: 'white'}}
                     value={description}
                     placeholder='Session description...(optional)'
+                    placeholderTextColor='black'
                     onChangeText={text => setDescription(text)}
                     maxLength={max}
                     multiline={true}
                     textAlignVertical='top'/>
                 <Text style={{color: 'white'}}>Max characters: {max}</Text>
                 <TextInput
-                    style={{height: 50, color: 'white', borderColor: 'white', borderWidth: 1, backgroundColor: '#A4A4A4'}}
+                    style={{paddingLeft:5,height: 50, color: 'black', borderColor: 'white', borderWidth: 1, backgroundColor: 'white'}}
                     value={comment}
                     placeholder='Leave a comment...(optional)'
+                    placeholderTextColor='black'
                     onChangeText={text => setComment(text)}
                     maxLength={max/2}/>
                 <Text style={{color: 'white'}}>Max characters: {max/2}</Text>

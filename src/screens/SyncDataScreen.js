@@ -1,5 +1,4 @@
-
-import React, { useContext, useState } from 'react';
+import React, { useContext,useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Platform, FlatList} from 'react-native'
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -116,8 +115,8 @@ const SyncDataScreen = props => {
             //if response is successful, the accepted status is 201 - CREATED
             if(response.status == 201){
                 console.log('SUCCESS',response.status)
-                // setLast(LAST-1)
-                // props.remove()
+                 setLast(LAST-1)
+                 props.remove()
                 alert('Success')
             }
             else{

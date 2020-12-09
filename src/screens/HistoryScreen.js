@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
 
     },
     SessionTitle: {
-        fontSize: 15,
+        fontSize: 17,
         color: 'black',
     },
     TitleContent: {
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     DataFileTitle: {
-        fontSize: 15,
+        fontSize: 17,
         color: 'black',
     },
     content: {
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     DataFileContent: {
-        fontSize: 15,
+        fontSize: 17,
         color: '#2127c4',
         textAlign: 'center',
         alignSelf: 'center',

@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext, useCallback} from 'react';
-import {View, Text, StyleSheet, Linking, FlatList, Platform, RefreshControl} from 'react-native';
+import {View, Text, StyleSheet, Linking, FlatList, Platform, RefreshControl, TextInput} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Axios from 'axios';
@@ -80,25 +80,36 @@ const HistoryScreen = (props) => {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     
-    const onRefresh = useCallback(() => {
+    const onRefresh = async () => {
         setRefreshing(true)
-    })
 
+        await getData()
+    }
 
     const getData = async () => {
         try{
-            const url = 'http://134.209.76.190:8000/api/Recording'
+            let url = 'http://134.209.76.190:8000/api/Recording'
+            let dataArr = []
+
             const config = {
                 headers: {'Authorization':`Token ${user.token}`},
                 timeout: 2000   //two seconds timeout
             }
-            
-            const data = await Axios.get(url, config).then(res => res.data).catch(err => {
-                console.log(err.code);
-                console.log(err.message)
-            })
-            
-            setData(data.results)
+            do {   
+                if(url){
+                    const recordings = await Axios.get(url, config).then(res => res.data).catch(err => {
+                        console.log(err.code);
+                        console.log(err.message)
+                    })
+                    // setData(recordings.results)
+                    recordings.results.forEach(element => dataArr.push(element))
+                    // console.log(i, recordings.results[0])
+                    url = recordings.next
+                }             
+            } while (url);   
+
+            // console.log('dataArr', dataArr)
+            setData(dataArr)
             setLoading(false)
             setRefreshing(false)
         }
@@ -117,7 +128,7 @@ const HistoryScreen = (props) => {
         }  
         fetch();
         // console.log(data[0].pk)
-    },[refreshing]) //anytime screen is pulled down
+    },[]) //anytime screen is pulled down
 
     const renderItem = ({item}) => {
         // console.log()
@@ -131,22 +142,14 @@ const HistoryScreen = (props) => {
             <Header openDrawer={props.navigation.openDrawer} />
             <Text style={styles.title}>Recording History</Text>
             <FlatList style={styles.bodyMain}
-                // ListHeaderComponent={
-                    
-                //     <View>
-                //         <Text style={styles.title}>Recording History</Text>
-                //     </View>
-                // }
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={session => session.pk.toString()}
                 refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                    <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()}/>
                 }
             />
-           <KeyboardAvoidingScrollView >
             <Loading loading={loading}/>
-            </KeyboardAvoidingScrollView>
         </View>
     )
 }

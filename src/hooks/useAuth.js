@@ -92,7 +92,7 @@ export function useAuth(){
                 email: results.email,
                 first_name: results.first_name,
                 last_name: results.last_name,
-                birthdate: results.profile.birthdate,
+                birthdate: profileDate,
                 gender: results.profile.sex,
                 zip: results.profile.zip,
             }
@@ -201,7 +201,7 @@ export function useAuth(){
                 email: results.email,
                 first_name: results.first_name,
                 last_name: results.last_name,
-                birthdate: results.profile.birthdate,
+                birthdate: profileDate,
                 gender: results.profile.sex,
                 zip: results.profile.zip,
             }

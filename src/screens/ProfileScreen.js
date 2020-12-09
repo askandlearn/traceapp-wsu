@@ -29,6 +29,7 @@ function mapStateToProps(state){
                 PROFILE SCREEN
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 const ProfileScreen = (props) => {
+  let thing = true;
 
   //Toast for when the device disconnects
   const {isConnected} = props
@@ -209,6 +210,8 @@ const checkLastName = (val) =>{
   //        VALIDATE BIRTHDATE
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const checkBirthdate = (val) =>{
+    console.log(val);
+    
     //Make sure the user entered exactly 10 characters
     if(val.trim().length === 10){
 
@@ -353,8 +356,9 @@ const checkLastName = (val) =>{
       ...checkValidations,
       validBirthdate: false
     });
-  }
+    thing = false;
 
+  }
 }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -380,13 +384,13 @@ const checkLastName = (val) =>{
   const changeModalViewZip = () => {
 
     //If zip is valid, allow the user to submit changes
-    if(checkValidations.validZipLength){
+    if(currentUser.zip.length == 5){
      setShowModal(false);
      saveChanges();
     }
     //If not valid, disable submit until valid
     else{
-      setShowModal(true);
+      alert("Please enter a 5 digit zip code")
     }
 
   }
@@ -403,17 +407,16 @@ const checkLastName = (val) =>{
   //        Close Modal (bday) [Via Submit]
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const changeModalViewBirthdate = () => {
-
-    //If the birthdate is valid, allow submit
-    if(checkValidations.validBirthdate){
-      setShowModalDate(false);
-      saveChanges();
-    }
-    //If not valid, disable submit until valid
-    else{
-      setShowModalDate(true);
-    }
-
+      //If the birthdate is valid, allow submit
+      console.log(thing);
+      if(checkValidations.validBirthdate){
+        setShowModalDate(false);
+        saveChanges();
+      }
+      //If not valid, disable submit until valid
+      else{
+        alert("Invalid date entered \n\n Birthdate should be in \nmm/dd/yyyy format")
+      }
   }
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //        Close Modal (name) [via X]
@@ -682,7 +685,7 @@ const checkLastName = (val) =>{
            )}
               {/* End of validation prompt */}
             <View style={{paddingTop: 15}}/>
-              <TouchableOpacity style={[styles.button, {backgroundColor: checkValidations.validZipLength  ? '#ff0000' : '#4c4c4c'}]}
+              <TouchableOpacity style={[styles.button, {backgroundColor:'#ff0000'}]}
               onPress={()=> {changeModalViewZip()}}><Text style={styles.buttonText}>Submit</Text></TouchableOpacity>
               </View>
               </View>

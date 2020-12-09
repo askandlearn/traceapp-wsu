@@ -116,8 +116,8 @@ const SyncDataScreen = props => {
             //if response is successful, the accepted status is 201 - CREATED
             if(response.status == 201){
                 console.log('SUCCESS',response.status)
-                // setLast(LAST-1)
-                // props.remove()
+                 setLast(LAST-1)
+                 props.remove()
                 alert('Success')
             }
             else{

@@ -47,7 +47,7 @@ const RTData = (props) => {
   const [isSkinTemp, setSkinTemp] = useState(0);
   const [isPAMP, setPAMP] = useState(0);
   const [isDAMP, setDAMP] = useState(0);
-  const [isCBF, setCBF] = useState(0);
+  const [isPPG, setPPG] = useState(0);
   const [isDIF, setDIF] = useState(0);
   const [isACC, setACC] = useState(0);
 
@@ -80,9 +80,9 @@ const RTData = (props) => {
       {/* FIRST ROW */}
       <View
         style={styles.row}>
-        <Text style={[styles.valueTitle,{}]}> HR (bpm)</Text>
-        <Text style={styles.valueTitle}> IBI (ms)</Text>
-        <Text style={styles.valueTitle}>HRV (ms)</Text>
+        <Text style={[styles.valueTitle,{}]}>  HR (bpm)</Text>
+        <Text style={styles.valueTitle}>   IBI (ms)</Text>
+        <Text style={styles.valueTitle}> HRV (ms)</Text>
       </View>
 
       <View
@@ -116,9 +116,9 @@ const RTData = (props) => {
       {/* SECOND ROW */}
       <View
         style={styles.row}>
-        <Text style={styles.valueTitle}>   pNN50</Text>
+        <Text style={styles.valueTitle}>    pNN50</Text>
         <Text style={styles.valueTitle}>Skin Temp</Text>
-        <Text style={styles.valueTitle}>   PAMP</Text>
+        <Text style={styles.valueTitle}>    PAMP</Text>
       </View>
       <View
         style={styles.row}>
@@ -151,9 +151,9 @@ const RTData = (props) => {
       {/* THIRD ROW */}
       <View
         style={styles.row}>
-        <Text style={styles.valueTitle}>    DAMP</Text>
+        <Text style={styles.valueTitle}>     DAMP</Text>
+        <Text style={styles.valueTitle}>      PPG</Text>
         <Text style={styles.valueTitle}>       DIF</Text>
-        <Text style={styles.valueTitle}>  ACC_X</Text>
       </View>
       <View
         style={styles.row}>
@@ -168,11 +168,26 @@ const RTData = (props) => {
         <TouchableOpacity
           style={styles.valueButton}
           onPress={() => {
+            setIsBiometric(10);
+            setModalVisible(true);
+          }}>
+          <Text style={styles.valueText}>{props.currTest==='RT'?props.metrics[5]:0}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.valueButton}
+          onPress={() => {
             setIsBiometric(9);
             setModalVisible(true);
           }}>
           <Text style={styles.valueText}>0</Text>
         </TouchableOpacity>
+      </View>
+      <View
+        style={styles.row}>
+        <Text style={styles.valueTitle}>    ACC_X</Text>
+      </View>
+      <View
+        style={styles.row}>
         <TouchableOpacity
           style={styles.valueButton}
           onPress={() => {
@@ -182,7 +197,6 @@ const RTData = (props) => {
           <Text style={styles.valueText}>{props.currTest==='RT'?props.metrics[9]:0}</Text>
         </TouchableOpacity>
       </View>
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -208,7 +222,7 @@ const RTData = (props) => {
                 : isBiometric == 7
                 ? 'DAMP'
                 : isBiometric == 8
-                ? 'CBF'
+                ? 'PPG'
                 : isBiometric == 9
                 ? 'DIF'
                 : 'ACC_X'}
@@ -230,7 +244,7 @@ const RTData = (props) => {
                 : isBiometric == 7
                 ? props.metrics[4]
                 : isBiometric == 8
-                ? isCBF
+                ? isPPG
                 : isBiometric == 9
                 ? isDIF
                 : props.metrics[9]}
@@ -251,11 +265,11 @@ const RTData = (props) => {
                 : isBiometric == 6
                 ? 'Pulse amplitude of systole (integer). Indicates the volume of blood flow.'
                 : isBiometric == 7
-                ? 'Differential amplitude (integer). Indicates the strength of heart contractions.'
+                ? 'Differential Amplitude (integer). Indicates the strength of heart contractions.'
                 : isBiometric == 8
-                ? 'CBF refers to the Coronary Blood Flow.'
+                ? 'PPG is also known as the photoplethsymogram.'
                 : isBiometric == 9
-                ? 'Value9'
+                ? 'Signal to the change of the heart rate.'
                 : 'Accelerometer signal indicating movement.'}
 
               {/* {isBiometric==1? "Value1":  isBiometric==2? "Value2":

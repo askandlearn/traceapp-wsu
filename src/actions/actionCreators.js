@@ -126,3 +126,23 @@ export const removeSync = () => ({
     type: 'REMOVE_SYNC'
 })
 
+/**
+ * Set current test
+ * 
+ * 
+ * @returns {state} currTest: ;abe
+ */
+export const setCurrentTest = (label) => ({
+    type: 'SET_CURRTEST',
+    label: label
+})
+
+/**
+ * Remove current test
+ * 
+ * 
+ * @returns {state} removeCURRTest
+ */
+export const removeCurrentTest = () => ({
+    type: 'REMOVE_CURRTEST'
+})

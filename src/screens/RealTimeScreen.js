@@ -9,7 +9,6 @@ import {
 import Header from '../components/Header-Component';
 import RTData from '../components/RTData';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-
 import {connect} from 'react-redux';
 import {stopTransaction, updateMetric} from '../actions';
 import {UserContext} from '../contexts/UserContext';
@@ -26,6 +25,7 @@ const serviceUUID = '0000f80d-0000-1000-8000-00805f9b34fb'
 //transaction id for monitoring data
 const transactionID = 'monitor_metrics'
 
+//Get the bometric data from the device
 const mapStateToProps = state => ({
   pnn50: state.DATA['pnn50'],
   hrv: state.DATA['hrv'],
@@ -33,9 +33,11 @@ const mapStateToProps = state => ({
   metrics: state.BLE['metrics'], //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
   recordings: state.BLE['recordings'],
   isConnected : state.BLE['isConnected'],
-  busy: state.BLE['busy']
+  busy: state.BLE['busy'],
+  currTest: state.BLE['currTest']
 })
 
+//Control the display of data on the Real-Time page
 const mapDispatchToProps = dispatch => ({
   updateMetric: (timeout, label) => dispatch(updateMetric(timeout, label)),
   stopTransaction: ID => dispatch(stopTransaction(ID)),
@@ -45,26 +47,23 @@ const RealTimeScreen = (props) => {
   //Toast for when the device disconnects
   const {isConnected} = props
   const prev = usePrevious(isConnected)
-  
   useEffect(() => {
     function showToast(){
       if(prev === true && isConnected === false){
         Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
       }
     }
-
     showToast()
   }, [isConnected])
   //End Toast
-
-
   const user = useContext(UserContext)
 
+  //Start displaying the data on the page
   const onStart = async () => {
     props.updateMetric(undefined, 'RT');
 
   }
-
+  //Stop displaying the data on the page
   const onStop = async () => {
     console.log('Cancelling transaction...')
     props.stopTransaction(transactionID);
@@ -76,15 +75,21 @@ const RealTimeScreen = (props) => {
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}>
       <Header openDrawer={props.navigation.openDrawer}/>
+      {/* Get the survey after stopping */}
       <ModalComponent visible={visible} setVisible={setVisible}/>
+
       <Text style={styles.title}>Real-Time Data</Text>
+
+      {/* Start and stop buttons to control the data */}
       <KeyboardAvoidingScrollView style={styles.bodyMain}>
         <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || !props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || !props.busy || props.currTest!='RT' ? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy || props.currTest!='RT'}>
           <Text style={styles.buttonText}>Stop</Text>
         </TouchableOpacity> 
+
+        {/* Call the component that displays the biometric data */}
         <View testID="Data" style={styles.wrapper}>
           <RTData></RTData>
         </View>   
@@ -194,12 +199,6 @@ const styles = StyleSheet.create({
     height: 214,
     alignSelf: 'center',
     marginBottom: 20,
-  },
-  NavBarDivider: {
-    height: 1,
-    width: '100%',
-    backgroundColor: 'lightgray',
-    marginVertical: 10,
   },
   wrapper: {
      height:600,

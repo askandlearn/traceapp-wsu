@@ -10,7 +10,8 @@ const mapStateToProps = state => ({
   hrv: state.DATA['hrv'],
   metrics: state.DATA['metrics'],
   isConnected : state.BLE['isConnected'],
-  busy: state.BLE['busy']
+  busy: state.BLE['busy'],
+  currTest: state.BLE['currTest']
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -74,7 +75,10 @@ ASTPlot = (props) => {
   }
 
   useEffect(()=>{
-    setPlot();
+    if (props.currTest==='HRV')
+    {
+      setPlot();
+    }
   },[props.hrv])
 
   const onStop = async () => {
@@ -109,7 +113,7 @@ ASTPlot = (props) => {
         <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || !props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || props.currTest!='HRV'|| !props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy || props.currTest!='HRV'}>
           <Text style={styles.buttonText}>Stop</Text>
         </TouchableOpacity> 
       </View>

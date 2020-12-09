@@ -1,8 +1,9 @@
 import React, { useContext,useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native'
+import React, { useContext, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Platform, FlatList} from 'react-native'
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import { removeSync } from '../actions/actionCreators';
 import DeviceInfo from 'react-native-device-info';  
 import { UserContext } from '../contexts/UserContext';
@@ -134,7 +135,6 @@ const SyncDataScreen = props => {
     return (
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-            <KeyboardAvoidingScrollView>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => props.navigation.pop()}>
                     <Icon name='arrow-left-circle' style={{color:'#242852'}} size={30} paddingVertical={50}></Icon>
@@ -154,7 +154,6 @@ const SyncDataScreen = props => {
                     <View style={{marginBottom: 80}}/>
                 }
             />       
-            </KeyboardAvoidingScrollView>
             <TouchableOpacity onPress={() => remove()} style={styles.button}>
                 <Text style={styles.buttonText}>Sync</Text>
             </TouchableOpacity>
@@ -174,7 +173,7 @@ const styles = StyleSheet.create({
         color: '#242852',
         fontWeight: 'bold',
         fontSize: 32,
-        paddingTop:15,
+        paddingTop:  15,
         marginBottom:20,
         shadowColor: '#000000',
         shadowOffset: {width: .5, height: 1},
@@ -190,7 +189,8 @@ const styles = StyleSheet.create({
       },
     header: {
         width: '100%',
-        height: 60,
+        height: Platform.OS==='ios'?100:60,
+        paddingTop:Platform.OS==='ios'?30:10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

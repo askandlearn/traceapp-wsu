@@ -23,11 +23,12 @@ const mapStateToProps = state => ({
   pnn50: state.DATA['pnn50'],
   hrv: state.DATA['hrv'],
   connectedDevice: state.BLE['connectedDevice'],
-  metrics: state.DATA['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  metrics: state.DATA['metrics'],//[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  currTest: state.BLE['currTest']
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateMetric: () => dispatch(updateMetric()),
+  updateMetric: (timeout, label) => dispatch(updateMetric(timeout, label)),
   stopTransaction: ID => dispatch(stopTransaction(ID)),
 })
 
@@ -51,9 +52,11 @@ const RTData = (props) => {
   const [isACC, setACC] = useState(0);
 
   useEffect(() => {
-   
-    setPN(props.pnn50)
-    setHRV(props.hrv)
+   if(props.currTest==='RT')
+    {
+      setPN(props.pnn50)
+      setHRV(props.hrv)
+    }
   },[props.hrv,props.pnn50])
 
   return (
@@ -91,7 +94,7 @@ const RTData = (props) => {
             setModalVisible(true);
             setTimerOn(true);
           }}>
-          <Text style={styles.valueText}>{props.metrics[1]}</Text>
+          <Text style={styles.valueText}>{props.currTest==='RT'?props.metrics[1]:0}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.valueButton}
@@ -99,7 +102,7 @@ const RTData = (props) => {
             setIsBiometric(2);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{props.metrics[2]}</Text>
+          <Text style={styles.valueText}>{props.currTest==='RT'?props.metrics[2]:0}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.valueButton}
@@ -133,7 +136,7 @@ const RTData = (props) => {
             setIsBiometric(5);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{props.metrics[8]}</Text>
+          <Text style={styles.valueText}>{props.currTest==='RT'?props.metrics[8]:0}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.valueButton}
@@ -141,7 +144,7 @@ const RTData = (props) => {
             setIsBiometric(6);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{props.metrics[3]}</Text>
+          <Text style={styles.valueText}>{props.currTest==='RT'?props.metrics[3]:0}</Text>
         </TouchableOpacity>
       </View>
 
@@ -160,7 +163,7 @@ const RTData = (props) => {
             setIsBiometric(7);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{props.metrics[4]}</Text>
+          <Text style={styles.valueText}>{props.currTest==='RT'?props.metrics[4]:0}</Text>
         </TouchableOpacity> 
         <TouchableOpacity
           style={styles.valueButton}
@@ -176,7 +179,7 @@ const RTData = (props) => {
             setIsBiometric(10);
             setModalVisible(true);
           }}>
-          <Text style={styles.valueText}>{props.metrics[9]}</Text>
+          <Text style={styles.valueText}>{props.currTest==='RT'?props.metrics[9]:0}</Text>
         </TouchableOpacity>
       </View>
 

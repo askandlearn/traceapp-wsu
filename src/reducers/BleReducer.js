@@ -4,7 +4,8 @@ const initialState = {
   connectedDevice: {},
   isConnected: false,
   busy: false,
-  currRecording: {start_time: '', label: '', file: ''}  //string to hold current recording
+  currRecording: {start_time: '', label: '', file: ''},  //string to hold current recording
+  currTest:''
 }
 
 const bleReducer = (state = initialState, action) => {
@@ -44,6 +45,16 @@ const bleReducer = (state = initialState, action) => {
         ...state,
         currRecording: ''
       }
+      case 'SET_CURRTEST':
+        return{
+          ...state,
+          currTest:action.label
+        }
+      case 'REMOVE_CURRTEST':
+        return{
+          ...state,
+          currTest: ''
+        }
     default:
       return state;
   }

@@ -81,6 +81,11 @@ export function useAuth(){
             
             const results = data.results[0]
             console.log(results)
+            let profileDate = results.profile.birthdate
+            if(profileDate){
+                const [api_year, api_month, api_day] = profileDate.split('-');
+                profileDate = (api_month + "/" + api_day + "/" + api_year);
+            }
             const user = {
                 token: token,
                 username: results.username,
@@ -185,6 +190,11 @@ export function useAuth(){
 
         if(response.status == STATUS_CODES[0]){
             const results = response.data
+            let profileDate = results.profile.birthdate
+            if(profileDate){
+                const [api_year, api_month, api_day] = profileDate.split('-');
+                profileDate = (api_month + "/" + api_day + "/" + api_year);
+            }
             const updated = {
                 token: user.token,
                 username: results.username,

@@ -50,9 +50,6 @@ const ProfileScreen = (props) => {
   const user = useContext(UserContext);
   const {update} = useContext(AuthContext);
 
-  //Load in logout function from AuthContext
-  const {logout} = useContext(AuthContext);
-
   //Handle state of modal visability
   const [showModal, setShowModal] = useState(false); //zip
   const [showModalDate, setShowModalDate] = useState(false); //birthdate
@@ -88,7 +85,7 @@ const ProfileScreen = (props) => {
      return '';
    }
  }
-  const [initials, setInitials] = useState(initialzeAvatarText());
+  const [initials] = useState(initialzeAvatarText());
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //       VALIDATE FIRST NAME

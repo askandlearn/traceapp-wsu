@@ -7,14 +7,13 @@ import {AuthContext} from '../contexts/AuthContext';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-Icon.loadFont();
-
-
-
 import Toast from 'react-native-simple-toast';
 import {connect} from 'react-redux';
 import { usePrevious } from '../hooks/usePrevious';
+
+
+
+Icon.loadFont();
 
 
 //redux states to props
@@ -24,6 +23,11 @@ function mapStateToProps(state){
   };
 }
 
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                PROFILE SCREEN
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 const ProfileScreen = (props) => {
 
   //Toast for when the device disconnects
@@ -73,6 +77,7 @@ const ProfileScreen = (props) => {
     validBirthdate: true,
   })
 
+  //Find the user's initials for the avatar
  const initialzeAvatarText = () =>{
    if(user.first_name && user.last_name){
      const first = user.first_name;
@@ -481,11 +486,9 @@ const checkLastName = (val) =>{
     }
 
   };
-
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     USER INTERFACE
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
   return (
     <View
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -538,7 +541,7 @@ const checkLastName = (val) =>{
                {/* Insert validation prompt */}
                {checkValidations.validFirstName ? false : (
                <Animatable.View animation="fadeInLeft" duration={500}>
-                 <Text style={styles.errorMessage}>  Only alphabetical characters are allowed. Field cannot be empty.  </Text>
+                 <Text style={styles.errorMessage}>  First name entered is invalid  </Text>
               </Animatable.View>)}
               {/* End of validation prompt */}
 
@@ -556,7 +559,7 @@ const checkLastName = (val) =>{
                {checkValidations.validLastName ? false : (
               <Animatable.View animation="fadeInLeft" duration={500}>
                <Text style={styles.errorMessage}>
-                  Only alphabetical characters are allowed. Field cannot be empty. 
+                  Last name entered is invalid 
                 </Text>
               </Animatable.View>
               )}
@@ -624,7 +627,7 @@ const checkLastName = (val) =>{
                 {checkValidations.validBirthdate ? false : (
                  <Animatable.View animation="fadeInLeft" duration={500}>
                   <Text style={styles.errorMessage}>
-                    Must use 'MM/DD/YYYY' format
+                    Date entered is invalid
                   </Text>
                </Animatable.View>
                )}
@@ -676,7 +679,7 @@ const checkLastName = (val) =>{
              {checkValidations.validZipLength ? false : (
             <Animatable.View animation="fadeInLeft" duration={500}>
              <Text style={styles.errorMessage}>
-               Zip code must be 5 numbers
+               Zip code entered is invalid
               </Text>
             </Animatable.View>
            )}
@@ -745,9 +748,7 @@ const checkLastName = (val) =>{
           </KeyboardAvoidingScrollView>
           <View style={{paddingVertical: 40}}></View>
         </View>
-      
       <View style={{marginTop: 20}} />
-      
     </View>
   );
 };

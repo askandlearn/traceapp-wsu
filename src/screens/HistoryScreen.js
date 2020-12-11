@@ -8,6 +8,7 @@ import { Loading } from '../components/Loading-Component';
 import Toast from 'react-native-simple-toast';
 import {connect} from 'react-redux';
 import { usePrevious } from '../hooks/usePrevious';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
 //data list
@@ -148,6 +149,14 @@ const HistoryScreen = (props) => {
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()}/>
                 }
+                ListEmptyComponent={
+                    <View style={styles.empty}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Icon name='ghost' color='#A0A0A0' size={100} paddingVertical={50}/>
+                    </View>
+                    <Text style={{color: 'gray', textAlign: 'center'}}>It's a ghost town in here.{'\n'} No unsynced recordings...</Text>
+                    </View>
+                }
             />
             <Loading loading={loading}/>
         </View>
@@ -226,6 +235,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         alignSelf: 'center',
         borderBottomWidth: 1
+    },
+    empty:{
+        borderWidth: 0,
+        borderColor: 'black',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 40
     }
 })
 

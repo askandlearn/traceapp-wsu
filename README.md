@@ -138,8 +138,11 @@ Next, run the command below
 The TRACE app has three distinct features that allow users to interact with the TRACE biosensor. 
 
 1. Active Stand Up Test
+<img src="screenshots/AST.jpeg" alt="Active Stand Up">
 2. Heart-Rate Variability
+<img src="screenshots/HRV.jpeg" alt="Heart Rate Variability">
 3. Real-Time Data
+<img src="screenshots/RealTime.jpeg" alt="Real Time">
 
 <!-- CONTRIBUTING -->
 ## Contributing

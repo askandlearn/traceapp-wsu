@@ -1,10 +1,5 @@
 const initialState = {
-    unsynced: {
-        'mohammad':{
-            'files':['Test.txt', 'Test2.txt'],
-            'info':['Info','Info1']
-        }
-    }
+    unsynced: {}
 }
 
 const SyncReducer = (state = initialState, action) => {

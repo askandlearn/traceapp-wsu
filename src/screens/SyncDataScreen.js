@@ -39,17 +39,8 @@ const SyncDataScreen = props => {
             return props.recordings[user.username].files.length - 1
         else
             return
-    })  //take the 
+    })  //last index
 
-
-    useEffect(() => {
-        // console.log('username', user.username)
-        console.log('recordings', LAST)
-        // if(user.username in props.recordings){
-        //     console.log('setting file')
-        //     setFiles(props.recordings[user.username].files)
-        // }
-    },[props.recordings])
 
     const renderItem = (prop) => {
         return(
@@ -89,6 +80,7 @@ const SyncDataScreen = props => {
       //reference: https://stackoverflow.com/questions/61585437/how-to-send-post-request-with-files-in-react-native-android
       //file type: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
+        //text file cannot be empty, else it will fail
         var datafile = {
             uri: 'file://' + path,  //for android 'file://' needs to be appended to the uri. not sure if this is the same case for iOS. wiil need to test
             type: 'text/plain', 
@@ -98,17 +90,17 @@ const SyncDataScreen = props => {
         const formData = new FormData()
         formData.append("start_time",start_time)    //ISO format
         formData.append("label",label)  //HRV, RT, or AST
-        formData.append("description",description)
-        formData.append('datafile',datafile)    
-        formData.append("comments",comment)
+        formData.append("description",description)  //string
+        formData.append('datafile',datafile)    //file
+        formData.append("comments",comment) //string
         formData.append("highlight",false)  //always false for now
-        formData.append("device_type","HRM-AA") //need a way to get this info from sensor
-        formData.append("device_sn","1")    //need a way to get this info from sensor
-        formData.append("device_firmware","1.02")   //need a way to get this inform from sensor
-        formData.append("app_version", '1.10')  //the api format requires this number to to the hundreth decimal. hard-coded in for the time being
-        formData.append("app_hardware", app_hardware)
-        formData.append("app_os", app_os)
-        formData.append("app_os_version", app_os_version)
+        formData.append("device_type","HRM-AA") //need a way to get this info from sensor, api field type: HRM-AA, HRM-AB, HRM-BA, HRM-BB
+        formData.append("device_sn","1")    //need a way to get this info from sensor, api field type: 1, 2, 3
+        formData.append("device_firmware","1.02")   //need a way to get this inform from sensor, api field type: 1.00, 1.02, 1.01, 1.03
+        formData.append("app_version", '1.10')  //api field type: 1.00, 1.10, 1.11, 1.12
+        formData.append("app_hardware", app_hardware)   //string
+        formData.append("app_os", app_os)   //string
+        formData.append("app_os_version", app_os_version)   //string
 
 
         //axios request

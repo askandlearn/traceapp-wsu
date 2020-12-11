@@ -64,7 +64,7 @@ const ModalComponent = (props) => {
         const app_os = DeviceInfo.getSystemName()
         const app_os_version = DeviceInfo.getSystemVersion()
 
-
+        //text file cannot be empty, else it won't send
         var datafile = {
           uri: 'file://' + path,  //for android 'file://' needs to be appended to the uri. not sure if this is the same case for iOS. wiil need to test
           type: 'text/plain',
@@ -72,19 +72,19 @@ const ModalComponent = (props) => {
         }
 
         const session = {
-            "start_time": start_time,
-            "label": label,
-            "description": description,
-            "datafile": datafile,
-            "comments": comment,
-            "highlight": false,
-            "device_type": "HRM-AA",
-            "device_sn": "2",
-            "device_firmware": "1.02",
-            "app_version": '1.00', //needs to be 1.00
-            "app_hardware": app_hardware,
-            "app_os": app_os,
-            "app_os_version": app_os_version
+            "start_time": start_time, //ISO format
+            "label": label, //HRV, RT, or AST
+            "description": description, //string
+            "datafile": datafile, //file
+            "comments": comment,  //string
+            "highlight": false, //boolean
+            "device_type": "HRM-AA",  //need a way to get this info from sensor, api field type: HRM-AA, HRM-AB, HRM-BA, HRM-BB
+            "device_sn": "1", //need a way to get this info from sensor, api field type: 1, 2, 3
+            "device_firmware": "1.02", //need a way to get this inform from sensor, api field type: 1.00, 1.02, 1.01, 1.03
+            "app_version": '1.00', //api field type: 1.00, 1.10, 1.11, 1.12
+            "app_hardware": app_hardware, //string
+            "app_os": app_os, //string
+            "app_os_version": app_os_version //string
         }
 
         // console.log(session)
@@ -97,7 +97,7 @@ const ModalComponent = (props) => {
         formData.append("comments",comment)
         formData.append("highlight",false)
         formData.append("device_type","HRM-AA")
-        formData.append("device_sn","2")    //need a way to get this info
+        formData.append("device_sn","1")    //need a way to get this info
         formData.append("device_firmware","1.02")   //need a way to get this info
         formData.append("app_version", "1.00") //needs to be to be the hundreth value
         formData.append("app_hardware", app_hardware)

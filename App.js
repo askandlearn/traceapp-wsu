@@ -56,6 +56,7 @@ const persistConfig = {
     'DATA'
   ],
 };
+
 // Middleware: Redux Persist Persisted Reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 //MIddleware

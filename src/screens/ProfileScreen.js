@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View,Text,StyleSheet,TouchableOpacity,TextInput,KeyboardAvoidingView,Platform,Modal,} from 'react-native';
+import {View,Text,StyleSheet,TouchableOpacity,TextInput,KeyboardAvoidingView,Platform,Modal, Dimensions,} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import {UserContext} from '../contexts/UserContext';
@@ -23,12 +23,14 @@ function mapStateToProps(state){
   };
 }
 
-
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 PROFILE SCREEN
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 const ProfileScreen = (props) => {
+
   let thing = true;
 
   //Toast for when the device disconnects
@@ -507,9 +509,6 @@ const checkLastName = (val) =>{
             <KeyboardAvoidingScrollView style={styles.bodyMain}>
             <View style={styles.contentBorder} />
           <TouchableOpacity style={styles.horizontal}>
-
-
-
       {/*       NAME (FIRST + LAST)       */}
             <Text style={styles.contentTitle}>Name: </Text>
             <Modal
@@ -758,7 +757,7 @@ const checkLastName = (val) =>{
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   bodyMain:{
-    marginTop:50
+    marginTop: Platform.OS === 'ios' ? 50 : 10,
   },
   avatar: {
     justifyContent: 'center',
@@ -837,7 +836,7 @@ const styles = StyleSheet.create({
      alignSelf: 'center',
      textAlign: 'right',
      color: 'black',
-    flex: 1,
+     flex: 1,
   },
   contentBirthdate: {
     fontSize: 17,
@@ -859,8 +858,7 @@ const styles = StyleSheet.create({
      alignSelf: 'center',
      textAlign: 'right',
      color: 'black',
-    
-    flex: 1,
+      flex: 1,
   },
   contentTitle: {
     margin: 10,
@@ -953,7 +951,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 30,
     fontWeight: '600',
-    paddingBottom: 25,
+    paddingBottom: Platform.OS === 'ios' ? 25 : 0,
     alignSelf: 'center',
     color:'black',
     fontStyle: 'italic',

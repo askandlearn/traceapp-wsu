@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { StyleSheet, View, TouchableOpacity,Text } from 'react-native';
 import Plotly from 'react-native-plotly';
-import { onDisconnect, stopTransaction, updateMetric } from '../actions';
+import {stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
 
 function mapStateToProps(state){

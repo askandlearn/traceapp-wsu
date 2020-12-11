@@ -1,4 +1,4 @@
-import React, {Component, useState, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -6,18 +6,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Button,
   Alert,
-  Platform,
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Google from '../components/Google-Component'
-import {set} from 'react-native-reanimated';
 import {Loading} from '../components/Loading-Component';
 import {AuthContext} from '../contexts/AuthContext';
+import * as Animatable from 'react-native-animatable';
 
 
-const logo = '../images/TraceBio-White.png';
+const logo = '../images/TraceBio-Black.png';
 
 //Create the Login Page
 const LoginScreen = (props) => {
@@ -26,11 +24,58 @@ const LoginScreen = (props) => {
         to login without inputting anything, null values will passed onto the php script and then the database. The script
         does not know how to handle null values.
     */
-  const [email, setEmail] = useState('brianna');
-  const [password, setPassword] = useState('tracewsu!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const {login} = useContext(AuthContext);
+
+  //Validation flags
+  const [validation_flags, setValidationFlags] = useState({
+    isValidUsername: true,
+    isValidPassword: true,
+  });
+
+//Make sure username field is not empty
+const handleEmail = (val)=>{
+  //Its not empty, set flag to true
+  if(val.trim().length > 0){
+    console.log('Username field is filled')
+    setValidationFlags({
+      ...validation_flags,
+      isValidUsername:true
+    });
+  }
+  //It's  empty, set flag to false
+  else{
+    console.log('Username field is empty')
+    setValidationFlags({
+      ...validation_flags,
+      isValidUsername: false
+    });
+  }
+}
+
+//Make sure password field is not empty
+const handlePassword = (val) =>{
+  //Its not empty, set flags to true
+  if(val.trim().length > 0){
+    console.log('Password field is filled')
+    setValidationFlags({
+      ...validation_flags,
+      isValidPassword: true
+    });
+  }
+  //It's empty, set flag to false
+  else{
+    console.log('Password field is empty')
+    setValidationFlags({
+      ...validation_flags,
+      isValidPassword: false
+    });
+  }
+}
+ 
 
   return (
     <View style={styles.container}>
@@ -46,7 +91,17 @@ const LoginScreen = (props) => {
           autoCapitalize='none'
           value={email}
           onChangeText={(val) => setEmail(val)}
+          onEndEditing={(e) => handleEmail(e.nativeEvent.text)}
         />
+          {/* Insert validation prompt */}
+          {validation_flags.isValidUsername ? false : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMessage}>
+              Field cannot be empty
+            </Text>
+          </Animatable.View>
+        )}
+        {/* End of validation prompt */}
         <TextInput
           style={styles.inputFields}
           label="Password"
@@ -54,7 +109,17 @@ const LoginScreen = (props) => {
           value={password}
           secureTextEntry
           onChangeText={(val) => setPassword(val)}
+          onEndEditing={(e) => handlePassword(e.nativeEvent.text)}
         />
+            {/* Insert validation prompt */}
+            {validation_flags.isValidPassword ? false : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMessage}>
+              Field cannot be empty
+            </Text>
+          </Animatable.View>
+        )}
+        {/* End of validation prompt */}
         <TouchableOpacity
           title="Submit"
           style={styles.button}
@@ -75,9 +140,12 @@ const LoginScreen = (props) => {
               try {
                 setLoading(true);
                 await login(email, password);
-                setLoading(false);
               } catch (e) {
                 console.log('Error: ' + e.message);
+                setLoading(false);
+                alert('Could not sign in')
+              } finally {
+                setLoading(false);
               }
             }}>
             SIGN IN
@@ -85,12 +153,12 @@ const LoginScreen = (props) => {
         </TouchableOpacity>
         <View style={styles.flexContainer}>
           <View style={styles.horizantalLine} />
-          <View>
-            <Text style={styles.orOption}>Or sign in with</Text>
+          <View>  
+            {/*<Text style={styles.orOption}>Or sign in with</Text> */}
           </View>
           <View style={styles.horizantalLine} />
         </View>
-        <Google height={48} width={340} text={'Sign in with Google'}/>
+       {/*} <Google height={48} width={340} text={'Sign in with Google'}/> */}
         <View style={[styles.bottomContainer]}>
           <View style={styles.flexContainer}>
             <Text style={styles.otherText}>Not a member?</Text>
@@ -108,7 +176,11 @@ const LoginScreen = (props) => {
     </View>
   );
 };
-//All styling options created below
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   flexContainer: {
     flexDirection: 'row',
@@ -117,7 +189,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: 'white',
   },
   bottomContainer: {
     flex: 1,
@@ -193,6 +265,7 @@ const styles = StyleSheet.create({
     color: 'blue',
     marginLeft: 5,
   },
+
 });
 
 export default LoginScreen;

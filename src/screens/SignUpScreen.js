@@ -1,4 +1,4 @@
-import React, {Component, useState, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Alert,
 } from 'react-native';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import * as Animatable from 'react-native-animatable';
@@ -16,15 +15,19 @@ import {Loading} from '../components/Loading-Component';
 
 //Create the Sign Up Page
 
-const logo = '../images/TraceBio-White.png';
+const logo = '../images/TraceBio-Black.png';
+
+//Create variable instances for each required field
 
 const SignUpScreen = (props) => {
-  const [firstName, setFirstName] = useState('Mo');
-  const [lastName, setLastName] = useState('Ha');
-  const [birthdate, setBirthdate] = useState('1999-12-10');
-  const [email, setEmail] = useState('test@email.com');
-  const [password, setPassword] = useState('pass123');
-  const [confirmPass, setConfirmPass] = useState('pass123');
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [birthdate, setBirthdate] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
+  
 
   //export context
   const {register} = useContext(AuthContext);
@@ -34,16 +37,18 @@ const SignUpScreen = (props) => {
 
   //Validation flags
   const [validation_flags, setValidationFlags] = useState({
+    isValidUsername: true,
     isValidFirstName: true,
     isValidLastName: true,
     isValidEmail: true,
     isValidBirthdate: true,
     isValidPassword: true,
     isSamePassword: true,
-    isFilled: false,
   });
 
+  //Console log each variable for error handling
   const display = () => {
+    console.log(username);
     console.log(firstName);
     console.log(lastName);
     console.log(birthdate);
@@ -51,7 +56,24 @@ const SignUpScreen = (props) => {
     console.log(password);
   };
 
-  //Validation handling functions start here
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ // Validation handling functions start here
+ //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ //Username
+  const handleUsername = (val) => {
+    if (val.trim().length > 0) {
+      setValidationFlags({
+        ...validation_flags,
+        isValidUsername: true,
+      });
+    } else {
+      setValidationFlags({
+        ...validation_flags,
+        isValidUsername: false,
+      });
+    }
+  };
+  //Firstname
   const handleFirst = (val) => {
     if (val.trim().length > 0) {
       setValidationFlags({
@@ -65,7 +87,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Lastname
   const handleLast = (val) => {
     if (val.trim().length > 0) {
       setValidationFlags({
@@ -79,7 +101,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Email
   const handleEmail = (val) => {
     var pattern = new RegExp(
       /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i,
@@ -96,7 +118,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Birthdate
   const handleDate = (val) => {
     const [year, month, day] = val.split('-');
 
@@ -120,7 +142,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Password
   const handlePassword = (val) => {
     if (val.length < 8) {
       setValidationFlags({
@@ -134,7 +156,7 @@ const SignUpScreen = (props) => {
       });
     }
   };
-
+//Confirm password
   const handleConfirmPassword = (val) => {
     setConfirmPass(val);
     if (password === val) {
@@ -150,6 +172,58 @@ const SignUpScreen = (props) => {
     }
   };
 
+  const submit = async () => {
+    try {
+      if(!(username && firstName && lastName && email && password && confirmPass)){
+        alert('Fields cannot be blank')
+        throw 'Blank field'
+      }
+      
+      if(!validation_flags.isValidUsername || !validation_flags.isValidFirstName || !validation_flags.isValidLastName || !validation_flags.isValidEmail || !validation_flags.isValidBirthdate || !validation_flags.isValidPassword || !validation_flags.isSamePassword) {
+        if(!validation_flags.isValidUsername) {
+          alert('Invalid Username')
+          throw('Invalid Username')
+        }
+        if(!validation_flags.isValidFirstName) {
+          alert('Invalid First Name')
+          throw('Invalid Firt Name')
+        }
+        if(!validation_flags.isValidLastName) {
+          alert('Invalid Last Name')
+          throw('Invalid Last Name')
+        }
+        if(!validation_flags.isValidEmail) {
+          alert('Invalid Email')
+          throw('Invalid Email')
+        }
+        if(!validation_flags.isValidBirthdate) {
+          alert('Invalid Birthdate')
+          throw('Invalid Birthdate')
+        }
+        if(!validation_flags.isValidPassword) {
+          alert('Password must be at least 8 characters long')
+          throw('Invalid Password')
+        }
+        if(!validation_flags.isSamePassword){
+          alert('Passwords must match')
+          throw('Passwords do not match')        
+        }
+      }
+      setLoading(true);
+      const user = { username: username, first_name: firstName, last_name: lastName, email: email, password: password }
+      await register(
+        user,
+        props.navigation.navigate,
+      );
+    } catch (error) {
+      console.log('Error: ' + error);
+    } finally {
+      setLoading(false);
+    }
+      
+  }
+
+//Page display starts here
   return (
     <View style={styles.container}>
       <KeyboardAvoidingScrollView>
@@ -159,7 +233,21 @@ const SignUpScreen = (props) => {
         </View>
         <TextInput
           style={styles.inputFields}
-          placeholder="Firstname"
+          placeholder="Username"
+          value={username}
+          onChangeText={(val) => setUsername(val)}
+          onEndEditing={(e) => handleUsername(e.nativeEvent.text)}
+        />
+        {/* Insert validation prompt */}
+        {validation_flags.isValidUsername ? null : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMessage}>Field cannot be empty</Text>
+          </Animatable.View>
+        )}
+        {/* End of validation prompt */}
+        <TextInput
+          style={styles.inputFields}
+          placeholder="First name"
           value={firstName}
           onChangeText={(val) => setFirstName(val)}
           onEndEditing={(e) => handleFirst(e.nativeEvent.text)}
@@ -173,7 +261,7 @@ const SignUpScreen = (props) => {
         {/* End of validation prompt */}
         <TextInput
           style={styles.inputFields}
-          placeholder="Lastname"
+          placeholder="Last name"
           value={lastName}
           onChangeText={(val) => setLastName(val)}
           onEndEditing={(e) => handleLast(e.nativeEvent.text)}
@@ -201,22 +289,7 @@ const SignUpScreen = (props) => {
           </Animatable.View>
         )}
         {/* End of validation prompt */}
-        <TextInput
-          style={styles.inputFields}
-          placeholder="Birthdate (yyyy-mm-dd)"
-          value={birthdate}
-          onChangeText={(val) => setBirthdate(val)}
-          onEndEditing={(e) => handleDate(e.nativeEvent.text)}
-        />
-        {/* Insert validation prompt */}
-        {validation_flags.isValidBirthdate ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMessage}>
-              Format incorrect (yyyy-mm-dd){' '}
-            </Text>
-          </Animatable.View>
-        )}
-        {/* End of validation prompt */}
+
         <TextInput
           style={styles.inputFields}
           placeholder="Password"
@@ -251,32 +324,17 @@ const SignUpScreen = (props) => {
         <TouchableOpacity
           title="Submit"
           style={styles.button}
-          onPress={async () => {
-            try {
-              setLoading(true);
-              await register(
-                email,
-                password,
-                firstName,
-                lastName,
-                birthdate,
-                props.navigation.navigate,
-              );
-              setLoading(false);
-            } catch (error) {
-              console.log('Error: ' + error.message);
-            }
-          }}>
+          onPress={() => submit()}>
           <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
         <View style={styles.flexContainer}>
           <View style={styles.horizantalLine} />
           <View>
-            <Text style={styles.orOption}>Or sign up with</Text>
+            {/*<Text style={styles.orOption}>Or sign up with</Text> */}
           </View>
           <View style={styles.horizantalLine} />
         </View>
-        <Google height={48} width={300} text={'Sign up with Google'}/>
+        {/*<Google height={48} width={300} text={'Sign up with Google'}/> */}
         <View style={[styles.bottomContainer]}>
           <View style={styles.flexContainer}>
             <Text style={styles.otherText}>Already a member?</Text>
@@ -295,16 +353,18 @@ const SignUpScreen = (props) => {
   );
 };
 
-//All styling options created below
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   flexContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    //alignSelf:'center'
   },
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
+    backgroundColor: 'white',
   },
   bottomContainer: {
     flex: 1,
@@ -315,10 +375,8 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   nameContainer: {
-    // marginHorizontal:'10%',
     marginTop: '5%',
     justifyContent: 'space-between',
-    // alignContent:'center',
     alignSelf: 'center',
   },
   dobContainer: {
@@ -335,10 +393,7 @@ const styles = StyleSheet.create({
   },
 
   firstName: {
-    //width:'150%',
     height: 50,
-    //marginLeft: '20%',
-    // marginVertical: 5,
     padding: 13,
     marginLeft: '10%',
 
@@ -354,12 +409,10 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
   },
   lastName: {
-    //width:'150%',
     height: 50,
     marginHorizontal: '10%',
     marginVertical: 5,
     paddingVertical: 13,
-    // paddingHorizontal:'13%',
     fontWeight: 'bold',
     borderColor: 'rgba(0, 0, 0, .4)',
     borderWidth: 1,
@@ -393,7 +446,6 @@ const styles = StyleSheet.create({
     marginHorizontal: '10%',
     marginTop: '3%',
     color: '#202020',
-    // fontWeight:'bold',
     fontSize: 25,
   },
   button: {
@@ -417,7 +469,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 1,
     backgroundColor: 'black',
-    //width: '60%',
     marginHorizontal: '3%',
   },
   orOption: {
@@ -434,11 +485,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     color: 'red',
   },
-
-  // icons:{
-  //     color:'rgba(255,255,255,0.7)',
-  //     position:'absolute',
-  // }
 });
 
 export default SignUpScreen;

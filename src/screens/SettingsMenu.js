@@ -1,11 +1,8 @@
-import React, {Component, useContext, useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  Image,
-  ScrollView,
   Platform,
 } from 'react-native';
 import SettingsList from 'react-native-settings-list';
@@ -27,25 +24,12 @@ const SettingsMenu = (props) => {
     <View
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{backgroundColor: '#f1f1f2', flex: 1}}>
-      <KeyboardAvoidingScrollView>
         <Header openDrawer={props.navigation.openDrawer} />
-        <View
-          style={{
-            borderBottomWidth: 1,
-            backgroundColor: '#f1f1f2',
-            borderColor: '#f1f1f2',
-          }}>
-          {/* <Image style={styles.backgroundImage} source={require('../images/TraceBio-White.png')}></Image>     */}
-          <Text style={styles.title}>Settings</Text>
-        </View>
-        <View style={{backgroundColor: '#f1f1f2', flex: 1}}>
+        <Text style={styles.title}>Settings</Text>
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
+        
           <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
             <SettingsList.Header headerStyle={{marginTop: 15}} />
-            <SettingsList.Item
-              title="Change Password"
-              titleInfoStyle={styles.titleInfoStyle}
-              onPress={() => props.navigation.navigate('ChangePassword')}
-            />
             <SettingsList.Item
               title="Connect TRACE Sensor"
               titleInfo={props.isConnected ? 'Connected':'Disconnected'}
@@ -54,30 +38,30 @@ const SettingsMenu = (props) => {
             />
             <SettingsList.Item title="Sync My Data" onPress={() => props.navigation.navigate('SyncData')} />
           </SettingsList>
-        </View>
+        
       </KeyboardAvoidingScrollView>
     </View>
   );
 
-  //this.setState({switchValue: value});
 };
 
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:25,
+    paddingTop:30
+  },
   container: {
+    backgroundColor: '#f1f1f2', 
     flex: 1,
-    backgroundColor: '#b7b7b7',
     ...Platform.select({
-      ios: {paddingTop: 50},
+      ios: {marginTop: 10},
     }),
   },
-  backgroundImage: {
-    alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 70,
-    width: '60%',
-    height: 100,
-    resizeMode: 'stretch',
-  },
+ 
   inputFields: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: '10%',
@@ -89,15 +73,24 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    color: '#202020',
+    color: '#242852',
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 37,
+    marginTop:25,
+    paddingTop:65,
+    shadowColor: '#000000',
+    shadowOffset: {width: .5, height: 1},
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 
+        'AppleSDGothicNeo-Bold'
+      },
+    }),
   },
   button: {
-    //alignSelf: 'center',
-    //width: '60%',
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,

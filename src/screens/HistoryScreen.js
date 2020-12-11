@@ -1,12 +1,14 @@
-import React, {useEffect, useState, useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, Linking, FlatList, Platform, ScrollView} from 'react-native';
+import React, {useEffect, useState, useContext, useCallback} from 'react';
+import {View, Text, StyleSheet, Linking, FlatList, Platform, RefreshControl, TextInput} from 'react-native';
 import Header from '../components/Header-Component';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import Axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Loading } from '../components/Loading-Component';
-
+import Toast from 'react-native-simple-toast';
+import {connect} from 'react-redux';
+import { usePrevious } from '../hooks/usePrevious';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
 //data list
@@ -48,137 +50,200 @@ const Item = ({session}) => {
 )}
 
 
+//redux states to props
+function mapStateToProps(state){
+    return{
+      isConnected : state.BLE['isConnected'],
+    };
+}
+
+
 const HistoryScreen = (props) => {
+
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+
+    showToast()
+  }, [isConnected])
+  //End Toast
+
 
     const user = useContext(UserContext);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+    
+    const onRefresh = async () => {
+        setRefreshing(true)
+
+        await getData()
+    }
+
+    const getData = async () => {
+        try{
+            let url = 'http://134.209.76.190:8000/api/Recording'
+            let dataArr = []
+
+            const config = {
+                headers: {'Authorization':`Token ${user.token}`},
+                timeout: 2000   //two seconds timeout
+            }
+            do {   
+                if(url){
+                    const recordings = await Axios.get(url, config).then(res => res.data).catch(err => {
+                        console.log(err.code);
+                        console.log(err.message)
+                    })
+                    // setData(recordings.results)
+                    recordings.results.forEach(element => dataArr.push(element))
+                    // console.log(i, recordings.results[0])
+                    url = recordings.next
+                }             
+            } while (url);   
+
+            // console.log('dataArr', dataArr)
+            setData(dataArr)
+            setLoading(false)
+            setRefreshing(false)
+        }
+        catch(err){
+            setLoading(false);
+            setRefreshing(false);
+            alert('Error getting recordings')
+            console.log(err.message)
+        }
+    }
 
     //upon inital render
-    useEffect(() => {
-        const getData = async () => {
-            try{
-                const url = 'http://134.209.76.190:8000/api/Recording'
-                const config = {
-                    headers: {'Authorization':`Token ${user.token}`},
-                    timeout: 2000   //two seconds timeout
-                }
-                
-                const data = await Axios.get(url, config).then(res => res.data).catch(err => {
-                    console.log(err.code);
-                    console.log(err.message)
-                })
-                
-                setData(data.results)
-                setLoading(false)
-            }
-            catch(err){
-                setLoading(false);
-                alert('Error getting recordings')
-                console.log(err.message)
-            }
-        }
-
-    
-        getData();
-
+    useEffect(() => {  
+        const fetch = async () => {
+            await getData()
+        }  
+        fetch();
         // console.log(data[0].pk)
-    },[])
+    },[]) //anytime screen is pulled down
 
     const renderItem = ({item}) => {
         // console.log()
         return <Item session={item}></Item>
     }
 
+
     return(
         <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-            
-            <FlatList 
-                ListHeaderComponent={
-                    <KeyboardAvoidingScrollView>
-                    <View>
-                        <Header openDrawer={props.navigation.openDrawer} />
-                        <Text style={styles.title}>Recording History</Text>
-                    </View>
-                    </KeyboardAvoidingScrollView>
-                }
+            <Header openDrawer={props.navigation.openDrawer} />
+            <Text style={styles.title}>Recording History</Text>
+            <FlatList style={styles.bodyMain}
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={session => session.pk.toString()}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()}/>
+                }
+                ListEmptyComponent={
+                    <View style={styles.empty}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Icon name='ghost' color='#A0A0A0' size={100} paddingVertical={50}/>
+                    </View>
+                    <Text style={{color: 'gray', textAlign: 'center'}}>It's a ghost town in here.{'\n'} No recordings found...</Text>
+                    </View>
+                }
             />
-           
             <Loading loading={loading}/>
-            
         </View>
     )
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
+    bodyMain:{
+        marginTop:25,
+      },
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
         alignContent:'center',
-    
       },
-    title:{
+      title: {
         alignSelf: 'center',
-        //marginHorizontal: '10%',
-        marginVertical: 4,
-        color: '#202020',
+        color: '#242852',
         fontWeight: 'bold',
-        fontSize: 30,
-        paddingBottom: 20,
-        textAlign:'center'
-    },
+        fontSize: 32,
+        marginTop:25,
+        paddingTop:65,
+        shadowColor: '#000000',
+        shadowOffset: {width: .5, height: 1},
+        shadowOpacity: 0,
+        shadowRadius: 1,
+        elevation: 1,
+        ...Platform.select({
+          ios: {
+            fontFamily: 
+            'AppleSDGothicNeo-Bold'
+          },
+        }),
+      },
     card:{
         borderWidth: 2,
         margin: 5,
         borderRadius: 5,
-        padding: 5,
-        //backgroundColor: '#242852'
-        //backgroundColor: '#445092'
-        backgroundColor: '#dddddd',
-        borderColor: '#242852'
+        padding: 5, 
+        borderColor: '#000030',
+        shadowColor: 'red',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.2,
+        elevation: 4,
+
     },
     SessionTitle: {
-        fontSize: 15,
+        fontSize: 17,
         color: 'black',
-       // fontWeight: 'bold'
     },
     TitleContent: {
         fontSize: 17,
         color: 'black',
-        //fontWeight: 'bold'
     },
     DataFileTitle: {
-        fontSize: 15,
+        fontSize: 17,
         color: 'black',
-        //fontWeight: 'bold',
-
     },
     content: {
         fontSize: 17,
         color: 'black',
         textAlign: 'center',
         alignSelf: 'center',
-        //marginHorizontal: '10%',
-        
     },
     DescriptionContent: {
         fontSize: 17,
         color: 'black',
         flex: 1,
-       // flexWrap: 'wrap',
-        //marginHorizontal: '10%',
     },
     DataFileContent: {
-        fontSize: 15,
+        fontSize: 17,
         color: '#2127c4',
         textAlign: 'center',
         alignSelf: 'center',
         borderBottomWidth: 1
+    },
+    empty:{
+        borderWidth: 0,
+        borderColor: 'black',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 40
     }
 })
 
-export default HistoryScreen;
+export default connect(mapStateToProps, null) (HistoryScreen);

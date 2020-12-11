@@ -9,7 +9,6 @@
 import React from 'react';
 import {
   createStackNavigator,
-  createAppContainer,
 } from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -27,20 +26,43 @@ import {SplashScreen} from './src/screens/SplashScreen';
 //reference for implementing redux: https://itnext.io/using-a-raspberry-pi-to-control-leds-part-iii-react-native-app-29ee3f4afb8c
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
 import thunk from 'redux-thunk';
 import rootReducer from './src/reducers/index';
 
 //bleManager
-import { 
-  BleManager,
-  BleError 
-} from 'react-native-ble-plx';
+import { BleManager} from 'react-native-ble-plx';
+import AsyncStorage from '@react-native-community/async-storage';
 
+//Navigator
 const RootStack = createStackNavigator();
-// const AuthStack = createStackNavigator();  //not needed
-const DeviceManager = new BleManager();
 
-const store = createStore(rootReducer, applyMiddleware(thunk.withExtraArgument(DeviceManager)));
+
+//Redux Configurations
+//Redux Persist Config
+const persistConfig = {
+  // Root
+  key: 'root',
+  // Storage Method (React Native)
+  storage: AsyncStorage,
+  // Whitelist (Save Specific Reducers)
+  whitelist: [
+    'UNSYNCED',
+  ],
+  // Blacklist (Don't Save Specific Reducers)
+  blacklist: [
+    'BLE',
+    'DATA'
+  ],
+};
+// Middleware: Redux Persist Persisted Reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+//MIddleware
+const DeviceManager = new BleManager();
+const store = createStore(persistedReducer, applyMiddleware(thunk.withExtraArgument(DeviceManager)));
+const persistor = persistStore(store)
+//End Redux 
 
 
 export default function () {
@@ -58,7 +80,9 @@ export default function () {
         {() => (
           <UserContext.Provider value={state.user}>
             <Provider store={store}>
-              <MainStackNavigator />
+              <PersistGate persistor={persistor}>
+                <MainStackNavigator />
+              </PersistGate>
             </Provider>
           </UserContext.Provider>
         )}
@@ -68,8 +92,6 @@ export default function () {
     );
   }
 
-  //For debuggin purpose
-  // console.log('State.user',state.user);
 
   return (
     <AuthContext.Provider value={auth}>

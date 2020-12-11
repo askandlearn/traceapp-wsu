@@ -1,24 +1,30 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, TouchableOpacity,Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity,Text, Dimensions} from 'react-native';
 import Plotly from 'react-native-plotly';
-import { onDisconnect, stopTransaction, updateMetric } from '../actions';
+import {stopTransaction, updateMetric } from '../actions';
 import {connect} from 'react-redux';
+import ModalComponent from './Modal-Component';
 
 const mapStateToProps = state => ({
   pnn50: state.DATA['pnn50'],
   hrv: state.DATA['hrv'],
-  connectedDevice: state.BLE['connectedDevice'],
-  metrics: state.BLE['metrics'] //[0: time, 1: bpm, 2: ibi, 3: pamp, 4: damp, 5: ppg, 6: dif, 7: digout, 8: skintemp, 9: accelx,10: '/n'] size: 11
+  metrics: state.DATA['metrics'],
+  isConnected : state.BLE['isConnected'],
+  busy: state.BLE['busy'],
+  currTest: state.BLE['currTest']
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateMetric: () => dispatch(updateMetric()),
+  updateMetric: (timeout, label) => dispatch(updateMetric(timeout, label)),
   stopTransaction: ID => dispatch(stopTransaction(ID)),
 })
 
 const transactionID = 'monitor_metrics'
 
-ASTPlot=(props)=> {
+ASTPlot = (props) => {
+
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
 
   const [isData, setData]= useState([
     {
@@ -35,9 +41,9 @@ ASTPlot=(props)=> {
  const [isCount, setCount]=useState(0); 
  const [isNewData, setNewData] =useState(isData);
 
- var d = new Date();
-  setPlot=()=>{
-    console.log("Started Timer");
+  var d = new Date();
+  const setPlot=()=>{
+    // console.log("Started Timer");
    
     if(isNewData[0].y.length>100){
       isNewData[0].y.push(props.hrv);
@@ -60,46 +66,56 @@ ASTPlot=(props)=> {
   }
   var plot;
   const onStart = async () => {
-    props.updateMetric();
-   // plot=setInterval(() => {
-      //setPlot();
-    //}, 5000);
+    if(isConnected) {
+      props.updateMetric(undefined, 'HRV');
+    }
+    else {
+      alert("TRACE device not connected.\n\n Connect your device and try again");
+    }
   }
 
   useEffect(()=>{
-    setPlot();
+    if (props.currTest==='HRV')
+    {
+      setPlot();
+    }
   },[props.hrv])
 
-const onStop = async () => {
-  console.log('Cancelling transaction...')
-  props.stopTransaction(transactionID);
-  //var currentTimeInSeconds=Math.floor(Date.now()/1000)
-  
-  //console.log()
- // clearInterval(plot);
-}
-update = (_, { data, layout, config, }, plotly) => {
-  plotly.react(data, layout, config);
-};
-const layout={
-  title: 'HRV vs Time',
-  showlegend:true,
-  
-}
-const config={
-  displaylogo:false,
-  responsive:true
-}
-    return (     
+  const onStop = async () => {
+    console.log('Cancelling transaction...')
+    props.stopTransaction(transactionID);
+    setVisible(true)
+
+  }
+  const update = (_, { data, layout, config, }, plotly) => {
+    plotly.react(data, layout, config);
+  };
+  const layout={
+    title: 'HRV vs Time',
+    showlegend:true,
+    width: windowWidth,
+  }
+  const config={
+    displaylogo:false,
+    responsive:true,
+    modeBarButtonsToRemove: ['toImage','lasso2d']
+  }
+
+  const [visible, setVisible] = useState(false)
+  const {isConnected} = props
+
+
+
+  return (     
       <View style={styles.container}>
+      <ModalComponent visible={visible} setVisible={setVisible}/>
       <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
-      <TouchableOpacity style={styles.button} onPress={() => onStart()}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStart()} disabled={props.busy}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => onStop()}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: !isConnected || props.currTest!='HRV'|| !props.busy ? 'gray' : '#ff0000'}]} onPress={() => onStop()} disabled={!isConnected || !props.busy || props.currTest!='HRV'}>
           <Text style={styles.buttonText}>Stop</Text>
-        </TouchableOpacity>
-     
+        </TouchableOpacity> 
       </View>
         <View style={styles.chartRow}>
           <Plotly
@@ -115,9 +131,11 @@ const config={
         </View>
       </View>
     
-    );
-  }
-  export default connect(mapStateToProps, mapDispatchToProps) (ASTPlot);
+  );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (ASTPlot);
+
 const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row'
@@ -134,9 +152,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     marginHorizontal: '10%',
-    marginVertical: 10,
-    paddingHorizontal: 20,
-    paddingVertical:10,
+    marginVertical: '5%',
+    padding: 10,
     borderRadius: 20,
     backgroundColor: '#ff0000',
     shadowColor: '#000000',
@@ -144,6 +161,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
+    alignSelf:'center',
+    width:'25%'
   },
   buttonText: {
     color: '#FFFFFF',

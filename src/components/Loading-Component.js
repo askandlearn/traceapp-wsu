@@ -1,3 +1,12 @@
+/**
+ * 
+ * @fileoverview Simple loading screen. Can be called in any screen or component.
+ * A loading prop needs to be passed
+ *
+ * @todo refactor code to use an array and flatlist. all the code is repetitive
+ * @author Trace Team Fall 2020.
+ */
+
 import React from 'react';
 import { View, StyleSheet, ActivityIndicator, Text } from 'react-native';
 

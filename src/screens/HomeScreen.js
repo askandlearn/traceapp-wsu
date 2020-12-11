@@ -1,11 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  Image,
   Platform,
 } from 'react-native';
 import Header from '../components/Header-Component';
@@ -14,11 +12,12 @@ import {VictoryBar, VictoryChart, VictoryAxis, VictoryTooltip, VictoryVoronoiCon
 import DropDownPicker from 'react-native-dropdown-picker';
 import Svg from 'react-native-svg';
 import {Calendar} from 'react-native-calendars';
-import { withOrientation } from 'react-navigation';
+
+import Toast from 'react-native-simple-toast';
+import {connect} from 'react-redux';
+import { usePrevious } from '../hooks/usePrevious';
 
 const date = new Date();
-//newRealtimeData[0].y.shift();
- //newRealtimeData[0].x.push(this.state.count+1);
 const strDay = (day) => {  
   switch(day){
     case 0: return 'Sun';
@@ -35,7 +34,13 @@ const strDay = (day) => {
 
 
 const calDate = [];
-var format = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+
+var thisDay=date.getDate();
+if(date.getDate() < 10){
+    var temp = "0";
+    thisDay = temp.concat(thisDay);
+  }
+var format = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + thisDay;
 calDate.push({
   date: format,
   score: Math.random() * 100,
@@ -46,6 +51,7 @@ var thisMonth = date.getMonth() + 1;
 var thisYear = date.getFullYear();
 var formatStr = '';
 for(var i = 1; i < 30; i++) {
+
   if(thisDay == 1 && thisMonth == 1){
     thisYear--;
     thisMonth = 12;
@@ -102,20 +108,43 @@ const sharedAxisStyles = {
   },
 };
 
-const HomeScreen = ({navigation}) => {
+//redux states to props
+function mapStateToProps(state){
+  return{
+    isConnected : state.BLE['isConnected'],
+  };
+}
+
+
+const HomeScreen = (props) => {
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+
+    showToast()
+  }, [isConnected])
+  //End Toast
+
   const [stats, setStats] = useState('week');
   const [status, setStatus] = useState('true');
   return (
     <View
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
-      <KeyboardAvoidingScrollView>
-        <Header openDrawer={navigation.openDrawer} />
-        <Image
+      <Header openDrawer={props.navigation.openDrawer} />
+      <Text style={styles.title}>Health Dashboard</Text>
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
+        {/* <Image
           style={styles.backgroundImage}
           source={require('../images/TraceBio-Black.png')}
-        />
-        <Text style={styles.title}>Health Dashboard</Text>
+        /> */}
         <DropDownPicker
           items={[
             {label: 'Results by Week', value: 'week'},
@@ -255,21 +284,24 @@ const HomeScreen = ({navigation}) => {
   );
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:25,
+    paddingTop:30
+  },
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    //alignItems: 'center',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
   },
   backgroundImage: {
     alignSelf: 'center',
     marginTop: 30,
     marginBottom: 0,
-    width: '60%',
-    height: 100,
+    width: '50%',
+    height: 90,
     resizeMode: 'stretch',
   },
   inputFields: {
@@ -283,16 +315,24 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginTop: 50,
-    color: '#202020',
+    color: '#242852',
     fontWeight: 'bold',
-    fontSize: 30,
-    paddingBottom: 30,
+    fontSize: 37,
+    marginTop:25,
+    paddingTop:65,
+    shadowColor: '#000000',
+    shadowOffset: {width: .5, height: 1},
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 
+        'AppleSDGothicNeo-Bold'
+      },
+    }),
   },
   button: {
-    //alignSelf: 'center',
-    //width: '60%',
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
@@ -313,7 +353,7 @@ const styles = StyleSheet.create({
   chart: {
     flex: 1,
     height: 300,
-    width: '100%',
+    width: '95%',
   },
   hidden: {
     display: 'none',
@@ -332,8 +372,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-
-    //alignItems: 'left',
   },
   header: {
     width: '100%',
@@ -345,4 +383,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default connect(mapStateToProps, null) (HomeScreen);

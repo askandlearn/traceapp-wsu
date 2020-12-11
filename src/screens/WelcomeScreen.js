@@ -3,11 +3,9 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
 
 //Create the Welcome Page
 const WelcomeScreen = (props) => {
@@ -32,7 +30,9 @@ const WelcomeScreen = (props) => {
   );
 };
 
-//All styling options created below
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,

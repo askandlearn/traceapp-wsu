@@ -1,4 +1,18 @@
+/**
+ * 
+ * @fileoverview This file contains all the action creators to dispatch a case for any one of the reducers we have in our reducers folder. 
+ * All cases must be covered. Each case should have an associated 
+ * 
+ *
+ * 
+ * @author Trace Team Fall 2020.
+ */
+ 
+
+
 //======================================== ACTION CREATORS ======================================
+
+
 /**
  * Returns an updated state value
  * Called in connectDevice()
@@ -29,7 +43,7 @@ export const deviceDisconnected = () => ({
     type: "DISCONNECTED",
     isConnected: false,
     status: 'Disconnected',
-    connectDevice: undefined
+    connectedDevice: {}
 })
 /**
  * Returns an updated state value
@@ -65,10 +79,83 @@ export const updatedHRV = (value) => ({
  * Returns an updated state value for BleReducer
  * Called in updateMetrics()
  * 
- * @returns {state} records: [..., newRecording]
+ * @returns {state} currRecording: currRecording
  */
-export const addRecording = (username, recording) => ({
+export const addRecording = (recording) => ({
     type:'ADD_RECORDING',
-    user: username,
     newRecording: recording
+})
+/**
+ * Sets currRecording to empty string
+ * Called in Modal-Component.js
+ * 
+ * @returns {state} currRecording: ''
+ */
+export const removeRecording = () => ({
+    type:'REMOVE_RECORDING'
+})
+/**
+ * Returns an updated state value for BleReducer
+ * Called in updateMetrics()
+ * 
+ * @returns {state} busy: [..., busy]
+ */
+export const setBusy = (val) => ({
+    type: 'SET_BUSY',
+    busy: val
+})
+/**
+ * Adds unsynced file to unsynced state
+ * 
+ * 
+ * @returns {state} unsynced
+ */
+export const addSync = (user, file, info) => ({
+    type: 'ADD_SYNC',
+    user: user,
+    file: file,
+    info: info
+})
+/**
+ * Append unsynced file to unsynced state
+ * 
+ * 
+ * @returns {state} unsynced
+ */
+export const appendSync = (user, file, info) => ({
+    type: 'APPEND_SYNC',
+    user: user,
+    file: file,
+    info: info
+})
+/**
+ * Remove unsynced file
+ * 
+ * 
+ * @returns {state} unsynced: {user, files:[files-1]}
+ */
+export const removeSync = (user) => ({
+    type: 'REMOVE_SYNC',
+    user: user
+})
+
+/**
+ * Set current test
+ * 
+ * 
+ * @returns {state} currTest: ;abe
+ */
+export const setCurrentTest = (label) => ({
+    type: 'SET_CURRTEST',
+    label: label
+})
+
+/**
+ * Remove current test
+ * 
+ * 
+ * @returns {state} removeCURRTest
+ */
+export const removeCurrentTest = () => ({
+    type: 'REMOVE_CURRTEST'
 })

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {View, Image, StyleSheet, Animated, Easing, Text} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Image, StyleSheet, Animated} from 'react-native';
 
 export function SplashScreen() {
   const startValue = new Animated.Value(0);
@@ -53,10 +53,14 @@ export function SplashScreen() {
   );
 }
 
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#000030',
     alignItems: 'center',
     justifyContent: 'center',
   },

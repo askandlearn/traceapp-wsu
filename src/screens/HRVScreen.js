@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   Image,
-  ScrollView,
+  TouchableHighlight,
   Modal,
   Alert,
   Platform,
@@ -13,122 +13,134 @@ import {
 } from 'react-native';
 
 import Header from '../components/Header-Component';
-import Timer from '../components/HRVTimer';
-import Animate from '../components/HRVSurvey';
-import SensorAlert from '../components/ConnectToSensorAlert';
-import Swiper from 'react-native-swiper';
 import Plot from '../components/Plot';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import Toast from 'react-native-simple-toast';
+import {connect} from 'react-redux';
+import { usePrevious } from '../hooks/usePrevious';
 
 var check = false;
+//redux states to props, to check if the device is connected to the app and get the status of the device
+function mapStateToProps(state){
+  return{
+    isConnected : state.BLE['isConnected'],
+    status: state.BLE['status']
+  };
+}
 
-const HRVScreen = ({navigation}, props) => {
+const HRVScreen = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-
+  //Toast for when the device disconnects
+  const {isConnected} = props
+  const prev = usePrevious(isConnected)
+  useEffect(() => {
+    function showToast(){
+      if(prev === true && isConnected === false){
+        Toast.showWithGravity('Device has disconnected. Attempting to reconnect...', Toast.LONG, Toast.BOTTOM);
+      }
+    }
+    showToast()
+  }, [isConnected])
+  //End Toast
   const handleCheck = (checkedId) => {
     this.setState({checkedId});
   };
-
-
+  
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingScrollView>
-        <Header openDrawer={navigation.openDrawer} />
-        <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
-        <View>{check && <SensorAlert />}</View>
-        {/* <Timer /> */}
-   
-        {/* <Swiper
-          style={styles.wrapper}
-          showButtons={true}
-          loop={false}
-          autoplay={false}>
-          <View testID="Hello" style={styles.slide1}>
-            <Text style={styles.slide1Text}>
-              Welcome to the Heart Rate Variability screen. This helps Trace
-              analyze important data regarding your heart rate dynamics.{'\n'}{' '}
-            </Text>
-
-            <Text style={styles.note}>
-              NOTE: Before begining a recording session, make sure you are
-              comfortably sitting up straight. Once the session begins, relax
-              and breathe deeply. You may begin and end the test whenever you
-              are ready, but make sure you run the rest for at least a few
-              minutes!
-            </Text>
-          </View>
-          <View testID="Beautiful" style={styles.slide2}>
-            <Text style={styles.steps}>
-              1. Situate yourself into a comfortable sitting position. Make sure
-              your back is straight.{'\n'}
-              {'\n'}2. When you are ready, press the 'Start' button on the timer
-              above.
-            </Text>
-          </View>
-
-          <View testID="Simple" style={styles.slide3}>
-            <Text style={styles.steps}>
-              3.Try to stay still and breate deeply.{'\n'}
-              {'\n'}
-              4.When you are ready to conclude the session, press 'Stop'.
-            </Text>
-          </View>
-          <View testID="Slide4" style={styles.slide3}>
-            <Text style={styles.steps}>
-              5. Now, fill out the survey. {'\n'}
-            </Text>
+      <Header openDrawer={props.navigation.openDrawer} />
+      <Text style={styles.title}>Heart Rate Variability (HRV)</Text>
+      {/* Display the instructions in a modal */}
+      <TouchableHighlight
+        style={styles.instructionButton}
+        onPress={() => {
+          setModalVisible(true);
+        }}
+      >
+        <Text style={styles.textStyle}>Show Instructions</Text>
+      </TouchableHighlight>
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
+        <View>
+          <Modal
+          propagateSwipe
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}
+          >
             <View style={styles.centeredView}>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClode={() => {
-                  Alert.alert('Modal has been closed.');
-                }}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <Animate />
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        setModalVisible(!modalVisible);
-                      }}>
-                      <Text style={styles.buttonText}>SUBMIT</Text>
-                    </TouchableOpacity>
+              <View style={styles.modalView}>
+              <Text style={{fontWeight: 'bold', marginBottom:10}}>HRV Instructions</Text>
+                <KeyboardAvoidingScrollView>
+                  <View style= {styles.modalContainer}>
+                    <View style={styles.slide2}>
+                      <Text style={styles.slide1Text}>Welcome to the Heart Rate Variability screen. This helps Trace
+                      analyze important data regarding your heart rate dynamics.{"\n"}</Text>
+                    
+                      <Text styles={styles.note}>NOTE: Before begining a recording session, make sure you are
+                      comfortably sitting up straight. Once the session begins, relax
+                      and breathe deeply. You may begin and end the test whenever you
+                      are ready, but make sure you run the rest for at least a few
+                      minutes!{"\n"}{"\n"}</Text>
+                    </View>
+                    <View  style={styles.slide2}>
+                      <Text style={styles.steps}> 1. Situate yourself into a comfortable sitting position. Make sure
+                      your back is straight.{'\n'}
+                      {'\n'}2. When you are ready, press the 'Start' button on the timer
+                      above.{"\n"}
+                      </Text>  
+                    </View>
+                    <View  style={styles.slide2}>
+                        <Text style={styles.steps}>3.Try to stay still and breate deeply.{'\n'}
+                      {'\n'}
+                      4.When you are ready to conclude the session, press 'Stop'.{"\n"}</Text>
+                    </View>
+                    <View style={styles.slide2}>
+                      <Text style={styles.steps}>5. Now, fill out the survey. {'\n'}</Text>
+                    </View>
                   </View>
-                </View>
-              </Modal>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  setModalVisible(true);
-                }}>
-                <Text style={styles.buttonText}>Take Survey</Text>
-              </TouchableOpacity>
+                </KeyboardAvoidingScrollView>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}>
+                  <Text style={styles.buttonText}>Okay</Text>
+                </TouchableOpacity>
+              </View>   
             </View>
-          </View>
-        </Swiper> */}
-        {/* <View style={styles.NavBarDivider} /> */}
-        <View style={styles.wrapper}>
-        <View style={styles.slide1}>
-        <Plot />
+          </Modal>  
         </View>
+        <View style={styles.wrapper}>
+          {/* Call the plot component */}
+          <View style={styles.slide1}>
+            <Plot />
+          </View>
         </View>
       </KeyboardAvoidingScrollView>
     </View>
   );
 };
 
-export default HRVScreen;
+export default connect(mapStateToProps, null) (HRVScreen);
 
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:15,
+  },
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    ...Platform.select({
-      ios: {paddingTop: 50},
-    }),
+    // ...Platform.select({
+    //   ios: {paddingTop: 50},
+    // }),
   },
   backgroundImage: {
     alignSelf: 'center',
@@ -149,12 +161,29 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    color: '#202020',
+    //marginHorizontal: '10%',
+    //marginVertical: 4,
+    color: '#242852',
     fontWeight: 'bold',
-    fontSize: 30,
-    paddingBottom: 30,
+    fontSize: 32,
+    //paddingBottom: ,
+    //paddingLeft:15,
+    marginTop:25,
+    paddingTop:65,
+   
+    //textAlign:'center',
+    shadowColor: '#000000',
+    shadowOffset: {width: .5, height: 1},
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 
+        //'CourierNewPS-BoldMT'
+        'AppleSDGothicNeo-Bold'
+      },
+    }),
   },
   button: {
     alignItems: 'center',
@@ -167,6 +196,19 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 2,
+    elevation: 1,
+  },
+  instructionButton:{
+    backgroundColor:'#242852', 
+    alignSelf:'flex-end', 
+    padding: 10, 
+    marginTop:10, 
+    marginRight:10,
+    borderRadius: 5,
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
     elevation: 1,
   },
   buttonText: {
@@ -294,5 +336,31 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  modalContainer:{
+    width: '97%',
+    height: '100%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 25
+  },
+  slide2: {
+    //height:'100%',
+    //paddingHorizontal:'2%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#000000',
+    fontSize: 20,
+  },
+  slide1Text: {
+    color: '#000000',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  note: {
+    color: '#000000',
+    fontSize: 10,
+    // marginVertical:50,
   },
 });

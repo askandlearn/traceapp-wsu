@@ -1,10 +1,11 @@
 
 const initialState = {
-  metrics: new Array(11).fill(0),
   status: 'disconnected',
   connectedDevice: {},
   isConnected: false,
-  recordings: {user: undefined, recordings: []}
+  busy: false,
+  currRecording: {start_time: '', label: '', file: ''},  //string to hold current recording
+  currTest:''
 }
 
 const bleReducer = (state = initialState, action) => {
@@ -22,23 +23,38 @@ const bleReducer = (state = initialState, action) => {
         ...state,
         status: action.status
       };
-    case 'UPDATE_METRIC':
-      return{
-        ...state,
-        metrics: action.metrics
-      }
     case 'DISCONNECTED':
       return{
         ...state,
         status: action.status,
         connectedDevice: action.connectedDevice,
         isConnected: action.isConnected
+      };
+    case 'SET_BUSY':
+      return{
+        ...state,
+        busy: action.busy
       }
     case 'ADD_RECORDING':
       return{
         ...state,
-        recordings: {user: action.user, recordings:[...state.recordings.recordings,action.newRecording]}
+        currRecording: action.newRecording
       }
+    case 'REMOVE_RECORDING':
+      return{
+        ...state,
+        currRecording: ''
+      }
+      case 'SET_CURRTEST':
+        return{
+          ...state,
+          currTest:action.label
+        }
+      case 'REMOVE_CURRTEST':
+        return{
+          ...state,
+          currTest: ''
+        }
     default:
       return state;
   }

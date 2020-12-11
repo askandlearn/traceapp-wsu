@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Animated, Button } from 'react-native'
+import React, {useState, useEffect } from 'react';
+import { StyleSheet, Text, Animated} from 'react-native'
 import {connect} from 'react-redux';
 
 const mapStateToProps = state => ({

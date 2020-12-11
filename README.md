@@ -135,9 +135,7 @@ Next, run the command below
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+The TRACE app has three distinct features that 
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -162,7 +160,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Zack Taylor - [@zacktaylor12359](https://github.com/zacktaylor12359)
+Brianna Nurmi - [@brinurmi](https://github.com/brinurmi)
+Dana Abuqalbain - [@DanaAbuqalbain](https://github.com/DanaAbuqalbain)
+Mohammed Hamza - [@mo-schmo](https://github.com/mo-schmo)
+
 
 Project Link: [https://github.com/askandlearn/traceapp-wsu](https://github.com/askandlearn/traceapp-wsu)
 

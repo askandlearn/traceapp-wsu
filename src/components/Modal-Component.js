@@ -17,7 +17,7 @@ import {
 import {connect} from 'react-redux';
 import {UserContext} from '../contexts/UserContext';
 import axios from 'axios';
-import { addSync, removeRecording } from '../actions/actionCreators';
+import { addSync, removeRecording, appendSync } from '../actions/actionCreators';
 import DeviceInfo from 'react-native-device-info';  
 
 
@@ -28,12 +28,14 @@ const MAX_COMMENT = 300  //max number of chars
 var RNFS = require('react-native-fs');
 
 const mapStateToProps = state => ({
-    recording: state.BLE['currRecording']
+    recording: state.BLE['currRecording'],
+    recordings: state.UNSYNCED['unsynced']
 })
 
 const mapDispatchToProps = dispatch => ({
     remove: () => dispatch(removeRecording()),
-    add: (user, file, info) => dispatch(addSync(user, file, info))
+    add: (user, file, info) => dispatch(addSync(user, file, info)),
+    append: (user, file, info) => dispatch(appendSync(user, file, info))
 })
 
 
@@ -42,11 +44,13 @@ const ModalComponent = (props) => {
     const [description, setDescription] = useState('')
     const [max, setMax] = useState(MAX_COMMENT)
     const user = useContext(UserContext)
-    const {start_time, label, file} = props.recording;
+    // const {start_time, label, file} = props.recording;
+    const file = 'Test4.txt'
 
     
 
-    var path = RNFS.DocumentDirectoryPath + '/' + file;
+    // var path = RNFS.DocumentDirectoryPath + '/' + file;
+    var path = RNFS.DocumentDirectoryPath + '/' + file
       //reference: https://stackoverflow.com/questions/56235286/react-native-post-form-data-with-object-and-file-in-it-using-axios
       //reference: https://stackoverflow.com/questions/61585437/how-to-send-post-request-with-files-in-react-native-android
       //file type: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
@@ -82,7 +86,8 @@ const ModalComponent = (props) => {
             "app_os": app_os,
             "app_os_version": app_os_version
         }
-        console.log(session)
+
+        // console.log(session)
         // console.log('In upload...')
         const formData = new FormData()
         formData.append("start_time",start_time)
@@ -98,22 +103,6 @@ const ModalComponent = (props) => {
         formData.append("app_hardware", app_hardware)
         formData.append("app_os", app_os)
         formData.append("app_os_version", app_os_version)
-
-        
-        // Working example
-        // formData.append("start_time","2020-11-02T14:50:05Z")
-        // formData.append("label","OTC")
-        // formData.append("description","OTC 3X with BP.  1st one captured transient: 1: 95/57/42, 121/46/81, 99/55/54")
-        // formData.append('datafile',datafile)
-        // formData.append("comments","")
-        // formData.append("highlight",false)
-        // formData.append("device_type","HRM-AA")
-        // formData.append("device_sn","2")
-        // formData.append("device_firmware","1.02")
-        // formData.append("app_version","1.12")
-        // formData.append("app_hardware","Moto G5S")
-        // formData.append("app_os","Android")
-        // formData.append("app_os_version","9.0")
     
         //debugging purposes
         // console.log('FORMDATA object appended to')
@@ -143,12 +132,20 @@ const ModalComponent = (props) => {
           }
           else{
             console.log('FAILURE',response.status)
-            props.add(user.username, file, session)
+            if(user.username in props.recordings){  //if username already exists in unsynced, append to the list file
+              props.appendSync(user.username, file, session)
+            }else{  //if username is not in, add it in
+              props.add(user.username, file, session)
+            }
             alert('Unable to sync. Please sync manually.')
           }
         } catch (error) {
           console.log('TRY..CATCH',error.message)
-          props.add(user.username, file, session)
+          if(user.username in props.recordings){  //if username already exists in unsynced, append to the list file
+            props.append(user.username, file, session)
+          }else{  //if username is not in, add it in
+            props.add(user.username, file, session)
+          }
           alert('Unable to sync. Please sync manually.')
         } finally {
           setComment('')
@@ -156,7 +153,6 @@ const ModalComponent = (props) => {
         }
     }
     
-
 
     return (
         <Modal

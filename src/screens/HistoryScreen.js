@@ -154,7 +154,7 @@ const HistoryScreen = (props) => {
                     <View style={{flexDirection: 'row'}}>
                         <Icon name='ghost' color='#A0A0A0' size={100} paddingVertical={50}/>
                     </View>
-                    <Text style={{color: 'gray', textAlign: 'center'}}>It's a ghost town in here.{'\n'} No unsynced recordings...</Text>
+                    <Text style={{color: 'gray', textAlign: 'center'}}>It's a ghost town in here.{'\n'} No recordings found...</Text>
                     </View>
                 }
             />

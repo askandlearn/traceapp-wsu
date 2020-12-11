@@ -135,7 +135,11 @@ Next, run the command below
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-The TRACE app has three distinct features that 
+The TRACE app has three distinct features that allow users to interact with the TRACE biosensor. 
+
+1. Active Stand Up Test
+2. Heart-Rate Variability
+3. Real-Time Data
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -172,6 +176,8 @@ Project Link: [https://github.com/askandlearn/traceapp-wsu](https://github.com/a
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
+
+Thanks and appreciation to Dr. Amar Basu of Wayne State who proposed the idea to the WSU Fall 2020 Senior Capstone class.
 
 
 

@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 import { usePrevious } from '../hooks/usePrevious';
 
 
-
+//Initialize the icon
 Icon.loadFont();
 
 
@@ -27,11 +27,9 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                PROFILE SCREEN
+           PROFILE (Account) SCREEN
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 const ProfileScreen = (props) => {
-
-  let thing = true;
 
   //Toast for when the device disconnects
   const {isConnected} = props
@@ -358,7 +356,6 @@ const checkLastName = (val) =>{
       ...checkValidations,
       validBirthdate: false
     });
-    thing = false;
 
   }
 }
@@ -410,7 +407,6 @@ const checkLastName = (val) =>{
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const changeModalViewBirthdate = () => {
       //If the birthdate is valid, allow submit
-      console.log(thing);
       if(checkValidations.validBirthdate){
         setShowModalDate(false);
         saveChanges();
@@ -521,14 +517,14 @@ const checkLastName = (val) =>{
               <View style={styles.exit}>
             <TouchableOpacity onPress={()=>closeModalName()}>
                 <Icon name='close-box-outline' size={30} alignSelf="flex-start" style={{padding:20}}></Icon>
-                </TouchableOpacity>
+            </TouchableOpacity>
             <View style={styles.modalView}>
             <View style={{justifyContent:'center'}}>
                 <View style={styles.modalContent}>
             <Text style={styles.modalContentTitle}>Name:</Text>
 
       {/*       FIRST NAME      */}
-             <Text style={styles.modalContentFLName}>First Name:</Text>
+            <Text style={styles.modalContentFLName}>First Name:</Text>
             <TextInput
               placeholder='Name'
               value={currentUser.first_name}
@@ -545,7 +541,7 @@ const checkLastName = (val) =>{
               {/* End of validation prompt */}
 
       {/*       LAST NAME       */}
-        <Text style={styles.modalContentFLName}>Last Name:</Text>
+          <Text style={styles.modalContentFLName}>Last Name:</Text>
             <TextInput
               placeholder='Name'
               value={currentUser.last_name}
@@ -563,7 +559,7 @@ const checkLastName = (val) =>{
               </Animatable.View>
               )}
               {/* End of validation prompt */}
-        <View style={{paddingTop: 15}}/>
+              <View style={{paddingTop: 15}}/>
               <TouchableOpacity style={[styles.button, {backgroundColor: (checkValidations.validFirstName && checkValidations.validLastName)  ? '#ff0000' : '#4c4c4c'}]}
               onPress={()=> {changeModalViewName()}}><Text style={styles.buttonText}>Submit</Text></TouchableOpacity>
               </View>

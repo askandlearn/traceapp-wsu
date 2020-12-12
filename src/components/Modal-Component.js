@@ -44,8 +44,7 @@ const ModalComponent = (props) => {
     const [description, setDescription] = useState('')
     const [max, setMax] = useState(MAX_COMMENT)
     const user = useContext(UserContext)
-    // const {start_time, label, file} = props.recording;
-    const file = 'Test4.txt'
+    const {start_time, label, file} = props.recording;
 
     
 
@@ -160,7 +159,7 @@ const ModalComponent = (props) => {
             transparent={true}
             visible={props.visible}>
             <View style={styles.modal}>
-            <View style={styles.modalBox}>
+              <View style={styles.modalBox}>
                 <Text style={{fontSize: 20, color: 'white', fontWeight: 'bold', alignSelf: 'center', marginBottom: 10}}>Session Information</Text>
                 <TextInput
                     style={{paddingLeft:5, height: 70, color: 'black', borderColor: 'white', borderWidth: 1, backgroundColor: 'white'}}
@@ -183,7 +182,7 @@ const ModalComponent = (props) => {
                 <TouchableOpacity style={styles.button} onPress={() => upload()}>
                     <Text style={styles.buttonText}>SUBMIT</Text>
                 </TouchableOpacity>
-            </View>
+              </View>
             </View>
         </Modal>
     )

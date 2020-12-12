@@ -140,9 +140,12 @@ const handlePassword = (val) =>{
               try {
                 setLoading(true);
                 await login(email, password);
-                setLoading(false);
               } catch (e) {
                 console.log('Error: ' + e.message);
+                setLoading(false);
+                alert('Could not sign in')
+              } finally {
+                setLoading(false);
               }
             }}>
             SIGN IN
@@ -150,7 +153,7 @@ const handlePassword = (val) =>{
         </TouchableOpacity>
         <View style={styles.flexContainer}>
           <View style={styles.horizantalLine} />
-          <View>
+          <View>  
             {/*<Text style={styles.orOption}>Or sign in with</Text> */}
           </View>
           <View style={styles.horizantalLine} />

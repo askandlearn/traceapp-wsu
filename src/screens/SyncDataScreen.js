@@ -1,4 +1,4 @@
-import React, { useContext,useState } from 'react';
+import React, { useContext,useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Platform, FlatList} from 'react-native'
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -11,12 +11,11 @@ import axios from 'axios';
 var RNFS = require('react-native-fs');
 
 const mapStateToProps = state => ({
-    recordings: state.UNSYNCED.unsynced.files,
-    info: state.UNSYNCED.unsynced.info,
+    recordings: state.UNSYNCED.unsynced
 })
 
 const mapDispatchToProps = dispatch => ({
-    remove: () => dispatch(removeSync())
+    remove: (user) => dispatch(removeSync(user))
 })
   
 
@@ -34,6 +33,24 @@ const Recording = ({recording}) => {
 }
 
 const SyncDataScreen = props => {
+    const user = useContext(UserContext)
+    const [LAST, setLast] = useState(() => {
+        if(user.username in props.recordings)
+            return props.recordings[user.username].files.length - 1
+        else
+            return
+    })  //take the 
+
+
+    useEffect(() => {
+        // console.log('username', user.username)
+        console.log('recordings', LAST)
+        // if(user.username in props.recordings){
+        //     console.log('setting file')
+        //     setFiles(props.recordings[user.username].files)
+        // }
+    },[props.recordings])
+
     const renderItem = (prop) => {
         return(
             <TouchableOpacity onPress={() => props.navigation.navigate('FileModal', {file: prop.item})}>
@@ -42,19 +59,22 @@ const SyncDataScreen = props => {
         )
     }
 
-    const user = useContext(UserContext)
-    const [LAST, setLast] = useState(props.recordings.length - 1)
-
     const remove = () => {
-        upload(props.recordings[LAST])
+        if(!LAST){
+            console.log('Empty')
+        }
+        else{
+            upload(props.recordings[user.username])
+        }
     }
     
-    const upload = async (file) => {
+    const upload = async (user) => {
         //get file path
-        var path = RNFS.DocumentDirectoryPath + '/' + file;
+        const {files, info} = user
+        var path = RNFS.DocumentDirectoryPath + '/' + files[LAST];
 
         //get saved session info
-        const session = props.info[LAST]
+        const session = info[LAST]
         const {start_time, label, description, comment} = session
 
 
@@ -72,7 +92,7 @@ const SyncDataScreen = props => {
         var datafile = {
             uri: 'file://' + path,  //for android 'file://' needs to be appended to the uri. not sure if this is the same case for iOS. wiil need to test
             type: 'text/plain', 
-            name: file    //name of test file
+            name: files[LAST]   //name of test file
         }
         // console.log('In upload...')
         const formData = new FormData()
@@ -83,9 +103,9 @@ const SyncDataScreen = props => {
         formData.append("comments",comment)
         formData.append("highlight",false)  //always false for now
         formData.append("device_type","HRM-AA") //need a way to get this info from sensor
-        formData.append("device_sn","2")    //need a way to get this info from sensor
+        formData.append("device_sn","1")    //need a way to get this info from sensor
         formData.append("device_firmware","1.02")   //need a way to get this inform from sensor
-        formData.append("app_version", "1.00")  //the api format requires this number to to the hundreth decimal. hard-coded in for the time being
+        formData.append("app_version", '1.10')  //the api format requires this number to to the hundreth decimal. hard-coded in for the time being
         formData.append("app_hardware", app_hardware)
         formData.append("app_os", app_os)
         formData.append("app_os_version", app_os_version)
@@ -115,8 +135,8 @@ const SyncDataScreen = props => {
             //if response is successful, the accepted status is 201 - CREATED
             if(response.status == 201){
                 console.log('SUCCESS',response.status)
-                 setLast(LAST-1)
-                 props.remove()
+                setLast(LAST-1)
+                props.remove()
                 alert('Success')
             }
             else{
@@ -145,11 +165,19 @@ const SyncDataScreen = props => {
                     </View>
                 }
                 // data={props.recordings}
-                data = {props.recordings}
+                data = {props.recordings[user.username]?.files}
                 renderItem={renderItem}
-                keyExtractor={item => item}
+                keyExtractor={(item, index) => index.toString()}
                 ListFooterComponent={
                     <View style={{marginBottom: 80}}/>
+                }
+                ListEmptyComponent={
+                    <View style={styles.empty}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Icon name='ghost' color='#A0A0A0' size={100} paddingVertical={50}/>
+                        </View>
+                        <Text style={{color: 'gray', textAlign: 'center'}}>It's a ghost town in here.{'\n'} No unsynced recordings...</Text>
+                    </View>
                 }
             />       
             <TouchableOpacity onPress={() => remove()} style={styles.button}>
@@ -226,6 +254,14 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#FFFFFF',
         fontWeight: 'bold',
+    },
+    empty:{
+        borderWidth: 0,
+        borderColor: 'black',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 40
     }
 })
 

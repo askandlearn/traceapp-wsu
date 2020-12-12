@@ -106,12 +106,24 @@ export const setBusy = (val) => ({
 })
 /**
  * Adds unsynced file to unsynced state
- * Called in stopTransaction()
  * 
- * @returns {state} unsynced: {user, files:[...files,newFile]}
+ * 
+ * @returns {state} unsynced
  */
 export const addSync = (user, file, info) => ({
     type: 'ADD_SYNC',
+    user: user,
+    file: file,
+    info: info
+})
+/**
+ * Append unsynced file to unsynced state
+ * 
+ * 
+ * @returns {state} unsynced
+ */
+export const appendSync = (user, file, info) => ({
+    type: 'APPEND_SYNC',
     user: user,
     file: file,
     info: info
@@ -122,8 +134,9 @@ export const addSync = (user, file, info) => ({
  * 
  * @returns {state} unsynced: {user, files:[files-1]}
  */
-export const removeSync = () => ({
-    type: 'REMOVE_SYNC'
+export const removeSync = (user) => ({
+    type: 'REMOVE_SYNC',
+    user: user
 })
 
 /**

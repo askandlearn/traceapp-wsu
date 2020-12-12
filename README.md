@@ -168,8 +168,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Contact
 
 Zack Taylor - [@zacktaylor12359](https://github.com/zacktaylor12359)
+
 Brianna Nurmi - [@brinurmi](https://github.com/brinurmi)
+
 Dana Abuqalbain - [@DanaAbuqalbain](https://github.com/DanaAbuqalbain)
+
 Mohammed Hamza - [@mo-schmo](https://github.com/mo-schmo)
 
 

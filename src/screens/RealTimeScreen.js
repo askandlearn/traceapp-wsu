@@ -56,6 +56,7 @@ const RealTimeScreen = (props) => {
     showToast()
   }, [isConnected])
   //End Toast
+<<<<<<< HEAD
   //const user = useContext(UserContext)
 
   //Start displaying the data on the page
@@ -66,6 +67,14 @@ const RealTimeScreen = (props) => {
     else {
       alert("TRACE device not connected.\n\n Connect your device and try again");
     }
+=======
+  const user = useContext(UserContext)
+
+  //Start displaying the data on the page
+  const onStart = async () => {
+    props.updateMetric(undefined, 'RT');
+
+>>>>>>> cbf643e7a768a7a75f1ee9b81f6a9a97da4716e0
   }
   //Stop displaying the data on the page
   const onStop = async () => {
@@ -73,7 +82,11 @@ const RealTimeScreen = (props) => {
     props.stopTransaction(transactionID);
     setVisible(true)
   }
+<<<<<<< HEAD
   const [visible, setVisible] = useState(true)
+=======
+  const [visible, setVisible] = useState(false)
+>>>>>>> cbf643e7a768a7a75f1ee9b81f6a9a97da4716e0
 
   return (
     <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

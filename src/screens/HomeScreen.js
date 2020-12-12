@@ -1,12 +1,24 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import DeprecatedViewPropTypes from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedViewPropTypes';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 import Header from '../components/Header-Component';
-import HealthDashboard from './HealthDashboardScreen';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import {VictoryBar, VictoryChart, VictoryAxis, VictoryTooltip, VictoryVoronoiContainer, VictoryLine, VictoryLabel} from 'victory-native';
+import DropDownPicker from 'react-native-dropdown-picker';
+import Svg from 'react-native-svg';
+import {Calendar} from 'react-native-calendars';
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 const HomeScreen = ({navigation}) => {
 =======
+=======
+>>>>>>> cbf643e7a768a7a75f1ee9b81f6a9a97da4716e0
 import Toast from 'react-native-simple-toast';
 import {connect} from 'react-redux';
 import { usePrevious } from '../hooks/usePrevious';
@@ -45,6 +57,10 @@ var thisMonth = date.getMonth() + 1;
 var thisYear = date.getFullYear();
 var formatStr = '';
 for(var i = 1; i < 30; i++) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> cbf643e7a768a7a75f1ee9b81f6a9a97da4716e0
   if(thisDay == 1 && thisMonth == 1){
     thisYear--;
     thisMonth = 12;
@@ -127,27 +143,178 @@ const HomeScreen = (props) => {
 
   const [stats, setStats] = useState('week');
   const [status, setStatus] = useState('true');
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> cbf643e7a768a7a75f1ee9b81f6a9a97da4716e0
   return (
-    <View style={styles.container}>
-      <Header openDrawer={navigation.openDrawer} />
-      <HealthDashboard />
+    <View
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <Header openDrawer={props.navigation.openDrawer} />
+      <Text style={styles.title}>Health Dashboard</Text>
+      <KeyboardAvoidingScrollView style={styles.bodyMain}>
+        {/* <Image
+          style={styles.backgroundImage}
+          source={require('../images/TraceBio-Black.png')}
+        /> */}
+        <DropDownPicker
+          items={[
+            {label: 'Results by Week', value: 'week'},
+            {label: 'Results by Month', value: 'month'},
+          ]}
+          defaultValue={stats}
+          containerStyle={{height: 40}}
+          style={{backgroundColor: '#fafafa'}}
+          itemStyle={{
+            justifyContent: 'flex-start',
+          }}
+          dropDownStyle={{backgroundColor: '#fafafa'}}
+          onChangeItem={(item) => (setStats(item.value), setStatus(item.value == 'week' ? true : false))}
+        />   
+        <Svg
+          style={status ? styles.chart : styles.hidden}
+          preserveAspectRatio="none">
+          <VictoryChart domainPadding={15} height={300} width={420}>   
+            <VictoryLine
+              y={() => 40}
+              samples={1}
+              // labels={"Fair"}
+              style={{
+                data: {stroke: "#F7EF00", strokeDasharray: "12,6", strokeWidth: 2},
+              }}
+            />
+            <VictoryLine
+              y={() => 70}
+              samples={1}
+              // lables={["","Good"]}
+              style={{
+                data: {stroke: "#00C019", strokeDasharray: "6,6", strokeWidth: 1}
+              }}
+            />
+            <VictoryBar
+              data={data}
+              x="day"
+              y="score"
+              style={{
+                data: {
+                  fill: ({datum}) =>
+                    datum.score < 40
+                      ? 'red'
+                      : datum.score < 70
+                      ? 'yellow'
+                      : 'green',
+                },
+              }}
+            />
+            <VictoryAxis />
+            <VictoryAxis dependentAxis label="Score" style={sharedAxisStyles} domain={[0, 100]} />
+          </VictoryChart>
+        </Svg>
+
+        <Calendar
+          style={status ? styles.hidden : styles.calendar}
+          //Initially visible month. Default = Date()
+          current={Date()}
+          // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
+          minDate={'2012-05-10'}
+          // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+          maxDate={undefined}
+          // Handler which gets executed on day press. Default = undefined
+          onDayPress={(day) => {
+            console.log('selected day', day);
+          }}
+          // Handler which gets executed on day long press. Default = undefined
+          onDayLongPress={(day) => {
+            console.log('selected day', day);
+          }}
+          // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+          monthFormat={'MMM yyyy'}
+          // Handler which gets executed when visible month changes in calendar. Default = undefined
+          onMonthChange={(month) => {
+            console.log('month changed', month);
+          }}
+          // Hide month navigation arrows. Default = false
+          hideArrows={false}
+          // Replace default arrows with custom ones (direction can be 'left' or 'right')
+          //renderArrow={(direction) => (<Arrow/>)}
+          // Do not show days of other months in month page. Default = false
+          hideExtraDays={false}
+          // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
+          // day from another month that is visible in calendar page. Default = false
+          disableMonthChange={true}
+          // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+          firstDay={1}
+          // Hide day names. Default = false
+          hideDayNames={false}
+          // Show week numbers to the left. Default = false
+          showWeekNumbers={false}
+          // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+          onPressArrowLeft={(subtractMonth) => subtractMonth()}
+          // Handler which gets executed when press arrow icon right. It receive a callback can go next month
+          onPressArrowRight={(addMonth) => addMonth()}
+          // Disable left arrow. Default = false
+          disableArrowLeft={false}
+          // Disable right arrow. Default = false
+          disableArrowRight={false}
+          // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
+          disableAllTouchEventsForDisabledDays={true}
+          // Replace default month and year title with custom one. the function receive a date as parameter.
+          //renderHeader={(date) => {/*Return JSX*/}}
+          // Enable the option to swipe between months. Default = false
+          enableSwipeMonths={true}
+          markedDates = {calData}
+          markingType = "period"
+          theme={{
+            'stylesheet.day.period': {
+                base: {
+                  overflow: 'hidden',
+                  height: 34,
+                  alignItems: 'center',
+                  width: 38,
+                }
+            }
+          }}
+          
+          
+        />
+        <View style={styles.colorKey}>
+          <View style={styles.colorKeyRow}>
+            <View style={{height: 10, width: 10, backgroundColor: 'green'}} />
+            <Text> {'  '}Great Health Score </Text>
+          </View>
+          <View style={styles.colorKeyRow}>
+            <View style={{height: 10, width: 10, backgroundColor: 'yellow'}} />
+            <Text> {'  '}Fair Health Score </Text>
+          </View>
+          <View style={styles.colorKeyRow}>
+            <View style={{height: 10, width: 10, backgroundColor: 'red'}} />
+            <Text> {'  '}Bad Health Score </Text>
+          </View>
+        </View>
+      </KeyboardAvoidingScrollView>
     </View>
   );
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              STYLE SHEET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 const styles = StyleSheet.create({
+  bodyMain:{
+    marginTop:25,
+    paddingTop:30
+  },
   container: {
     flex: 1,
-    backgroundColor: '#b7b7b7',
-    alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
   backgroundImage: {
     alignSelf: 'center',
     marginTop: 30,
-    marginBottom: 70,
-    width: '60%',
-    height: 100,
+    marginBottom: 0,
+    width: '50%',
+    height: 90,
     resizeMode: 'stretch',
   },
   inputFields: {
@@ -161,16 +328,24 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    marginHorizontal: '10%',
-    marginVertical: 10,
-    color: '#202020',
+    color: '#242852',
     fontWeight: 'bold',
-    fontSize: 30,
-    paddingBottom: 30,
+    fontSize: 37,
+    marginTop:25,
+    paddingTop:65,
+    shadowColor: '#000000',
+    shadowOffset: {width: .5, height: 1},
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 
+        'AppleSDGothicNeo-Bold'
+      },
+    }),
   },
   button: {
-    //alignSelf: 'center',
-    //width: '60%',
     alignItems: 'center',
     marginHorizontal: '10%',
     marginVertical: 10,
@@ -182,6 +357,35 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  buttonRow: {
+    flexDirection: 'row',
+  },
+  chartRow: {
+    width: '100%',
+  },
+  chart: {
+    flex: 1,
+    height: 300,
+    width: '95%',
+  },
+  hidden: {
+    display: 'none',
+  },
+  calendar: {
+    flex: 1,
+  },
+  colorKey: {
+    flex: 1,
+    alignSelf: 'center',
+    margin: 0,
+    paddingTop: 20,
+    paddingBottom: 40,
+  },
+  colorKeyRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   header: {
     width: '100%',
     height: 60,
@@ -192,4 +396,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default connect(mapStateToProps, null) (HomeScreen);
